@@ -5,7 +5,7 @@ import net.minecraft.block.material.Material;
 
 public class oreTechnetium extends Block {
 
-    protected oreTechnetium() {
+    public oreTechnetium() {
         super(Material.rock);
     }
 }
