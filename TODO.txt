@@ -1,0 +1,20 @@
+Goal - Mid to End Game Item Replication
+
+1 - Create OreBlock - Technetium
+2 - World Gen OreBlock
+3 - Create Fluid - Liquid Technetium
+3 - Multiblock Structure - Blast Furnace - 3x3
+    Input Ore
+    Input Compressed Air
+    Output Liquid - Liquid Technetium
+    Output Block - Slag
+    Center Processor Block
+4 - Bellows - Compresses Air for Blast Furnace (Make Compressed Air a Fluid??)
+5 - Create Item - Data Disk - Used to Store Patterns
+6 - Multiblock Structure - Replicator
+    Input Liquid - Liquid Technetium
+    Input RF
+    Data Disk Slot
+    Output Block - Finished Product
+    Center Processor Block
+7 - Create Block - Pattern Recorder
