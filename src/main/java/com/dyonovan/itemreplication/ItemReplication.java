@@ -1,5 +1,6 @@
 package com.dyonovan.itemreplication;
 
+import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
 import com.dyonovan.itemreplication.lib.Constants;
 import com.dyonovan.itemreplication.proxy.CommonProxy;
@@ -21,7 +22,8 @@ public class ItemReplication {
     @Instance(Constants.MODID)
     public static ItemReplication instance;
 
-    @SidedProxy(clientSide = "com.dyonovan.itemreplication.proxy.ClientProxy", serverSide = "com.dyonovan.itemreplication.proxy.CommonProxy")
+    @SidedProxy(clientSide = "com.dyonovan." + Constants.MODID + ".proxy.ClientProxy",
+            serverSide = "com.dyonovan." + Constants.MODID + ".proxy.CommonProxy")
     public static CommonProxy proxy;
 
     public static CreativeTabs tabItemReplication = new CreativeTabs("tabItemReplication") {
@@ -36,6 +38,7 @@ public class ItemReplication {
     public void preInit(FMLPreInitializationEvent event){
 
         ConfigHandler.init(new Configuration(event.getSuggestedConfigurationFile()));
+        BlockHandler.init();
 
     }
 
