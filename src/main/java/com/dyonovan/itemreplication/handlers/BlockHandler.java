@@ -2,6 +2,7 @@ package com.dyonovan.itemreplication.handlers;
 
 import com.dyonovan.itemreplication.blocks.*;
 import com.dyonovan.itemreplication.fluids.FluidActinium;
+import com.dyonovan.itemreplication.fluids.FluidCompressedAir;
 import com.dyonovan.itemreplication.tileentity.TECompressor;
 import com.dyonovan.itemreplication.tileentity.TileBlastFurnaceCore;
 import com.dyonovan.itemreplication.tileentity.TileDummy;
@@ -12,9 +13,9 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 public class BlockHandler {
 
-    public static Fluid fluidActinium;
+    public static Fluid fluidActinium, fluidCompressedAir;
     public static Block blockBlastFurnaceDummy, blockBlastFurnaceCore;
-    public static Block blockOreActinium, blockfluidActinium, blockCompressor, blockCompressorOn;
+    public static Block blockOreActinium, blockfluidActinium, blockCompressor, blockFluidAir;
 
     public static void init() {
         //Actinium Fluid Registration
@@ -41,5 +42,12 @@ public class BlockHandler {
         blockBlastFurnaceCore = new BlockBlastFurnaceCore();
         GameRegistry.registerBlock(blockBlastFurnaceCore, "blastFurnaceCore");
         GameRegistry.registerTileEntity(TileBlastFurnaceCore.class, "blastFurnaceCore");
+
+        //Fluid Compressed Air
+        fluidCompressedAir = new FluidCompressedAir();
+        FluidRegistry.registerFluid(fluidCompressedAir);
+        blockFluidAir = new BlockFluidCompressedAir();
+        GameRegistry.registerBlock(blockFluidAir, "blockFluidAir");
+
     }
 }
