@@ -30,6 +30,7 @@ public class TileBlastFurnaceCore extends BaseCore {
                         continue;
                     TileDummy dummy = (TileDummy)worldObj.getTileEntity(xCoord + i, yCoord + j, zCoord + k);
                     dummy.setCoreLocation(new Location(xCoord, yCoord, zCoord));
+                    worldObj.setBlockMetadataWithNotify(xCoord + i, yCoord + j, zCoord + k, 1, 2);
                 }
             }
         }
@@ -43,8 +44,10 @@ public class TileBlastFurnaceCore extends BaseCore {
                     if (i == 0 && j == 0 && k == 0)
                         continue;
                     TileDummy dummy = (TileDummy)worldObj.getTileEntity(xCoord + i, yCoord + j, zCoord + k);
-                    if(dummy != null)
+                    if(dummy != null) {
+                        worldObj.setBlockMetadataWithNotify(xCoord + i, yCoord + j, zCoord + k, 0, 2);
                         dummy.setCoreLocation(new Location(-100, -100, -100));
+                    }
                 }
             }
         }
