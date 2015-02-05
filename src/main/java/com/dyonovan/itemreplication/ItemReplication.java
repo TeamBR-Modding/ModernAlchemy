@@ -42,7 +42,6 @@ public class ItemReplication {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event){
-
         ConfigHandler.init(new Configuration(event.getSuggestedConfigurationFile()));
         BlockHandler.init();
         WorldGeneratorHandler.init();

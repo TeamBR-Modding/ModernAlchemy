@@ -1,8 +1,7 @@
 package com.dyonovan.itemreplication.blocks;
 
-import com.dyonovan.itemreplication.tileentity.TECompressor;
-import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.lib.Constants;
+import com.dyonovan.itemreplication.tileentity.TECompressor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;
@@ -17,17 +16,15 @@ import net.minecraft.world.World;
 
 public class BlockCompressor extends BlockContainer {
 
-    public boolean isRunning = false;
+    private boolean isRunning = false;
 
     @SideOnly(Side.CLIENT)
     private IIcon front, frontActive;
 
-    public BlockCompressor(boolean isRunning) {
+    public BlockCompressor() {
         super(Material.anvil);
         this.setBlockName(Constants.MODID + ":compressor");
         this.setBlockUnbreakable();
-
-        this.isRunning = isRunning;
     }
 
     @SideOnly(Side.CLIENT)
@@ -66,6 +63,10 @@ public class BlockCompressor extends BlockContainer {
         return isRunning;
     }
 
+    public boolean isRunning() {
+        return isRunning;
+    }
+
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemstack) {
         int l = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 
@@ -96,28 +97,4 @@ public class BlockCompressor extends BlockContainer {
     public TileEntity createNewTileEntity(World world, int i) {
         return new TECompressor();
     }
-
-    public static void updateFurnaceBlockState(boolean active, World world, int x, int y, int z)
-    {
-        int l = world.getBlockMetadata(x, y, z);
-        TileEntity tileentity = world.getTileEntity(x, y, z);
-
-        if (active)
-        {
-            world.setBlock(x, y, z, BlockHandler.blockCompressorOn);
-        }
-        else
-        {
-            world.setBlock(x, y, z, BlockHandler.blockCompressor);
-        }
-
-        world.setBlockMetadataWithNotify(x, y, z, l, 2);
-
-        if (tileentity != null)
-        {
-            tileentity.validate();
-            world.setTileEntity(x, y, z, tileentity);
-        }
-    }
-
 }
