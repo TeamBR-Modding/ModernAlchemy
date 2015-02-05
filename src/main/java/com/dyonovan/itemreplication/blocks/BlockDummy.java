@@ -12,9 +12,13 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 public class BlockDummy extends BlockContainer {
+
+    @SideOnly(Side.CLIENT)
+    private IIcon active;
 
     public BlockDummy(String name) {
         super(Material.rock);
@@ -54,5 +58,11 @@ public class BlockDummy extends BlockContainer {
     @Override
     public void registerBlockIcons(IIconRegister register) {
         this.blockIcon = register.registerIcon(Constants.MODID + ":blastFurnace");
+        active = register.registerIcon(Constants.MODID + ":blastFurnaceActive");
+    }
+
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta) {
+        return meta == 1 ? active : blockIcon;
     }
 }

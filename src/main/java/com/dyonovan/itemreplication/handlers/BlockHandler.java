@@ -1,11 +1,7 @@
 package com.dyonovan.itemreplication.handlers;
 
-import com.dyonovan.itemreplication.ItemReplication;
-import com.dyonovan.itemreplication.blocks.*;
 import com.dyonovan.itemreplication.blocks.*;
 import com.dyonovan.itemreplication.fluids.FluidActinium;
-import com.dyonovan.itemreplication.lib.Constants;
-import com.dyonovan.itemreplication.tileentity.BaseTile;
 import com.dyonovan.itemreplication.tileentity.TECompressor;
 import com.dyonovan.itemreplication.tileentity.TileBlastFurnaceCore;
 import com.dyonovan.itemreplication.tileentity.TileDummy;
