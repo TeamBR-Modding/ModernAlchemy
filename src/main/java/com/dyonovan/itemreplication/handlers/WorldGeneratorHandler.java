@@ -22,23 +22,20 @@ public class WorldGeneratorHandler implements IWorldGenerator {
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
-        switch (world.provider.dimensionId) {
-            case -1:
-                generateNether(world, random, chunkX * 16, chunkZ * 16);
-                break;
-            case 0:
-                generateSurface(world, random, chunkX * 16, chunkZ * 16);
-                break;
-            case 1:
-                generateEnd(world, random, chunkX * 16, chunkZ * 16);
-                break;
-        }
+
+        if(world.provider.dimensionId == 0) // Overworld only
+            generateActinium(world, random, chunkX * 16, chunkZ * 16);
     }
 
-    private void generateEnd(World world, Random random, int i, int j) {}
+    private void generateActinium(World world, Random random, int i, int j) {
 
-    private void generateSurface(World world, Random random, int i, int j) {
         if(ConfigHandler.generateActinium) {
+            if(ConfigHandler.actiniumMinLevel < 0) ConfigHandler.actiniumMinLevel = 0;
+            if(ConfigHandler.actiniumMaxLevel < 0) ConfigHandler.actiniumMaxLevel = 0;
+            if(ConfigHandler.actiniumMinLevel > ConfigHandler.actiniumMaxLevel) ConfigHandler.actiniumMinLevel = ConfigHandler.actiniumMaxLevel;
+            if(ConfigHandler.actiniumVeinsPerChunk < 0) ConfigHandler.actiniumVeinsPerChunk = 0;
+            if(ConfigHandler.actiniumVeinSize < 0) ConfigHandler.actiniumVeinSize = 0;
+
             for (int k = 0; k < ConfigHandler.actiniumVeinsPerChunk; k++) {
                 int x = i + random.nextInt(16);
                 int y = random.nextInt(ConfigHandler.actiniumMaxLevel - ConfigHandler.actiniumMinLevel) + ConfigHandler.actiniumMinLevel;
@@ -49,6 +46,4 @@ public class WorldGeneratorHandler implements IWorldGenerator {
             }
         }
     }
-
-    private void generateNether(World world, Random random, int i, int j) {}
 }
