@@ -2,6 +2,7 @@ package com.dyonovan.itemreplication;
 
 import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
+import com.dyonovan.itemreplication.handlers.WorldGeneratorHandler;
 import com.dyonovan.itemreplication.lib.Constants;
 import com.dyonovan.itemreplication.proxy.CommonProxy;
 import cpw.mods.fml.common.Mod;
@@ -42,7 +43,7 @@ public class ItemReplication {
 
         ConfigHandler.init(new Configuration(event.getSuggestedConfigurationFile()));
         BlockHandler.init();
-
+        WorldGeneratorHandler.init();
     }
 
     @EventHandler
