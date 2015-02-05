@@ -1,7 +1,11 @@
 package com.dyonovan.itemreplication.handlers;
 
+import com.dyonovan.itemreplication.blocks.BlockBlastFurnaceCore;
+import com.dyonovan.itemreplication.blocks.BlockDummy;
 import com.dyonovan.itemreplication.blocks.BlockFluidActinium;
 import com.dyonovan.itemreplication.blocks.BlockOreActinium;
+import com.dyonovan.itemreplication.tiles.BaseTile;
+import com.dyonovan.itemreplication.tiles.TileBlastFurnaceCore;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraftforge.fluids.Fluid;
@@ -12,6 +16,8 @@ public class BlockHandler {
     public static Fluid fluidActinium;
     public static Block blockfluidActinium;
     public static Block blockOreActinium;
+    public static Block blockBlastFurnaceDummy;
+    public static Block blockBlastFurnaceCore;
 
     public static void init() {
 
@@ -23,6 +29,13 @@ public class BlockHandler {
 
         blockOreActinium = new BlockOreActinium();
         GameRegistry.registerBlock(blockOreActinium, "oreActinium");
-        //blockOreActinium.setBlockTextureName("itemreplication:technetium");
+
+        blockBlastFurnaceDummy = new BlockDummy("blastFurnaceDummy");
+        GameRegistry.registerBlock(blockBlastFurnaceDummy, "blastFurnaceDummy");
+        GameRegistry.registerTileEntity(BaseTile.class, "baseTile");
+
+        blockBlastFurnaceCore = new BlockBlastFurnaceCore();
+        GameRegistry.registerBlock(blockBlastFurnaceCore, "blastFurnaceCore");
+        GameRegistry.registerTileEntity(TileBlastFurnaceCore.class, "blastFurnaceCore");
     }
 }
