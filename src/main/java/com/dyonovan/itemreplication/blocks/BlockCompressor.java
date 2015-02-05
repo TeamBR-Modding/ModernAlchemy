@@ -17,6 +17,8 @@ import net.minecraft.world.World;
 
 public class BlockCompressor extends BlockContainer {
 
+    public boolean isRunning = false;
+
     @SideOnly(Side.CLIENT)
     private IIcon front, frontActive;
 
@@ -57,6 +59,10 @@ public class BlockCompressor extends BlockContainer {
         return isRunning;
     }
 
+    public boolean isRunning() {
+        return isRunning;
+    }
+
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemstack) {
         int l = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 
@@ -86,6 +92,7 @@ public class BlockCompressor extends BlockContainer {
     @Override
     public TileEntity createNewTileEntity(World world, int i) {
         return new TECompressor();
+    }
     }
 
 }

@@ -51,7 +51,7 @@ public class BlockBlastFurnaceCore extends BlockContainer {
         else
         {
             TileBlastFurnaceCore core = (TileBlastFurnaceCore)par1World.getTileEntity(par2, par3, par4);
-            if(core != null) {
+            if(core != null && core.isWellFormed()) {
                 par5EntityPlayer.openGui(ItemReplication.instance, GuiHandler.BLAST_FURNACE_GUI_ID, par1World, par2, par3, par4);
             }
             return true;
