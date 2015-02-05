@@ -1,0 +1,16 @@
+[
+{
+  "modid": "itemreplication",
+  "name": "Item Replication",
+  "description": "Mid to End Game Item Replication Mod.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "www.dyonovan.com",
+  "updateUrl": "",
+  "authorList": ["Dyonovan", "pauljoda", "sotetsu", "Dominance"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
