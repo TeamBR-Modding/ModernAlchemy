@@ -1,6 +1,7 @@
 package com.dyonovan.itemreplication.handlers;
 
 import com.dyonovan.itemreplication.blocks.BlockFluidTechnetium;
+import com.dyonovan.itemreplication.blocks.oreTechnetium;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraftforge.fluids.Fluid;
@@ -10,6 +11,7 @@ public class BlockHandler {
 
     public static Fluid fluidTechnetium;
     public static Block blockfluidTechnetium;
+    public static Block blockOreTechnetium;
 
     public static void init() {
 
@@ -19,5 +21,8 @@ public class BlockHandler {
         GameRegistry.registerBlock(blockfluidTechnetium, "fluidTechnetium");
         fluidTechnetium.setUnlocalizedName(blockfluidTechnetium.getUnlocalizedName());
 
+        blockOreTechnetium = new oreTechnetium();
+        GameRegistry.registerBlock(blockOreTechnetium, "oreTechnetium");
+        //blockOreTechnetium.setBlockTextureName("itemreplication:technetium");
     }
 }
