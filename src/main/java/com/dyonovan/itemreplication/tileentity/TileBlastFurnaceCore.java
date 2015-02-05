@@ -1,4 +1,4 @@
-package com.dyonovan.itemreplication.tiles;
+package com.dyonovan.itemreplication.tileentity;
 
 public class TileBlastFurnaceCore extends BaseCore {
     @Override

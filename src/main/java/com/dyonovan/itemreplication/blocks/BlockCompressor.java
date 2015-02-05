@@ -1,6 +1,6 @@
 package com.dyonovan.itemreplication.blocks;
 
-import com.dyonovan.itemreplication.TileEntities.TECompressor;
+import com.dyonovan.itemreplication.tileentity.TECompressor;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.lib.Constants;
 import cpw.mods.fml.relauncher.Side;

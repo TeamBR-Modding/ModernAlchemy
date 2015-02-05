@@ -2,7 +2,7 @@ package com.dyonovan.itemreplication.blocks;
 
 import com.dyonovan.itemreplication.ItemReplication;
 import com.dyonovan.itemreplication.lib.Constants;
-import com.dyonovan.itemreplication.tiles.BaseTile;
+import com.dyonovan.itemreplication.tileentity.BaseTile;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;

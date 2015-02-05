@@ -1,4 +1,4 @@
-package com.dyonovan.itemreplication.tiles;
+package com.dyonovan.itemreplication.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;

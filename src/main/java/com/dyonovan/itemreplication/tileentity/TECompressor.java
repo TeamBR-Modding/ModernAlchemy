@@ -1,4 +1,4 @@
-package com.dyonovan.itemreplication.TileEntities;
+package com.dyonovan.itemreplication.tileentity;
 
 import net.minecraft.tileentity.TileEntity;
 
