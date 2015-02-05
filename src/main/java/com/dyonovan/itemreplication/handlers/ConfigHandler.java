@@ -5,27 +5,27 @@ import net.minecraftforge.common.config.Configuration;
 
 public class ConfigHandler {
 
-    public static boolean generateOre;
-    public static int oreVeinSize;
-    public static int oreVeinsPerChunk;
-    public static int oreMinLevel;
-    public static int oreMaxLevel;
+    public static boolean generateActinium;
+    public static int actiniumVeinSize;
+    public static int actiniumVeinsPerChunk;
+    public static int actiniumMinLevel;
+    public static int actiniumMaxLevel;
 
     public static void init(Configuration config) {
 
         config.load();
 
-        generateOre      = config.get(Constants.CONFIG_ORE_GENERATION, "Generate Ore", true).getBoolean();
-        oreVeinSize      = config.get(Constants.CONFIG_ORE_GENERATION, "Ore Vein Size", 3).getInt();
-        oreVeinsPerChunk = config.get(Constants.CONFIG_ORE_GENERATION, "Ore Veins Per Chunk", 10).getInt();
-        oreMinLevel      = config.get(Constants.CONFIG_ORE_GENERATION, "Ore Min Level", 0).getInt();
-        oreMaxLevel      = config.get(Constants.CONFIG_ORE_GENERATION, "Ore Max Level", 64).getInt();
+        generateActinium      = config.get(Constants.CONFIG_ORE_GENERATION, "Generate Actinium", true).getBoolean();
+        actiniumVeinSize      = config.get(Constants.CONFIG_ORE_GENERATION, "Actinium Vein Size", 3).getInt();
+        actiniumVeinsPerChunk = config.get(Constants.CONFIG_ORE_GENERATION, "Actinium Veins Per Chunk", 10).getInt();
+        actiniumMinLevel      = config.get(Constants.CONFIG_ORE_GENERATION, "Actinium Min Level", 0).getInt();
+        actiniumMaxLevel      = config.get(Constants.CONFIG_ORE_GENERATION, "Actinium Max Level", 64).getInt();
 
-        if(oreMinLevel < 0) oreMinLevel = 0;
-        if(oreMaxLevel < 0) oreMaxLevel = 0;
-        if(oreMinLevel > oreMaxLevel) oreMinLevel = oreMaxLevel;
-        if(oreVeinsPerChunk < 0) oreVeinsPerChunk = 0;
-        if(oreVeinSize < 0) oreVeinSize = 0;
+        if(actiniumMinLevel < 0) actiniumMinLevel = 0;
+        if(actiniumMaxLevel < 0) actiniumMaxLevel = 0;
+        if(actiniumMinLevel > actiniumMaxLevel) actiniumMinLevel = actiniumMaxLevel;
+        if(actiniumVeinsPerChunk < 0) actiniumVeinsPerChunk = 0;
+        if(actiniumVeinSize < 0) actiniumVeinSize = 0;
 
         config.save();
     }

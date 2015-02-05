@@ -22,32 +22,31 @@ public class WorldGeneratorHandler implements IWorldGenerator {
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
-        if(ConfigHandler.generateOre) {
-            switch (world.provider.dimensionId) {
-                case -1:
-                    generateNether(world, random, chunkX * 16, chunkZ * 16);
-                    break;
-                case 0:
-                    generateSurface(world, random, chunkX * 16, chunkZ * 16);
-                    break;
-                case 1:
-                    generateEnd(world, random, chunkX * 16, chunkZ * 16);
-                    break;
-            }
+        switch (world.provider.dimensionId) {
+            case -1:
+                generateNether(world, random, chunkX * 16, chunkZ * 16);
+                break;
+            case 0:
+                generateSurface(world, random, chunkX * 16, chunkZ * 16);
+                break;
+            case 1:
+                generateEnd(world, random, chunkX * 16, chunkZ * 16);
+                break;
         }
     }
 
     private void generateEnd(World world, Random random, int i, int j) {}
 
     private void generateSurface(World world, Random random, int i, int j) {
+        if(ConfigHandler.generateActinium) {
+            for (int k = 0; k < ConfigHandler.actiniumVeinsPerChunk; k++) {
+                int x = i + random.nextInt(16);
+                int y = random.nextInt(ConfigHandler.actiniumMaxLevel - ConfigHandler.actiniumMinLevel) + ConfigHandler.actiniumMinLevel;
+                int z = j + random.nextInt(16);
 
-        for(int k = 0; k < ConfigHandler.oreVeinsPerChunk; k++) {
-            int x = i + random.nextInt(16);
-            int y = random.nextInt(ConfigHandler.oreMaxLevel - ConfigHandler.oreMinLevel) + ConfigHandler.oreMinLevel;
-            int z = j + random.nextInt(16);
-
-            (new WorldGenMinable(BlockHandler.blockOreActinium, ConfigHandler.oreVeinSize)).
-                generate(world, random, x, y, z);
+                (new WorldGenMinable(BlockHandler.blockOreActinium, ConfigHandler.actiniumVeinSize)).
+                        generate(world, random, x, y, z);
+            }
         }
     }
 
