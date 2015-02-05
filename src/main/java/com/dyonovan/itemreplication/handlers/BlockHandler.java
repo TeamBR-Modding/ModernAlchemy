@@ -31,8 +31,7 @@ public class BlockHandler {
         GameRegistry.registerBlock(blockOreActinium, "oreActinium");
 
         //Block Compressor
-        blockCompressor = new BlockCompressor(false).setCreativeTab(ItemReplication.tabItemReplication);
-        blockCompressorOn = new BlockCompressor(true);
+        blockCompressor = new BlockCompressor();
         GameRegistry.registerBlock(blockCompressor, "blockCompressor");
         GameRegistry.registerTileEntity(TECompressor.class, "teCompressor");
 

@@ -17,8 +17,6 @@ import net.minecraft.world.World;
 
 public class BlockCompressor extends BlockContainer {
 
-    public boolean isRunning = false;
-
     @SideOnly(Side.CLIENT)
     private IIcon front, frontActive;
 
@@ -40,7 +38,7 @@ public class BlockCompressor extends BlockContainer {
 
     public IIcon getIcon(int side, int meta) {
         boolean active = false;
-        if(meta > 10) {
+        if (meta > 10) {
             meta -= 10;
             active = true;
         }
@@ -49,10 +47,9 @@ public class BlockCompressor extends BlockContainer {
 
     public boolean toggleIsActive(World world, int x, int y, int z) {
         int currentMeta = world.getBlockMetadata(x, y, z);
-        if(currentMeta < 10) {
+        if (currentMeta < 10) {
             world.setBlockMetadataWithNotify(x, y, z, currentMeta += 10, 2);
-        }
-        else {
+        } else {
             world.setBlockMetadataWithNotify(x, y, z, currentMeta -= 10, 2);
         }
         isRunning = !(currentMeta < 10);
@@ -93,6 +90,6 @@ public class BlockCompressor extends BlockContainer {
     public TileEntity createNewTileEntity(World world, int i) {
         return new TECompressor();
     }
-    }
-
 }
+
+
