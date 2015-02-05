@@ -12,17 +12,17 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
 
-public class BlockFluidTechnetium extends BlockFluidClassic {
+public class BlockFluidActinium extends BlockFluidClassic {
 
     @SideOnly(Side.CLIENT)
     protected IIcon stillIcon;
     @SideOnly(Side.CLIENT)
     protected IIcon flowingIcon;
 
-    public BlockFluidTechnetium() {
+    public BlockFluidActinium() {
 
-        super(BlockHandler.fluidTechnetium, Material.water);
-        this.setBlockName(Constants.MODID + ":fluidTechnetium");
+        super(BlockHandler.fluidActinium, Material.water);
+        this.setBlockName(Constants.MODID + ":fluidActinium");
         setCreativeTab(ItemReplication.tabItemReplication);
     }
 
@@ -34,8 +34,8 @@ public class BlockFluidTechnetium extends BlockFluidClassic {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(IIconRegister register) {
-        stillIcon = register.registerIcon(Constants.MODID + ":technetium_still");
-        flowingIcon = register.registerIcon(Constants.MODID + ":technetium_flowing");
+        stillIcon = register.registerIcon(Constants.MODID + ":actinium_still");
+        flowingIcon = register.registerIcon(Constants.MODID + ":actinium_flowing");
     }
 
     @Override

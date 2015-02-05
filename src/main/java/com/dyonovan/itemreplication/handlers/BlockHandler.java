@@ -1,7 +1,7 @@
 package com.dyonovan.itemreplication.handlers;
 
-import com.dyonovan.itemreplication.blocks.BlockFluidTechnetium;
-import com.dyonovan.itemreplication.blocks.oreTechnetium;
+import com.dyonovan.itemreplication.blocks.BlockFluidActinium;
+import com.dyonovan.itemreplication.blocks.OreActinium;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraftforge.fluids.Fluid;
@@ -9,20 +9,20 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 public class BlockHandler {
 
-    public static Fluid fluidTechnetium;
-    public static Block blockfluidTechnetium;
-    public static Block blockOreTechnetium;
+    public static Fluid fluidActinium;
+    public static Block blockfluidActinium;
+    public static Block blockOreActinium;
 
     public static void init() {
 
-        fluidTechnetium = new Fluid("fluidTechnetium");
-        FluidRegistry.registerFluid(fluidTechnetium);
-        blockfluidTechnetium = new BlockFluidTechnetium();
-        GameRegistry.registerBlock(blockfluidTechnetium, "fluidTechnetium");
-        fluidTechnetium.setUnlocalizedName(blockfluidTechnetium.getUnlocalizedName());
+        fluidActinium = new Fluid("fluidActinium").setViscosity(9000);
+        FluidRegistry.registerFluid(fluidActinium);
+        blockfluidActinium = new BlockFluidActinium();
+        GameRegistry.registerBlock(blockfluidActinium, "fluidActinium");
+        fluidActinium.setUnlocalizedName(blockfluidActinium.getUnlocalizedName());
 
-        blockOreTechnetium = new oreTechnetium();
-        GameRegistry.registerBlock(blockOreTechnetium, "oreTechnetium");
-        //blockOreTechnetium.setBlockTextureName("itemreplication:technetium");
+        blockOreActinium = new OreActinium();
+        GameRegistry.registerBlock(blockOreActinium, "oreActinium");
+        //blockOreActinium.setBlockTextureName("itemreplication:technetium");
     }
 }

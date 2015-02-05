@@ -1,6 +1,6 @@
 Goal - Mid to End Game Item Replication
 
-1 - Create OreBlock - Technetium
+1 - Create OreBlock - Actinium
 2 - World Gen OreBlock
 3 - Create Fluid - Liquid Technetium
 3 - Multiblock Structure - Blast Furnace - 3x3
