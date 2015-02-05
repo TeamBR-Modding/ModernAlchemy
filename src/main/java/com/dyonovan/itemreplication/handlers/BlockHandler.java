@@ -3,6 +3,8 @@ package com.dyonovan.itemreplication.handlers;
 import com.dyonovan.itemreplication.ItemReplication;
 import com.dyonovan.itemreplication.blocks.*;
 import com.dyonovan.itemreplication.blocks.*;
+import com.dyonovan.itemreplication.fluids.FluidActinium;
+import com.dyonovan.itemreplication.lib.Constants;
 import com.dyonovan.itemreplication.tileentity.BaseTile;
 import com.dyonovan.itemreplication.tileentity.TECompressor;
 import com.dyonovan.itemreplication.tileentity.TileBlastFurnaceCore;
@@ -20,11 +22,10 @@ public class BlockHandler {
 
     public static void init() {
         //Actinium Fluid Registration
-        fluidActinium = new Fluid("fluidActinium").setViscosity(9000);
+        fluidActinium = new FluidActinium();
         FluidRegistry.registerFluid(fluidActinium);
         blockfluidActinium = new BlockFluidActinium();
         GameRegistry.registerBlock(blockfluidActinium, "fluidActinium");
-        fluidActinium.setUnlocalizedName(blockfluidActinium.getUnlocalizedName());
 
         //Ore Actinium
         blockOreActinium = new BlockOreActinium();

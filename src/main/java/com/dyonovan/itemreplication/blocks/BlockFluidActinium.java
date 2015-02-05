@@ -36,6 +36,8 @@ public class BlockFluidActinium extends BlockFluidClassic {
     public void registerBlockIcons(IIconRegister register) {
         stillIcon = register.registerIcon(Constants.MODID + ":actinium_still");
         flowingIcon = register.registerIcon(Constants.MODID + ":actinium_flowing");
+
+        getFluid().setIcons(stillIcon, flowingIcon);
     }
 
     @Override
