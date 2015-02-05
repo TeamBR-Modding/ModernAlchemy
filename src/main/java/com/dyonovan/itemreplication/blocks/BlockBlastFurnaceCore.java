@@ -1,6 +1,7 @@
 package com.dyonovan.itemreplication.blocks;
 
 import com.dyonovan.itemreplication.ItemReplication;
+import com.dyonovan.itemreplication.handlers.GuiHandler;
 import com.dyonovan.itemreplication.lib.Constants;
 import com.dyonovan.itemreplication.tileentity.TileBlastFurnaceCore;
 import cpw.mods.fml.relauncher.Side;
@@ -51,7 +52,7 @@ public class BlockBlastFurnaceCore extends BlockContainer {
         {
             TileBlastFurnaceCore core = (TileBlastFurnaceCore)par1World.getTileEntity(par2, par3, par4);
             if(core != null) {
-                par5EntityPlayer.openGui(ItemReplication.instance, 0, par1World, par2, par3, par4);
+                par5EntityPlayer.openGui(ItemReplication.instance, GuiHandler.BLAST_FURNACE_GUI_ID, par1World, par2, par3, par4);
             }
             return true;
         }

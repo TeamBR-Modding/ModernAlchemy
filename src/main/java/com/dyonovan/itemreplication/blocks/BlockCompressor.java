@@ -20,7 +20,7 @@ public class BlockCompressor extends BlockContainer {
     public boolean isRunning = false;
 
     @SideOnly(Side.CLIENT)
-    private IIcon front, top;
+    private IIcon front, frontActive;
 
     public BlockCompressor(boolean isRunning) {
         super(Material.anvil);
@@ -33,25 +33,57 @@ public class BlockCompressor extends BlockContainer {
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconregister) {
         this.blockIcon = iconregister.registerIcon(Constants.MODID + ":compressor_side");
-        this.front = iconregister.registerIcon(isRunning ? Constants.MODID + ":compressor_front_on" : Constants.MODID + ":compressor_front_off");
-        this.top = iconregister.registerIcon(Constants.MODID + ":compressor_top");
+        this.front = iconregister.registerIcon(Constants.MODID + ":compressor_front_off");
+        this.frontActive = iconregister.registerIcon(Constants.MODID + ":compressor_front_on");
     }
 
     public IIcon getIcon(int side, int meta) {
-        if (side == 1) return this.top;
-        else if (side == 0) return this.top;
-        else if (meta == 2 && side == 2) return this.front;
-        else if (meta == 3 && side == 5) return this.front;
-        else if (meta == 0 && side == 3) return this.front;
-        else if (meta == 1 && side == 4) return this.front;
-        else return this.blockIcon;
+        boolean active = false;
+        if(meta > 10) {
+            meta -= 10;
+            active = true;
+        }
+        return side == meta ? (active ? frontActive : front) : blockIcon;
+    }
 
+    /**
+     * Toggle state of block
+     * @param world
+     * @param x
+     * @param y
+     * @param z
+     * @return true if is active after toggle
+     */
+    public boolean toggleIsActive(World world, int x, int y, int z) {
+        int currentMeta = world.getBlockMetadata(x, y, z);
+        if(currentMeta < 10) {
+            world.setBlockMetadataWithNotify(x, y, z, currentMeta += 10, 2);
+        }
+        else {
+            world.setBlockMetadataWithNotify(x, y, z, currentMeta -= 10, 2);
+        }
+        isRunning = !(currentMeta < 10);
+        return isRunning;
     }
 
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemstack) {
+        int l = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 
-        int whichDirectionFacing = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 2.5D) & 3;
-        world.setBlockMetadataWithNotify(x, y, z, whichDirectionFacing, 2);
+        if (l == 0) {
+            world.setBlockMetadataWithNotify(x, y, z, 2, 2);
+        }
+
+        if (l == 1) {
+            world.setBlockMetadataWithNotify(x, y, z, 5, 2);
+        }
+
+        if (l == 2) {
+            world.setBlockMetadataWithNotify(x, y, z, 3, 2);
+        }
+
+        if (l == 3) {
+            world.setBlockMetadataWithNotify(x, y, z, 4, 2);
+        }
     }
 
     @Override

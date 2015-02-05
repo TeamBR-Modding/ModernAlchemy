@@ -42,7 +42,7 @@ public class BlockHandler {
         GameRegistry.registerBlock(blockBlastFurnaceDummy, "blastFurnaceDummy");
         GameRegistry.registerTileEntity(BaseTile.class, "baseTile");
 
-        //BlastFurnaceDummy
+        //BlastFurnaceCore
         blockBlastFurnaceCore = new BlockBlastFurnaceCore();
         GameRegistry.registerBlock(blockBlastFurnaceCore, "blastFurnaceCore");
         GameRegistry.registerTileEntity(TileBlastFurnaceCore.class, "blastFurnaceCore");
