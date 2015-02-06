@@ -25,7 +25,6 @@ public class BlockCompressor extends BlockContainer {
     public BlockCompressor() {
         super(Material.anvil);
         this.setBlockName(Constants.MODID + ":compressor");
-        this.setBlockUnbreakable();
         this.setCreativeTab(ItemReplication.tabItemReplication);
     }
 

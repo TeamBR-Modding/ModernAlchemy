@@ -45,6 +45,7 @@ public class ItemReplication {
         ConfigHandler.init(new Configuration(event.getSuggestedConfigurationFile()));
         BlockHandler.init();
         WorldGeneratorHandler.init();
+        proxy.registerRenderer();
     }
 
     @EventHandler

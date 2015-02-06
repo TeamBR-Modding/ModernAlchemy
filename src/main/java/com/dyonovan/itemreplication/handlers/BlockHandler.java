@@ -15,7 +15,7 @@ public class BlockHandler {
 
     public static Fluid fluidActinium, fluidCompressedAir;
     public static Block blockBlastFurnaceDummy, blockBlastFurnaceCore;
-    public static Block blockOreActinium, blockfluidActinium, blockCompressor, blockFluidAir;
+    public static Block blockOreActinium, blockfluidActinium, blockCompressor, blockFluidAir, blockTeslaBase;
 
     public static void init() {
         //Actinium Fluid Registration
@@ -49,5 +49,8 @@ public class BlockHandler {
         blockFluidAir = new BlockFluidCompressedAir();
         GameRegistry.registerBlock(blockFluidAir, "blockFluidAir");
 
+        //Tesla Base
+        blockTeslaBase = new BlockTeslaBase();
+        GameRegistry.registerBlock(blockTeslaBase, "blockTeslaBase");
     }
 }
