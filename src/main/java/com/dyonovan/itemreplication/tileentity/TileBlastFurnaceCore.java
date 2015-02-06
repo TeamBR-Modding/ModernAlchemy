@@ -15,13 +15,15 @@ public class TileBlastFurnaceCore extends BaseCore implements IFluidHandler {
     public TileBlastFurnaceCore() {
         outputTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 10);
         airTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 10);
+        outputTank.setFluid(new FluidStack(BlockHandler.fluidActinium, FluidContainerRegistry.BUCKET_VOLUME * 10));
+        airTank.setFluid(new FluidStack(BlockHandler.fluidCompressedAir, FluidContainerRegistry.BUCKET_VOLUME * 10));
     }
 
     @Override
     public void updateEntity() {
         super.updateEntity();
     }
-    
+
     @Override
     public boolean isWellFormed() {
         for(int i = -1; i <= 1; i++) {
