@@ -14,7 +14,7 @@ public class TileTeslaCoil extends BaseTile implements IEnergyHandler, ITeslaHan
     private TeslaBank energyTesla = new TeslaBank(1000);
 
     public TileTeslaCoil() {
-
+        super();
     }
 
     @Override
@@ -102,7 +102,6 @@ public class TileTeslaCoil extends BaseTile implements IEnergyHandler, ITeslaHan
         if (worldObj.isRemote) return;
 
         if (energyRF.getEnergyStored() > 0 && energyTesla.getEnergyLevel()  < energyTesla.getMaxCapacity()) {
-
             int actualRF = Math.min(ConfigHandler.tickTesla * ConfigHandler.tickRF, energyRF.getEnergyStored());
             int actualTesla = Math.min(ConfigHandler.tickTesla, energyTesla.getMaxCapacity() - energyTesla.getEnergyLevel());
 
@@ -116,6 +115,7 @@ public class TileTeslaCoil extends BaseTile implements IEnergyHandler, ITeslaHan
                 removeEnergy(actualRF);
                 energyTesla.addEnergy(actualTesla);
             }
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
     }
 }
