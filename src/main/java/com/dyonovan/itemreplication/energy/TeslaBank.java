@@ -52,6 +52,10 @@ public class TeslaBank {
             currentLevel = maxCapacity;
     }
 
+    public boolean canAcceptEnergy() {
+        return currentLevel < maxCapacity;
+    }
+
     public void writeToNBT(NBTTagCompound tag) {
         tag.setInteger("currentTeslaLevel", currentLevel);
         tag.setInteger("maxTeslaCapacity", maxCapacity);
