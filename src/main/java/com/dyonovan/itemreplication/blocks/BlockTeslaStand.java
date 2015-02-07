@@ -15,7 +15,7 @@ public class BlockTeslaStand extends BlockContainer {
         this.setBlockName(Constants.MODID + ":blockTeslaStand");
         this.setHardness(1.5F);
         this.setCreativeTab(ItemReplication.tabItemReplication);
-        this.setBlockBounds(0.36875F, 0F, 0.36875F, 0.65625F, 1F, 0.65625F);
+        this.setBlockBounds(0.34375F, 0F, 0.34375F, 0.65625F, 1F, 0.65625F);
     }
 
     @Override
