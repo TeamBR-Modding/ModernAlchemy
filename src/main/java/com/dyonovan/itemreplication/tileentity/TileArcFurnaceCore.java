@@ -1,6 +1,8 @@
 package com.dyonovan.itemreplication.tileentity;
 
 import com.dyonovan.itemreplication.blocks.BlockDummy;
+import com.dyonovan.itemreplication.energy.IEnergyHandler;
+import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.helpers.Location;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,23 +14,23 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
-public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, IInventory {
+public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, IEnergyHandler, IInventory {
 
     private FluidTank outputTank;
     private FluidTank airTank;
 
+    private TeslaBank energyTank;
+
     private ItemStack inventory[];
     private static final int INPUT_SLOT = 0;
     private static final int CATALYST_SLOT = 1;
-    private static final int OUTPUT_SLOT = 2;
 
     public TileArcFurnaceCore() {
         outputTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 10);
         airTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 10);
-        outputTank.setFluid(new FluidStack(BlockHandler.fluidActinium, FluidContainerRegistry.BUCKET_VOLUME * 10));
-        airTank.setFluid(new FluidStack(BlockHandler.fluidCompressedAir, FluidContainerRegistry.BUCKET_VOLUME * 10));
+        energyTank = new TeslaBank(0, 1000);
 
-        inventory = new ItemStack[3];
+        inventory = new ItemStack[2];
     }
 
     @Override
@@ -96,7 +98,14 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, IInve
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         int amount = 0;
         if(canFill(from, resource.getFluid())) {
-            amount = outputTank.fill(resource, doFill);
+            switch(from) {
+            case NORTH :
+                amount = airTank.fill(resource, doFill);
+                break;
+            case SOUTH :
+                amount = outputTank.fill(resource, doFill);
+                break;
+            }
         }
         return amount;
     }
@@ -108,17 +117,23 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, IInve
 
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-        return outputTank.drain(maxDrain, doDrain);
+        switch(from) {
+        case NORTH :
+            return airTank.drain(maxDrain, doDrain);
+        case SOUTH :
+            return outputTank.drain(maxDrain, doDrain);
+        }
+        return null;
     }
 
     @Override
     public boolean canFill(ForgeDirection from, Fluid fluid) {
-        return fluid == BlockHandler.fluidActinium;
+        return fluid == BlockHandler.fluidCompressedAir;
     }
 
     @Override
     public boolean canDrain(ForgeDirection from, Fluid fluid) {
-        return false;
+        return fluid == BlockHandler.fluidActinium;
     }
 
     @Override
@@ -129,6 +144,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, IInve
     @Override
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);
+        energyTank.readFromNBT(tagCompound);
         if(tagCompound.getBoolean("hasOutputFluid")) {
             outputTank.setFluid(FluidRegistry.getFluidStack(tagCompound.getString("outputFluid"), tagCompound.getInteger("outputFluidAmount")));
         }
@@ -145,6 +161,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, IInve
     @Override
     public void writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
+        energyTank.writeToNBT(tagCompound);
         tagCompound.setBoolean("hasOutputFluid", outputTank.getFluid() != null);
         tagCompound.setBoolean("hasAir", airTank.getFluid() != null);
         if(outputTank.getFluid() != null) {
@@ -241,5 +258,25 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, IInve
 
         }
         return false;
+    }
+
+    @Override
+    public void addEnergy(int maxAmount) {
+        energyTank.addEnergy(maxAmount);
+    }
+
+    @Override
+    public void drainEnergy(int maxAmount) {
+        energyTank.drainEnergy(maxAmount);
+    }
+
+    @Override
+    public int getEnergyLevel() {
+        return energyTank.getEnergyLevel();
+    }
+
+    @Override
+    public TeslaBank getEnergyBank() {
+        return energyTank;
     }
 }

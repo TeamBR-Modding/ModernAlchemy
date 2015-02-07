@@ -21,11 +21,20 @@ public class TeslaBank {
     }
 
     public void setEnergyLevel(int level) {
-        currentLevel = level;
+        if(level <= maxCapacity)
+            currentLevel = level;
     }
 
     public int getEnergyLevel() {
         return currentLevel;
+    }
+
+    public void setMaxCapacity(int max) {
+        maxCapacity = max;
+    }
+
+    public int getMaxCapacity() {
+        return maxCapacity;
     }
 
     public void drainEnergy(int amount) {
@@ -41,14 +50,6 @@ public class TeslaBank {
             currentLevel += amount;
         else
             currentLevel = maxCapacity;
-    }
-
-    public void setMaxCapacity(int max) {
-        maxCapacity = max;
-    }
-
-    public int getMaxCapacity() {
-        return maxCapacity;
     }
 
     public void writeToNBT(NBTTagCompound tag) {
