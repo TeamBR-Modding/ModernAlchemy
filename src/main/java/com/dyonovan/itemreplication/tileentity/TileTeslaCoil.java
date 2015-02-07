@@ -9,7 +9,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileTeslaCoil extends BaseTile implements IEnergyHandler, ITeslaHandler {
 
-    protected EnergyStorage energy = new EnergyStorage(10000, 1000, 0);
+    protected EnergyStorage energyRF = new EnergyStorage(10000, 1000, 0);
+    private TeslaBank energyTesla = new TeslaBank(0, 1000);
 
     public TileTeslaCoil() {
 
@@ -17,17 +18,17 @@ public class TileTeslaCoil extends BaseTile implements IEnergyHandler, ITeslaHan
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
-        energy.readFromNBT(tag);
+        energyRF.readFromNBT(tag);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
-        energy.writeToNBT(tag);
+        energyRF.writeToNBT(tag);
     }
 
     @Override
     public int receiveEnergy(ForgeDirection side, int maxReceive, boolean simulate) {
-        return energy.receiveEnergy(maxReceive, simulate);
+        return energyRF.receiveEnergy(maxReceive, simulate);
     }
 
     @Override
@@ -37,12 +38,12 @@ public class TileTeslaCoil extends BaseTile implements IEnergyHandler, ITeslaHan
 
     @Override
     public int getEnergyStored(ForgeDirection forgeDirection) {
-        return energy.getEnergyStored();
+        return energyRF.getEnergyStored();
     }
 
     @Override
     public int getMaxEnergyStored(ForgeDirection forgeDirection) {
-        return energy.getMaxEnergyStored();
+        return energyRF.getMaxEnergyStored();
     }
 
     @Override
@@ -50,27 +51,23 @@ public class TileTeslaCoil extends BaseTile implements IEnergyHandler, ITeslaHan
         return false;
     }
 
-    // Tesla
     @Override
     public void addEnergy(int maxAmount) {
-
+        energyTesla.addEnergy(maxAmount);
     }
 
-    // Tesla
     @Override
     public void drainEnergy(int maxAmount) {
-
+        energyTesla.drainEnergy(maxAmount);
     }
 
-    // Tesla
     @Override
     public int getEnergyLevel() {
-        return 0;
+        return energyTesla.getEnergyLevel();
     }
 
-    // Tesla
     @Override
     public TeslaBank getEnergyBank() {
-        return null;
+        return energyTesla;
     }
 }
