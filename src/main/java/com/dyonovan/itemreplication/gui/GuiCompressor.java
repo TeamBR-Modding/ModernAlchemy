@@ -28,8 +28,8 @@ public class GuiCompressor extends GuiContainer {
 
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 
-        final String title1 = "Air";
-        final String title2 = "Compressor";
+        final String title1 = "Electric";
+        final String title2 = "Bellows";
         fontRendererObj.drawString(title1, (108 - fontRendererObj.getStringWidth(title1)) / 2, 4, 4210752);
         fontRendererObj.drawString(title2, (108 - fontRendererObj.getStringWidth(title2)) / 2, 14, 4210752);
     }
@@ -49,15 +49,15 @@ public class GuiCompressor extends GuiContainer {
 
         Tessellator tessTesla = Tessellator.instance;
         tessTesla.startDrawingQuads();
-        tessTesla.addVertexWithUV(x + 81, y + 78, 0, 0.6875F, 0.35546875F);
-        tessTesla.addVertexWithUV(x + 97, y + 78, 0, 0.74609375F, 0.35546875F);
-        tessTesla.addVertexWithUV(x + 97, y + 78 - heightTesla, 0, 0.74609375F, (float) (91 - heightTesla) / 256);
-        tessTesla.addVertexWithUV( x + 81, y + 78 - heightTesla, 0, 0.6875F, (float) (91 - heightTesla) / 256);
+        tessTesla.addVertexWithUV(x + 12, y + 78, 0, 0.6875F, 0.35546875F);
+        tessTesla.addVertexWithUV(x + 28, y + 78, 0, 0.74609375F, 0.35546875F);
+        tessTesla.addVertexWithUV(x + 28, y + 78 - heightTesla, 0, 0.74609375F, (float) (91 - heightTesla) / 256);
+        tessTesla.addVertexWithUV( x + 12, y + 78 - heightTesla, 0, 0.6875F, (float) (91 - heightTesla) / 256);
         tessTesla.draw();
 
         //Render Fluid Tank
         FluidTank tank = tile.tank;
-        GuiHelper.renderFluid(tank, x + 106, y + 78, 52);
+        GuiHelper.renderFluid(tank, x + 81, y + 78, 52);
     }
 
     @Override

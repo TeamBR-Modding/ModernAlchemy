@@ -1,0 +1,8 @@
+tile.itemreplication:blockTeslaCoil.name=Tesla Coil
+tile.itemreplication:blockTeslaStand.name=Tesla Coil Stand
+tile.itemreplication:fluidCompressedAir.name=Compressed Air
+tile.itemreplication:fluidActinium.name=Molten Actinium
+tile.itemreplication:blockOreActinium.name=Actinium Ore
+tile.itemreplication:arcFurnaceDummy.name=Arc Furnace Casing
+tile.itemreplication:blockArcFurnaceCore.name=Arc Furnace Processor
+tile.itemreplication:blockCompressor.name=Electric Bellows

@@ -69,7 +69,7 @@ public class TileTeslaCoil extends BaseTile implements IEnergyHandler, ITeslaHan
 
     @Override
     public boolean canConnectEnergy(ForgeDirection side) {
-        return side == ForgeDirection.DOWN;
+        return side == ForgeDirection.DOWN; //TODO Why BC Pipes dont update on load
     }
 
     @Override

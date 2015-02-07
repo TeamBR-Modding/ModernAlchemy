@@ -1,7 +1,5 @@
 package com.dyonovan.itemreplication.tileentity;
 
-import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.IEnergyHandler;
 import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
@@ -12,7 +10,7 @@ import net.minecraftforge.fluids.*;
 public class TileCompressor extends BaseCore implements IFluidHandler, ITeslaHandler {
 
     public static FluidTank tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME);
-    private TeslaBank energyTesla = new TeslaBank(1000, 1000);
+    private TeslaBank energyTesla = new TeslaBank(1000);
 
     public TileCompressor() {
 

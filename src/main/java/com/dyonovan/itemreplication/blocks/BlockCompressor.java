@@ -1,14 +1,17 @@
 package com.dyonovan.itemreplication.blocks;
 
 import com.dyonovan.itemreplication.ItemReplication;
+import com.dyonovan.itemreplication.handlers.GuiHandler;
 import com.dyonovan.itemreplication.lib.Constants;
 import com.dyonovan.itemreplication.tileentity.TileCompressor;
+import com.dyonovan.itemreplication.tileentity.TileTeslaCoil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -24,7 +27,7 @@ public class BlockCompressor extends BlockContainer {
 
     public BlockCompressor() {
         super(Material.anvil);
-        this.setBlockName(Constants.MODID + ":compressor");
+        this.setBlockName(Constants.MODID + ":blockCompressor");
         this.setCreativeTab(ItemReplication.tabItemReplication);
     }
 
@@ -88,6 +91,23 @@ public class BlockCompressor extends BlockContainer {
     @Override
     public TileEntity createNewTileEntity(World world, int i) {
         return new TileCompressor();
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9)
+    {
+        if (world.isRemote)
+        {
+            return true;
+        }
+        else
+        {
+            TileCompressor tile = (TileCompressor)world.getTileEntity(x, y, z);
+            if(tile != null) {
+                player.openGui(ItemReplication.instance, GuiHandler.COMPRESSOR_GUI_ID, world, x, y, z);
+            }
+            return true;
+        }
     }
 }
 
