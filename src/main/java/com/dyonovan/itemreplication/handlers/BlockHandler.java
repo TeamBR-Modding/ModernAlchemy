@@ -14,7 +14,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 public class BlockHandler {
 
     public static Fluid fluidActinium, fluidCompressedAir;
-    public static Block blockArcFurnaceDummy, blockArcFurnaceCore;
+    public static Block blockArcFurnaceDummy, blockArcFurnaceCore, blockBlank;
     public static Block blockOreActinium, blockfluidActinium, blockCompressor, blockFluidAir, blockTeslaBase;
 
     public static void init() {
@@ -53,5 +53,9 @@ public class BlockHandler {
         blockTeslaBase = new BlockTeslaBase();
         GameRegistry.registerBlock(blockTeslaBase, "blockTeslaBase");
         GameRegistry.registerTileEntity(TECompressor.class, "blockTeslaBase");
+
+        //Blank Block
+        blockBlank = new BlockBlank();
+        GameRegistry.registerBlock(blockBlank, "blockBlank");
     }
 }
