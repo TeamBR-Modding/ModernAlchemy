@@ -40,8 +40,8 @@ public class TileTeslaCoil extends BaseTile implements IEnergyHandler, ITeslaHan
     }
 
     @Override
-    public int extractEnergy(ForgeDirection forgeDirection, int i, boolean b) {
-        return 0;
+    public int extractEnergy(ForgeDirection forgeDirection, int maxReceive, boolean simulate) {
+        return energyRF.extractEnergy(maxReceive, simulate);
     }
 
     @Override
@@ -89,5 +89,31 @@ public class TileTeslaCoil extends BaseTile implements IEnergyHandler, ITeslaHan
 
     public void setTeslaEnergyStored(int i) {
         energyTesla.setEnergyLevel(i);
+    }
+
+    @Override
+    public void updateEntity() {
+        super.updateEntity();
+        if (worldObj.isRemote) return;
+
+        int MAX_T_TICK = 10;
+        int RF_PER_T = 10;
+
+        if (energyRF.getEnergyStored() > 0 && energyTesla.getEnergyLevel()  < energyTesla.getMaxCapacity()) {
+
+            int actualRF = Math.min(MAX_T_TICK * RF_PER_T, energyRF.getEnergyStored());
+            int actualTesla = Math.min(MAX_T_TICK, energyTesla.getMaxCapacity() - energyTesla.getEnergyLevel());
+            int actual = Math.min(actualRF, actualTesla);
+
+            if (actualTesla * RF_PER_T < actualRF) {
+                energyRF.extractEnergy(actualTesla * 10, false);
+                energyTesla.addEnergy(actualTesla);
+            } else if (actualTesla * RF_PER_T > actualRF) {
+                energyRF.extractEnergy(actualRF, false);
+                energyTesla.addEnergy(actualRF / RF_PER_T);
+            }
+            energyRF.extractEnergy(actual, false);
+            energyTesla.addEnergy(actual);
+        }
     }
 }

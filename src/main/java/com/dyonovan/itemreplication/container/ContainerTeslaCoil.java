@@ -56,7 +56,7 @@ public class ContainerTeslaCoil extends Container {
                 this.tile.setRFEnergyStored(j);
                 break;
             case 1:
-                this.tile.setTeslaEnergyStored(i);
+                this.tile.setTeslaEnergyStored(j);
                 break;
         }
     }
