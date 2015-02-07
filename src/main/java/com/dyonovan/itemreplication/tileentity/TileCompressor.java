@@ -7,11 +7,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
-public class TECompressor extends BaseTile implements IFluidHandler {
+public class TileCompressor extends BaseTile implements IFluidHandler {
 
     protected FluidTank tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME);
 
-    public TECompressor() {
+    public TileCompressor() {
 
     }
 

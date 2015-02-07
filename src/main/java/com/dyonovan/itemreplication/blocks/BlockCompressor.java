@@ -2,7 +2,7 @@ package com.dyonovan.itemreplication.blocks;
 
 import com.dyonovan.itemreplication.ItemReplication;
 import com.dyonovan.itemreplication.lib.Constants;
-import com.dyonovan.itemreplication.tileentity.TECompressor;
+import com.dyonovan.itemreplication.tileentity.TileCompressor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;
@@ -87,7 +87,7 @@ public class BlockCompressor extends BlockContainer {
 
     @Override
     public TileEntity createNewTileEntity(World world, int i) {
-        return new TECompressor();
+        return new TileCompressor();
     }
 }
 

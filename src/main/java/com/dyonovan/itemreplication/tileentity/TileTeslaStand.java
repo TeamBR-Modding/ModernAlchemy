@@ -3,35 +3,35 @@ package com.dyonovan.itemreplication.tileentity;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TETeslaBase extends BaseTile implements IEnergyHandler {
+public class TileTeslaStand extends BaseTile implements IEnergyHandler {
 
-    protected EnergyStorage energy = new EnergyStorage(10000, 2500, 0);
+    protected EnergyStorage energy = new EnergyStorage(1000, 1000, 1000);
 
-    public TETeslaBase() {
+    public TileTeslaStand() {
 
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
-        //super.readFromNBT(tag);
         energy.readFromNBT(tag);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
-        //super.writeToNBT(tag);
         energy.writeToNBT(tag);
     }
+
     @Override
-    public int receiveEnergy(ForgeDirection forgeDirection, int maxReceive, boolean simulate) {
+    public int receiveEnergy(ForgeDirection side, int maxReceive, boolean simulate) {
         return energy.receiveEnergy(maxReceive, simulate);
     }
 
     @Override
-    public int extractEnergy(ForgeDirection forgeDirection, int i, boolean b) {
-        return 0;
+    public int extractEnergy(ForgeDirection side, int maxReceive, boolean simulate) {
+        return energy.extractEnergy(maxReceive, simulate);
     }
 
     @Override
@@ -47,5 +47,17 @@ public class TETeslaBase extends BaseTile implements IEnergyHandler {
     @Override
     public boolean canConnectEnergy(ForgeDirection side) {
         return side == ForgeDirection.DOWN;
+    }
+
+    @Override
+    public void updateEntity() {
+        if ((energy.getEnergyStored() > 0)) {
+
+                TileEntity tile = worldObj.getTileEntity(xCoord, yCoord + 1, zCoord);
+                if (tile instanceof IEnergyHandler) {
+                    energy.extractEnergy(((IEnergyHandler) tile).receiveEnergy(ForgeDirection.DOWN, energy.extractEnergy(energy.getMaxExtract(), true), false), false);
+                }
+
+        }
     }
 }

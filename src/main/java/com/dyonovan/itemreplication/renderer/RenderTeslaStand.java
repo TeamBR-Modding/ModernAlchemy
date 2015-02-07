@@ -1,20 +1,20 @@
 package com.dyonovan.itemreplication.renderer;
 
 import com.dyonovan.itemreplication.lib.Constants;
-import com.dyonovan.itemreplication.model.ModelTeslaBase;
+import com.dyonovan.itemreplication.model.ModelTeslaStand;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-public class RenderTeslaBase extends TileEntitySpecialRenderer {
+public class RenderTeslaStand extends TileEntitySpecialRenderer {
 
-    public static final ResourceLocation texture = new ResourceLocation(Constants.MODID + ":textures/models/tesla_base.png");
+    public static final ResourceLocation texture = new ResourceLocation(Constants.MODID + ":textures/models/tesla_stand.png");
 
-    private ModelTeslaBase model;
+    private ModelTeslaStand model;
 
-    public RenderTeslaBase() {
-        this.model = new ModelTeslaBase();
+    public RenderTeslaStand() {
+        this.model = new ModelTeslaStand();
     }
 
     @Override
