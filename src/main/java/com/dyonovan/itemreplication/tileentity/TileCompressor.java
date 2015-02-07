@@ -5,7 +5,6 @@ import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
-import com.dyonovan.itemreplication.lib.Constants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -14,7 +13,7 @@ import net.minecraftforge.fluids.*;
 import java.awt.*;
 import java.util.List;
 
-public class TileCompressor extends BaseCore implements IFluidHandler, ITeslaHandler {
+public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHandler {
 
     public static FluidTank tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME);
     private TeslaBank energyTesla = new TeslaBank(1000);
@@ -70,21 +69,6 @@ public class TileCompressor extends BaseCore implements IFluidHandler, ITeslaHan
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
         return new FluidTankInfo[] {tank.getInfo()};
-    }
-
-    @Override
-    public boolean isWellFormed() {
-        return false;
-    }
-
-    @Override
-    public void buildStructure() {
-
-    }
-
-    @Override
-    public void deconstructStructure() {
-
     }
 
     @Override

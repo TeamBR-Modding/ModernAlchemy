@@ -19,8 +19,8 @@ public class ConfigHandler {
         actiniumMinLevel      = config.get(Constants.CONFIG_ORE_GENERATION, "Actinium Min Level", 5).getInt();
         actiniumMaxLevel      = config.get(Constants.CONFIG_ORE_GENERATION, "Actinium Max Level", 64).getInt();
 
-        tickTesla             = config.get(Constants.CONFIG_TESLA, "# of Tesla per Tick", 10).getInt();
-        tickRF                = config.get(Constants.CONFIG_TESLA, "# of RF's per Tick per Tesla", 1).getInt();
+        tickTesla             = config.get(Constants.CONFIG_TESLA, "# of Tesla per Tick", 1).getInt();
+        tickRF                = config.get(Constants.CONFIG_TESLA, "# of RF's per Tick per Tesla", 10).getInt();
         searchRange           = config.get(Constants.CONFIG_TESLA, "How many blocks (cubed) to search for coils", 10).getInt();
 
         config.save();
