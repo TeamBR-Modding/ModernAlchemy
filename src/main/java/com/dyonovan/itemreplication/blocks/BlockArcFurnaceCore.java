@@ -16,6 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import java.awt.*;
 import java.util.Random;
 
 public class BlockArcFurnaceCore extends BlockContainer {
@@ -51,7 +52,7 @@ public class BlockArcFurnaceCore extends BlockContainer {
     public void randomDisplayTick(World world, int x, int y, int z, Random rand)
     {
         if(!spawned) {
-            Minecraft.getMinecraft().effectRenderer.addEffect(new LightningBolt(world, x, y, z));
+            Minecraft.getMinecraft().effectRenderer.addEffect(new LightningBolt(world, x, y, z, x + 5, y + 10, z + 10, 500, new Color(255, 255, 255, 255)));
             spawned = true;
         }
     }

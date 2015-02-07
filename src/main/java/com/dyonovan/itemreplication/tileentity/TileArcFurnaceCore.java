@@ -11,6 +11,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
@@ -76,10 +77,13 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
                 for (int k = -1; k <= 1; k++) {
                     if (i == 0 && j == 0 && k == 0)
                         continue;
-                    TileDummy dummy = (TileDummy)worldObj.getTileEntity(xCoord + i, yCoord + j, zCoord + k);
-                    if(dummy != null) {
-                        worldObj.setBlockMetadataWithNotify(xCoord + i, yCoord + j, zCoord + k, 0, 2);
-                        dummy.setCoreLocation(new Location(-100, -100, -100));
+                    TileEntity tile = worldObj.getTileEntity(xCoord + i, yCoord + j, zCoord + k);
+                    if(tile != null) {
+                        if(tile instanceof TileDummy) {
+                            TileDummy dummy = (TileDummy)worldObj.getTileEntity(xCoord + i, yCoord + j, zCoord + k);
+                            worldObj.setBlockMetadataWithNotify(xCoord + i, yCoord + j, zCoord + k, 0, 2);
+                            dummy.setCoreLocation(new Location(-100, -100, -100));
+                        }
                     }
                 }
             }
