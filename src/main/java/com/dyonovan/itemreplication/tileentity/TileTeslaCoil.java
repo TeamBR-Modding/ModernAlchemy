@@ -10,7 +10,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class TileTeslaCoil extends BaseTile implements IEnergyHandler, ITeslaHandler {
 
     protected EnergyStorage energyRF = new EnergyStorage(10000, 1000, 0);
-    private TeslaBank energyTesla = new TeslaBank(0, 1000);
+    private TeslaBank energyTesla = new TeslaBank(1000);
 
     public TileTeslaCoil() {
 
@@ -42,6 +42,10 @@ public class TileTeslaCoil extends BaseTile implements IEnergyHandler, ITeslaHan
     @Override
     public int extractEnergy(ForgeDirection forgeDirection, int maxReceive, boolean simulate) {
         return energyRF.extractEnergy(maxReceive, simulate);
+    }
+
+    public void removeEnergy(int amount) {
+       energyRF.setEnergyStored(energyRF.getEnergyStored() - amount);
     }
 
     @Override
@@ -96,6 +100,7 @@ public class TileTeslaCoil extends BaseTile implements IEnergyHandler, ITeslaHan
         super.updateEntity();
         if (worldObj.isRemote) return;
 
+        //TODO add to config
         int MAX_T_TICK = 10;
         int RF_PER_T = 10;
 
@@ -103,17 +108,17 @@ public class TileTeslaCoil extends BaseTile implements IEnergyHandler, ITeslaHan
 
             int actualRF = Math.min(MAX_T_TICK * RF_PER_T, energyRF.getEnergyStored());
             int actualTesla = Math.min(MAX_T_TICK, energyTesla.getMaxCapacity() - energyTesla.getEnergyLevel());
-            int actual = Math.min(actualRF, actualTesla);
 
             if (actualTesla * RF_PER_T < actualRF) {
-                energyRF.extractEnergy(actualTesla * 10, false);
+                removeEnergy(actualTesla * 10);
                 energyTesla.addEnergy(actualTesla);
-            } else if (actualTesla * RF_PER_T > actualRF) {
-                energyRF.extractEnergy(actualRF, false);
+            } else if (actualTesla * RF_PER_T > actualRF && actualRF > 100) {
+                removeEnergy(actualRF);
                 energyTesla.addEnergy(actualRF / RF_PER_T);
+            } else if (actualTesla * RF_PER_T == actualRF) {
+                removeEnergy(actualRF);
+                energyTesla.addEnergy(actualTesla);
             }
-            energyRF.extractEnergy(actual, false);
-            energyTesla.addEnergy(actual);
         }
     }
 }
