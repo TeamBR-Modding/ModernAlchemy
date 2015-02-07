@@ -18,12 +18,16 @@ public class TileTeslaCoil extends BaseTile implements IEnergyHandler, ITeslaHan
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
         energyRF.readFromNBT(tag);
+        energyTesla.readFromNBT(tag);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
         energyRF.writeToNBT(tag);
+        energyTesla.writeToNBT(tag);
     }
 
     @Override
@@ -41,14 +45,22 @@ public class TileTeslaCoil extends BaseTile implements IEnergyHandler, ITeslaHan
         return energyRF.getEnergyStored();
     }
 
+    public int getRFEnergyStored() {
+        return energyRF.getEnergyStored();
+    }
+
     @Override
     public int getMaxEnergyStored(ForgeDirection forgeDirection) {
         return energyRF.getMaxEnergyStored();
     }
 
+    public int getRFMaxEnergyStored() {
+        return energyRF.getMaxEnergyStored();
+    }
+
     @Override
-    public boolean canConnectEnergy(ForgeDirection forgeDirection) {
-        return false;
+    public boolean canConnectEnergy(ForgeDirection side) {
+        return side == ForgeDirection.DOWN;
     }
 
     @Override

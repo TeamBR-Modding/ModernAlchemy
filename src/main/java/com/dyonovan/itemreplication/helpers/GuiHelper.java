@@ -86,4 +86,19 @@ public class GuiHelper {
             return "\u00a7" + Integer.toHexString(number);
         }
     }
+
+    /**
+     * Test if location is in bounds
+     * @param x xLocation
+     * @param y yLocation
+     * @param a Rectangle point a
+     * @param b Rectangle point b
+     * @param c Rectangle point c
+     * @param d Rectangle point d
+     * @return
+     */
+    public static boolean isInBounds(int x, int y, int a, int b, int c, int d)
+    {
+        return (x >= a && x <= c && y >= b && y <=d);
+    }
 }

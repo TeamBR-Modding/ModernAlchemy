@@ -70,39 +70,24 @@ public class GuiArcFurnace extends GuiContainer {
         super.drawScreen(mouseX, mouseY, par3);
         int x = (this.width - this.xSize) / 2;
         int y = (this.height - this.ySize) / 2;
-        if(isInBounds(mouseX, mouseY, x + 8, y + 26, x + 23, y + 77)) {
+        if(GuiHelper.isInBounds(mouseX, mouseY, x + 8, y + 26, x + 23, y + 77)) {
             List<String> toolTip = new ArrayList<String>();
             toolTip.add(GuiHelper.GuiColor.YELLOW + "Energy");
             toolTip.add(core.getEnergyBank().getEnergyLevel() + "/" + core.getEnergyBank().getMaxCapacity() + GuiHelper.GuiColor.ORANGE + "T");
             renderToolTip(mouseX, mouseY, toolTip);
         }
-        if(isInBounds(mouseX, mouseY, x + 37, y + 26, x + 52, y + 77)) {
+        if(GuiHelper.isInBounds(mouseX, mouseY, x + 37, y + 26, x + 52, y + 77)) {
             List<String> toolTip = new ArrayList<String>();
             toolTip.add(GuiHelper.GuiColor.YELLOW + "Compressed Air");
             toolTip.add(core.getAirTank().getFluidAmount() + "/" + core.getAirTank().getCapacity() + GuiHelper.GuiColor.ORANGE + "mb");
             renderToolTip(mouseX, mouseY, toolTip);
         }
-        if(isInBounds(mouseX, mouseY, x + 147, y + 26, x + 162, y + 77)) {
+        if(GuiHelper.isInBounds(mouseX, mouseY, x + 147, y + 26, x + 162, y + 77)) {
             List<String> toolTip = new ArrayList<String>();
             toolTip.add(GuiHelper.GuiColor.YELLOW + "Actinium");
             toolTip.add(core.getOutputTank().getFluidAmount() + "/" + core.getOutputTank().getCapacity() + GuiHelper.GuiColor.ORANGE + "mb");
             renderToolTip(mouseX, mouseY, toolTip);
         }
-    }
-
-    /**
-     * Test if location is in bounds
-     * @param x xLocation
-     * @param y yLocation
-     * @param a Rectangle point a
-     * @param b Rectangle point b
-     * @param c Rectangle point c
-     * @param d Rectangle point d
-     * @return
-     */
-    public boolean isInBounds(int x, int y, int a, int b, int c, int d)
-    {
-        return (x >= a && x <= c && y >= b && y <=d);
     }
 
     public void renderToolTip(int x, int y, List<String> strings)
