@@ -10,11 +10,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileTeslaCoil extends BaseTile implements IEnergyHandler, ITeslaHandler {
 
-    protected EnergyStorage energyRF = new EnergyStorage(10000, 1000, 0);
-    private TeslaBank energyTesla = new TeslaBank(1000);
+    protected EnergyStorage energyRF;
+    private TeslaBank energyTesla;
 
     public TileTeslaCoil() {
         super();
+        energyRF = new EnergyStorage(10000, 1000, 0);
+        energyTesla = new TeslaBank(1000);
     }
 
     @Override

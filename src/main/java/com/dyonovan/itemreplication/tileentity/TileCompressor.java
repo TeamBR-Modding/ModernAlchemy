@@ -111,7 +111,7 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
             coil.drainEnergy(fill);
 
             if(worldObj.isRemote)
-                Minecraft.getMinecraft().effectRenderer.addEffect(new LightningBolt(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, coil.xCoord + 0.5, coil.yCoord + 0.5, coil.zCoord + 0.5, fill, new Color(255, 255, 255, 255)));
+                Minecraft.getMinecraft().effectRenderer.addEffect(new LightningBolt(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, coil.xCoord + 0.5, coil.yCoord + 0.5, coil.zCoord + 0.5, fill > 4 ? fill : 4, new Color(255, 255, 255, 255)));
         }
         while(currentDrain > 0) {
             energyTesla.addEnergy(ConfigHandler.tickTesla);
