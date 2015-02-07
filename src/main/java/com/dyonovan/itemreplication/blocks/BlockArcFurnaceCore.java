@@ -1,7 +1,6 @@
 package com.dyonovan.itemreplication.blocks;
 
 import com.dyonovan.itemreplication.ItemReplication;
-import com.dyonovan.itemreplication.effects.LightningBolt;
 import com.dyonovan.itemreplication.handlers.GuiHandler;
 import com.dyonovan.itemreplication.lib.Constants;
 import com.dyonovan.itemreplication.tileentity.TileArcFurnaceCore;
@@ -9,15 +8,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-
-import java.awt.*;
-import java.util.Random;
 
 public class BlockArcFurnaceCore extends BlockContainer {
     @SideOnly(Side.CLIENT)
@@ -44,17 +39,6 @@ public class BlockArcFurnaceCore extends BlockContainer {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int i, int j) {
         return i != 1 || i != 0 ? front : blockIcon;
-    }
-
-    boolean spawned = false;
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void randomDisplayTick(World world, int x, int y, int z, Random rand)
-    {
-        if(!spawned) {
-            Minecraft.getMinecraft().effectRenderer.addEffect(new LightningBolt(world, x, y, z, x + 5, y + 10, z + 10, 500, new Color(255, 255, 255, 255)));
-            spawned = true;
-        }
     }
 
     @Override

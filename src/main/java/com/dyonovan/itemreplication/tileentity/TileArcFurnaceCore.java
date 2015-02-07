@@ -1,10 +1,12 @@
 package com.dyonovan.itemreplication.tileentity;
 
 import com.dyonovan.itemreplication.blocks.BlockDummy;
+import com.dyonovan.itemreplication.effects.LightningBolt;
 import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.helpers.Location;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -14,6 +16,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
+
+import java.awt.*;
 
 public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITeslaHandler, IInventory {
 
@@ -37,6 +41,8 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     @Override
     public void updateEntity() {
         super.updateEntity();
+        if(worldObj.isRemote)
+            Minecraft.getMinecraft().effectRenderer.addEffect(new LightningBolt(worldObj, xCoord, yCoord, zCoord, xCoord + 2, yCoord + 10, zCoord, 1000, new Color(255, 255, 255, 255)));
     }
 
     @Override
