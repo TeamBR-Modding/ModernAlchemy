@@ -54,7 +54,7 @@ public class TileTeslaStand extends BaseTile implements IEnergyHandler {
         if ((energy.getEnergyStored() > 0)) {
 
                 TileEntity tile = worldObj.getTileEntity(xCoord, yCoord + 1, zCoord);
-                if (tile instanceof IEnergyHandler) {
+                if (tile instanceof TileTeslaStand || tile instanceof TileTeslaCoil) {
                     energy.extractEnergy(((IEnergyHandler) tile).receiveEnergy(ForgeDirection.DOWN, energy.extractEnergy(energy.getMaxExtract(), true), false), false);
                 }
 

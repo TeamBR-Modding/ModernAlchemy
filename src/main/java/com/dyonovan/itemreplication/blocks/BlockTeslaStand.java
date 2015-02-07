@@ -15,7 +15,7 @@ public class BlockTeslaStand extends BlockContainer {
         this.setBlockName(Constants.MODID + ":blockTeslaStand");
         this.setHardness(1.5F);
         this.setCreativeTab(ItemReplication.tabItemReplication);
-
+        this.setBlockBounds(0.36875F, 0F, 0.36875F, 0.65625F, 1F, 0.65625F);
     }
 
     @Override
@@ -45,6 +45,6 @@ public class BlockTeslaStand extends BlockContainer {
 
     @Override
     public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-        return true;//world.getBlock(x, y, z) instanceof BlockTeslaBase || world.getBlock(x, y, z) instanceof BlockTeslaStand;
+        return true;
     }
 }

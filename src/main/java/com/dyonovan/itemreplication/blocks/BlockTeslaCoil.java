@@ -3,8 +3,11 @@ package com.dyonovan.itemreplication.blocks;
 import com.dyonovan.itemreplication.ItemReplication;
 import com.dyonovan.itemreplication.lib.Constants;
 import com.dyonovan.itemreplication.tileentity.TileTeslaCoil;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -16,6 +19,13 @@ public class BlockTeslaCoil extends BlockContainer {
         this.setCreativeTab(ItemReplication.tabItemReplication);
         this.setHardness(1.5F);
         this.setBlockName(Constants.MODID + ":blockTeslaCoil");
+
+    }
+
+    //temp till model is done
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister iconregister) {
+        this.blockIcon = iconregister.registerIcon(Constants.MODID + ":coil_non_existant");
     }
 
     @Override
@@ -29,7 +39,7 @@ public class BlockTeslaCoil extends BlockContainer {
         return new TileTeslaCoil();
     }
 
-    @Override
+    /*@Override
     public int getRenderType() {
         return -1;
     }
@@ -42,11 +52,10 @@ public class BlockTeslaCoil extends BlockContainer {
     @Override
     public boolean renderAsNormalBlock() {
         return false;
-    }
+    }*/
 
     @Override
     public boolean canPlaceBlockAt(World world, int x, int y, int z) {
         return world.getBlock(x, y - 1, z) instanceof BlockTeslaStand;
-
     }
 }

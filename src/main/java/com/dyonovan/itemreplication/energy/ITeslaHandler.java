@@ -1,6 +1,6 @@
 package com.dyonovan.itemreplication.energy;
 
-public interface IEnergyHandler {
+public interface ITeslaHandler {
 
     /**
      * Add energy to your bank

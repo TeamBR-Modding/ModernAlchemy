@@ -1,7 +1,7 @@
 package com.dyonovan.itemreplication.tileentity;
 
 import com.dyonovan.itemreplication.blocks.BlockDummy;
-import com.dyonovan.itemreplication.energy.IEnergyHandler;
+import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.helpers.Location;
@@ -14,7 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
-public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, IEnergyHandler, IInventory {
+public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITeslaHandler, IInventory {
 
     private FluidTank outputTank;
     private FluidTank airTank;
