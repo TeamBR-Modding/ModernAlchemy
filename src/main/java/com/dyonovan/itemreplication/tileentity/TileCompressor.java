@@ -1,11 +1,18 @@
 package com.dyonovan.itemreplication.tileentity;
 
+import com.dyonovan.itemreplication.effects.LightningBolt;
 import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
+import com.dyonovan.itemreplication.handlers.ConfigHandler;
+import com.dyonovan.itemreplication.lib.Constants;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
+
+import java.awt.*;
+import java.util.List;
 
 public class TileCompressor extends BaseCore implements IFluidHandler, ITeslaHandler {
 
@@ -65,13 +72,6 @@ public class TileCompressor extends BaseCore implements IFluidHandler, ITeslaHan
         return new FluidTankInfo[] {tank.getInfo()};
     }
 
-
-
-    @Override
-    public void updateEntity() {
-        super.updateEntity();
-    }
-
     @Override
     public boolean isWellFormed() {
         return false;
@@ -105,5 +105,33 @@ public class TileCompressor extends BaseCore implements IFluidHandler, ITeslaHan
     @Override
     public TeslaBank getEnergyBank() {
         return energyTesla;
+    }
+
+    @Override
+    public void updateEntity() {
+        super.updateEntity();
+        if(energyTesla.canAcceptEnergy()) {
+            chargeFromCoils();
+        }
+    }
+
+    public void chargeFromCoils() {
+        int maxFill = energyTesla.getMaxCapacity() - energyTesla.getEnergyLevel();
+        List<TileTeslaCoil> coils = findCoils(worldObj, this);
+        int currentDrain = 0;
+        for(TileTeslaCoil coil : coils) {
+            int fill = coil.getEnergyLevel() > ConfigHandler.tickTesla ? ConfigHandler.tickTesla : coil.getEnergyLevel();
+            if(currentDrain + fill > maxFill)
+                fill = maxFill - currentDrain;
+            currentDrain += fill;
+            coil.drainEnergy(fill);
+
+            if(worldObj.isRemote)
+                Minecraft.getMinecraft().effectRenderer.addEffect(new LightningBolt(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, coil.xCoord + 0.5, coil.yCoord + 0.5, coil.zCoord + 0.5, fill, new Color(255, 255, 255, 255)));
+        }
+        while(currentDrain > 0) {
+            energyTesla.addEnergy(ConfigHandler.tickTesla);
+            currentDrain--;
+        }
     }
 }
