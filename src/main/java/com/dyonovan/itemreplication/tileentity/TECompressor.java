@@ -1,5 +1,7 @@
 package com.dyonovan.itemreplication.tileentity;
 
+import cofh.api.energy.EnergyStorage;
+import cofh.api.energy.IEnergyHandler;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -11,17 +13,16 @@ public class TECompressor extends BaseTile implements IFluidHandler {
 
     public TECompressor() {
 
-        //tank.setFluid(new FluidStack(BlockHandler.fluidActinium, FluidContainerRegistry.BUCKET_VOLUME));
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
-        super.readFromNBT(tag);
+        //super.readFromNBT(tag);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
-        super.writeToNBT(tag);
+        //super.writeToNBT(tag);
     }
 
 
@@ -36,13 +37,13 @@ public class TECompressor extends BaseTile implements IFluidHandler {
         {
             return null;
         }
-        tank.setFluid(new FluidStack(BlockHandler.fluidActinium, FluidContainerRegistry.BUCKET_VOLUME));
+        tank.setFluid(new FluidStack(BlockHandler.fluidCompressedAir, FluidContainerRegistry.BUCKET_VOLUME));
         return tank.drain(resource.amount, false);
     }
 
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-        tank.setFluid(new FluidStack(BlockHandler.fluidActinium, FluidContainerRegistry.BUCKET_VOLUME));
+        tank.setFluid(new FluidStack(BlockHandler.fluidCompressedAir, FluidContainerRegistry.BUCKET_VOLUME));
         return tank.drain(maxDrain, false);
     }
 
@@ -59,5 +60,12 @@ public class TECompressor extends BaseTile implements IFluidHandler {
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
         return new FluidTankInfo[] {tank.getInfo()};
+    }
+
+
+
+    @Override
+    public void updateEntity() {
+        super.updateEntity();
     }
 }

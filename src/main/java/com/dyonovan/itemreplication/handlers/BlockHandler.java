@@ -52,5 +52,6 @@ public class BlockHandler {
         //Tesla Base
         blockTeslaBase = new BlockTeslaBase();
         GameRegistry.registerBlock(blockTeslaBase, "blockTeslaBase");
+        GameRegistry.registerTileEntity(TECompressor.class, "blockTeslaBase");
     }
 }
