@@ -13,6 +13,8 @@ import java.util.Random;
 
 public abstract class BaseCore extends BaseTile {
     protected static Random random = new Random();
+
+    protected boolean isValid = false;
     private boolean isDirty = true;
     private int cooldown = 20;
 

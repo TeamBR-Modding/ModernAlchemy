@@ -22,7 +22,6 @@ import java.util.List;
 
 public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITeslaHandler, IInventory {
 
-    private int coolDown = 40;
     private FluidTank outputTank;
     private FluidTank airTank;
 
@@ -43,22 +42,30 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     @Override
     public void updateEntity() {
         super.updateEntity();
-        if(energyTank.canAcceptEnergy()) {
-            int maxFill = energyTank.getMaxCapacity() - energyTank.getEnergyLevel();
-            List<TileTeslaCoil> coils = findCoils(worldObj, this);
-            int currentDrain = 0;
-            for(TileTeslaCoil coil : coils) {
-                currentDrain += coil.getEnergyLevel() > 10 ? 10 : coil.getEnergyLevel();
-                if(worldObj.isRemote)
-                    Minecraft.getMinecraft().effectRenderer.addEffect(new LightningBolt(worldObj, xCoord, yCoord, zCoord, coil.xCoord, coil.yCoord, coil.zCoord, 10, new Color(255, 255, 255, 255)));
-
-            }
-            while(currentDrain > 0) {
-                energyTank.addEnergy(1);
-                currentDrain--;
-            }
+        if(energyTank.canAcceptEnergy() && isValid) {
+            chargeFromCoils();
         }
       }
+
+    public void chargeFromCoils() {
+        int maxFill = energyTank.getMaxCapacity() - energyTank.getEnergyLevel();
+        List<TileTeslaCoil> coils = findCoils(worldObj, this);
+        int currentDrain = 0;
+        for(TileTeslaCoil coil : coils) {
+            int fill = coil.getEnergyLevel() > 1 ? 1 : coil.getEnergyLevel();
+            if(currentDrain + fill > maxFill)
+                fill = maxFill - currentDrain;
+            currentDrain += fill;
+            coil.drainEnergy(fill);
+
+            if(worldObj.isRemote)
+                Minecraft.getMinecraft().effectRenderer.addEffect(new LightningBolt(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, coil.xCoord + 0.5, coil.yCoord + 0.5, coil.zCoord + 0.5, fill, new Color(255, 255, 255, 255)));
+        }
+        while(currentDrain > 0) {
+            energyTank.addEnergy(1);
+            currentDrain--;
+        }
+    }
 
     @Override
     public boolean isWellFormed() {
@@ -73,6 +80,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
             }
         }
         buildStructure();
+        isValid = true;
         return true;
     }
 
@@ -109,6 +117,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
                 }
             }
         }
+        isValid = false;
     }
 
     public FluidTank getOutputTank() {

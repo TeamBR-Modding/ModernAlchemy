@@ -46,7 +46,7 @@ public class LightningBolt extends EntityFX {
     {
         tessellator.draw();
         super.renderParticle(tessellator, par2, par3, par4, par5, par6, par7);
-        renderBolt(tessellator, posX, posY, posZ, tX, tY, tZ, 2, 0.2);
+        renderBolt(tessellator, posX, posY, posZ, tX, tY, tZ, 1, 0.2);
         tessellator.startDrawingQuads();
     }
 
