@@ -1,18 +1,18 @@
 package com.dyonovan.itemreplication.container;
 
-import com.dyonovan.itemreplication.tileentity.TileBlastFurnaceCore;
+import com.dyonovan.itemreplication.tileentity.TileArcFurnaceCore;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 
-public class BlastFurnaceContainer extends Container {
+public class ContainerArcFurnace extends Container {
 
-    private TileBlastFurnaceCore core;
+    private TileArcFurnaceCore core;
 
-    public BlastFurnaceContainer(InventoryPlayer playerInventory, TileBlastFurnaceCore tileBlastFurnaceCore) {
+    public ContainerArcFurnace(InventoryPlayer playerInventory, TileArcFurnaceCore tileArcFurnaceCore) {
         super();
-        core = tileBlastFurnaceCore;
+        core = tileArcFurnaceCore;
         bindPlayerInventory(playerInventory);
     }
 

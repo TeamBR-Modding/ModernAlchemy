@@ -4,7 +4,7 @@ import com.dyonovan.itemreplication.blocks.*;
 import com.dyonovan.itemreplication.fluids.FluidActinium;
 import com.dyonovan.itemreplication.fluids.FluidCompressedAir;
 import com.dyonovan.itemreplication.tileentity.TECompressor;
-import com.dyonovan.itemreplication.tileentity.TileBlastFurnaceCore;
+import com.dyonovan.itemreplication.tileentity.TileArcFurnaceCore;
 import com.dyonovan.itemreplication.tileentity.TileDummy;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
@@ -14,7 +14,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 public class BlockHandler {
 
     public static Fluid fluidActinium, fluidCompressedAir;
-    public static Block blockBlastFurnaceDummy, blockBlastFurnaceCore;
+    public static Block blockArcFurnaceDummy, blockArcFurnaceCore;
     public static Block blockOreActinium, blockfluidActinium, blockCompressor, blockFluidAir, blockTeslaBase;
 
     public static void init() {
@@ -33,15 +33,15 @@ public class BlockHandler {
         GameRegistry.registerBlock(blockCompressor, "blockCompressor");
         GameRegistry.registerTileEntity(TECompressor.class, "teCompressor");
 
-        //BlastFurnaceDummy
-        blockBlastFurnaceDummy = new BlockDummy("blastFurnaceDummy");
-        GameRegistry.registerBlock(blockBlastFurnaceDummy, "blastFurnaceDummy");
+        //ArcFurnaceDummy
+        blockArcFurnaceDummy = new BlockDummy("arcFurnaceDummy");
+        GameRegistry.registerBlock(blockArcFurnaceDummy, "arcFurnaceDummy");
         GameRegistry.registerTileEntity(TileDummy.class, "tileDummy");
 
-        //BlastFurnaceCore
-        blockBlastFurnaceCore = new BlockBlastFurnaceCore();
-        GameRegistry.registerBlock(blockBlastFurnaceCore, "blastFurnaceCore");
-        GameRegistry.registerTileEntity(TileBlastFurnaceCore.class, "blastFurnaceCore");
+        //ArcFurnaceCore
+        blockArcFurnaceCore = new BlockArcFurnaceCore();
+        GameRegistry.registerBlock(blockArcFurnaceCore, "arcFurnaceCore");
+        GameRegistry.registerTileEntity(TileArcFurnaceCore.class, "arcFurnaceCore");
 
         //Fluid Compressed Air
         fluidCompressedAir = new FluidCompressedAir();

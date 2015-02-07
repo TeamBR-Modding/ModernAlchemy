@@ -1,9 +1,9 @@
 package com.dyonovan.itemreplication.gui;
 
-import com.dyonovan.itemreplication.container.BlastFurnaceContainer;
+import com.dyonovan.itemreplication.container.ContainerArcFurnace;
 import com.dyonovan.itemreplication.helpers.GuiHelper;
 import com.dyonovan.itemreplication.lib.Constants;
-import com.dyonovan.itemreplication.tileentity.TileBlastFurnaceCore;
+import com.dyonovan.itemreplication.tileentity.TileArcFurnaceCore;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -14,12 +14,12 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiBlastFurnace extends GuiContainer {
-    private TileBlastFurnaceCore core;
+public class GuiArcFurnace extends GuiContainer {
+    private TileArcFurnaceCore core;
     private ResourceLocation background = new ResourceLocation(Constants.MODID + ":textures/gui/blastfurnace.png");
 
-    public GuiBlastFurnace(InventoryPlayer inventoryPlayer, TileBlastFurnaceCore core) {
-        super(new BlastFurnaceContainer(inventoryPlayer, core));
+    public GuiArcFurnace(InventoryPlayer inventoryPlayer, TileArcFurnaceCore core) {
+        super(new ContainerArcFurnace(inventoryPlayer, core));
         this.core = core;
     }
 
