@@ -47,4 +47,6 @@ public class BlockTeslaStand extends BlockContainer {
     public boolean canPlaceBlockAt(World world, int x, int y, int z) {
         return true;
     }
+
+    //TODO have stand/coil break everything above
 }

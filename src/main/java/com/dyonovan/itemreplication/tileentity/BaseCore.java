@@ -1,9 +1,14 @@
 package com.dyonovan.itemreplication.tileentity;
 
+import com.dyonovan.itemreplication.lib.CoilList;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public abstract class BaseCore extends BaseTile {
@@ -76,5 +81,27 @@ public abstract class BaseCore extends BaseTile {
             entityitem.motionZ = (double) ((float) this.random.nextGaussian() * f3);
             worldObj.spawnEntityInWorld(entityitem);
         }
+    }
+
+    public List<CoilList> findCoils(World world, TileEntity tile) {
+        //TODO add to config
+        final int RANGE = 5;
+        List<CoilList> list = new ArrayList<CoilList>();
+
+        int tileX = tile.xCoord;
+        int tileY = tile.yCoord;
+        int tileZ = tile.zCoord;
+
+        for (int x = -RANGE; x <= RANGE; x++) {
+            for (int y = -RANGE; y <= RANGE; y++) {
+                for (int z = -RANGE; z <= RANGE; z++) {
+                    if (world.getTileEntity(tileX + x, tileY + y, tileZ + z) instanceof TileTeslaCoil) {
+                        list.add(new CoilList(tileY + x, tileY + y, tileZ + z));
+                    }
+                }
+            }
+        }
+
+        return list;
     }
 }

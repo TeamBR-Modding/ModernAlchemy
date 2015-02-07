@@ -2,14 +2,17 @@ package com.dyonovan.itemreplication.tileentity;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
+import com.dyonovan.itemreplication.energy.ITeslaHandler;
+import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
-public class TileCompressor extends BaseTile implements IFluidHandler {
+public class TileCompressor extends BaseCore implements IFluidHandler, ITeslaHandler {
 
-    protected FluidTank tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME);
+    public static FluidTank tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME);
+    private TeslaBank energyTesla = new TeslaBank(1000, 1000);
 
     public TileCompressor() {
 
@@ -17,12 +20,14 @@ public class TileCompressor extends BaseTile implements IFluidHandler {
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
-        //super.readFromNBT(tag);
+        super.readFromNBT(tag);
+        energyTesla.readFromNBT(tag);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
-        //super.writeToNBT(tag);
+        super.writeToNBT(tag);
+        energyTesla.writeToNBT(tag);
     }
 
 
@@ -67,5 +72,40 @@ public class TileCompressor extends BaseTile implements IFluidHandler {
     @Override
     public void updateEntity() {
         super.updateEntity();
+    }
+
+    @Override
+    public boolean isWellFormed() {
+        return false;
+    }
+
+    @Override
+    public void buildStructure() {
+
+    }
+
+    @Override
+    public void deconstructStructure() {
+
+    }
+
+    @Override
+    public void addEnergy(int maxAmount) {
+        energyTesla.addEnergy(maxAmount);
+    }
+
+    @Override
+    public void drainEnergy(int maxAmount) {
+        energyTesla.drainEnergy(maxAmount);
+    }
+
+    @Override
+    public int getEnergyLevel() {
+        return energyTesla.getEnergyLevel();
+    }
+
+    @Override
+    public TeslaBank getEnergyBank() {
+        return energyTesla;
     }
 }
