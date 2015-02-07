@@ -4,6 +4,7 @@ import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
+import com.dyonovan.itemreplication.handlers.ConfigHandler;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -100,22 +101,18 @@ public class TileTeslaCoil extends BaseTile implements IEnergyHandler, ITeslaHan
         super.updateEntity();
         if (worldObj.isRemote) return;
 
-        //TODO add to config
-        int MAX_T_TICK = 10;
-        int RF_PER_T = 10;
-
         if (energyRF.getEnergyStored() > 0 && energyTesla.getEnergyLevel()  < energyTesla.getMaxCapacity()) {
 
-            int actualRF = Math.min(MAX_T_TICK * RF_PER_T, energyRF.getEnergyStored());
-            int actualTesla = Math.min(MAX_T_TICK, energyTesla.getMaxCapacity() - energyTesla.getEnergyLevel());
+            int actualRF = Math.min(ConfigHandler.tickTesla * ConfigHandler.tickRF, energyRF.getEnergyStored());
+            int actualTesla = Math.min(ConfigHandler.tickTesla, energyTesla.getMaxCapacity() - energyTesla.getEnergyLevel());
 
-            if (actualTesla * RF_PER_T < actualRF) {
+            if (actualTesla * ConfigHandler.tickRF < actualRF) {
                 removeEnergy(actualTesla * 10);
                 energyTesla.addEnergy(actualTesla);
-            } else if (actualTesla * RF_PER_T > actualRF && actualRF > 100) {
+            } else if (actualTesla * ConfigHandler.tickRF > actualRF && actualRF > 100) {
                 removeEnergy(actualRF);
-                energyTesla.addEnergy(actualRF / RF_PER_T);
-            } else if (actualTesla * RF_PER_T == actualRF) {
+                energyTesla.addEnergy(actualRF / ConfigHandler.tickRF);
+            } else if (actualTesla * ConfigHandler.tickRF == actualRF) {
                 removeEnergy(actualRF);
                 energyTesla.addEnergy(actualTesla);
             }

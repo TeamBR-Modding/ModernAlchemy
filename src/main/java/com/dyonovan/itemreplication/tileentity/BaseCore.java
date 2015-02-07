@@ -1,5 +1,6 @@
 package com.dyonovan.itemreplication.tileentity;
 
+import com.dyonovan.itemreplication.handlers.ConfigHandler;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -83,17 +84,16 @@ public abstract class BaseCore extends BaseTile {
     }
 
     public List<TileTeslaCoil> findCoils(World world, TileEntity tile) {
-        //TODO add to config
-        final int RANGE = 5;
+
         List<TileTeslaCoil> list = new ArrayList<TileTeslaCoil>();
 
         int tileX = tile.xCoord;
         int tileY = tile.yCoord;
         int tileZ = tile.zCoord;
 
-        for (int x = -RANGE; x <= RANGE; x++) {
-            for (int y = -RANGE; y <= RANGE; y++) {
-                for (int z = -RANGE; z <= RANGE; z++) {
+        for (int x = -ConfigHandler.searchRange; x <= ConfigHandler.searchRange; x++) {
+            for (int y = -ConfigHandler.searchRange; y <= ConfigHandler.searchRange; y++) {
+                for (int z = -ConfigHandler.searchRange; z <= ConfigHandler.searchRange; z++) {
                     if (world.getTileEntity(tileX + x, tileY + y, tileZ + z) instanceof TileTeslaCoil) {
                         list.add((TileTeslaCoil) world.getTileEntity(tileX + x, tileY + y, tileZ + z));
                     }

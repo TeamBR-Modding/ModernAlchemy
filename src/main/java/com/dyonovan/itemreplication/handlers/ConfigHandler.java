@@ -6,10 +6,8 @@ import net.minecraftforge.common.config.Configuration;
 public class ConfigHandler {
 
     public static boolean generateActinium;
-    public static int actiniumVeinSize;
-    public static int actiniumVeinsPerChunk;
-    public static int actiniumMinLevel;
-    public static int actiniumMaxLevel;
+    public static int actiniumMaxLevel, actiniumVeinSize, actiniumVeinsPerChunk, actiniumMinLevel, tickTesla, tickRF;
+    public static int searchRange;
 
     public static void init(Configuration config) {
 
@@ -20,6 +18,10 @@ public class ConfigHandler {
         actiniumVeinsPerChunk = config.get(Constants.CONFIG_ORE_GENERATION, "Actinium Veins Per Chunk", 10).getInt();
         actiniumMinLevel      = config.get(Constants.CONFIG_ORE_GENERATION, "Actinium Min Level", 5).getInt();
         actiniumMaxLevel      = config.get(Constants.CONFIG_ORE_GENERATION, "Actinium Max Level", 64).getInt();
+
+        tickTesla             = config.get(Constants.CONFIG_TESLA, "# of Tesla per Tick", 10).getInt();
+        tickRF                = config.get(Constants.CONFIG_TESLA, "# of RF's per Tick per Tesla", 10).getInt();
+        searchRange           = config.get(Constants.CONFIG_TESLA, "How many blocks (cubed) to search for coils", 5).getInt();
 
         config.save();
     }
