@@ -1,12 +1,17 @@
 package com.dyonovan.itemreplication.effects;
 
+import com.dyonovan.itemreplication.lib.Constants;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 public class LightningBolt extends EntityFX {
+
+    private ResourceLocation texture = new ResourceLocation(Constants.MODID + "textures/blocks/blastFurnace.png");
 
     public LightningBolt(World world, double x, double y, double z) {
         super(world, x, y, z);
@@ -20,25 +25,25 @@ public class LightningBolt extends EntityFX {
         float y = (float)(this.posY - interpPosY);
         float z = (float)(this.posZ - interpPosZ);
 
-        GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_LIGHTING);
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glPointSize(10.0F);
-        GL11.glBegin(GL11.GL_POINTS);
+        Minecraft.getMinecraft().renderEngine.bindTexture(texture);
 
-        GL11.glVertex3d(x, y, z);
-        GL11.glVertex3d(x, y + 10, z);
-        GL11.glEnd();
+        float f2 = 0.5F;
+        tessellator.setColorRGBA_F(0.9F * f2, 0.9F * f2, 1.0F * f2, 0.3F);
+
+        tessellator.addVertexWithUV(x + 0.3, y, z + 0.3, 0.0, 0.0);
+        tessellator.addVertexWithUV(x + 0.7, y, z + 0.3, 1.0, 0.0);
+        tessellator.addVertexWithUV(x + 0.7, y, z + 0.7, 1.0, 1.0);
+        tessellator.addVertexWithUV(x + 0.3, y, z + 0.7, 0.0, 1.0);
 
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
     }
 
     @Override
