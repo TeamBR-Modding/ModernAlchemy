@@ -35,6 +35,10 @@ public class TileTeslaCoil extends BaseTile implements IEnergyHandler, ITeslaHan
         return energyRF.receiveEnergy(maxReceive, simulate);
     }
 
+    public void setRFEnergyStored(int i) {
+        energyRF.setEnergyStored(i);
+    }
+
     @Override
     public int extractEnergy(ForgeDirection forgeDirection, int i, boolean b) {
         return 0;
@@ -81,5 +85,9 @@ public class TileTeslaCoil extends BaseTile implements IEnergyHandler, ITeslaHan
     @Override
     public TeslaBank getEnergyBank() {
         return energyTesla;
+    }
+
+    public void setTeslaEnergyStored(int i) {
+        energyTesla.setEnergyLevel(i);
     }
 }

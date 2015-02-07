@@ -25,7 +25,7 @@ public class GuiTeslaCoil extends GuiContainer {
         this.xSize = 108;
         this.ySize = 86;
 
-        tile.addEnergy(1000);
+        //tile.addEnergy(1000);
     }
 
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
