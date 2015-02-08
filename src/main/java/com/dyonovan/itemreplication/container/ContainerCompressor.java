@@ -39,7 +39,7 @@ public class ContainerCompressor extends Container {
 
             if (this.lastPower != this.tile.getEnergyLevel())
                 icrafting.sendProgressBarUpdate(this, 0, this.tile.getEnergyLevel());
-            if (this.tile.tank == null)
+            if (this.tile.tank.getInfo().fluid == null)
                 this.tile.tank.setFluid(this.tile.setFluidStack(0));
             if (this.lastTank != this.tile.tank.getInfo().fluid.amount)
                 icrafting.sendProgressBarUpdate(this, 1, this.tile.tank.getInfo().fluid.amount);
