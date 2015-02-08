@@ -12,8 +12,9 @@ import net.minecraft.world.World;
  */
 public class BlockPatternRecorder extends BlockContainer {
 
-    protected BlockPatternRecorder(Material material) {
-        super(material);
+    public BlockPatternRecorder()
+    {
+        super(Material.anvil);
     }
 
     @Override

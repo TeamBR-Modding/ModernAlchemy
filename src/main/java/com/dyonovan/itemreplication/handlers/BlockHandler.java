@@ -13,14 +13,15 @@ public class BlockHandler {
 
     public static Fluid fluidActinium, fluidCompressedAir;
     public static Block blockArcFurnaceDummy, blockArcFurnaceCore, blockTeslaStand, blockCoil;
-    public static Block blockOreActinium, blockfluidActinium, blockCompressor, blockFluidAir;
+    public static Block blockOreActinium, blockFluidActinium, blockCompressor, blockFluidAir;
+    public static Block blockPatternRecorder;
 
     public static void init() {
         //Actinium Fluid Registration
         fluidActinium = new FluidActinium();
         FluidRegistry.registerFluid(fluidActinium);
-        blockfluidActinium = new BlockFluidActinium();
-        GameRegistry.registerBlock(blockfluidActinium, "fluidActinium");
+        blockFluidActinium = new BlockFluidActinium();
+        GameRegistry.registerBlock(blockFluidActinium, "fluidActinium");
 
         //Ore Actinium
         blockOreActinium = new BlockOreActinium();
@@ -35,6 +36,11 @@ public class BlockHandler {
         blockArcFurnaceDummy = new BlockDummy("arcFurnaceDummy");
         GameRegistry.registerBlock(blockArcFurnaceDummy, "arcFurnaceDummy");
         GameRegistry.registerTileEntity(TileDummy.class, "tileDummy");
+		
+        // Block Pattern Recorder
+        blockPatternRecorder = new BlockPatternRecorder();
+        GameRegistry.registerBlock(blockPatternRecorder, "patternRecorder");
+        GameRegistry.registerTileEntity(TEPatternRecorder.class, "patternRecorder");
 
         //ArcFurnaceCore
         blockArcFurnaceCore = new BlockArcFurnaceCore();
