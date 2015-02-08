@@ -37,12 +37,15 @@ public class TeslaBank {
         return maxCapacity;
     }
 
-    public void drainEnergy(int amount) {
+    public boolean drainEnergy(int amount) {
         if(currentLevel > amount) {
             currentLevel -= amount;
+            return true;
         }
-        else
+        else {
             currentLevel = 0;
+            return false;
+        }
     }
 
     public void addEnergy(int amount) {
