@@ -1,12 +1,13 @@
 package com.dyonovan.itemreplication.tileentity;
 
-import com.dyonovan.itemreplication.blocks.BlockDummy;
+import com.dyonovan.itemreplication.blocks.dummies.BlockDummy;
 import com.dyonovan.itemreplication.effects.LightningBolt;
 import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
 import com.dyonovan.itemreplication.helpers.Location;
+import com.dyonovan.itemreplication.tileentity.dummies.TileDummy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -43,7 +44,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     public TileArcFurnaceCore() {
         outputTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 10);
         airTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 10);
-        airTank.fill(new FluidStack(BlockHandler.fluidCompressedAir, FluidContainerRegistry.BUCKET_VOLUME * 10), true);
+
         energyTank = new TeslaBank(0, 1000);
 
         inventory = new ItemStack[2];
@@ -205,6 +206,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
                 break;
             }
         }
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         return amount;
     }
 
@@ -246,6 +248,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
         timeCooked = tagCompound.getInteger("TimeCooking");
 
         energyTank.readFromNBT(tagCompound);
+
         if(tagCompound.getBoolean("hasOutputFluid")) {
             outputTank.setFluid(FluidRegistry.getFluidStack(tagCompound.getString("outputFluid"), tagCompound.getInteger("outputFluidAmount")));
         }

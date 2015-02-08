@@ -1,9 +1,9 @@
-package com.dyonovan.itemreplication.blocks;
+package com.dyonovan.itemreplication.blocks.dummies;
 
 import com.dyonovan.itemreplication.ItemReplication;
 import com.dyonovan.itemreplication.lib.Constants;
 import com.dyonovan.itemreplication.tileentity.BaseCore;
-import com.dyonovan.itemreplication.tileentity.TileDummy;
+import com.dyonovan.itemreplication.tileentity.dummies.TileDummy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 public class BlockDummy extends BlockContainer {
 
     @SideOnly(Side.CLIENT)
-    private IIcon active;
+    protected IIcon active;
 
     public BlockDummy(String name) {
         super(Material.rock);

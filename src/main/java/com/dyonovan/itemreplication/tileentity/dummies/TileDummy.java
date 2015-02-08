@@ -1,6 +1,8 @@
-package com.dyonovan.itemreplication.tileentity;
+package com.dyonovan.itemreplication.tileentity.dummies;
 
 import com.dyonovan.itemreplication.helpers.Location;
+import com.dyonovan.itemreplication.tileentity.BaseCore;
+import com.dyonovan.itemreplication.tileentity.BaseTile;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class TileDummy extends BaseTile {

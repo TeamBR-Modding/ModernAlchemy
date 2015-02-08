@@ -1,7 +1,9 @@
 package com.dyonovan.itemreplication.effects;
 
 import com.dyonovan.itemreplication.lib.Constants;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.MathHelper;
@@ -47,6 +49,7 @@ public class LightningBolt extends EntityFX {
         tessellator.draw();
         super.renderParticle(tessellator, par2, par3, par4, par5, par6, par7);
         renderBolt(tessellator, posX, posY, posZ, tX, tY, tZ, 1, 0.2);
+        Minecraft.getMinecraft().renderEngine.bindTexture((ResourceLocation) ReflectionHelper.getPrivateValue(EffectRenderer.class, null, new String[]{"particleTextures", "b", "field_110737_b"}));
         tessellator.startDrawingQuads();
     }
 
