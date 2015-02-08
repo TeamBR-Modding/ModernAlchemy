@@ -5,6 +5,7 @@ import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.NBTTagCompound;
 
 import java.awt.*;
 import java.util.List;
@@ -23,6 +24,24 @@ public abstract class TileTeslaMachine extends BaseTile implements ITeslaHandler
         timeProcessed = 0;
         currentSpeed = 0;
         energyTank = new TeslaBank(0, 1000);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        energyTank.readFromNBT(tag);
+        totalProcessingTime = tag.getInteger("totalProcessingTime");
+        timeProcessed = tag.getInteger("timeProcessed");
+        currentSpeed = tag.getInteger("currentSpeed");
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+        energyTank.writeToNBT(tag);
+        tag.setInteger("totalProcessingTime", totalProcessingTime);
+        tag.setInteger("timeProcessed", timeProcessed);
+        tag.setInteger("currentSpeed", currentSpeed);
     }
 
     @Override
