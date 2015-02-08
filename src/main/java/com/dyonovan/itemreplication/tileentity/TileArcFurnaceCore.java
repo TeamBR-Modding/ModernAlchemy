@@ -96,6 +96,8 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
 
     public void updateSpeed() {
         currentSpeed = (energyTank.getEnergyLevel() * 20) / energyTank.getMaxCapacity();
+        if(currentSpeed == 0)
+            currentSpeed = 1;
     }
 
     public int getCookTimeScaled(int scale) {
