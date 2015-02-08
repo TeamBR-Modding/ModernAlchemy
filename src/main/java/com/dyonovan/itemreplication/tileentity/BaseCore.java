@@ -1,14 +1,9 @@
 package com.dyonovan.itemreplication.tileentity;
 
-import com.dyonovan.itemreplication.handlers.ConfigHandler;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public abstract class BaseCore extends BaseTile {
@@ -62,7 +57,7 @@ public abstract class BaseCore extends BaseTile {
         tagCompound.setBoolean("isDirty", isDirty);
     }
 
-    private void expelItem(ItemStack itemstack) {
+    public void expelItem(ItemStack itemstack) {
         if (itemstack != null) {
             EntityItem entityitem =
                     new EntityItem(

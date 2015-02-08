@@ -68,6 +68,10 @@ public class GuiArcFurnace extends GuiContainer {
         tess.draw();
         GL11.glPopMatrix();
 
+        //Draw Arrow
+        int arrow = core.getCookTimeScaled(24);
+        drawTexturedModalRect(x + 107, y + 35, 176, 22, arrow, 17);
+
         //Render Fluids
         FluidTank output = core.getOutputTank();
         FluidTank airTank = core.getAirTank();
