@@ -17,12 +17,15 @@ public abstract class TileTeslaMachine extends BaseTile implements ITeslaHandler
 
     protected int totalProcessingTime, timeProcessed, currentSpeed;
 
+
     private TeslaBank energyTank;
+    private boolean isRunning;
 
     TileTeslaMachine() {
         totalProcessingTime = 500;
         timeProcessed = 0;
         currentSpeed = 0;
+        isRunning = false;
         energyTank = new TeslaBank(0, 1000);
     }
 
@@ -33,6 +36,7 @@ public abstract class TileTeslaMachine extends BaseTile implements ITeslaHandler
         totalProcessingTime = tag.getInteger("totalProcessingTime");
         timeProcessed = tag.getInteger("timeProcessed");
         currentSpeed = tag.getInteger("currentSpeed");
+        isRunning = tag.getBoolean("isRunning");
     }
 
     @Override
@@ -42,6 +46,7 @@ public abstract class TileTeslaMachine extends BaseTile implements ITeslaHandler
         tag.setInteger("totalProcessingTime", totalProcessingTime);
         tag.setInteger("timeProcessed", timeProcessed);
         tag.setInteger("currentSpeed", currentSpeed);
+        tag.setBoolean("isRunning", isRunning);
     }
 
     @Override
@@ -57,22 +62,70 @@ public abstract class TileTeslaMachine extends BaseTile implements ITeslaHandler
         }
     }
 
+    public boolean IsRunning() {
+        return isRunning;
+    }
+
     protected abstract void consumeResources();
     protected abstract void createProducts();
-    protected abstract boolean canStartWork();
+    protected abstract boolean resourcesAvailable();
     protected abstract boolean canOperate();
 
-    private void doWork() {
-        if(timeProcessed <= 0 && canStartWork() && energyTank.drainEnergy(currentSpeed + 1)) {
-            consumeResources();
-            timeProcessed += currentSpeed;
-        }
-        else if(timeProcessed > 0 && energyTank.drainEnergy(currentSpeed + 1))
-            timeProcessed += currentSpeed;
+    private void doWork(){
+        // TODO: do we really want pre-consume?
+        doWork_preConsume();
+    }
 
-        if(timeProcessed >= totalProcessingTime) {
+    private void doWork_postConsume() {
+        // check if resources and energy are available each tick
+        // this allows the user to stop the process without losing the item
+        if(resourcesAvailable()) {
+            if(energyTank.drainEnergy(currentSpeed + 1)) {
+                isRunning = true;
+                timeProcessed += currentSpeed;
+            }
+            else {
+                // ran out of energy - stop working but don't reset progress
+                isRunning = false;
+            }
+        }
+        else {
+            // no resources - stop running and reset progress
+            isRunning = false;
+            timeProcessed = 0;
+        }
+
+        if(isRunning && timeProcessed >= totalProcessingTime) {
+            consumeResources();
             createProducts();
             timeProcessed = 0;
+            isRunning = false;
+        }
+    }
+
+    private void doWork_preConsume() {
+        // check if resources are available when we start
+        if(timeProcessed <= 0 && resourcesAvailable()) {
+            consumeResources();
+
+            // set some progress time so we know to do work
+            timeProcessed = 1;
+        }
+
+        if(timeProcessed > 0 && energyTank.drainEnergy(currentSpeed + 1)) {
+            isRunning = true;
+            timeProcessed += currentSpeed;
+        }
+        else {
+            // ran out of energy - stop working but don't reset progress
+            isRunning = false;
+        }
+
+
+        if(isRunning && timeProcessed >= totalProcessingTime) {
+            createProducts();
+            timeProcessed = 0;
+            isRunning = false;
         }
     }
 
