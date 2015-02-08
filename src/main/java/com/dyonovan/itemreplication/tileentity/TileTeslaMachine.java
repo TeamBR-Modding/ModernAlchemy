@@ -80,6 +80,8 @@ public abstract class TileTeslaMachine extends BaseTile implements ITeslaHandler
         // check if resources and energy are available each tick
         // this allows the user to stop the process without losing the item
         if(resourcesAvailable()) {
+
+            // try to do work
             if(energyTank.drainEnergy(currentSpeed + 1)) {
                 isRunning = true;
                 timeProcessed += currentSpeed;
@@ -95,7 +97,7 @@ public abstract class TileTeslaMachine extends BaseTile implements ITeslaHandler
             timeProcessed = 0;
         }
 
-        if(isRunning && timeProcessed >= totalProcessingTime) {
+        if(timeProcessed >= totalProcessingTime) {
             consumeResources();
             createProducts();
             timeProcessed = 0;
@@ -108,10 +110,11 @@ public abstract class TileTeslaMachine extends BaseTile implements ITeslaHandler
         if(timeProcessed <= 0 && resourcesAvailable()) {
             consumeResources();
 
-            // set some progress time so we know to do work
+            // set some progress time so we know to try to do work
             timeProcessed = 1;
         }
 
+        // try to do work
         if(timeProcessed > 0 && energyTank.drainEnergy(currentSpeed + 1)) {
             isRunning = true;
             timeProcessed += currentSpeed;
@@ -121,8 +124,7 @@ public abstract class TileTeslaMachine extends BaseTile implements ITeslaHandler
             isRunning = false;
         }
 
-
-        if(isRunning && timeProcessed >= totalProcessingTime) {
+        if(timeProcessed >= totalProcessingTime) {
             createProducts();
             timeProcessed = 0;
             isRunning = false;

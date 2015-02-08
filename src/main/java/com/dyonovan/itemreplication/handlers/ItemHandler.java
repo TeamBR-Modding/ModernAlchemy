@@ -8,7 +8,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
  */
 public class ItemHandler {
 
-    private static ItemPattern itemPattern;
+    public static ItemPattern itemPattern;
 
     public static void init() {
         itemPattern = new ItemPattern();
