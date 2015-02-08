@@ -1,12 +1,15 @@
 package com.dyonovan.itemreplication.tileentity;
 
+import com.dyonovan.itemreplication.blocks.BlockCompressor;
 import com.dyonovan.itemreplication.effects.LightningBolt;
 import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
@@ -17,10 +20,12 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
 
     public static FluidTank tank;
     private TeslaBank energy;
+    private boolean isActive;
 
     public TileCompressor() {
         energy = new TeslaBank(1000);
         tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 10);
+        isActive = false;
     }
 
     public FluidStack setFluidStack(int amount) {
@@ -32,12 +37,14 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         energy.readFromNBT(tag);
+        tank.readFromNBT(tag);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         energy.writeToNBT(tag);
+        tank.writeToNBT(tag);
     }
 
 
@@ -109,9 +116,10 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
         }
 
         if (energy.getEnergyLevel() > 1 && canFill(tank)) {
+            if (!isActive) isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
             energy.drainEnergy(2);
             tank.fill(setFluidStack(100), true);
-        }
+        } else if (isActive) isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
     }
 
     public boolean canFill(FluidTank tank) {

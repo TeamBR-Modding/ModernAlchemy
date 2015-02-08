@@ -23,7 +23,7 @@ public class BlockCompressor extends BlockContainer {
     @SideOnly(Side.CLIENT)
     private IIcon front, frontActive;
 
-    public boolean isRunning = false;
+    public static boolean isRunning = false;
 
     public BlockCompressor() {
         super(Material.anvil);
@@ -47,7 +47,7 @@ public class BlockCompressor extends BlockContainer {
         return side == meta ? (active ? frontActive : front) : blockIcon;
     }
 
-    public boolean toggleIsActive(World world, int x, int y, int z) {
+    public static boolean toggleIsActive(World world, int x, int y, int z) {
         int currentMeta = world.getBlockMetadata(x, y, z);
         if (currentMeta < 10) {
             world.setBlockMetadataWithNotify(x, y, z, currentMeta += 10, 2);
@@ -58,9 +58,9 @@ public class BlockCompressor extends BlockContainer {
         return isRunning;
     }
 
-    public boolean isRunning() {
+    /*public boolean isRunning() {
         return isRunning;
-    }
+    }*/
 
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemstack) {
         int l = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
