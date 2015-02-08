@@ -33,7 +33,6 @@ public class ContainerCompressor extends Container {
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-
         for (int i = 0; i < this.crafters.size(); i++) {
             ICrafting icrafting = (ICrafting) this.crafters.get(i);
 

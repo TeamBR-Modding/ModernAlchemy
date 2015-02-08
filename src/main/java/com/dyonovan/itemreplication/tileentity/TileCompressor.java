@@ -128,7 +128,7 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
         List<TileTeslaCoil> coils = findCoils(worldObj, this);
         int currentDrain = 0;
         for (TileTeslaCoil coil : coils) {
-            if (coil.getEnergyLevel() <= 0) return;
+            if (coil.getEnergyLevel() <= 0) continue;
             int fill = coil.getEnergyLevel() > ConfigHandler.tickTesla ? ConfigHandler.tickTesla : coil.getEnergyLevel();
             if (currentDrain + fill > maxFill)
                 fill = maxFill - currentDrain;
@@ -137,6 +137,7 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
 
             //if(worldObj.isRemote)
             Minecraft.getMinecraft().effectRenderer.addEffect(new LightningBolt(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, coil.xCoord + 0.5, coil.yCoord + 0.5, coil.zCoord + 0.5, fill > 4 ? fill : 4, new Color(255, 255, 255, 255)));
+
         }
         while (currentDrain > 0) {
             energy.addEnergy(ConfigHandler.tickTesla);
