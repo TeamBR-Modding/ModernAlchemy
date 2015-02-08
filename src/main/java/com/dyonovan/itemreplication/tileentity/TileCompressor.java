@@ -107,11 +107,20 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
         if(energy.canAcceptEnergy()) {
             chargeFromCoils();
         }
-        if (energy.getEnergyLevel() > 1 && tank.getFluid().amount  < tank.getCapacity()) {
+
+        if (energy.getEnergyLevel() > 1 && canFill(tank)) {
             energy.drainEnergy(2);
             tank.fill(setFluidStack(100), true);
-
         }
+    }
+
+    public boolean canFill(FluidTank tank) {
+        if(tank.getFluid() == null)
+            return true;
+        else if(tank.getFluid().amount < tank.getCapacity())
+            return true;
+        else
+            return false;
     }
 
     public void chargeFromCoils() {
@@ -126,7 +135,7 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
             coil.drainEnergy(fill);
 
             //if(worldObj.isRemote)
-                Minecraft.getMinecraft().effectRenderer.addEffect(new LightningBolt(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, coil.xCoord + 0.5, coil.yCoord + 0.5, coil.zCoord + 0.5, fill > 4 ? fill : 4, new Color(255, 255, 255, 255)));
+            Minecraft.getMinecraft().effectRenderer.addEffect(new LightningBolt(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, coil.xCoord + 0.5, coil.yCoord + 0.5, coil.zCoord + 0.5, fill > 4 ? fill : 4, new Color(255, 255, 255, 255)));
         }
         while(currentDrain > 0) {
             energy.addEnergy(ConfigHandler.tickTesla);

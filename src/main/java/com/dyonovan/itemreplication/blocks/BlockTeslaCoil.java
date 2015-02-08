@@ -27,7 +27,7 @@ public class BlockTeslaCoil extends BlockContainer {
     //temp till model is done
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconregister) {
-        this.blockIcon = iconregister.registerIcon(Constants.MODID + ":coil_non_existant");
+        this.blockIcon = iconregister.registerIcon(Constants.MODID + ":teslaCoil");
     }
 
     @Override
