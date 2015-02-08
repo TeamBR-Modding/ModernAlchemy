@@ -1,6 +1,6 @@
 package com.dyonovan.itemreplication.blocks;
 
-import com.dyonovan.itemreplication.tileentity.TEPatternRecorder;
+import com.dyonovan.itemreplication.tileentity.TilePatternRecorder;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -34,6 +34,6 @@ public class BlockPatternRecorder extends BlockContainer {
 
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
-        return new TEPatternRecorder();
+        return new TilePatternRecorder();
     }
 }

@@ -40,7 +40,7 @@ public class BlockHandler {
         // Block Pattern Recorder
         blockPatternRecorder = new BlockPatternRecorder();
         GameRegistry.registerBlock(blockPatternRecorder, "patternRecorder");
-        GameRegistry.registerTileEntity(TEPatternRecorder.class, "patternRecorder");
+        GameRegistry.registerTileEntity(TilePatternRecorder.class, "patternRecorder");
 
         //ArcFurnaceCore
         blockArcFurnaceCore = new BlockArcFurnaceCore();
