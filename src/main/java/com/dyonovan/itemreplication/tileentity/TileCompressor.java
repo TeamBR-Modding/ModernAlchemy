@@ -4,6 +4,7 @@ import com.dyonovan.itemreplication.blocks.BlockCompressor;
 import com.dyonovan.itemreplication.effects.LightningBolt;
 import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
+import com.dyonovan.itemreplication.energy.TeslaMachine;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
 import net.minecraft.client.Minecraft;
@@ -121,9 +122,7 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
             energy.drainEnergy(currentSpeed + 1);
             tank.fill(setFluidStack(100 * currentSpeed), true);
 
-            worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
             super.markDirty();
-
         } else if (isActive) isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 
     }
@@ -150,7 +149,7 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
 
     public void chargeFromCoils() {
         int maxFill = energy.getMaxCapacity() - energy.getEnergyLevel();
-        List<TileTeslaCoil> coils = findCoils(worldObj, this);
+        List<TileTeslaCoil> coils = TeslaMachine.findCoils(worldObj, this);
         int currentDrain = 0;
         for (TileTeslaCoil coil : coils) {
             if (coil.getEnergyLevel() <= 0) continue;
