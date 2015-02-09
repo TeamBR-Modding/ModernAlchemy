@@ -1,10 +1,7 @@
 package com.dyonovan.itemreplication.handlers;
 
 import com.dyonovan.itemreplication.blocks.*;
-import com.dyonovan.itemreplication.blocks.dummies.BlockDummy;
-import com.dyonovan.itemreplication.blocks.dummies.BlockDummyAirValve;
-import com.dyonovan.itemreplication.blocks.dummies.BlockDummyOutputValve;
-import com.dyonovan.itemreplication.blocks.dummies.BlockItemIODummy;
+import com.dyonovan.itemreplication.blocks.dummies.*;
 import com.dyonovan.itemreplication.fluids.FluidActinium;
 import com.dyonovan.itemreplication.fluids.FluidCompressedAir;
 import com.dyonovan.itemreplication.tileentity.*;
@@ -21,7 +18,7 @@ public class BlockHandler {
 
     public static Fluid fluidActinium, fluidCompressedAir;
     public static Block blockArcFurnaceDummy, blockArcFurnaceDummyItemIO, blockArcFurnaceDummyAirValue, blockArcFurnaceDummyOutputValue, blockArcFurnaceCore, blockTeslaStand, blockCoil;
-    public static Block blockOreActinium, blockFluidActinium, blockCompressor, blockFluidAir;
+    public static Block blockOreActinium, blockFluidActinium, blockCompressor, blockFluidAir, blockGhost;
     public static Block blockPatternRecorder;
 
     public static void init() {
@@ -85,5 +82,8 @@ public class BlockHandler {
         blockCoil = new BlockTeslaCoil();
         GameRegistry.registerBlock(blockCoil, "blockCoil");
         GameRegistry.registerTileEntity(TileTeslaCoil.class, "blockCoil");
+
+        blockGhost = new BlockOpenBelow();
+        GameRegistry.registerBlock(blockGhost, "blockGhost");
     }
 }

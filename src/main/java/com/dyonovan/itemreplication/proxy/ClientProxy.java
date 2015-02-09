@@ -1,6 +1,7 @@
 package com.dyonovan.itemreplication.proxy;
 
 import com.dyonovan.itemreplication.handlers.BlockHandler;
+import com.dyonovan.itemreplication.renderer.ItemRenderTeslaCoil;
 import com.dyonovan.itemreplication.renderer.ItemRenderTeslaStand;
 import com.dyonovan.itemreplication.renderer.RenderTeslaCoil;
 import com.dyonovan.itemreplication.renderer.RenderTeslaStand;
@@ -24,7 +25,7 @@ public class ClientProxy extends  CommonProxy{
         //TeslaCoil
         TileEntitySpecialRenderer renderCoil = new RenderTeslaCoil();
         ClientRegistry.bindTileEntitySpecialRenderer(TileTeslaCoil.class, renderCoil);
-        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockHandler.blockCoil),
-                //new ItemRenderTeslaCoil(renderCoil, new TileTeslaCoil()));
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockHandler.blockCoil),
+                new ItemRenderTeslaCoil());
     }
 }
