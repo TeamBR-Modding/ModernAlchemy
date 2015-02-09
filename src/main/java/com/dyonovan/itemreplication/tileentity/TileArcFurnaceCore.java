@@ -1,15 +1,14 @@
 package com.dyonovan.itemreplication.tileentity;
 
 import com.dyonovan.itemreplication.blocks.dummies.BlockDummy;
-import com.dyonovan.itemreplication.effects.LightningBolt;
 import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.energy.TeslaMachine;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
 import com.dyonovan.itemreplication.helpers.Location;
+import com.dyonovan.itemreplication.helpers.RenderUtils;
 import com.dyonovan.itemreplication.tileentity.dummies.TileDummy;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -23,7 +22,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
-import java.awt.*;
 import java.util.List;
 
 public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITeslaHandler, IInventory {
@@ -124,7 +122,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
             coil.drainEnergy(fill);
 
             if(worldObj.isRemote) {
-                Minecraft.getMinecraft().effectRenderer.addEffect(new LightningBolt(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, coil.xCoord + 0.5, coil.yCoord + 1.5, coil.zCoord + 0.5, fill > 4 ? fill : 4, new Color(255, 255, 255, 255)));
+                RenderUtils.renderLightningBolt(worldObj, xCoord, yCoord, zCoord, coil, fill);
             }
             if(currentDrain >= maxFill) //Don't want to drain other coils we don't need to
                 break;

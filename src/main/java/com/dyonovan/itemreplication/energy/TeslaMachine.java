@@ -1,16 +1,12 @@
 package com.dyonovan.itemreplication.energy;
 
-import com.dyonovan.itemreplication.effects.LightningBolt;
-import com.dyonovan.itemreplication.energy.ITeslaHandler;
-import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
+import com.dyonovan.itemreplication.helpers.RenderUtils;
 import com.dyonovan.itemreplication.tileentity.TileTeslaCoil;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,7 +113,7 @@ public final class TeslaMachine implements ITeslaHandler {
                 coil.drainEnergy(fill);
 
                 if (world.isRemote) {
-                    Minecraft.getMinecraft().effectRenderer.addEffect(new LightningBolt(world, tile.xCoord + 0.5, tile.yCoord + 0.5, tile.zCoord + 0.5, coil.xCoord + 0.5, coil.yCoord + 0.5, coil.zCoord + 0.5, fill > 4 ? fill : 4, new Color(255, 255, 255, 255)));
+                    RenderUtils.renderLightningBolt(world, tile.xCoord, tile.yCoord, tile.zCoord, coil, fill > 4 ? fill : 4);
                 }
                 if(currentDrain >= maxFill)
                     break;
