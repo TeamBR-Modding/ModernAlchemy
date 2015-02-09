@@ -7,6 +7,7 @@ import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.energy.TeslaMachine;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
+import com.dyonovan.itemreplication.helpers.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -110,11 +111,11 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
     public void updateEntity() {
         super.updateEntity();
 
-        if (worldObj.isRemote) return;
-
         if(energy.canAcceptEnergy()) {
             chargeFromCoils();
         }
+
+        //if (worldObj.isRemote) return;
 
         if (energy.getEnergyLevel() > 0 && canFill(tank) && !isPowered()) {
             updateSpeed();
@@ -159,8 +160,8 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
             currentDrain += fill;
             coil.drainEnergy(fill);
 
-            //if(worldObj.isRemote)
-            Minecraft.getMinecraft().effectRenderer.addEffect(new LightningBolt(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, coil.xCoord + 0.5, coil.yCoord + 1.5, coil.zCoord + 0.5, fill > 4 ? fill : 4, new Color(255, 255, 255, 255)));
+            if(worldObj.isRemote)
+                RenderUtils.renderLightningBolt(worldObj, xCoord, yCoord, zCoord, coil, fill);
 
         }
         while (currentDrain > 0) {

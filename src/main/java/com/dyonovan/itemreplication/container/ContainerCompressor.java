@@ -23,7 +23,7 @@ public class ContainerCompressor extends Container {
         return true;
     }
 
-    @Override
+    /*@Override
     public void addCraftingToCrafters(ICrafting crafter) {
         super.addCraftingToCrafters(crafter);
         crafter.sendProgressBarUpdate(this, 0, this.tile.getEnergyLevel());
@@ -58,5 +58,5 @@ public class ContainerCompressor extends Container {
             case 1:
                 this.tile.tank.setFluid(this.tile.setFluidStack(j));
         }
-    }
+    }*/
 }
