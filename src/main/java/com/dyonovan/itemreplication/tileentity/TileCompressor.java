@@ -6,10 +6,8 @@ import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
@@ -18,7 +16,7 @@ import java.util.List;
 
 public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHandler {
 
-    public static FluidTank tank;
+    public FluidTank tank;
     private TeslaBank energy;
     private boolean isActive;
     private int currentSpeed;
