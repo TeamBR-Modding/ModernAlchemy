@@ -14,8 +14,8 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
 @Mod(name = Constants.MODNAME, modid = Constants.MODID, version = Constants.VERSION, dependencies = Constants.DEPENDENCIES)
@@ -33,7 +33,7 @@ public class ItemReplication {
         @Override
         @SideOnly(Side.CLIENT)
         public Item getTabIconItem() {
-            return Items.cauldron;
+            return Item.getItemFromBlock(BlockHandler.blockCoil);
         }
     };
 
@@ -44,6 +44,9 @@ public class ItemReplication {
         ItemHandler.init();
         WorldGeneratorHandler.init();
         proxy.registerRenderer();
+
+        BucketHandler.INSTANCE.buckets.put(BlockHandler.blockFluidActinium, ItemHandler.itemBucketActinium);
+        MinecraftForge.EVENT_BUS.register(BucketHandler.INSTANCE);
     }
 
     @EventHandler
