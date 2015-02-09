@@ -36,7 +36,8 @@ public class TilePatternRecorder extends BaseTile implements ITeslaWorker {
 
     @Override
     public boolean canStartWork() {
-        return inventory[PATTERN_INPUT_SLOT].getItem() == ItemHandler.itemPattern &&  // must have a pattern - doesn't matter if it is already recorded
+        return inventory[PATTERN_INPUT_SLOT] != null && inventory[ITEM_SLOT] != null && inventory[PATTERN_OUTPUT_SLOT] != null &&
+                inventory[PATTERN_INPUT_SLOT].getItem() == ItemHandler.itemPattern &&  // must have a pattern - doesn't matter if it is already recorded
                 inventory[PATTERN_OUTPUT_SLOT].getItem() == null &&  // output must be empty
                 inventory[ITEM_SLOT].getItem() != null; // must have an item - TODO: restrict items?
     }
