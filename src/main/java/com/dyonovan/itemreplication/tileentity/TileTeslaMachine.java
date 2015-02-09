@@ -3,6 +3,7 @@ package com.dyonovan.itemreplication.tileentity;
 import com.dyonovan.itemreplication.effects.LightningBolt;
 import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
+import com.dyonovan.itemreplication.energy.TeslaMachine;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
@@ -134,7 +135,7 @@ public abstract class TileTeslaMachine extends BaseTile implements ITeslaHandler
     private void chargeFromCoils() {
         if (energyTank.canAcceptEnergy()) {
             int maxFill = energyTank.getMaxCapacity() - energyTank.getEnergyLevel();
-            List<TileTeslaCoil> coils = findCoils(worldObj, this);
+            List<TileTeslaCoil> coils = TeslaMachine.findCoils(worldObj, this);
             int currentDrain = 0;
             for (TileTeslaCoil coil : coils) {
                 int fill = coil.getEnergyLevel() > ConfigHandler.tickTesla ? ConfigHandler.tickTesla : coil.getEnergyLevel();

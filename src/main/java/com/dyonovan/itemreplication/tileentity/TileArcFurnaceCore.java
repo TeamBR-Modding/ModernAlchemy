@@ -75,7 +75,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
         }
         else if(timeCooked > 0 && timeCooked < COOK_TIME) {
             timeCooked += currentSpeed;
-            energyTank.drainEnergy(currentSpeed + 1);
+            energyTank.drainEnergy(currentSpeed);
         }
         else if(timeCooked >= COOK_TIME)
             smelt();
