@@ -36,7 +36,7 @@ public class GuiHandler implements IGuiHandler {
         case COMPRESSOR_GUI_ID :
             return new ContainerCompressor((TileCompressor) world.getTileEntity(x, y, z));
         case PATTERN_RECORDER_GUI_ID :
-            return new ContainerPatternRecorder((TilePatternRecorder) world.getTileEntity(x, y, z));
+            return new ContainerPatternRecorder(player.inventory, (TilePatternRecorder) world.getTileEntity(x, y, z));
         case SOLIDIFIER_GUI_ID :
             return new ContainerSolidifier((TileSolidifier) world.getTileEntity(x, y, z));
         }
@@ -53,7 +53,7 @@ public class GuiHandler implements IGuiHandler {
         case COMPRESSOR_GUI_ID :
             return new GuiCompressor((TileCompressor) world.getTileEntity(x, y, z));
         case PATTERN_RECORDER_GUI_ID :
-            return new GuiPatternRecorder((TilePatternRecorder) world.getTileEntity(x, y, z));
+            return new GuiPatternRecorder(player.inventory, (TilePatternRecorder) world.getTileEntity(x, y, z));
         case SOLIDIFIER_GUI_ID :
             return new GuiSolidifier((TileSolidifier) world.getTileEntity(x, y, z));
         }

@@ -67,12 +67,14 @@ public class ItemPattern extends Item {
     }
 
     public static void recordPattern(ItemStack pattern, ItemStack item) {
-        pattern.stackTagCompound = new NBTTagCompound();
-        pattern.stackTagCompound.setString("Item", item.getUnlocalizedName());
+        if(pattern != null && item != null) {
+            pattern.stackTagCompound = new NBTTagCompound();
+            pattern.stackTagCompound.setString("Item", item.getUnlocalizedName());
+        }
     }
 
     public static String getRecordedPattern(ItemStack pattern){
-        if(pattern.stackTagCompound != null)
+        if(pattern != null && pattern.stackTagCompound != null)
             return pattern.stackTagCompound.getString("Item");
         return "";
     }

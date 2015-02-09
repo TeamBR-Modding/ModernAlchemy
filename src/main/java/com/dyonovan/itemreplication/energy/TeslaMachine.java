@@ -43,6 +43,10 @@ public final class TeslaMachine implements ITeslaHandler {
         return isRunning;
     }
 
+    public int getProgressScaled(int scale) {
+        return workProgress / totalWorkTime * scale;
+    }
+
     public void readFromNBT(NBTTagCompound tag) {
         energyTank.readFromNBT(tag);
         totalWorkTime = tag.getInteger("totalWorkTime");
