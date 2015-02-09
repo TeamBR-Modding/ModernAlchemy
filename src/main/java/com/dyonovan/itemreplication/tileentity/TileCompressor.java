@@ -21,11 +21,12 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
     public static FluidTank tank;
     private TeslaBank energy;
     private boolean isActive;
+    private int currentSpeed;
 
     public TileCompressor() {
-        energy = new TeslaBank(1000);
-        tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 10);
-        isActive = false;
+        this.energy = new TeslaBank(1000);
+        this.tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 10);
+        this.isActive = false;
     }
 
     public FluidStack setFluidStack(int amount) {
@@ -64,7 +65,7 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
 
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-        return tank.drain(maxDrain, true);
+        return tank.drain(maxDrain, doDrain);
     }
 
     @Override
@@ -109,17 +110,35 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
     @Override
     public void updateEntity() {
         super.updateEntity();
+
         if (worldObj.isRemote) return;
 
         if(energy.canAcceptEnergy()) {
             chargeFromCoils();
         }
 
-        if (energy.getEnergyLevel() > 1 && canFill(tank)) {
+        if (energy.getEnergyLevel() > 0 && canFill(tank)) {
+            updateSpeed();
             if (!isActive) isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-            energy.drainEnergy(2);
-            tank.fill(setFluidStack(100), true);
+            energy.drainEnergy(currentSpeed + 1);
+            tank.fill(setFluidStack(100 * currentSpeed), true);
+
+            worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+            super.markDirty();
+
         } else if (isActive) isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+
+    }
+
+    public void updateSpeed() {
+        if(energy.getEnergyLevel() == 0) {
+            currentSpeed = 0;
+            return;
+        }
+
+        currentSpeed = (energy.getEnergyLevel() * 20) / energy.getMaxCapacity();
+        if(currentSpeed == 0)
+            currentSpeed = 1;
     }
 
     public boolean canFill(FluidTank tank) {

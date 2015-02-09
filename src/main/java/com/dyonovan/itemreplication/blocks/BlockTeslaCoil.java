@@ -25,10 +25,10 @@ public class BlockTeslaCoil extends BlockContainer {
     }
 
     //temp till model is done
-    @SideOnly(Side.CLIENT)
+    /*@SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconregister) {
         this.blockIcon = iconregister.registerIcon(Constants.MODID + ":teslaCoil");
-    }
+    }*/
 
     @Override
     public boolean hasTileEntity(int metadata) {
@@ -41,7 +41,7 @@ public class BlockTeslaCoil extends BlockContainer {
         return new TileTeslaCoil();
     }
 
-    /*@Override
+    @Override
     public int getRenderType() {
         return -1;
     }
@@ -54,7 +54,7 @@ public class BlockTeslaCoil extends BlockContainer {
     @Override
     public boolean renderAsNormalBlock() {
         return false;
-    }*/
+    }
 
     @Override
     public boolean canPlaceBlockAt(World world, int x, int y, int z) {
