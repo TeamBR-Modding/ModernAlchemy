@@ -62,8 +62,8 @@ public class GuiArcFurnace extends GuiContainer {
         GL11.glPushMatrix();
         tess.startDrawingQuads();
         tess.addVertexWithUV(x + 66, y + 53, 0,     0.6875F, 0.08203125F);
-        tess.addVertexWithUV(x + 92, y + 53, 0, 0.78515625F, 0.08203125F);
-        tess.addVertexWithUV(x + 92, y + 32, 0, 0.78515625F,        0.0F);
+        tess.addVertexWithUV(x + 93, y + 53, 0, 0.78515625F, 0.08203125F);
+        tess.addVertexWithUV(x + 93, y + 32, 0, 0.78515625F,        0.0F);
         tess.addVertexWithUV(x + 66, y + 32, 0,     0.6875F,        0.0F);
         tess.draw();
         GL11.glPopMatrix();
