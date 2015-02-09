@@ -125,6 +125,8 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
             if(worldObj.isRemote) {
                 Minecraft.getMinecraft().effectRenderer.addEffect(new LightningBolt(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, coil.xCoord + 0.5, coil.yCoord + 0.5, coil.zCoord + 0.5, fill > 4 ? fill : 4, new Color(255, 255, 255, 255)));
             }
+            if(currentDrain >= maxFill) //Don't want to drain other coils we don't need to
+                break;
         }
         while(currentDrain > 0) {
             energyTank.addEnergy(1);

@@ -48,7 +48,7 @@ public class LightningBolt extends EntityFX {
     {
         tessellator.draw();
         super.renderParticle(tessellator, par2, par3, par4, par5, par6, par7);
-        renderBolt(tessellator, posX, posY, posZ, tX, tY, tZ, 1, 0.2);
+        renderBolt(tessellator, posX, posY, posZ, tX, tY, tZ, 1.6, 0.2);
         Minecraft.getMinecraft().renderEngine.bindTexture((ResourceLocation) ReflectionHelper.getPrivateValue(EffectRenderer.class, null, new String[]{"particleTextures", "b", "field_110737_b"}));
         tessellator.startDrawingQuads();
     }
@@ -83,7 +83,7 @@ public class LightningBolt extends EntityFX {
             GL11.glRotatef(180.0F + ry, 0.0F, 0.0F, -1.0F);
             GL11.glRotatef(rp, 1.0F, 0.0F, 0.0F);
 
-            float size = 0.2F;
+            float size = 0.1F;
             double xx = size * -0.15;
             double xx2 = size * -0.15 * 1.0;
             double yy = MathHelper.sqrt_float(xd * xd + yd * yd + zd * zd);
