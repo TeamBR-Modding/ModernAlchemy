@@ -22,7 +22,7 @@ public class BlockHandler {
     public static Fluid fluidActinium, fluidCompressedAir;
     public static Block blockArcFurnaceDummy, blockArcFurnaceDummyItemIO, blockArcFurnaceDummyAirValue, blockArcFurnaceDummyOutputValue, blockArcFurnaceCore, blockTeslaStand, blockCoil;
     public static Block blockOreActinium, blockFluidActinium, blockCompressor, blockFluidAir;
-    public static Block blockPatternRecorder;
+    public static Block blockPatternRecorder, blockSolidifier;
 
     public static void init() {
         //Actinium Fluid Registration
@@ -85,5 +85,10 @@ public class BlockHandler {
         blockCoil = new BlockTeslaCoil();
         GameRegistry.registerBlock(blockCoil, "blockCoil");
         GameRegistry.registerTileEntity(TileTeslaCoil.class, "blockCoil");
+
+        //Solidifier
+        blockSolidifier = new BlockSolidifier();
+        GameRegistry.registerBlock(blockSolidifier, "blockSolidifier");
+        GameRegistry.registerTileEntity(TileSolidifier.class, "blockSolidifier");
     }
 }
