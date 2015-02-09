@@ -6,3 +6,6 @@ tile.itemreplication:blockOreActinium.name=Actinium Ore
 tile.itemreplication:arcFurnaceDummy.name=Arc Furnace Casing
 tile.itemreplication:blockArcFurnaceCore.name=Arc Furnace Processor
 tile.itemreplication:blockCompressor.name=Electric Bellows
+tile.itemreplication:blockSolidifier.name=Amalgamator
+
+itemGroup.tabItemReplication=Modern Alchemy
