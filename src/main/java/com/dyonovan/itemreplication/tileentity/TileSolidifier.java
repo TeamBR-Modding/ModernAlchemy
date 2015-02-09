@@ -8,6 +8,9 @@ import com.dyonovan.itemreplication.energy.TeslaMachine;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
@@ -15,18 +18,21 @@ import net.minecraftforge.fluids.*;
 import java.awt.*;
 import java.util.List;
 
-public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHandler {
+public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHandler, ISidedInventory {
 
     public FluidTank tank;
     private TeslaBank energy;
     private boolean isActive;
     private int currentSpeed;
+    public ItemStack inventory[];
+    private static final int OUTPUT_SLOT = 0;
 
     public TileSolidifier() {
         tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 10);
-        tank.setFluid(new FluidStack(BlockHandler.fluidActinium, FluidContainerRegistry.BUCKET_VOLUME * 10));
-        this.energy = new TeslaBank(1000, 1000);
+        tank.setFluid(new FluidStack(BlockHandler.fluidActinium, 0));
+        this.energy = new TeslaBank(1000);
         this.isActive = false;
+        inventory = new ItemStack[1];
     }
 
     @Override
@@ -45,6 +51,7 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
 
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+        if (resource.getFluid() != BlockHandler.fluidActinium) return 0;
         return tank.fill(resource, doFill);
     }
 
@@ -111,7 +118,7 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
             chargeFromCoils();
         }
 
-        if (energy.getEnergyLevel() > 0 && tank.getFluid() != null && tank.getFluidAmount() > 0) {
+        if (energy.getEnergyLevel() > 0 && tank.getFluid() != null && tank.getFluidAmount() > 0 && !isPowered()) {
             updateSpeed();
             if (!isActive) isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
             //TODO ACTUAL PROCESSING
@@ -150,5 +157,80 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
             energy.addEnergy(ConfigHandler.tickTesla);
             currentDrain--;
         }
+    }
+
+    @Override
+    public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
+        return new int[0];
+    }
+
+    @Override
+    public boolean canInsertItem(int p_102007_1_, ItemStack p_102007_2_, int p_102007_3_) {
+        return false;
+    }
+
+    @Override
+    public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_, int p_102008_3_) {
+        return false;
+    }
+
+    @Override
+    public int getSizeInventory() {
+        return 0;
+    }
+
+    @Override
+    public ItemStack getStackInSlot(int p_70301_1_) {
+        return null;
+    }
+
+    @Override
+    public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_) {
+        return null;
+    }
+
+    @Override
+    public ItemStack getStackInSlotOnClosing(int p_70304_1_) {
+        return null;
+    }
+
+    @Override
+    public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {
+
+    }
+
+    @Override
+    public String getInventoryName() {
+        return null;
+    }
+
+    @Override
+    public boolean hasCustomInventoryName() {
+        return false;
+    }
+
+    @Override
+    public int getInventoryStackLimit() {
+        return 0;
+    }
+
+    @Override
+    public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
+        return false;
+    }
+
+    @Override
+    public void openInventory() {
+
+    }
+
+    @Override
+    public void closeInventory() {
+
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
+        return false;
     }
 }

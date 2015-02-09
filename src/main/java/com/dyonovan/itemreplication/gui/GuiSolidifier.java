@@ -7,6 +7,7 @@ import com.dyonovan.itemreplication.lib.Constants;
 import com.dyonovan.itemreplication.tileentity.TileSolidifier;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidTank;
@@ -20,8 +21,8 @@ public class GuiSolidifier extends GuiContainer  {
     private ResourceLocation background = new ResourceLocation(Constants.MODID + ":textures/gui/solidifier.png");
     private TileSolidifier tile;
 
-    public GuiSolidifier(TileSolidifier tile) {
-        super(new ContainerSolidifier(tile));
+    public GuiSolidifier(InventoryPlayer inventory, TileSolidifier tile) {
+        super(new ContainerSolidifier(inventory, tile));
         this.tile = tile;
     }
 
@@ -29,13 +30,11 @@ public class GuiSolidifier extends GuiContainer  {
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         final String invTitle =  "Amalgamator";
-        //final String invTitle2 = "Furnace";
         int x = (width - xSize) / 2;
         int y = (height - ySize) / 2;
 
-        fontRendererObj.drawString(invTitle, 95 + (fontRendererObj.getStringWidth(invTitle) / 2), 6, 4210752);
-        //fontRendererObj.drawString(invTitle2, 95, 17, 4210752);
-        fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 95, ySize - 96 + 2, 4210752);
+        fontRendererObj.drawString(invTitle, 98 - (fontRendererObj.getStringWidth(invTitle) / 2), 6, 4210752);
+        fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 72, ySize - 96 + 2, 4210752);
     }
 
     @Override
@@ -78,7 +77,7 @@ public class GuiSolidifier extends GuiContainer  {
         }
         if(GuiHelper.isInBounds(mouseX, mouseY, x + 37, y + 26, x + 52, y + 77)) {
             List<String> toolTip = new ArrayList<String>();
-            toolTip.add(GuiHelper.GuiColor.YELLOW + "Compressed Air");
+            toolTip.add(GuiHelper.GuiColor.YELLOW + "Actinium");
             toolTip.add(tile.tank.getFluidAmount() + "/" + tile.tank.getCapacity() + GuiHelper.GuiColor.ORANGE + "mb");
             renderToolTip(mouseX, mouseY, toolTip);
         }
