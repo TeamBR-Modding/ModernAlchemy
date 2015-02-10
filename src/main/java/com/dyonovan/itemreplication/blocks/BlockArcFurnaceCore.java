@@ -63,8 +63,8 @@ public class BlockArcFurnaceCore extends BlockContainer {
     public void breakBlock(World world, int x, int y, int z, Block par5, int par6)
     {
         TileArcFurnaceCore core = (TileArcFurnaceCore) world.getTileEntity(x, y, z);
-        core.expelItem(core.inventory[0]);
-        core.expelItem(core.inventory[1]);
+        core.expelItem(core.inventory.getStackInSlot(0));
+        core.expelItem(core.inventory.getStackInSlot(1));
         super.breakBlock(world, x, y, z, par5, par6);
     }
 }

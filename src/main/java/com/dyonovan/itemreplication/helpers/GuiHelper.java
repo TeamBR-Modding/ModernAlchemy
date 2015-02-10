@@ -17,7 +17,7 @@ public class GuiHelper {
             IIcon icon = fluid.getFluid().getIcon(fluid);
             Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
             setGLColorFromInt(fluid.getFluid().getColor(fluid));
-            if(level > 16) {
+            if(level >= 16) {
                 int times = (int) Math.floor(level / 16);
                 for(int i = 1; i <= times; i++) {
                     drawIconWithCut(icon, x, y - (16 * i), 16, 16, 0);

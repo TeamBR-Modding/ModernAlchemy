@@ -22,16 +22,16 @@ public class TileDummyItemIO extends TileDummy implements ISidedInventory {
             switch (slot) {
             case 0:
                 if (item.getItem() == Item.getItemFromBlock(BlockHandler.blockOreActinium)) {
-                    if(core.inventory[slot] != null)
-                        return item.stackSize + core.inventory[slot].stackSize <= 64;
+                    if(core.inventory.getStackInSlot(slot) != null)
+                        return item.stackSize + core.inventory.getStackInSlot(slot).stackSize <= 64;
                     else
                         return true;
                 }
                 break;
             case 1:
                 if (item.getItem() == Items.coal) {
-                    if(core.inventory[slot] != null)
-                        return item.stackSize + core.inventory[slot].stackSize <= 64;
+                    if(core.inventory.getStackInSlot(slot) != null)
+                        return item.stackSize + core.inventory.getStackInSlot(slot).stackSize <= 64;
                     else
                         return true;
                 }
@@ -53,18 +53,18 @@ public class TileDummyItemIO extends TileDummy implements ISidedInventory {
     @Override
     public ItemStack getStackInSlot(int slot) {
         TileArcFurnaceCore core = (TileArcFurnaceCore) getCore();
-        return core != null ? core.inventory[slot] : null;
+        return core != null ? core.inventory.getStackInSlot(slot) : null;
     }
 
     @Override
     public ItemStack decrStackSize(int slot, int amount) {
         TileArcFurnaceCore core = (TileArcFurnaceCore) getCore();
         if(core != null) {
-            core.inventory[slot].stackSize -= amount;
-            if(core.inventory[slot].stackSize <= 0) {
-                core.inventory[slot] = null;
+            core.inventory.getStackInSlot(slot).stackSize -= amount;
+            if(core.inventory.getStackInSlot(slot).stackSize <= 0) {
+                core.inventory.setStackInSlot(null, slot);
             }
-            return core.inventory[slot];
+            return core.inventory.getStackInSlot(slot);
         }
         return null;
     }
@@ -73,7 +73,7 @@ public class TileDummyItemIO extends TileDummy implements ISidedInventory {
     public ItemStack getStackInSlotOnClosing(int slot) {
         TileArcFurnaceCore core = (TileArcFurnaceCore) getCore();
         if(core != null) {
-            return core.inventory[slot];
+            return core.inventory.getStackInSlot(slot);
         }
         return null;
     }
@@ -82,7 +82,7 @@ public class TileDummyItemIO extends TileDummy implements ISidedInventory {
     public void setInventorySlotContents(int slot, ItemStack stack) {
         TileArcFurnaceCore core = (TileArcFurnaceCore) getCore();
         if(core != null) {
-            core.inventory[slot] = stack;
+            core.inventory.setStackInSlot(stack, slot);
         }
     }
 

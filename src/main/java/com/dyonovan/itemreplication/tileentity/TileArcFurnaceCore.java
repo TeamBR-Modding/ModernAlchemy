@@ -14,10 +14,7 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
@@ -33,7 +30,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
 
     private TeslaBank energyTank;
 
-    public ItemStack inventory[];
+    public InventoryTile inventory;
     private static final int INPUT_SLOT = 0;
     private static final int CATALYST_SLOT = 1;
 
@@ -46,7 +43,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
 
         energyTank = new TeslaBank(0, 1000);
 
-        inventory = new ItemStack[2];
+        inventory = new InventoryTile(2);
     }
 
     @Override
@@ -63,12 +60,12 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
         if(canSmelt() && timeCooked == 0) {
             //Consume Resources
             airTank.drain(100, true);
-            inventory[0].stackSize--;
-            if(inventory[0].stackSize == 0)
-                inventory[0] = null;
-            inventory[1].stackSize--;
-            if(inventory[1].stackSize == 0)
-                inventory[1] = null;
+            inventory.getStackInSlot(0).stackSize--;
+            if(inventory.getStackInSlot(0).stackSize == 0)
+                inventory.setStackInSlot(null, 0);
+            inventory.getStackInSlot(1).stackSize--;
+            if(inventory.getStackInSlot(1).stackSize == 0)
+                inventory.setStackInSlot(null, 1);
             timeCooked += currentSpeed;
         }
         else if(timeCooked > 0 && timeCooked < COOK_TIME) {
@@ -85,10 +82,10 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     }
 
     public boolean canSmelt() {
-        if(inventory[0] != null && inventory [1] != null)
+        if(inventory.getStackInSlot(0) != null && inventory.getStackInSlot(1) != null)
             return airTank.getFluidAmount() > 100 &&
-                    inventory[0].getItem() == Item.getItemFromBlock(BlockHandler.blockOreActinium) &&
-                    inventory[1].getItem() == Items.coal &&
+                    inventory.getStackInSlot(0).getItem() == Item.getItemFromBlock(BlockHandler.blockOreActinium) &&
+                    inventory.getStackInSlot(1).getItem() == Items.coal &&
                     outputTank.getCapacity() - outputTank.getFluidAmount() >= FluidContainerRegistry.BUCKET_VOLUME;
         else
             return false;
@@ -248,6 +245,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
 
         timeCooked = tagCompound.getInteger("TimeCooking");
 
+        inventory.readFromNBT(tagCompound, this);
         energyTank.readFromNBT(tagCompound);
 
         if(tagCompound.getBoolean("hasOutputFluid")) {
@@ -261,23 +259,6 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
         }
         else
             airTank.setFluid(null);
-
-        NBTTagList itemsTag = tagCompound.getTagList("Items", 10);
-        this.inventory = new ItemStack[getSizeInventory()];
-        for (int i = 0; i < itemsTag.tagCount(); i++)
-        {
-            NBTTagCompound nbtTagCompound1 = itemsTag.getCompoundTagAt(i);
-            NBTBase nbt = nbtTagCompound1.getTag("Slot");
-            int j = -1;
-            if ((nbt instanceof NBTTagByte)) {
-                j = nbtTagCompound1.getByte("Slot") & 0xFF;
-            } else {
-                j = nbtTagCompound1.getShort("Slot");
-            }
-            if ((j >= 0) && (j < this.inventory.length)) {
-                this.inventory[j] = ItemStack.loadItemStackFromNBT(nbtTagCompound1);
-            }
-        }
     }
 
     @Override
@@ -287,6 +268,8 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
         tagCompound.setInteger("TimeCooking", timeCooked);
 
         energyTank.writeToNBT(tagCompound);
+        inventory.writeToNBT(tagCompound);
+
         tagCompound.setBoolean("hasOutputFluid", outputTank.getFluid() != null);
         tagCompound.setBoolean("hasAir", airTank.getFluid() != null);
         if(outputTank.getFluid() != null) {
@@ -297,33 +280,21 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
             tagCompound.setString("air", airTank.getFluid().getFluid().getName());
             tagCompound.setInteger("airAmount", airTank.getFluid().amount);
         }
-
-        NBTTagList nbtTagList = new NBTTagList();
-        for (int i = 0; i < this.inventory.length; i++) {
-            if (this.inventory[i] != null)
-            {
-                NBTTagCompound nbtTagCompound1 = new NBTTagCompound();
-                nbtTagCompound1.setShort("Slot", (short)i);
-                this.inventory[i].writeToNBT(nbtTagCompound1);
-                nbtTagList.appendTag(nbtTagCompound1);
-            }
-        }
-        tagCompound.setTag("Items", nbtTagList);
     }
 
     @Override
     public int getSizeInventory() {
-        return inventory.length;
+        return inventory.getSizeInventory();
     }
 
     @Override
     public ItemStack getStackInSlot(int slot) {
-        return inventory[slot];
+        return inventory.getStackInSlot(slot);
     }
 
     @Override
     public void setInventorySlotContents(int slot, ItemStack stack) {
-        inventory[slot] = stack;
+        inventory.setStackInSlot(stack, slot);
         if (stack != null && stack.stackSize > getInventoryStackLimit()) {
             stack.stackSize = getInventoryStackLimit();
         }
