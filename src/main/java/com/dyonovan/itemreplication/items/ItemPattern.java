@@ -2,6 +2,7 @@ package com.dyonovan.itemreplication.items;
 
 import com.dyonovan.itemreplication.ItemReplication;
 import com.dyonovan.itemreplication.lib.Constants;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -69,7 +70,9 @@ public class ItemPattern extends Item {
     public static void recordPattern(ItemStack pattern, ItemStack item) {
         if(pattern != null && item != null) {
             pattern.stackTagCompound = new NBTTagCompound();
-            pattern.stackTagCompound.setString("Item", item.getUnlocalizedName());
+            GameRegistry.UniqueIdentifier uniqueIdentifier = GameRegistry.findUniqueIdentifierFor(item.getItem());
+            String itemName = uniqueIdentifier.modId + ":" + uniqueIdentifier.name + ":" + item.getItemDamage();
+            pattern.stackTagCompound.setString("Item", itemName);
         }
     }
 

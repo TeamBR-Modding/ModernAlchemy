@@ -80,8 +80,8 @@ public class TileTeslaCoil extends BaseTile implements IEnergyHandler, ITeslaHan
     }
 
     @Override
-    public void drainEnergy(int maxAmount) {
-        energyTesla.drainEnergy(maxAmount);
+    public int drainEnergy(int maxAmount) {
+        return energyTesla.drainEnergy(maxAmount);
     }
 
     @Override

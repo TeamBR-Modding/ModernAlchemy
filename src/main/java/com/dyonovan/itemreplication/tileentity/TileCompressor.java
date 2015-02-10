@@ -3,14 +3,23 @@ package com.dyonovan.itemreplication.tileentity;
 import com.dyonovan.itemreplication.blocks.BlockCompressor;
 import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
-import com.dyonovan.itemreplication.energy.TeslaMachine;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
+<<<<<<< HEAD
 import com.dyonovan.itemreplication.util.RenderUtils;
+=======
+import com.dyonovan.itemreplication.helpers.RenderUtils;
+>>>>>>> origin/master
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
+<<<<<<< HEAD
+=======
+import java.util.ArrayList;
+>>>>>>> origin/master
 import java.util.List;
 
 public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHandler {
@@ -86,8 +95,8 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
     }
 
     @Override
-    public void drainEnergy(int maxAmount) {
-        energy.drainEnergy(maxAmount);
+    public int drainEnergy(int maxAmount) {
+        return energy.drainEnergy(maxAmount);
     }
 
     @Override
@@ -147,7 +156,7 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
 
     public void chargeFromCoils() {
         int maxFill = energy.getMaxCapacity() - energy.getEnergyLevel();
-        List<TileTeslaCoil> coils = TeslaMachine.findCoils(worldObj, this);
+        List<TileTeslaCoil> coils = findCoils(worldObj, this);
         int currentDrain = 0;
         for (TileTeslaCoil coil : coils) {
             if (coil.getEnergyLevel() <= 0) continue;
@@ -166,4 +175,25 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
             currentDrain--;
         }
     }
+
+    public static List<TileTeslaCoil> findCoils(World world, TileEntity tile) {
+
+        List<TileTeslaCoil> list = new ArrayList<TileTeslaCoil>();
+
+        int tileX = tile.xCoord;
+        int tileY = tile.yCoord;
+        int tileZ = tile.zCoord;
+
+        for (int x = -ConfigHandler.searchRange; x <= ConfigHandler.searchRange; x++) {
+            for (int y = -ConfigHandler.searchRange; y <= ConfigHandler.searchRange; y++) {
+                for (int z = -ConfigHandler.searchRange; z <= ConfigHandler.searchRange; z++) {
+                    if (world.getTileEntity(tileX + x, tileY + y, tileZ + z) instanceof TileTeslaCoil) {
+                        list.add((TileTeslaCoil) world.getTileEntity(tileX + x, tileY + y, tileZ + z));
+                    }
+                }
+            }
+        }
+        return list;
+    }
+
 }
