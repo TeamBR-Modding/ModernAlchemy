@@ -12,7 +12,7 @@ public class TileTeslaCoil extends BaseTile implements IEnergyHandler, ITeslaHan
 
     protected EnergyStorage energyRF;
     private TeslaBank energyTesla;
-
+    //TODO make special block unbreakable
     public TileTeslaCoil() {
         super();
         energyRF = new EnergyStorage(10000, 1000, 0);
