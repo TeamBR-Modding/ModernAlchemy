@@ -137,30 +137,23 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
 
         if (isPowered()) {
             if (this.inventory[0] != null && this.inventory[0].stackSize >= 64) return;
-            updateSpeed();
-            if (!isActive) isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+            if (energy.getEnergyLevel() > 0 && tank.getFluid() != null && tank.getFluidAmount() > 10) {
+                updateSpeed();
+                if (!isActive)
+                    isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 
-            if (timeProcessed < PROCESS_TIME) {
-                if (energy.getEnergyLevel() > 0) {
-                    energy.drainEnergy(currentSpeed);
-                }
-                else {
-                    timeProcessed = 0;
-                    super.markDirty();
-                    return;
+                if (timeProcessed < PROCESS_TIME) {
+                    if (energy.getEnergyLevel() > 0) {
+                        energy.drainEnergy(currentSpeed);
+                    }
                 }
                 if (tank.getFluid() != null || tank.getFluidAmount() > 10 * currentSpeed) {
                     tank.drain(10, true);
                     timeProcessed += currentSpeed;
-                } else {
-                    timeProcessed = 0;
-                    super.markDirty();
-                    return;
                 }
             } else if (timeProcessed >= PROCESS_TIME) {
                 if (inventory[0] == null) setInventorySlotContents(0, new ItemStack(ItemHandler.itemCube));
                 else inventory[0].stackSize++;
-                timeProcessed = 0;
             }
             super.markDirty();
         } else if (isActive) {

@@ -51,10 +51,7 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
 
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-        int amount;
-        amount = tank.fill(resource, doFill);
-        super.markDirty();
-        return amount;
+        return tank.fill(resource, doFill);
     }
 
     @Override
@@ -63,16 +60,12 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
         {
             return null;
         }
-        FluidStack fluid = tank.drain(resource.amount, true);
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        return fluid;
+        return tank.drain(resource.amount, true);
     }
 
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-        FluidStack fluid = tank.drain(maxDrain, doDrain);
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        return fluid;
+        return tank.drain(maxDrain, doDrain);
     }
 
     @Override
@@ -125,14 +118,14 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
         //if (worldObj.isRemote) return;
 
         if (energy.getEnergyLevel() > 0 && canFill(tank) && !isPowered()) {
-            updateSpeed();
             if (!isActive) isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+            updateSpeed();
             energy.drainEnergy(currentSpeed);
             tank.fill(setFluidStack(10 * currentSpeed), true);
 
-
+            super.markDirty();
         } else if (isActive) isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-        super.markDirty();
+
     }
 
     public void updateSpeed() {
