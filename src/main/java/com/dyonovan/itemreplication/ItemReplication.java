@@ -16,7 +16,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
@@ -24,8 +23,6 @@ import java.io.File;
 @Mod(name = Constants.MODNAME, modid = Constants.MODID, version = Constants.VERSION, dependencies = Constants.DEPENDENCIES)
 
 public class ItemReplication {
-
-    public static String configDir;
 
     @Instance(Constants.MODID)
     public static ItemReplication instance;
@@ -44,18 +41,16 @@ public class ItemReplication {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event){
-        configDir = "event.getModConfigurationDirectory().getAbsolutePath() + File.separator + Constants.MODID.toLowerCase() + File.separator";
-        //ConfigHandler.init(new Configuration(new File(event.getModConfigurationDirectory().getAbsolutePath() + File.separator + Constants.MODID.toLowerCase() + File.separator + "general.properties")));
-        ConfigHandler.init(new Configuration(new File(configDir + "general.properties")));
+        ConfigHandler.init(new Configuration(new File(event.getModConfigurationDirectory().getAbsolutePath() + File.separator + Constants.MODID.toLowerCase() + File.separator + "general.properties")));
         BlockHandler.init();
         ItemHandler.init();
         WorldGeneratorHandler.init();
+        EventManager.init();
         proxy.registerRenderer();
 
         BucketHandler.INSTANCE.buckets.put(BlockHandler.blockFluidActinium, ItemHandler.itemBucketActinium);
-        MinecraftForge.EVENT_BUS.register(BucketHandler.INSTANCE);
 
-        ReplicatorUtils.INSTANCE.buildDirectory(event.getModConfigurationDirectory().getAbsolutePath() + File.separator + Constants.MODID.toLowerCase() + File.separator + "replicatorValues" + File.separator);
+        ReplicatorUtils.buildDirectory(event.getModConfigurationDirectory().getAbsolutePath() + File.separator + Constants.MODID.toLowerCase() + File.separator + "replicatorValues" + File.separator);
     }
 
     @EventHandler
