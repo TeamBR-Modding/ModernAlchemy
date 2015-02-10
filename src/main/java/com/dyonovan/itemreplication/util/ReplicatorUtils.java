@@ -1,25 +1,19 @@
 package com.dyonovan.itemreplication.util;
 
 import com.dyonovan.itemreplication.ItemReplication;
-import com.dyonovan.itemreplication.lib.Constants;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 
 public class ReplicatorUtils {
-    public static HashMap<String, Integer> values;
+    public static HashMap<String, Integer> values = new HashMap<String, Integer>();
 
     public static String fileDirectory;
-
-    public ReplicatorUtils() {
-        values = new HashMap<String, Integer>();
-    }
 
     public static void buildDirectory(String folderLocation) {
         File dir = new File(folderLocation);
@@ -47,8 +41,10 @@ public class ReplicatorUtils {
             for(File file : files) {
                 String modid = file.getName().substring(0, file.getName().length() - 5);
                 HashMap<String, Integer> map = JsonUtils.readJson(modid);
-                if(map != null)
+                if(map != null) {
+                    System.out.println("Found values for: " + modid);
                     values.putAll(map);
+                }
                 else
                     System.out.println("Could not add " + modid + ".json");
             }
@@ -60,7 +56,20 @@ public class ReplicatorUtils {
     public static int getValueForItem(ItemStack stack) {
         GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(stack.getItem());
         HashMap<String, Integer> map = JsonUtils.readJson(id.modId);
-        if(map != null) {
+
+        //Check our generated map first
+        if(values != null) {
+            if(values.containsKey(id.name + ":" + stack.getItemDamage())) {
+                return values.get(id.name + ":" + stack.getItemDamage());
+            }
+            else if(values.containsKey(id.name))
+                return values.get(id.name);
+        }
+
+        //Check from files
+        else if(map != null) {
+            values.putAll(map);
+
             if(map.containsKey(id.name + ":" + stack.getItemDamage())) {
                 return map.get(id.name + ":" + stack.getItemDamage());
             }
