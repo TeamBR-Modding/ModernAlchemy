@@ -59,13 +59,10 @@ public class GuiPatternRecorder extends GuiContainer {
         tess.addVertexWithUV(x + 8,  y + 78 - height, 0,     0.6875F, (float) (91 - height) / 256);
         tess.draw();
 
-        // offset the pulse because we are drawing it in a different location
-        x += 10;
-        y += 26;
-
         //Render pulse
         GL11.glPushMatrix();
         tess.startDrawingQuads();
+        GL11.glTranslatef(10, 26, 0); // offset the pulse because we are drawing it in a different location
         tess.addVertexWithUV(x + 66, y + 53, 0,     0.6875F, 0.08203125F);
         tess.addVertexWithUV(x + 93, y + 53, 0, 0.78515625F, 0.08203125F);
         tess.addVertexWithUV(x + 93, y + 32, 0, 0.78515625F,        0.0F);
@@ -76,7 +73,6 @@ public class GuiPatternRecorder extends GuiContainer {
         //Draw Arrow
         int arrow = tile.getProgressScaled(24);
         drawTexturedModalRect(x + 107, y + 35, 176, 22, arrow, 17);
-
     }
 
     @Override
