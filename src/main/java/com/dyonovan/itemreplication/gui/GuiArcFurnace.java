@@ -1,28 +1,30 @@
 package com.dyonovan.itemreplication.gui;
 
 import com.dyonovan.itemreplication.container.ContainerArcFurnace;
-import com.dyonovan.itemreplication.energy.TeslaBank;
+import com.dyonovan.itemreplication.gui.widget.WidgetEnergyBank;
+import com.dyonovan.itemreplication.gui.widget.WidgetLiquidTank;
 import com.dyonovan.itemreplication.helpers.GuiHelper;
 import com.dyonovan.itemreplication.lib.Constants;
 import com.dyonovan.itemreplication.tileentity.TileArcFurnaceCore;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.FluidTank;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiArcFurnace extends GuiContainer {
+public class GuiArcFurnace extends BaseGui {
     private TileArcFurnaceCore core;
     private ResourceLocation background = new ResourceLocation(Constants.MODID + ":textures/gui/blastfurnace.png");
 
     public GuiArcFurnace(InventoryPlayer inventoryPlayer, TileArcFurnaceCore core) {
         super(new ContainerArcFurnace(inventoryPlayer, core));
         this.core = core;
+        widgets.add(new WidgetLiquidTank(this, core.getAirTank(), 37, 78, 52));
+        widgets.add(new WidgetLiquidTank(this, core.getOutputTank(), 147, 78, 52));
+        widgets.add(new WidgetEnergyBank(this, core.getEnergyBank(), 8, 78));
     }
 
     @Override
@@ -30,8 +32,6 @@ public class GuiArcFurnace extends GuiContainer {
     {
         final String invTitle =  "Arc";
         final String invTitle2 = "Furnace";
-        int x = (width - xSize) / 2;
-        int y = (height - ySize) / 2;
 
         fontRendererObj.drawString(invTitle, 95 + ((fontRendererObj.getStringWidth(invTitle2) / 2) - (fontRendererObj.getStringWidth(invTitle) / 2)), 6, 4210752);
         fontRendererObj.drawString(invTitle2, 95, 17, 4210752);
@@ -46,20 +46,9 @@ public class GuiArcFurnace extends GuiContainer {
         int y = (height - ySize) / 2;
         drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
 
-        //Render energy
-        TeslaBank energyTank = core.getEnergyBank();
-        int height = energyTank.getEnergyLevel() * 52 / energyTank.getMaxCapacity();
-
-        Tessellator tess = Tessellator.instance;
-        tess.startDrawingQuads();
-        tess.addVertexWithUV(x + 8,           y + 78, 0,     0.6875F,                 0.35546875F);
-        tess.addVertexWithUV(x + 24,          y + 78, 0, 0.74609375F,                 0.35546875F);
-        tess.addVertexWithUV(x + 24, y + 78 - height, 0, 0.74609375F, (float) (91 - height) / 256);
-        tess.addVertexWithUV( x + 8, y + 78 - height, 0,     0.6875F, (float) (91 - height) / 256);
-        tess.draw();
-
         //Render pulse
         GL11.glPushMatrix();
+        Tessellator tess = Tessellator.instance;
         tess.startDrawingQuads();
         tess.addVertexWithUV(x + 66, y + 53, 0,     0.6875F, 0.08203125F);
         tess.addVertexWithUV(x + 93, y + 53, 0, 0.78515625F, 0.08203125F);
@@ -72,11 +61,7 @@ public class GuiArcFurnace extends GuiContainer {
         int arrow = core.getCookTimeScaled(24);
         drawTexturedModalRect(x + 107, y + 35, 176, 22, arrow, 17);
 
-        //Render Fluids
-        FluidTank output = core.getOutputTank();
-        FluidTank airTank = core.getAirTank();
-        GuiHelper.renderFluid(output, x + 147, y + 78, 52);
-        GuiHelper.renderFluid(airTank, x + 37, y + 78, 52);
+        super.drawGuiContainerBackgroundLayer(f, i, j);
     }
 
     @Override
@@ -102,10 +87,5 @@ public class GuiArcFurnace extends GuiContainer {
             toolTip.add(core.getOutputTank().getFluidAmount() + "/" + core.getOutputTank().getCapacity() + GuiHelper.GuiColor.ORANGE + "mb");
             renderToolTip(mouseX, mouseY, toolTip);
         }
-    }
-
-    public void renderToolTip(int x, int y, List<String> strings)
-    {
-        drawHoveringText(strings, x, y, fontRendererObj);
     }
 }

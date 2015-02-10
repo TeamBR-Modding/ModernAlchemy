@@ -13,6 +13,7 @@ public class GuiHelper {
     public static void renderFluid(FluidTank tank, int x, int y, int maxHeight) {
         FluidStack fluid = tank.getFluid();
         if(fluid != null) {
+            GL11.glPushMatrix();
             int level = (fluid.amount * maxHeight) / tank.getCapacity();
             IIcon icon = fluid.getFluid().getIcon(fluid);
             Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
@@ -29,6 +30,7 @@ public class GuiHelper {
                 int cut = level % 16;
                 drawIconWithCut(icon, x, y - 16, 16, 16, 16 - cut);
             }
+            GL11.glPopMatrix();
         }
     }
 
