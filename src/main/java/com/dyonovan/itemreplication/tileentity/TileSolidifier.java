@@ -7,7 +7,7 @@ import com.dyonovan.itemreplication.energy.TeslaMachine;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
 import com.dyonovan.itemreplication.handlers.ItemHandler;
-import com.dyonovan.itemreplication.helpers.RenderUtils;
+import com.dyonovan.itemreplication.util.RenderUtils;
 import com.dyonovan.itemreplication.lib.Constants;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;

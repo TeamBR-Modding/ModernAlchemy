@@ -36,10 +36,7 @@ public class TileDummyOutputValve extends TileDummy implements IFluidHandler {
     @Override
     public boolean canDrain(ForgeDirection from, Fluid fluid) {
         TileArcFurnaceCore core = (TileArcFurnaceCore)getCore();
-        if(core != null)
-            return core.getOutputTank().getFluidAmount() > 0;
-        else
-            return false;
+        return core != null && core.getOutputTank().getFluidAmount() > 0;
     }
 
     @Override

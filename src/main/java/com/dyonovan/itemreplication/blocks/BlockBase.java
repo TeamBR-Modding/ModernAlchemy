@@ -1,6 +1,6 @@
 package com.dyonovan.itemreplication.blocks;
 
-import com.dyonovan.itemreplication.helpers.WorldUtils;
+import com.dyonovan.itemreplication.util.WorldUtils;
 import com.dyonovan.itemreplication.helpers.WrenchHelper;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;

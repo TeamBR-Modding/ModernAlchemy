@@ -10,6 +10,13 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiHelper {
 
+    /**
+     * Render the fluid in the inventory
+     * @param tank Tank containing the liquid
+     * @param x X Position in Gui (move from guiLeft beforehand)
+     * @param y Y Position in Gui (move from guiTop beforehand
+     * @param maxHeight The max height of the tank render in Pixels
+     */
     public static void renderFluid(FluidTank tank, int x, int y, int maxHeight) {
         FluidStack fluid = tank.getFluid();
         if(fluid != null) {
@@ -60,6 +67,21 @@ public class GuiHelper {
         GL11.glColor4f(red, green, blue, 1.0F);
     }
 
+    /**
+     * Test if location is in bounds
+     * @param x xLocation
+     * @param y yLocation
+     * @param a Rectangle point a
+     * @param b Rectangle point b
+     * @param c Rectangle point c
+     * @param d Rectangle point d
+     * @return
+     */
+    public static boolean isInBounds(int x, int y, int a, int b, int c, int d)
+    {
+        return (x >= a && x <= c && y >= b && y <=d);
+    }
+
     public enum GuiColor {
         BLACK(0),
         BLUE(1),
@@ -87,20 +109,5 @@ public class GuiHelper {
         public String toString() {
             return "\u00a7" + Integer.toHexString(number);
         }
-    }
-
-    /**
-     * Test if location is in bounds
-     * @param x xLocation
-     * @param y yLocation
-     * @param a Rectangle point a
-     * @param b Rectangle point b
-     * @param c Rectangle point c
-     * @param d Rectangle point d
-     * @return
-     */
-    public static boolean isInBounds(int x, int y, int a, int b, int c, int d)
-    {
-        return (x >= a && x <= c && y >= b && y <=d);
     }
 }

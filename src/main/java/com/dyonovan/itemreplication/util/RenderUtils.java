@@ -1,4 +1,4 @@
-package com.dyonovan.itemreplication.helpers;
+package com.dyonovan.itemreplication.util;
 
 import com.dyonovan.itemreplication.effects.LightningBolt;
 import com.dyonovan.itemreplication.tileentity.TileTeslaCoil;

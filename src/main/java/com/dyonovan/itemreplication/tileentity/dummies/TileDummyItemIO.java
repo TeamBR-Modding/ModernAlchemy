@@ -22,18 +22,12 @@ public class TileDummyItemIO extends TileDummy implements ISidedInventory {
             switch (slot) {
             case 0:
                 if (item.getItem() == Item.getItemFromBlock(BlockHandler.blockOreActinium)) {
-                    if(core.inventory.getStackInSlot(slot) != null)
-                        return item.stackSize + core.inventory.getStackInSlot(slot).stackSize <= 64;
-                    else
-                        return true;
+                    return core.inventory.getStackInSlot(slot) == null || item.stackSize + core.inventory.getStackInSlot(slot).stackSize <= 64;
                 }
                 break;
             case 1:
                 if (item.getItem() == Items.coal) {
-                    if(core.inventory.getStackInSlot(slot) != null)
-                        return item.stackSize + core.inventory.getStackInSlot(slot).stackSize <= 64;
-                    else
-                        return true;
+                    return core.inventory.getStackInSlot(slot) == null || item.stackSize + core.inventory.getStackInSlot(slot).stackSize <= 64;
                 }
             }
         }

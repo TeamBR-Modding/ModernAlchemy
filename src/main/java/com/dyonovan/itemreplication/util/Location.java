@@ -1,4 +1,4 @@
-package com.dyonovan.itemreplication.helpers;
+package com.dyonovan.itemreplication.util;
 
 import net.minecraft.nbt.NBTTagCompound;
 

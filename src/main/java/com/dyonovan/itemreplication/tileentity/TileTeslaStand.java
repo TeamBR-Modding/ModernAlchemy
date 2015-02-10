@@ -10,10 +10,6 @@ public class TileTeslaStand extends BaseTile implements IEnergyHandler {
 
     protected EnergyStorage energy = new EnergyStorage(1000, 1000, 1000);
 
-    public TileTeslaStand() {
-
-    }
-
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         energy.readFromNBT(tag);

@@ -2,7 +2,7 @@ package com.dyonovan.itemreplication.blocks;
 
 import com.dyonovan.itemreplication.ItemReplication;
 import com.dyonovan.itemreplication.handlers.GuiHandler;
-import com.dyonovan.itemreplication.helpers.WorldUtils;
+import com.dyonovan.itemreplication.util.WorldUtils;
 import com.dyonovan.itemreplication.lib.Constants;
 import com.dyonovan.itemreplication.tileentity.TileArcFurnaceCore;
 import cpw.mods.fml.relauncher.Side;

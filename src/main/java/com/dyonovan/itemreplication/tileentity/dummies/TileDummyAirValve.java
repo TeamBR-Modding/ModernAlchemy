@@ -20,6 +20,15 @@ public class TileDummyAirValve extends TileDummy implements IFluidHandler {
     }
 
     @Override
+    public boolean canFill(ForgeDirection from, Fluid fluid) {
+        TileArcFurnaceCore core = (TileArcFurnaceCore) getCore();
+        if(core != null)
+            return core.canFill(from, fluid);
+        else
+            return false;
+    }
+
+    @Override
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
         return null;
     }
@@ -27,15 +36,6 @@ public class TileDummyAirValve extends TileDummy implements IFluidHandler {
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
         return null;
-    }
-
-    @Override
-    public boolean canFill(ForgeDirection from, Fluid fluid) {
-        TileArcFurnaceCore core = (TileArcFurnaceCore) getCore();
-        if(core != null)
-            return core.canFill(from, fluid);
-        else
-            return false;
     }
 
     @Override

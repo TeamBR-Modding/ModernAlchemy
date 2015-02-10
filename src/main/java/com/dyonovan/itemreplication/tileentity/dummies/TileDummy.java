@@ -1,6 +1,6 @@
 package com.dyonovan.itemreplication.tileentity.dummies;
 
-import com.dyonovan.itemreplication.helpers.Location;
+import com.dyonovan.itemreplication.util.Location;
 import com.dyonovan.itemreplication.tileentity.BaseCore;
 import com.dyonovan.itemreplication.tileentity.BaseTile;
 import net.minecraft.nbt.NBTTagCompound;
@@ -8,8 +8,10 @@ import net.minecraft.nbt.NBTTagCompound;
 public class TileDummy extends BaseTile {
     private Location coreLocation = new Location(-100, -100, -100);
 
-    public TileDummy() {};
-
+    /**
+     * Used to get the current associated core
+     * @return Parent core, null if not found
+     */
     public BaseCore getCore() {
         if(worldObj.getTileEntity(coreLocation.getX(), coreLocation.getY(), coreLocation.getZ()) instanceof BaseCore)
             return (BaseCore) worldObj.getTileEntity(coreLocation.getX(), coreLocation.getY(), coreLocation.getZ());
@@ -17,6 +19,10 @@ public class TileDummy extends BaseTile {
             return null;
     }
 
+    /**
+     * Associate the core to a location
+     * @param loc Location of the core to associate with
+     */
     public void setCoreLocation(Location loc) {
         coreLocation = loc;
     }

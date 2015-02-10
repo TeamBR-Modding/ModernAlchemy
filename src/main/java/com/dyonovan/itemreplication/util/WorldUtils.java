@@ -1,4 +1,4 @@
-package com.dyonovan.itemreplication.helpers;
+package com.dyonovan.itemreplication.util;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;

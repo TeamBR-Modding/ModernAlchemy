@@ -6,8 +6,8 @@ import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.energy.TeslaMachine;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
-import com.dyonovan.itemreplication.helpers.Location;
-import com.dyonovan.itemreplication.helpers.RenderUtils;
+import com.dyonovan.itemreplication.util.Location;
+import com.dyonovan.itemreplication.util.RenderUtils;
 import com.dyonovan.itemreplication.tileentity.dummies.TileDummy;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -23,20 +23,30 @@ import java.util.List;
 
 public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITeslaHandler, IInventory {
 
+    /**
+     * Duration in ticks for the Cook Process
+     */
     private static final int COOK_TIME = 500;
 
+    //Tanks
     private FluidTank outputTank;
     private FluidTank airTank;
 
+    //Energy
     private TeslaBank energyTank;
 
+    //Inventory
     public InventoryTile inventory;
     private static final int INPUT_SLOT = 0;
     private static final int CATALYST_SLOT = 1;
 
+    //Cook Variables
     private int currentSpeed;
     private int timeCooked;
 
+    /**
+     * Creates the Arc Furnace, Default fluids at 10 * BUCKET_VOLUME and energy to 1000T and an inventory of two slots
+     */
     public TileArcFurnaceCore() {
         outputTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 10);
         airTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 10);
@@ -46,89 +56,9 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
         inventory = new InventoryTile(2);
     }
 
-    @Override
-    public void updateEntity() {
-        super.updateEntity();
-        updateSpeed();
-        if(energyTank.canAcceptEnergy() && isValid) {
-            chargeFromCoils();
-        }
-        doSmelting();
-    }
-
-    public void doSmelting() {
-        if(canSmelt() && timeCooked == 0) {
-            //Consume Resources
-            airTank.drain(100, true);
-            inventory.getStackInSlot(0).stackSize--;
-            if(inventory.getStackInSlot(0).stackSize == 0)
-                inventory.setStackInSlot(null, 0);
-            inventory.getStackInSlot(1).stackSize--;
-            if(inventory.getStackInSlot(1).stackSize == 0)
-                inventory.setStackInSlot(null, 1);
-            timeCooked += currentSpeed;
-        }
-        else if(timeCooked > 0 && timeCooked < COOK_TIME) {
-            timeCooked += currentSpeed;
-            energyTank.drainEnergy(currentSpeed);
-        }
-        else if(timeCooked >= COOK_TIME)
-            smelt();
-    }
-
-    public void smelt() {
-        timeCooked = 0;
-        outputTank.fill(new FluidStack(BlockHandler.fluidActinium, FluidContainerRegistry.BUCKET_VOLUME), true);
-    }
-
-    public boolean canSmelt() {
-        if(inventory.getStackInSlot(0) != null && inventory.getStackInSlot(1) != null)
-            return airTank.getFluidAmount() > 100 &&
-                    inventory.getStackInSlot(0).getItem() == Item.getItemFromBlock(BlockHandler.blockOreActinium) &&
-                    inventory.getStackInSlot(1).getItem() == Items.coal &&
-                    outputTank.getCapacity() - outputTank.getFluidAmount() >= FluidContainerRegistry.BUCKET_VOLUME;
-        else
-            return false;
-    }
-
-    public void updateSpeed() {
-        if(energyTank.getEnergyLevel() == 0) {
-            currentSpeed = 0;
-            return;
-        }
-
-        currentSpeed = (energyTank.getEnergyLevel() * 20) / energyTank.getMaxCapacity();
-        if(currentSpeed == 0)
-            currentSpeed = 1;
-    }
-
-    public int getCookTimeScaled(int scale) {
-        return (timeCooked * scale) / COOK_TIME;
-    }
-
-    public void chargeFromCoils() {
-        int maxFill = energyTank.getMaxCapacity() - energyTank.getEnergyLevel();
-        List<TileTeslaCoil> coils = TeslaMachine.findCoils(worldObj, this);
-        int currentDrain = 0;
-        for(TileTeslaCoil coil : coils) {
-            if (coil.getEnergyLevel() <= 0) continue; //fixes looking like its working when coil is empty
-            int fill = coil.getEnergyLevel() > ConfigHandler.tickTesla ? ConfigHandler.tickTesla : coil.getEnergyLevel();
-            if(currentDrain + fill > maxFill)
-                fill = maxFill - currentDrain;
-            currentDrain += fill;
-            coil.drainEnergy(fill);
-
-            if(worldObj.isRemote) {
-                RenderUtils.renderLightningBolt(worldObj, xCoord, yCoord, zCoord, coil, fill);
-            }
-            if(currentDrain >= maxFill) //Don't want to drain other coils we don't need to
-                break;
-        }
-        while(currentDrain > 0) {
-            energyTank.addEnergy(1);
-            currentDrain--;
-        }
-    }
+    /*******************************************************************************************************************
+     **************************************** MultiBlock Functions *****************************************************
+     *******************************************************************************************************************/
 
     @Override
     public boolean isWellFormed() {
@@ -182,6 +112,112 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
         }
         isValid = false;
     }
+
+    /*******************************************************************************************************************
+     ***************************************** Arc Furnace Functions ***************************************************
+     *******************************************************************************************************************/
+
+    public void doSmelting() {
+        if(canSmelt() && timeCooked == 0) {
+            //Consume Resources
+            airTank.drain(100, true);
+            inventory.getStackInSlot(0).stackSize--;
+            if(inventory.getStackInSlot(0).stackSize == 0)
+                inventory.setStackInSlot(null, 0);
+            inventory.getStackInSlot(1).stackSize--;
+            if(inventory.getStackInSlot(1).stackSize == 0)
+                inventory.setStackInSlot(null, 1);
+            timeCooked += currentSpeed;
+        }
+        else if(timeCooked > 0 && timeCooked < COOK_TIME) {
+            timeCooked += currentSpeed;
+            energyTank.drainEnergy(currentSpeed);
+        }
+        else if(timeCooked >= COOK_TIME)
+            smelt();
+    }
+
+    public void smelt() {
+        timeCooked = 0;
+        outputTank.fill(new FluidStack(BlockHandler.fluidActinium, FluidContainerRegistry.BUCKET_VOLUME), true);
+    }
+
+    public boolean canSmelt() {
+        if(inventory.getStackInSlot(0) != null && inventory.getStackInSlot(1) != null)
+            return airTank.getFluidAmount() > 100 &&
+                    inventory.getStackInSlot(0).getItem() == Item.getItemFromBlock(BlockHandler.blockOreActinium) &&
+                    inventory.getStackInSlot(1).getItem() == Items.coal &&
+                    outputTank.getCapacity() - outputTank.getFluidAmount() >= FluidContainerRegistry.BUCKET_VOLUME;
+        else
+            return false;
+    }
+
+    public void updateSpeed() {
+        if(energyTank.getEnergyLevel() == 0) {
+            currentSpeed = 0;
+            return;
+        }
+
+        currentSpeed = (energyTank.getEnergyLevel() * 20) / energyTank.getMaxCapacity();
+        if(currentSpeed == 0)
+            currentSpeed = 1;
+    }
+
+    public int getCookTimeScaled(int scale) {
+        return (timeCooked * scale) / COOK_TIME;
+    }
+
+    /*******************************************************************************************************************
+     ******************************************** Energy Functions *****************************************************
+     *******************************************************************************************************************/
+
+    public void chargeFromCoils() {
+        int maxFill = energyTank.getMaxCapacity() - energyTank.getEnergyLevel();
+        List<TileTeslaCoil> coils = TeslaMachine.findCoils(worldObj, this);
+        int currentDrain = 0;
+        for(TileTeslaCoil coil : coils) {
+            if (coil.getEnergyLevel() <= 0) continue; //fixes looking like its working when coil is empty
+            int fill = coil.getEnergyLevel() > ConfigHandler.tickTesla ? ConfigHandler.tickTesla : coil.getEnergyLevel();
+            if(currentDrain + fill > maxFill)
+                fill = maxFill - currentDrain;
+            currentDrain += fill;
+            coil.drainEnergy(fill);
+
+            if(worldObj.isRemote) {
+                RenderUtils.renderLightningBolt(worldObj, xCoord, yCoord, zCoord, coil, fill);
+            }
+            if(currentDrain >= maxFill) //Don't want to drain other coils we don't need to
+                break;
+        }
+        while(currentDrain > 0) {
+            energyTank.addEnergy(1);
+            currentDrain--;
+        }
+    }
+
+    @Override
+    public void addEnergy(int maxAmount) {
+        energyTank.addEnergy(maxAmount);
+    }
+
+    @Override
+    public void drainEnergy(int maxAmount) {
+        energyTank.drainEnergy(maxAmount);
+    }
+
+    @Override
+    public int getEnergyLevel() {
+        return energyTank.getEnergyLevel();
+    }
+
+    @Override
+    public TeslaBank getEnergyBank() {
+        return energyTank;
+    }
+
+    /*******************************************************************************************************************
+     ********************************************* Fluid Functions *****************************************************
+     *******************************************************************************************************************/
 
     public FluidTank getOutputTank() {
         return outputTank;
@@ -239,48 +275,9 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
         return new FluidTankInfo[0];
     }
 
-    @Override
-    public void readFromNBT(NBTTagCompound tagCompound) {
-        super.readFromNBT(tagCompound);
-
-        timeCooked = tagCompound.getInteger("TimeCooking");
-
-        inventory.readFromNBT(tagCompound, this);
-        energyTank.readFromNBT(tagCompound);
-
-        if(tagCompound.getBoolean("hasOutputFluid")) {
-            outputTank.setFluid(FluidRegistry.getFluidStack(tagCompound.getString("outputFluid"), tagCompound.getInteger("outputFluidAmount")));
-        }
-        else
-            outputTank.setFluid(null);
-
-        if(tagCompound.getBoolean("hasAir")) {
-            airTank.setFluid(FluidRegistry.getFluidStack(tagCompound.getString("air"), tagCompound.getInteger("airAmount")));
-        }
-        else
-            airTank.setFluid(null);
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound tagCompound) {
-        super.writeToNBT(tagCompound);
-
-        tagCompound.setInteger("TimeCooking", timeCooked);
-
-        energyTank.writeToNBT(tagCompound);
-        inventory.writeToNBT(tagCompound);
-
-        tagCompound.setBoolean("hasOutputFluid", outputTank.getFluid() != null);
-        tagCompound.setBoolean("hasAir", airTank.getFluid() != null);
-        if(outputTank.getFluid() != null) {
-            tagCompound.setString("outputFluid", outputTank.getFluid().getFluid().getName());
-            tagCompound.setInteger("outputFluidAmount", outputTank.getFluid().amount);
-        }
-        if(airTank.getFluid() != null) {
-            tagCompound.setString("air", airTank.getFluid().getFluid().getName());
-            tagCompound.setInteger("airAmount", airTank.getFluid().amount);
-        }
-    }
+    /*******************************************************************************************************************
+     ********************************************** Item Functions *****************************************************
+     *******************************************************************************************************************/
 
     @Override
     public int getSizeInventory() {
@@ -368,23 +365,60 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
         return false;
     }
 
+    /*******************************************************************************************************************
+     ********************************************** Tile Functions *****************************************************
+     *******************************************************************************************************************/
+
     @Override
-    public void addEnergy(int maxAmount) {
-        energyTank.addEnergy(maxAmount);
+    public void readFromNBT(NBTTagCompound tagCompound) {
+        super.readFromNBT(tagCompound);
+
+        timeCooked = tagCompound.getInteger("TimeCooking");
+
+        inventory.readFromNBT(tagCompound, this);
+        energyTank.readFromNBT(tagCompound);
+
+        if(tagCompound.getBoolean("hasOutputFluid")) {
+            outputTank.setFluid(FluidRegistry.getFluidStack(tagCompound.getString("outputFluid"), tagCompound.getInteger("outputFluidAmount")));
+        }
+        else
+            outputTank.setFluid(null);
+
+        if(tagCompound.getBoolean("hasAir")) {
+            airTank.setFluid(FluidRegistry.getFluidStack(tagCompound.getString("air"), tagCompound.getInteger("airAmount")));
+        }
+        else
+            airTank.setFluid(null);
     }
 
     @Override
-    public void drainEnergy(int maxAmount) {
-        energyTank.drainEnergy(maxAmount);
+    public void writeToNBT(NBTTagCompound tagCompound) {
+        super.writeToNBT(tagCompound);
+
+        tagCompound.setInteger("TimeCooking", timeCooked);
+
+        energyTank.writeToNBT(tagCompound);
+        inventory.writeToNBT(tagCompound);
+
+        tagCompound.setBoolean("hasOutputFluid", outputTank.getFluid() != null);
+        tagCompound.setBoolean("hasAir", airTank.getFluid() != null);
+        if(outputTank.getFluid() != null) {
+            tagCompound.setString("outputFluid", outputTank.getFluid().getFluid().getName());
+            tagCompound.setInteger("outputFluidAmount", outputTank.getFluid().amount);
+        }
+        if(airTank.getFluid() != null) {
+            tagCompound.setString("air", airTank.getFluid().getFluid().getName());
+            tagCompound.setInteger("airAmount", airTank.getFluid().amount);
+        }
     }
 
     @Override
-    public int getEnergyLevel() {
-        return energyTank.getEnergyLevel();
-    }
-
-    @Override
-    public TeslaBank getEnergyBank() {
-        return energyTank;
+    public void updateEntity() {
+        super.updateEntity();
+        updateSpeed();
+        if(energyTank.canAcceptEnergy() && isValid) {
+            chargeFromCoils();
+        }
+        doSmelting();
     }
 }
