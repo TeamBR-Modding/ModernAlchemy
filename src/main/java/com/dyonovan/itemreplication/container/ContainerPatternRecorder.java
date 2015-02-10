@@ -17,11 +17,11 @@ public class ContainerPatternRecorder extends Container {
     public ContainerPatternRecorder(InventoryPlayer playerInventory, TilePatternRecorder tileEntity){
         tile = tileEntity;
 
-        // item
-        addSlotToContainer(new Slot(tile, TilePatternRecorder.ITEM_SLOT, 82, 35));
-
         // input
         addSlotToContainer(new Slot(tile, TilePatternRecorder.PATTERN_INPUT_SLOT, 44, 35));
+
+        // item
+        addSlotToContainer(new Slot(tile, TilePatternRecorder.ITEM_SLOT, 82, 35));
 
         // output
         addSlotToContainer(new Slot(tile, TilePatternRecorder.PATTERN_OUTPUT_SLOT, 142, 35));
@@ -47,17 +47,17 @@ public class ContainerPatternRecorder extends Container {
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer player, int par2)
+    public ItemStack transferStackInSlot(EntityPlayer player, int fromSlot)
     {
-        // TODO: this doesn't work right
         ItemStack itemstack = null;
-        Slot slot = (Slot)this.inventorySlots.get(par2);
+        Slot slot = (Slot)this.inventorySlots.get(fromSlot);
+        System.out.println("");
         if (slot != null && slot.getHasStack())
         {
             ItemStack itemStack1 = slot.getStack();
             itemstack = itemStack1.copy();
 
-            if (par2 != 1 && par2 != 0) {
+            if (fromSlot != 1 && fromSlot != 0) {
                /* if (itemstack1.getItem() == Items.coal) {
                     if (!this.mergeItemStack(itemstack1, 1, 2, false)) {
                         return null;
@@ -68,14 +68,14 @@ public class ContainerPatternRecorder extends Container {
                     return null;
                 }
             }
-            else if (par2 >= 2 && par2 < 31)
+            else if (fromSlot >= 2 && fromSlot < 31)
             {
                 if (!this.mergeItemStack(itemStack1, 29, 38, false))
                 {
                     return null;
                 }
             }
-            else if (par2 >= 29 && par2 < 38 && !this.mergeItemStack(itemStack1, 2, 29, false))
+            else if (fromSlot >= 29 && fromSlot < 38 && !this.mergeItemStack(itemStack1, 2, 29, false))
             {
                 return null;
             }

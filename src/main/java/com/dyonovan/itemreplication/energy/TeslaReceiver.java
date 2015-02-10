@@ -76,21 +76,21 @@ public class TeslaReceiver {
         int maxFill = energyTank.getMaxCapacity() - energyTank.getEnergyLevel();
         List<TileTeslaCoil> coils = findCoils(worldObj, tile);
         int currentDrain = 0;
-        for(TileTeslaCoil coil : coils) {
+        for (TileTeslaCoil coil : coils) {
             if (coil.getEnergyLevel() <= 0) continue; //fixes looking like its working when coil is empty
             int fill = coil.getEnergyLevel() > ConfigHandler.tickTesla ? ConfigHandler.tickTesla : coil.getEnergyLevel();
-            if(currentDrain + fill > maxFill)
+            if (currentDrain + fill > maxFill)
                 fill = maxFill - currentDrain;
             currentDrain += fill;
             coil.drainEnergy(fill);
 
-            if(worldObj.isRemote) {
+            if (worldObj.isRemote) {
                 RenderUtils.renderLightningBolt(worldObj, tile.xCoord, tile.yCoord, tile.zCoord, coil, fill);
             }
-            if(currentDrain >= maxFill) //Don't want to drain other coils we don't need to
+            if (currentDrain >= maxFill) //Don't want to drain other coils we don't need to
                 break;
         }
-        while(currentDrain > 0) {
+        while (currentDrain > 0) {
             energyTank.addEnergy(1);
             currentDrain--;
         }

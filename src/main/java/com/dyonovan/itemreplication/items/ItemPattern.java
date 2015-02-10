@@ -24,24 +24,7 @@ public class ItemPattern extends Item {
         this.setUnlocalizedName(Constants.MODID + ":pattern");
         this.setCreativeTab(ItemReplication.tabItemReplication);
         this.setMaxStackSize(1);
-    }
-
-
-    @Override
-    public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-        return super.getIcon(stack, renderPass, player, usingItem, useRemaining);
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister register) {
-        if(iconBlankPattern == null)
-            iconBlankPattern = register.registerIcon(Constants.MODID + ":blank_pattern");
-
-        if(iconRecordedPattern == null)
-            iconRecordedPattern = register.registerIcon(Constants.MODID + ":recorded_pattern");
-
-        this.itemIcon = iconBlankPattern;
+        this.setTextureName(Constants.MODID + ":blank_pattern");
     }
 
     @Override

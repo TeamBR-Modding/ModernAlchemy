@@ -19,29 +19,29 @@ import net.minecraft.nbt.NBTTagList;
 public class TilePatternRecorder extends BaseTile implements IInventory {
 
     public ItemStack inventory[];
-    public static final int ITEM_SLOT = 0;
-    public static final int PATTERN_INPUT_SLOT = 1;
+    public static final int PATTERN_INPUT_SLOT = 0;
+    public static final int ITEM_SLOT = 1;
     public static final int PATTERN_OUTPUT_SLOT = 2;
 
     private TeslaBank energyTank;
     private TeslaConsumer teslaConsumer;
     private TeslaReceiver teslaReceiver;
 
-    private static int totalProcessTime = TeslaConsumer.secondsToSpeed(15);
+    private static int totalProcessTime = TeslaConsumer.secondsToSpeed(5);
     private int currentProcessTime;
 
     public TilePatternRecorder() {
         inventory = new ItemStack[3];
         currentProcessTime = 0;
 
-        energyTank = new TeslaBank(0, 100000);
+        energyTank = new TeslaBank(0, 1000);
         teslaReceiver = new TeslaReceiver(energyTank);
         teslaConsumer = new TeslaConsumer(energyTank, 1);
     }
 
     public TeslaBank getEnergyTank() {return energyTank; }
 
-    public int getProgressScaled(int scale) { return currentProcessTime / totalProcessTime * scale; }
+    public int getProgressScaled(int scale) { return currentProcessTime * scale / totalProcessTime; }
 
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
@@ -89,9 +89,10 @@ public class TilePatternRecorder extends BaseTile implements IInventory {
         super.updateEntity();
 
         // accept energy first
-        teslaReceiver.chargeFromCoils(worldObj, this, energyTank);
+        if(energyTank.canAcceptEnergy())
+            teslaReceiver.chargeFromCoils(worldObj, this, energyTank);
 
-        if(canStartWork()) {
+        if(currentProcessTime <= 0 && canStartWork()) {
             startWorking();
             currentProcessTime = 1;
         }
@@ -113,10 +114,10 @@ public class TilePatternRecorder extends BaseTile implements IInventory {
     }
 
     private boolean canStartWork() {
-        return inventory[PATTERN_INPUT_SLOT] != null && inventory[ITEM_SLOT] != null && inventory[PATTERN_OUTPUT_SLOT] != null &&
+        return inventory[PATTERN_INPUT_SLOT] != null && inventory[ITEM_SLOT] != null &&
                 inventory[PATTERN_INPUT_SLOT].getItem() == ItemHandler.itemPattern &&  // must have a pattern - doesn't matter if it is already recorded
-                inventory[PATTERN_OUTPUT_SLOT].getItem() == null &&  // output must be empty
-                inventory[ITEM_SLOT].getItem() != null; // must have an item - TODO: restrict items?
+                inventory[PATTERN_OUTPUT_SLOT] == null;  // output must be empty
+                //inventory[ITEM_SLOT].getItem() != null; // must have an item - TODO: restrict items?
     }
 
     private void startWorking() {
@@ -152,8 +153,16 @@ public class TilePatternRecorder extends BaseTile implements IInventory {
     }
 
     @Override
-    public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_) {
-        return null;
+    public ItemStack decrStackSize(int slot, int number) {
+        ItemStack newStack = null;
+        if(inventory[slot] != null) {
+            newStack = new ItemStack(inventory[slot].getItem());
+            newStack.stackSize = inventory[slot].stackSize; // should only be 1
+            newStack.setTagCompound(inventory[slot].getTagCompound());
+            inventory[slot] = null;
+        }
+
+        return newStack;
     }
 
     @Override
