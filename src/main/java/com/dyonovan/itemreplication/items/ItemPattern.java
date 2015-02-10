@@ -26,7 +26,6 @@ public class ItemPattern extends Item {
         this.setUnlocalizedName(Constants.MODID + ":pattern");
         this.setCreativeTab(ItemReplication.tabItemReplication);
         this.setMaxStackSize(1);
-        //this.setTextureName(Constants.MODID + ":blank_pattern");
     }
 
     @Override
@@ -34,21 +33,12 @@ public class ItemPattern extends Item {
     public void registerIcons(IIconRegister register) {
         iconBlankPattern = register.registerIcon(Constants.MODID + ":blank_pattern");
         iconRecordedPattern = register.registerIcon(Constants.MODID + ":recorded_pattern");
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-        if (stack.stackTagCompound != null) {
-            stack.stackTagCompound = null;
-            return iconBlankPattern;
-        } else return iconRecordedPattern;
+        this.itemIcon = iconBlankPattern;
     }
 
     @Override
     public ItemStack onItemRightClick(ItemStack itemstack, World par2World, EntityPlayer player)
     {
-
         if(player.isSneaking())
         {
             if(itemstack.stackTagCompound != null)
@@ -68,12 +58,15 @@ public class ItemPattern extends Item {
         return itemstack;
     }
 
+    public void setIconRecordedPattern() {this.itemIcon = iconRecordedPattern;}
+
     public static void recordPattern(ItemStack pattern, ItemStack item) {
         if(pattern != null && item != null) {
             pattern.stackTagCompound = new NBTTagCompound();
             GameRegistry.UniqueIdentifier uniqueIdentifier = GameRegistry.findUniqueIdentifierFor(item.getItem());
             String itemName = uniqueIdentifier.modId + ":" + uniqueIdentifier.name + ":" + item.getItemDamage();
             pattern.stackTagCompound.setString("Item", itemName);
+            ((ItemPattern)pattern.getItem()).setIconRecordedPattern();
         }
     }
 

@@ -3,7 +3,6 @@ package com.dyonovan.itemreplication.tileentity;
 import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.energy.TeslaConsumer;
 import com.dyonovan.itemreplication.energy.TeslaReceiver;
-import com.dyonovan.itemreplication.handlers.ItemHandler;
 import com.dyonovan.itemreplication.items.ItemPattern;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -115,7 +114,7 @@ public class TilePatternRecorder extends BaseTile implements IInventory {
 
     private boolean canStartWork() {
         return inventory[PATTERN_INPUT_SLOT] != null && inventory[ITEM_SLOT] != null &&
-                inventory[PATTERN_INPUT_SLOT].getItem() == ItemHandler.itemPattern &&  // must have a pattern - doesn't matter if it is already recorded
+                inventory[PATTERN_INPUT_SLOT].getItem() instanceof ItemPattern &&  // must have a pattern - doesn't matter if it is already recorded
                 inventory[PATTERN_OUTPUT_SLOT] == null;  // output must be empty
                 //inventory[ITEM_SLOT].getItem() != null; // must have an item - TODO: restrict items?
     }
@@ -129,7 +128,7 @@ public class TilePatternRecorder extends BaseTile implements IInventory {
 
     private void finishWorking() {
         // create products
-        inventory[PATTERN_OUTPUT_SLOT] = new ItemStack(ItemHandler.itemPattern);
+        inventory[PATTERN_OUTPUT_SLOT] = new ItemStack(new ItemPattern());
         ItemPattern.recordPattern(inventory[PATTERN_OUTPUT_SLOT], inventory[ITEM_SLOT]);
     }
 
@@ -209,9 +208,9 @@ public class TilePatternRecorder extends BaseTile implements IInventory {
 
         switch(slot){
             case TilePatternRecorder.ITEM_SLOT:
-                return stack.getItem() != ItemHandler.itemPattern; // TODO: how should this be limited?
+                return !(stack.getItem() instanceof ItemPattern); // TODO: how should this be limited?
             case TilePatternRecorder.PATTERN_INPUT_SLOT:
-                return stack.getItem() == ItemHandler.itemPattern;
+                return stack.getItem() instanceof ItemPattern;
             default:
                 return false;
         }
