@@ -13,6 +13,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import javax.swing.*;
+
 /**
  * Created by Tim on 2/5/2015.
  */
@@ -24,7 +26,23 @@ public class ItemPattern extends Item {
         this.setUnlocalizedName(Constants.MODID + ":pattern");
         this.setCreativeTab(ItemReplication.tabItemReplication);
         this.setMaxStackSize(1);
-        this.setTextureName(Constants.MODID + ":blank_pattern");
+        //this.setTextureName(Constants.MODID + ":blank_pattern");
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister register) {
+        iconBlankPattern = register.registerIcon(Constants.MODID + ":blank_pattern");
+        iconRecordedPattern = register.registerIcon(Constants.MODID + ":recorded_pattern");
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
+        if (stack.stackTagCompound != null) {
+            stack.stackTagCompound = null;
+            return iconBlankPattern;
+        } else return iconRecordedPattern;
     }
 
     @Override
