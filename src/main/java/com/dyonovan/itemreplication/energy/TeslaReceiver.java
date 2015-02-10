@@ -1,8 +1,8 @@
 package com.dyonovan.itemreplication.energy;
 
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
-import com.dyonovan.itemreplication.helpers.RenderUtils;
 import com.dyonovan.itemreplication.tileentity.TileTeslaCoil;
+import com.dyonovan.itemreplication.util.RenderUtils;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 

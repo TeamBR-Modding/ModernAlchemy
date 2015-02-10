@@ -5,21 +5,14 @@ import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
-<<<<<<< HEAD
 import com.dyonovan.itemreplication.util.RenderUtils;
-=======
-import com.dyonovan.itemreplication.helpers.RenderUtils;
->>>>>>> origin/master
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
-<<<<<<< HEAD
-=======
 import java.util.ArrayList;
->>>>>>> origin/master
 import java.util.List;
 
 public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHandler {
