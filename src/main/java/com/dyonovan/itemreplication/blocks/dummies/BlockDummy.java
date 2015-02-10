@@ -1,13 +1,13 @@
 package com.dyonovan.itemreplication.blocks.dummies;
 
 import com.dyonovan.itemreplication.ItemReplication;
+import com.dyonovan.itemreplication.blocks.BlockBase;
 import com.dyonovan.itemreplication.lib.Constants;
 import com.dyonovan.itemreplication.tileentity.BaseCore;
 import com.dyonovan.itemreplication.tileentity.dummies.TileDummy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,7 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-public class BlockDummy extends BlockContainer {
+public class BlockDummy extends BlockBase {
 
     @SideOnly(Side.CLIENT)
     protected IIcon active;
@@ -34,8 +34,10 @@ public class BlockDummy extends BlockContainer {
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9)
     {
+        super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
+
         TileDummy dummy = (TileDummy)world.getTileEntity(x, y, z);
-        if(dummy != null) {
+        if(dummy != null && !player.isSneaking()) {
             if(dummy.getCore() != null) {
                 BaseCore core = dummy.getCore();
                 return core.getBlockType().onBlockActivated(world, core.xCoord, core.yCoord, core.zCoord, player, par6, par7, par8, par9);

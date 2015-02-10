@@ -1,13 +1,8 @@
 package com.dyonovan.itemreplication.tileentity;
 
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import java.util.Random;
-
 public abstract class BaseCore extends BaseTile {
-    protected static Random random = new Random();
 
     protected boolean isValid = false;
     private boolean isDirty = true;
@@ -55,28 +50,5 @@ public abstract class BaseCore extends BaseTile {
     public void writeToNBT(NBTTagCompound tagCompound) {
         super.writeToNBT(tagCompound);
         tagCompound.setBoolean("isDirty", isDirty);
-    }
-
-    public void expelItem(ItemStack itemstack) {
-        if (itemstack != null) {
-            EntityItem entityitem =
-                    new EntityItem(
-                            worldObj,
-                            (double) xCoord + random.nextFloat() * 0.8F + 0.1F,
-                            (double) yCoord + random.nextFloat() * 0.8F + 0.1F,
-                            (double) zCoord + random.nextFloat() * 0.8F + 0.1F,
-                            itemstack
-                    );
-
-            if (itemstack.hasTagCompound()) {
-                entityitem.getEntityItem().setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
-            }
-
-            float f3 = 0.05F;
-            entityitem.motionX = (double) ((float) this.random.nextGaussian() * f3);
-            entityitem.motionY = (double) ((float) this.random.nextGaussian() * f3 + 0.2F);
-            entityitem.motionZ = (double) ((float) this.random.nextGaussian() * f3);
-            worldObj.spawnEntityInWorld(entityitem);
-        }
     }
 }

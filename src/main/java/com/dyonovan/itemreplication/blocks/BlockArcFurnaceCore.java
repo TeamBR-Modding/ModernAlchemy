@@ -2,12 +2,12 @@ package com.dyonovan.itemreplication.blocks;
 
 import com.dyonovan.itemreplication.ItemReplication;
 import com.dyonovan.itemreplication.handlers.GuiHandler;
+import com.dyonovan.itemreplication.helpers.WorldUtils;
 import com.dyonovan.itemreplication.lib.Constants;
 import com.dyonovan.itemreplication.tileentity.TileArcFurnaceCore;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,7 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-public class BlockArcFurnaceCore extends BlockContainer {
+public class BlockArcFurnaceCore extends BlockBase {
     @SideOnly(Side.CLIENT)
     private IIcon front;
 
@@ -45,6 +45,7 @@ public class BlockArcFurnaceCore extends BlockContainer {
     @Override
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
+        super.onBlockActivated(par1World, par2, par3, par4, par5EntityPlayer, par6, par7, par8, par9);
         if (par1World.isRemote)
         {
             return true;
@@ -63,8 +64,8 @@ public class BlockArcFurnaceCore extends BlockContainer {
     public void breakBlock(World world, int x, int y, int z, Block par5, int par6)
     {
         TileArcFurnaceCore core = (TileArcFurnaceCore) world.getTileEntity(x, y, z);
-        core.expelItem(core.inventory.getStackInSlot(0));
-        core.expelItem(core.inventory.getStackInSlot(1));
+        WorldUtils.expelItem(world, core.xCoord, core.yCoord, core.zCoord, core.inventory.getStackInSlot(0));
+        WorldUtils.expelItem(world, core.xCoord, core.yCoord, core.zCoord, core.inventory.getStackInSlot(1));
         super.breakBlock(world, x, y, z, par5, par6);
     }
 }
