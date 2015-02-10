@@ -17,7 +17,7 @@ buildscript {
 
 apply plugin: 'forge'
 
-ext.configFile = file "buildDirectory.properties"
+ext.configFile = file "build.properties"
 
 configFile.withReader {
     def prop = new Properties()
