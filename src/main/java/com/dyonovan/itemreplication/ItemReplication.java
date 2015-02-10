@@ -18,6 +18,8 @@ import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
+import java.io.File;
+
 @Mod(name = Constants.MODNAME, modid = Constants.MODID, version = Constants.VERSION, dependencies = Constants.DEPENDENCIES)
 
 public class ItemReplication {
@@ -39,7 +41,7 @@ public class ItemReplication {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event){
-        ConfigHandler.init(new Configuration(event.getSuggestedConfigurationFile()));
+        ConfigHandler.init(new Configuration(new File(event.getModConfigurationDirectory().getAbsolutePath() + File.separator + Constants.MODID.toLowerCase() + File.separator + "general.properties")));
         BlockHandler.init();
         ItemHandler.init();
         WorldGeneratorHandler.init();
