@@ -1,9 +1,15 @@
 package com.dyonovan.itemreplication.util;
 
+import com.dyonovan.itemreplication.ItemReplication;
+import com.dyonovan.itemreplication.lib.Constants;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.ItemStack;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 
 public class ReplicatorUtils {
@@ -16,10 +22,23 @@ public class ReplicatorUtils {
     }
 
     public static void buildDirectory(String folderLocation) {
-        File file = new File(folderLocation);
-        file.mkdirs();
+        File dir = new File(folderLocation);
+        dir.mkdirs();
         fileDirectory = folderLocation;
+        moveJson();
         //buildList();
+    }
+
+    private static void moveJson() {
+        File file = new File(fileDirectory + File.separator + "minecraft.json");
+        if (!file.exists()) {
+            URL jsonUrl = ItemReplication.class.getResource("/minecraft.json");
+            try {
+                FileUtils.copyURLToFile(jsonUrl, file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static void buildList() {
