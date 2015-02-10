@@ -26,7 +26,7 @@ public class ReplicatorUtils {
         dir.mkdirs();
         fileDirectory = folderLocation;
         moveJson();
-        //buildList();
+        buildList();
     }
 
     private static void moveJson() {

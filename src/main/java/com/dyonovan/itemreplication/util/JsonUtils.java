@@ -32,10 +32,12 @@ public class JsonUtils {
             BufferedReader br = new BufferedReader(new FileReader(ReplicatorUtils.fileDirectory + modID + ".json"));
             Gson gson = new Gson();
             Map<String, Integer> map = gson.fromJson(br, new TypeToken<Map<String, Integer>>(){}.getType());
-
-            HashMap<String, Integer> hashMap =
-                    (map instanceof HashMap) ? (HashMap) map : new HashMap<String, Integer>(map);
-            return hashMap.size() == 0 ? null : hashMap;
+            if (map != null) {
+                HashMap<String, Integer> hashMap = (map instanceof HashMap) ? (HashMap) map : new HashMap<String, Integer>(map);
+                return hashMap.size() == 0 ? null : hashMap;
+            } else {
+                return null;
+            }
         } catch (FileNotFoundException e) {
             return null;
         }
