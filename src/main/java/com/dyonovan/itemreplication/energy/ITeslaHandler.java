@@ -11,8 +11,9 @@ public interface ITeslaHandler {
     /**
      * Drain energy from tank
      * @param maxAmount
+     * @return energy drained
      */
-    public void drainEnergy(int maxAmount);
+    public int drainEnergy(int maxAmount);
 
     /**
      * Get the tanks energy level

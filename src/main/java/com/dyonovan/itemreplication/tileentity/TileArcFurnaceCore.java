@@ -2,8 +2,9 @@ package com.dyonovan.itemreplication.tileentity;
 
 import com.dyonovan.itemreplication.blocks.dummies.BlockDummy;
 import com.dyonovan.itemreplication.energy.ITeslaHandler;
+import com.dyonovan.itemreplication.energy.ITeslaTransmitter;
 import com.dyonovan.itemreplication.energy.TeslaBank;
-import com.dyonovan.itemreplication.energy.TeslaMachine;
+import com.dyonovan.itemreplication.energy.TeslaReceiver;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
 import com.dyonovan.itemreplication.helpers.Location;
@@ -16,9 +17,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITeslaHandler, IInventory {
@@ -108,7 +111,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
 
     public void chargeFromCoils() {
         int maxFill = energyTank.getMaxCapacity() - energyTank.getEnergyLevel();
-        List<TileTeslaCoil> coils = TeslaMachine.findCoils(worldObj, this);
+        List<TileTeslaCoil> coils = findCoils(worldObj, this);
         int currentDrain = 0;
         for(TileTeslaCoil coil : coils) {
             if (coil.getEnergyLevel() <= 0) continue; //fixes looking like its working when coil is empty
@@ -128,6 +131,26 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
             energyTank.addEnergy(1);
             currentDrain--;
         }
+    }
+
+    public static List<TileTeslaCoil> findCoils(World world, TileEntity tile) {
+
+        List<TileTeslaCoil> list = new ArrayList<TileTeslaCoil>();
+
+        int tileX = tile.xCoord;
+        int tileY = tile.yCoord;
+        int tileZ = tile.zCoord;
+
+        for (int x = -ConfigHandler.searchRange; x <= ConfigHandler.searchRange; x++) {
+            for (int y = -ConfigHandler.searchRange; y <= ConfigHandler.searchRange; y++) {
+                for (int z = -ConfigHandler.searchRange; z <= ConfigHandler.searchRange; z++) {
+                    if (world.getTileEntity(tileX + x, tileY + y, tileZ + z) instanceof TileTeslaCoil) {
+                        list.add((TileTeslaCoil) world.getTileEntity(tileX + x, tileY + y, tileZ + z));
+                    }
+                }
+            }
+        }
+        return list;
     }
 
     @Override
@@ -374,8 +397,8 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     }
 
     @Override
-    public void drainEnergy(int maxAmount) {
-        energyTank.drainEnergy(maxAmount);
+    public int drainEnergy(int maxAmount) {
+        return energyTank.drainEnergy(maxAmount);
     }
 
     @Override

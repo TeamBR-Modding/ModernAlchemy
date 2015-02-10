@@ -48,7 +48,7 @@ public class GuiPatternRecorder extends GuiContainer {
         drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
 
         //Render energy
-        TeslaBank energyTank = tile.getEnergyBank();
+        TeslaBank energyTank = tile.getEnergyTank();
         int height = energyTank.getEnergyLevel() * 52 / energyTank.getMaxCapacity();
 
         Tessellator tess = Tessellator.instance;
@@ -87,7 +87,7 @@ public class GuiPatternRecorder extends GuiContainer {
         if(GuiHelper.isInBounds(mouseX, mouseY, x + 8, y + 26, x + 23, y + 77)) {
             List<String> toolTip = new ArrayList<String>();
             toolTip.add(GuiHelper.GuiColor.YELLOW + "Energy");
-            toolTip.add(tile.getEnergyBank().getEnergyLevel() + "/" + tile.getEnergyBank().getMaxCapacity() + GuiHelper.GuiColor.ORANGE + "T");
+            toolTip.add(tile.getEnergyTank().getEnergyLevel() + "/" + tile.getEnergyTank().getMaxCapacity() + GuiHelper.GuiColor.ORANGE + "T");
             renderToolTip(mouseX, mouseY, toolTip);
         }
     }
