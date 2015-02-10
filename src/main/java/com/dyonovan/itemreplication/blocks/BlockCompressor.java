@@ -17,7 +17,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class BlockCompressor extends BlockContainer {
+public class BlockCompressor extends BlockBase {
 
     @SideOnly(Side.CLIENT)
     private IIcon front, frontActive;
@@ -95,6 +95,8 @@ public class BlockCompressor extends BlockContainer {
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9)
     {
+        super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
+
         if (world.isRemote)
         {
             return true;

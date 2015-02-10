@@ -3,16 +3,15 @@ package com.dyonovan.itemreplication.tileentity;
 import com.dyonovan.itemreplication.blocks.BlockCompressor;
 import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
+import com.dyonovan.itemreplication.energy.TeslaMachine;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
-import com.dyonovan.itemreplication.util.RenderUtils;
+import com.dyonovan.itemreplication.helpers.RenderUtils;
+import com.dyonovan.itemreplication.lib.Constants;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHandler {
@@ -26,11 +25,6 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
         this.energy = new TeslaBank(1000);
         this.tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 10);
         this.isActive = false;
-    }
-
-    public FluidStack setFluidStack(int amount) {
-        FluidStack fluidstack = new FluidStack(BlockHandler.fluidCompressedAir, amount);
-        return fluidstack;
     }
 
     @Override
@@ -64,7 +58,7 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
 
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-        return tank.drain(maxDrain, doDrain);
+        return tank.drain(maxDrain, true);
     }
 
     @Override
@@ -88,8 +82,8 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
     }
 
     @Override
-    public int drainEnergy(int maxAmount) {
-        return energy.drainEnergy(maxAmount);
+    public void drainEnergy(int maxAmount) {
+        energy.drainEnergy(maxAmount);
     }
 
     @Override
@@ -115,16 +109,17 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
         }
 
         //if (worldObj.isRemote) return;
-
-        if (energy.getEnergyLevel() > 0 && canFill(tank) && !isPowered()) {
-            if (!isActive) isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-            updateSpeed();
-            energy.drainEnergy(currentSpeed);
-            tank.fill(setFluidStack(10 * currentSpeed), true);
-
-            super.markDirty();
-        } else if (isActive) isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-
+        if (!isPowered()) {
+            if (energy.getEnergyLevel() > 0 && canFill(tank) && !isPowered()) {
+                if (!isActive)
+                    isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+                updateSpeed();
+                energy.drainEnergy(currentSpeed);
+                tank.fill(new FluidStack(BlockHandler.fluidCompressedAir, 10 * currentSpeed), true);
+                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            }
+        } else if (isActive)
+            isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
     }
 
     public void updateSpeed() {
@@ -139,17 +134,12 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
     }
 
     public boolean canFill(FluidTank tank) {
-        if(tank.getFluid() == null)
-            return true;
-        else if(tank.getFluid().amount < tank.getCapacity())
-            return true;
-        else
-            return false;
+        return tank.getFluid() == null || tank.getFluid().amount < tank.getCapacity();
     }
 
     public void chargeFromCoils() {
         int maxFill = energy.getMaxCapacity() - energy.getEnergyLevel();
-        List<TileTeslaCoil> coils = findCoils(worldObj, this);
+        List<TileTeslaCoil> coils = TeslaMachine.findCoils(worldObj, this);
         int currentDrain = 0;
         for (TileTeslaCoil coil : coils) {
             if (coil.getEnergyLevel() <= 0) continue;
@@ -168,25 +158,4 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
             currentDrain--;
         }
     }
-
-    public static List<TileTeslaCoil> findCoils(World world, TileEntity tile) {
-
-        List<TileTeslaCoil> list = new ArrayList<TileTeslaCoil>();
-
-        int tileX = tile.xCoord;
-        int tileY = tile.yCoord;
-        int tileZ = tile.zCoord;
-
-        for (int x = -ConfigHandler.searchRange; x <= ConfigHandler.searchRange; x++) {
-            for (int y = -ConfigHandler.searchRange; y <= ConfigHandler.searchRange; y++) {
-                for (int z = -ConfigHandler.searchRange; z <= ConfigHandler.searchRange; z++) {
-                    if (world.getTileEntity(tileX + x, tileY + y, tileZ + z) instanceof TileTeslaCoil) {
-                        list.add((TileTeslaCoil) world.getTileEntity(tileX + x, tileY + y, tileZ + z));
-                    }
-                }
-            }
-        }
-        return list;
-    }
-
 }

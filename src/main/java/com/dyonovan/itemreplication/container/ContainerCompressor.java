@@ -1,11 +1,13 @@
 package com.dyonovan.itemreplication.container;
 
+import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.tileentity.TileCompressor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
+import net.minecraftforge.fluids.FluidStack;
 
 public class ContainerCompressor extends Container {
 
@@ -23,11 +25,11 @@ public class ContainerCompressor extends Container {
         return true;
     }
 
-    /*@Override
+    @Override
     public void addCraftingToCrafters(ICrafting crafter) {
         super.addCraftingToCrafters(crafter);
         crafter.sendProgressBarUpdate(this, 0, this.tile.getEnergyLevel());
-        crafter.sendProgressBarUpdate(this, 1, this.tile.tank.getFluid().amount);
+        crafter.sendProgressBarUpdate(this, 1, this.tile.tank.getFluidAmount());
     }
 
     @Override
@@ -38,14 +40,12 @@ public class ContainerCompressor extends Container {
 
             if (this.lastPower != this.tile.getEnergyLevel())
                 icrafting.sendProgressBarUpdate(this, 0, this.tile.getEnergyLevel());
-            if (this.tile.tank.getInfo().fluid == null)
-                icrafting.sendProgressBarUpdate(this, 1, 0);
-            if (this.lastTank != this.tile.tank.getInfo().fluid.amount)
-                icrafting.sendProgressBarUpdate(this, 1, this.tile.tank.getInfo().fluid.amount);
+            if (this.lastTank != this.tile.tank.getFluidAmount())
+                icrafting.sendProgressBarUpdate(this, 1, this.tile.tank.getFluidAmount());
         }
 
         this.lastPower = this.tile.getEnergyLevel();
-        this.lastTank = this.tile.tank.getFluid().amount;
+        this.lastTank = this.tile.tank.getFluidAmount();
     }
 
     @SideOnly(Side.CLIENT)
@@ -56,7 +56,7 @@ public class ContainerCompressor extends Container {
                 this.tile.setEnergy(j);
                 break;
             case 1:
-                this.tile.tank.setFluid(this.tile.setFluidStack(j));
+                this.tile.tank.setFluid(new FluidStack(BlockHandler.fluidCompressedAir, j));
         }
-    }*/
+    }
 }
