@@ -25,6 +25,8 @@ import java.io.File;
 
 public class ItemReplication {
 
+    public static String configDir;
+
     @Instance(Constants.MODID)
     public static ItemReplication instance;
 
@@ -42,7 +44,9 @@ public class ItemReplication {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event){
-        ConfigHandler.init(new Configuration(new File(event.getModConfigurationDirectory().getAbsolutePath() + File.separator + Constants.MODID.toLowerCase() + File.separator + "general.properties")));
+        configDir = "event.getModConfigurationDirectory().getAbsolutePath() + File.separator + Constants.MODID.toLowerCase() + File.separator";
+        //ConfigHandler.init(new Configuration(new File(event.getModConfigurationDirectory().getAbsolutePath() + File.separator + Constants.MODID.toLowerCase() + File.separator + "general.properties")));
+        ConfigHandler.init(new Configuration(new File(configDir + "general.properties")));
         BlockHandler.init();
         ItemHandler.init();
         WorldGeneratorHandler.init();
@@ -57,6 +61,7 @@ public class ItemReplication {
     @EventHandler
     public void init(FMLInitializationEvent event) {
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
+        PacketHandler.initPackets();
     }
 
     @EventHandler
