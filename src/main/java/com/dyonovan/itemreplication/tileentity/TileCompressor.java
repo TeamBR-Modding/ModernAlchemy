@@ -120,7 +120,7 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
         if (energy.getEnergyLevel() > 0 && canFill(tank) && !isPowered()) {
             updateSpeed();
             if (!isActive) isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-            energy.drainEnergy(currentSpeed + 1);
+            energy.drainEnergy(currentSpeed);
             tank.fill(setFluidStack(100 * currentSpeed), true);
 
             super.markDirty();

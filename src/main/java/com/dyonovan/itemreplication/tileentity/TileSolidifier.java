@@ -1,14 +1,14 @@
 package com.dyonovan.itemreplication.tileentity;
 
 import com.dyonovan.itemreplication.blocks.BlockCompressor;
-import com.dyonovan.itemreplication.effects.LightningBolt;
 import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.energy.TeslaMachine;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
+import com.dyonovan.itemreplication.handlers.ItemHandler;
 import com.dyonovan.itemreplication.helpers.RenderUtils;
-import net.minecraft.client.Minecraft;
+import com.dyonovan.itemreplication.lib.Constants;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -16,10 +16,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
-import java.awt.*;
 import java.util.List;
 
 public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHandler, ISidedInventory {
+
+    private static final int PROCESS_TIME = 500;
 
     public FluidTank tank;
     private TeslaBank energy;
@@ -27,6 +28,7 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
     private int currentSpeed;
     public ItemStack inventory[];
     private static final int OUTPUT_SLOT = 0;
+    private int timeProcessed;
 
     public TileSolidifier() {
         tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 10);
@@ -41,6 +43,10 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
         super.readFromNBT(tag);
         energy.readFromNBT(tag);
         tank.readFromNBT(tag);
+        timeProcessed = tag.getInteger("TimeProcessed");
+
+        setInventorySlotContents(0, ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Item")));
+
     }
 
     @Override
@@ -48,12 +54,23 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
         super.writeToNBT(tag);
         energy.writeToNBT(tag);
         tank.writeToNBT(tag);
+        tag.setInteger("TimeProcessed", timeProcessed);
+
+        ItemStack itemstack = getStackInSlot(0);
+        NBTTagCompound item = new NBTTagCompound();
+        if (itemstack != null) {
+            //item.setByte("Slot", (byte) 0);
+            itemstack.writeToNBT(item);
+        }
+        tag.setTag("Item", item);
     }
 
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         if (resource.getFluid() != BlockHandler.fluidActinium) return 0;
-        return tank.fill(resource, doFill);
+        int amount = tank.fill(resource, doFill);
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        return amount;
     }
 
     @Override
@@ -118,14 +135,38 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
         }
         //if (worldObj.isRemote) return;
 
-        if (energy.getEnergyLevel() > 0 && tank.getFluid() != null && tank.getFluidAmount() > 0 && !isPowered()) {
+        if (isPowered()) {
+            if (this.inventory[0] != null && this.inventory[0].stackSize >= 64) return;
             updateSpeed();
             if (!isActive) isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-            //TODO ACTUAL PROCESSING
+
+            if (timeProcessed < PROCESS_TIME) {
+                if (energy.getEnergyLevel() > 0) {
+                    energy.drainEnergy(currentSpeed);
+                }
+                else {
+                    timeProcessed = 0;
+                    super.markDirty();
+                    return;
+                }
+                if (tank.getFluid() != null || tank.getFluidAmount() > 10 * currentSpeed) {
+                    tank.drain(10, true);
+                    timeProcessed += currentSpeed;
+                } else {
+                    timeProcessed = 0;
+                    super.markDirty();
+                    return;
+                }
+            } else if (timeProcessed >= PROCESS_TIME) {
+                if (inventory[0] == null) setInventorySlotContents(0, new ItemStack(ItemHandler.itemCube));
+                else inventory[0].stackSize++;
+                timeProcessed = 0;
+            }
             super.markDirty();
-        } else if (isActive) isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-
-
+        } else if (isActive) {
+            isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+            timeProcessed = 0;
+        }
     }
 
     public void updateSpeed() {
@@ -162,7 +203,7 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
 
     @Override
     public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
-        return new int[0];
+        return new int[] {0};
     }
 
     @Override
@@ -172,37 +213,49 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
 
     @Override
     public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_, int p_102008_3_) {
-        return false;
+        return true;
     }
 
     @Override
     public int getSizeInventory() {
-        return 0;
+        return inventory.length;
     }
 
     @Override
-    public ItemStack getStackInSlot(int p_70301_1_) {
-        return null;
+    public ItemStack getStackInSlot(int slot) {
+        return inventory[slot];
     }
 
     @Override
-    public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_) {
-        return null;
+    public ItemStack decrStackSize(int slot, int count) {
+        ItemStack itemstack = getStackInSlot(slot);
+
+        if(itemstack != null) {
+            if(itemstack.stackSize <= count) {
+                setInventorySlotContents(slot, null);
+            }
+            itemstack = itemstack.splitStack(count);
+
+        }
+        super.markDirty();
+        return itemstack;
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int p_70304_1_) {
-        return null;
+    public ItemStack getStackInSlotOnClosing(int slot) {
+        ItemStack itemStack = getStackInSlot(slot);
+        setInventorySlotContents(slot, null);
+        return itemStack;
     }
 
     @Override
-    public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {
-
+    public void setInventorySlotContents(int slot, ItemStack itemstack) {
+        inventory[slot] = itemstack;
     }
 
     @Override
     public String getInventoryName() {
-        return null;
+        return Constants.MODID + ":blockSolidifier";
     }
 
     @Override
@@ -212,12 +265,12 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
 
     @Override
     public int getInventoryStackLimit() {
-        return 0;
+        return 64;
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
-        return false;
+    public boolean isUseableByPlayer(EntityPlayer player) {
+        return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64;
     }
 
     @Override
@@ -231,7 +284,11 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
     }
 
     @Override
-    public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
-        return false;
+    public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
+        return true;
+    }
+
+    public int getCookTimeScaled(int scale) {
+        return (timeProcessed * scale) / PROCESS_TIME;
     }
 }

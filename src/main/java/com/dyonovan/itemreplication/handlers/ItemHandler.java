@@ -1,5 +1,6 @@
 package com.dyonovan.itemreplication.handlers;
 
+import com.dyonovan.itemreplication.items.ItemCube;
 import com.dyonovan.itemreplication.items.ItemPattern;
 import com.dyonovan.itemreplication.items.buckets.ItemBucketActinium;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -15,7 +16,7 @@ import net.minecraftforge.fluids.FluidStack;
 public class ItemHandler {
 
     public static ItemPattern itemPattern;
-    public static Item itemBucketActinium;
+    public static Item itemBucketActinium, itemCube;
 
     public static void init() {
         itemPattern = new ItemPattern();
@@ -25,6 +26,10 @@ public class ItemHandler {
         itemBucketActinium = new ItemBucketActinium(BlockHandler.blockFluidActinium);
         GameRegistry.registerItem(itemBucketActinium, "bucketActinium");
         FluidContainerRegistry.registerFluidContainer(new FluidStack(BlockHandler.fluidActinium, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(itemBucketActinium), new ItemStack(Items.bucket));
+
+        //Item Cube
+        itemCube = new ItemCube();
+        GameRegistry.registerItem(itemCube, "itemCube");
     }
 
 

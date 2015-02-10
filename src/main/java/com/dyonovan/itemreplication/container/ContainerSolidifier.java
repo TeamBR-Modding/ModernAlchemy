@@ -9,19 +9,20 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.SlotFurnace;
 import net.minecraftforge.fluids.FluidStack;
 
 public class ContainerSolidifier extends Container {
 
     private TileSolidifier tile;
-    private int lastPower, lastTank;
+    //private int lastPower, lastTank;
     private InventoryPlayer inventory;
 
     public ContainerSolidifier(InventoryPlayer inventory, TileSolidifier tile) {
         this.tile = tile;
         this.inventory = inventory;
 
-        addSlotToContainer(new Slot(tile, 0, 72, 10));
+        addSlotToContainer(new SlotFurnace(inventory.player, tile, 0, 146, 34));
         bindPlayerInventory(inventory);
 
     }

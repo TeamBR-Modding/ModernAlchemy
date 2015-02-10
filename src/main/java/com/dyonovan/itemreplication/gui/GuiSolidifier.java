@@ -7,6 +7,7 @@ import com.dyonovan.itemreplication.lib.Constants;
 import com.dyonovan.itemreplication.tileentity.TileSolidifier;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -57,6 +58,10 @@ public class GuiSolidifier extends GuiContainer  {
         tess.addVertexWithUV(x + 24, y + 78 - height, 0, 0.74609375F, (float) (91 - height) / 256);
         tess.addVertexWithUV( x + 8, y + 78 - height, 0,     0.6875F, (float) (91 - height) / 256);
         tess.draw();
+
+        //Draw Arrow
+        int arrow = tile.getCookTimeScaled(24);
+        drawTexturedModalRect(x + 107, y + 35, 176, 22, arrow, 17);
 
         //Render Fluid
         FluidTank airTank = tile.tank;
