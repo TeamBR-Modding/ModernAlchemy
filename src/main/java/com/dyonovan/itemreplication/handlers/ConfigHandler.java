@@ -5,12 +5,16 @@ import net.minecraftforge.common.config.Configuration;
 
 public class ConfigHandler {
 
+    public static String folderLocation;
+
     public static boolean generateActinium;
     public static int actiniumMaxLevel, actiniumVeinSize, actiniumVeinsPerChunk, actiniumMinLevel, tickTesla, tickRF;
     public static int searchRange;
     public static int rfPerTesla, maxCoilGenerate, maxCoilTransfer;
 
     public static void init(Configuration config) {
+
+        folderLocation = config.getConfigFile().getAbsolutePath();
 
         config.load();
 

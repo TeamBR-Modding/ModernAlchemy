@@ -13,8 +13,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-import javax.swing.*;
-
 /**
  * Created by Tim on 2/5/2015.
  */

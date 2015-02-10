@@ -3,6 +3,7 @@ package com.dyonovan.itemreplication;
 import com.dyonovan.itemreplication.handlers.*;
 import com.dyonovan.itemreplication.lib.Constants;
 import com.dyonovan.itemreplication.proxy.CommonProxy;
+import com.dyonovan.itemreplication.util.ReplicatorUtils;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -49,6 +50,8 @@ public class ItemReplication {
 
         BucketHandler.INSTANCE.buckets.put(BlockHandler.blockFluidActinium, ItemHandler.itemBucketActinium);
         MinecraftForge.EVENT_BUS.register(BucketHandler.INSTANCE);
+
+        ReplicatorUtils.INSTANCE.buildDirectory(event.getModConfigurationDirectory().getAbsolutePath() + File.separator + Constants.MODID.toLowerCase() + File.separator + "replicatorValues" + File.separator);
     }
 
     @EventHandler
