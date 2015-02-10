@@ -23,7 +23,12 @@ public class ConfigHandler {
         rfPerTesla              = config.get(Constants.CONFIG_TESLA, "RFs per Tesla", 10).getInt();
         maxCoilTransfer         = config.get(Constants.CONFIG_TESLA, "Max Tesla a coil can transfer per tick", 1).getInt();
         maxCoilGenerate         = config.get(Constants.CONFIG_TESLA, "Max Tesla a coil can generate per tick", 10).getInt();
+		
+        tickTesla               = config.get(Constants.CONFIG_TESLA, "# of Tesla per Tick", 1).getInt();
+        tickRF                  = config.get(Constants.CONFIG_TESLA, "# of RF's per Tick per Tesla", 10).getInt();
         searchRange             = config.get(Constants.CONFIG_TESLA, "How many blocks (cubed) to search for coils", 10).getInt();
+
+
 
         config.save();
     }
