@@ -137,7 +137,7 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
 
         if (isPowered()) {
             if (this.inventory[0] != null && this.inventory[0].stackSize >= 64) return;
-            if (energy.getEnergyLevel() > 0 && tank.getFluid() != null && tank.getFluidAmount() > 10) {
+            if (energy.getEnergyLevel() > 0 && tank.getFluid() != null && tank.getFluidAmount() > 0) {
                 updateSpeed();
                 if (!isActive)
                     isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
@@ -151,15 +151,17 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
                     tank.drain(10, true);
                     timeProcessed += currentSpeed;
                 }
-            } else if (timeProcessed >= PROCESS_TIME) {
-                if (inventory[0] == null) setInventorySlotContents(0, new ItemStack(ItemHandler.itemCube));
-                else inventory[0].stackSize++;
+                if (timeProcessed >= PROCESS_TIME) {
+                    if (inventory[0] == null) setInventorySlotContents(0, new ItemStack(ItemHandler.itemCube));
+                    else inventory[0].stackSize++;
+                    timeProcessed = 0;
+                }
+                super.markDirty();
+            } else if (isActive) {
+                isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+                timeProcessed = 0;
             }
-            super.markDirty();
-        } else if (isActive) {
-            isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-            timeProcessed = 0;
-        }
+        } else timeProcessed = 0;
     }
 
     public void updateSpeed() {
