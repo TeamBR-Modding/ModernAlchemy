@@ -74,7 +74,7 @@ public abstract class BlockBase extends BlockContainer{
         super.breakBlock(world, x, y, z, par5, par6);
 
         if (ConfigHandler.machineExplodes)
-            world.createExplosion(null, x, y, z, 10.F, true);
+            world.createExplosion(null, x, y, z, 1.0F, true);
     }
 
 }
