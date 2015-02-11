@@ -6,12 +6,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
-public class ItemRenderTeslaStand implements IItemRenderer {
+public class ItemRenderTeslaBase implements IItemRenderer {
 
     private TileEntitySpecialRenderer render;
     private TileEntity tileentity;
 
-    public ItemRenderTeslaStand(TileEntitySpecialRenderer render, TileEntity tileentity) {
+    public ItemRenderTeslaBase(TileEntitySpecialRenderer render, TileEntity tileentity) {
         this.render = render;
         this.tileentity = tileentity;
     }
@@ -55,4 +55,3 @@ public class ItemRenderTeslaStand implements IItemRenderer {
         }
     }
 }
-

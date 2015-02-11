@@ -6,9 +6,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileTeslaStand extends BaseTile implements IEnergyHandler {
+public class TileTeslaBase extends BaseTile implements IEnergyHandler {
 
     protected EnergyStorage energy = new EnergyStorage(1000, 1000, 1000);
+
+    public TileTeslaBase() {
+
+    }
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
@@ -44,17 +48,17 @@ public class TileTeslaStand extends BaseTile implements IEnergyHandler {
 
     @Override
     public boolean canConnectEnergy(ForgeDirection side) {
-        return false;
+        return side == ForgeDirection.DOWN;
     }
 
     @Override
     public void updateEntity() {
         if ((energy.getEnergyStored() > 0)) {
 
-                TileEntity tile = worldObj.getTileEntity(xCoord, yCoord + 1, zCoord);
-                if (tile instanceof TileTeslaStand || tile instanceof TileTeslaCoil) {
-                    energy.extractEnergy(((IEnergyHandler) tile).receiveEnergy(ForgeDirection.DOWN, energy.extractEnergy(energy.getMaxExtract(), true), false), false);
-                }
+            TileEntity tile = worldObj.getTileEntity(xCoord, yCoord + 1, zCoord);
+            if (tile instanceof TileTeslaStand) {
+                energy.extractEnergy(((IEnergyHandler) tile).receiveEnergy(ForgeDirection.DOWN, energy.extractEnergy(energy.getMaxExtract(), true), false), false);
+            }
         }
     }
 }

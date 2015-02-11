@@ -17,7 +17,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class BlockSolidifier extends BlockContainer {
+public class BlockSolidifier extends BlockBase {
 
     @SideOnly(Side.CLIENT)
     private IIcon front, frontActive;
@@ -25,8 +25,9 @@ public class BlockSolidifier extends BlockContainer {
     public static boolean isRunning = false;
 
     public BlockSolidifier() {
-        super(Material.anvil);
+        super(Material.iron);
         this.setBlockName(Constants.MODID + ":blockSolidifier");
+        this.setHardness(1.5F);
         this.setCreativeTab(ItemReplication.tabItemReplication);
     }
 
@@ -90,6 +91,8 @@ public class BlockSolidifier extends BlockContainer {
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9)
     {
+        super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
+
         if (world.isRemote)
         {
             return true;

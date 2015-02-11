@@ -2,12 +2,13 @@ package com.dyonovan.itemreplication.gui;
 
 import com.dyonovan.itemreplication.container.ContainerSolidifier;
 import com.dyonovan.itemreplication.energy.TeslaBank;
+import com.dyonovan.itemreplication.gui.widget.WidgetEnergyBank;
+import com.dyonovan.itemreplication.gui.widget.WidgetLiquidTank;
 import com.dyonovan.itemreplication.helpers.GuiHelper;
 import com.dyonovan.itemreplication.lib.Constants;
 import com.dyonovan.itemreplication.tileentity.TileSolidifier;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -17,7 +18,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiSolidifier extends GuiContainer  {
+public class GuiSolidifier extends BaseGui  {
 
     private ResourceLocation background = new ResourceLocation(Constants.MODID + ":textures/gui/solidifier.png");
     private TileSolidifier tile;
@@ -25,15 +26,15 @@ public class GuiSolidifier extends GuiContainer  {
     public GuiSolidifier(InventoryPlayer inventory, TileSolidifier tile) {
         super(new ContainerSolidifier(inventory, tile));
         this.tile = tile;
+
+        widgets.add(new WidgetLiquidTank(this, tile.tank, 37, 78, 52));
+        widgets.add(new WidgetEnergyBank(this, tile.getEnergyBank(), 8, 78));
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         final String invTitle =  "Amalgamator";
-        int x = (width - xSize) / 2;
-        int y = (height - ySize) / 2;
-
         fontRendererObj.drawString(invTitle, 98 - (fontRendererObj.getStringWidth(invTitle) / 2), 6, 4210752);
         fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 72, ySize - 96 + 2, 4210752);
     }
@@ -47,25 +48,11 @@ public class GuiSolidifier extends GuiContainer  {
         int y = (height - ySize) / 2;
         drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
 
-        //Render energy
-        TeslaBank energyTank = tile.getEnergyBank();
-        int height = energyTank.getEnergyLevel() * 52 / energyTank.getMaxCapacity();
-
-        Tessellator tess = Tessellator.instance;
-        tess.startDrawingQuads();
-        tess.addVertexWithUV(x + 8,           y + 78, 0,     0.6875F,                 0.35546875F);
-        tess.addVertexWithUV(x + 24,          y + 78, 0, 0.74609375F,                 0.35546875F);
-        tess.addVertexWithUV(x + 24, y + 78 - height, 0, 0.74609375F, (float) (91 - height) / 256);
-        tess.addVertexWithUV( x + 8, y + 78 - height, 0,     0.6875F, (float) (91 - height) / 256);
-        tess.draw();
-
         //Draw Arrow
         int arrow = tile.getCookTimeScaled(24);
         drawTexturedModalRect(x + 107, y + 35, 176, 22, arrow, 17);
 
-        //Render Fluid
-        FluidTank airTank = tile.tank;
-        GuiHelper.renderFluid(airTank, x + 37, y + 78, 52);
+        super.drawGuiContainerBackgroundLayer(f, i, j);
     }
 
     @Override
