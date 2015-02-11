@@ -45,7 +45,7 @@ public class BlockTeslaStand extends BlockBase {
 
     @Override
     public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-        return world.getBlock(x, y - 1, z) instanceof BlockTeslaBase;
+        return world.getBlock(x, y - 1, z) instanceof BlockTeslaBase || world.getBlock(x, y - 1, z) instanceof BlockTeslaStand;
     }
 
 
