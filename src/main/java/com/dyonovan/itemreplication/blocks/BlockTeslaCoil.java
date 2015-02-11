@@ -1,7 +1,6 @@
 package com.dyonovan.itemreplication.blocks;
 
 import com.dyonovan.itemreplication.ItemReplication;
-import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.handlers.GuiHandler;
 import com.dyonovan.itemreplication.lib.Constants;
 import com.dyonovan.itemreplication.tileentity.TileTeslaCoil;
@@ -22,7 +21,7 @@ public class BlockTeslaCoil extends BlockContainer {
         this.setCreativeTab(ItemReplication.tabItemReplication);
         this.setHardness(1.5F);
         this.setBlockName(Constants.MODID + ":blockTeslaCoil");
-        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 2.0F, 1.0F);
+        //this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 2.0F, 1.0F);
     }
 
     //temp till model is done
@@ -80,7 +79,7 @@ public class BlockTeslaCoil extends BlockContainer {
 
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemstack) {
-        world.setBlock(x, y + 1, z, BlockHandler.blockGhost);
+       // world.setBlock(x, y + 1, z, BlockHandler.blockGhost);
     }
 
     @Override
