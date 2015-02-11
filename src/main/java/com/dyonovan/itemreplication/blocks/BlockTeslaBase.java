@@ -4,7 +4,6 @@ import com.dyonovan.itemreplication.ItemReplication;
 import com.dyonovan.itemreplication.lib.Constants;
 import com.dyonovan.itemreplication.tileentity.TileTeslaBase;
 import com.dyonovan.itemreplication.util.Location;
-import com.dyonovan.itemreplication.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,7 +16,6 @@ public class BlockTeslaBase extends BlockBase {
     public BlockTeslaBase() {
         super(Material.iron);
         this.setBlockName(Constants.MODID + ":blockTeslaBase");
-        this.setHardness(1.5F);
         this.setCreativeTab(ItemReplication.tabItemReplication);
         this.setBlockBounds(0.34375F, 0F, 0.34375F, 0.65625F, 1F, 0.65625F);
     }
@@ -56,6 +54,8 @@ public class BlockTeslaBase extends BlockBase {
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9)
     {
+        super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
+
         Location location = new Location(x, y, z);
         while(!world.isAirBlock(location.x, location.y, location.z)) {
             location.moveInDirection(ForgeDirection.UP);
@@ -73,8 +73,11 @@ public class BlockTeslaBase extends BlockBase {
     {
         Location location = new Location(x, y + 1, z);
         while(!world.isAirBlock(location.x, location.y, location.z)) {
-            WorldUtils.breakBlock(world, location);
+            //WorldUtils.breakBlock(world, location);
+            world.setBlockToAir(location.x, location.y, location.z);
         }
         super.breakBlock(world, x, y, z, par5, par6);
     }
+
+
 }
