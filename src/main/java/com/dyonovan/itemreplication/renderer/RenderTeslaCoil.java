@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderTeslaCoil extends TileEntitySpecialRenderer {
 
-    public static final ResourceLocation texture = new ResourceLocation(Constants.MODID + ":textures/models/tesla_coil.png");
+    public static final ResourceLocation texture = new ResourceLocation(Constants.MODID + ":textures/models/teslaCoil.png");
 
     private ModelTeslaCoil model;
 
@@ -22,12 +22,13 @@ public class RenderTeslaCoil extends TileEntitySpecialRenderer {
 
         GL11.glPushMatrix();
 
-        GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
-        GL11.glRotatef(180, 0F, 0F, 1F);
+        GL11.glTranslatef((float) x + 0.5F, (float) y, (float) z + 0.5F);
+        GL11.glRotatef(180, 0F, 1F, 0F);
 
         this.bindTexture(texture);
 
-        this.model.renderModel(0.0625F, tileentity.xCoord, tileentity.yCoord, tileentity.zCoord, (tileentity.getWorldObj() == null));
+        this.model.render();
+        //this.model.renderModel(0.0625F, tileentity.xCoord, tileentity.yCoord, tileentity.zCoord, (tileentity.getWorldObj() == null));
 
         GL11.glPopMatrix();
     }

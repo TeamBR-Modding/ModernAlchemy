@@ -56,13 +56,13 @@ public class ItemRenderTeslaCoil implements IItemRenderer {
 
     public void renderCoil(float x, float y, float z, int metaData)
     {
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(Constants.MODID + ":textures/models/tesla_coil.png"));
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(Constants.MODID + ":textures/models/teslaCoil.png"));
 
         GL11.glPushMatrix(); //start
         GL11.glTranslatef(x, y, z); //size
         GL11.glRotatef(180, 1, 0, 0);
         GL11.glRotatef(-90, 0, 1, 0);
-        coil.renderAll();
+        coil.render();
         GL11.glPopMatrix(); //end
     }
 }
