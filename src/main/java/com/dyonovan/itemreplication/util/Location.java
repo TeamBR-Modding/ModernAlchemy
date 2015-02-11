@@ -1,11 +1,12 @@
 package com.dyonovan.itemreplication.util;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class Location {
-    private int x;
-    private int y;
-    private int z;
+    public int x;
+    public int y;
+    public int z;
 
     public Location() {
         this(0, 0, 0);
@@ -17,11 +18,34 @@ public class Location {
         this.z = zLocation;
     }
 
-    public int getX() { return x; }
+    public int X() { return x; }
 
-    public int getY() { return y; }
+    public int Y() { return y; }
 
-    public int getZ() { return z; }
+    public int Z() { return z; }
+
+    public void moveInDirection(ForgeDirection dir) {
+        switch (dir) {
+        case UP :
+            y++;
+            break;
+        case DOWN :
+            y--;
+            break;
+        case NORTH :
+            z--;
+            break;
+        case EAST :
+            x++;
+            break;
+        case SOUTH :
+            z++;
+            break;
+        case WEST :
+            x--;
+            break;
+        }
+    }
 
     public void writeToNBT(NBTTagCompound tag) {
         tag.setInteger("LocationX", x);

@@ -1,6 +1,7 @@
 package com.dyonovan.itemreplication.util;
 
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -30,5 +31,16 @@ public class WorldUtils {
             entityitem.motionZ = (double) ((float) random.nextGaussian() * f3);
             worldObj.spawnEntityInWorld(entityitem);
         }
+    }
+
+    public static void breakBlock(World world, int x, int y, int z) {
+        ItemStack drops = new ItemStack(Item.getItemFromBlock(world.getBlock(x, y, z)));
+        expelItem(world, x, y, z, drops);
+        world.getBlock(x, y, z).breakBlock(world, x, y, z, world.getBlock(x, y, z), 0);
+        world.setBlockToAir(x, y, z);
+    }
+
+    public static void breakBlock(World world, Location loc) {
+        breakBlock(world, loc.x, loc.y, loc.z);
     }
 }

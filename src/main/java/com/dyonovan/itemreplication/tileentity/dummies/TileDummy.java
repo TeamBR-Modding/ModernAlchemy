@@ -13,8 +13,8 @@ public class TileDummy extends BaseTile {
      * @return Parent core, null if not found
      */
     public BaseCore getCore() {
-        if(worldObj.getTileEntity(coreLocation.getX(), coreLocation.getY(), coreLocation.getZ()) instanceof BaseCore)
-            return (BaseCore) worldObj.getTileEntity(coreLocation.getX(), coreLocation.getY(), coreLocation.getZ());
+        if(worldObj.getTileEntity(coreLocation.X(), coreLocation.Y(), coreLocation.Z()) instanceof BaseCore)
+            return (BaseCore) worldObj.getTileEntity(coreLocation.X(), coreLocation.Y(), coreLocation.Z());
         else
             return null;
     }

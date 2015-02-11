@@ -28,7 +28,6 @@ public class RenderTeslaCoil extends TileEntitySpecialRenderer {
         this.bindTexture(texture);
 
         this.model.render();
-        //this.model.renderModel(0.0625F, tileentity.xCoord, tileentity.yCoord, tileentity.zCoord, (tileentity.getWorldObj() == null));
 
         GL11.glPopMatrix();
     }
