@@ -18,7 +18,7 @@ import java.util.List;
 
 public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInventory {
 
-    private static final int PROCESS_TIME = 5000;
+    private static final int PROCESS_TIME = 100;
     public static final int INPUT_SLOT = 0;
     public static final int ITEM_SLOT = 1;
     public static final int OUTPUT_SLOT = 2;
@@ -63,10 +63,10 @@ public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInv
         
         if (worldObj.isRemote) return;
 
-        // accept energy first
         if(energy.canAcceptEnergy())
             chargeFromCoils();
-        if (canStartWork()) {
+
+        if (canStartWork() || currentProcessTime > 0) {
 
             updateSpeed();
             if (!isActive)
@@ -89,7 +89,7 @@ public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInv
                 }
             }
             if (currentProcessTime >= PROCESS_TIME) {
-                inventory.setStackInSlot(recordPattern(new ItemStack(ItemHandler.itemPattern), itemCopy), 2);
+                inventory.setStackInSlot(recordPattern(itemCopy), 2);
                 currentProcessTime = 0;
             }
         } else if (isActive) {
@@ -98,15 +98,17 @@ public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInv
         } 
     }
 
-    public static ItemStack recordPattern(ItemStack pattern, ItemStack item) {
-        pattern.stackTagCompound = new NBTTagCompound();
-        
+    public static ItemStack recordPattern(ItemStack item) {
+
+        ItemStack pattern = new ItemStack(ItemHandler.itemPattern, 1);
+        NBTTagCompound tag = new NBTTagCompound();
         GameRegistry.UniqueIdentifier uniqueIdentifier = GameRegistry.findUniqueIdentifierFor(item.getItem());
-        pattern.stackTagCompound.setString("Item", uniqueIdentifier.modId + 
+        tag.setString("Item", uniqueIdentifier.modId +
                 ":" + uniqueIdentifier.name + ":" + item.getItemDamage());
-        ((ItemPattern) pattern.getItem()).setIconRecordedPattern();
-        
-        return item;
+        pattern.setTagCompound(tag);
+
+        //((ItemPattern) pattern.getItem()).setIconRecordedPattern();
+        return pattern;
     }
 
     public void updateSpeed() {
@@ -233,6 +235,8 @@ public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInv
         }
     }
 
+
+
     @Override
     public void addEnergy(int maxAmount) {
         energy.addEnergy(maxAmount);
@@ -251,5 +255,9 @@ public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInv
     @Override
     public TeslaBank getEnergyBank() {
         return energy;
+    }
+
+    public void setEnergy(int amount) {
+        energy.setEnergyLevel(amount);
     }
 }

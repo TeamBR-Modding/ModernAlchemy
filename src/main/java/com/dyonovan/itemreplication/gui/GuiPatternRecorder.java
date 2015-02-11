@@ -15,9 +15,6 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Tim on 2/8/2015.
- */
 public class GuiPatternRecorder extends GuiContainer {
 
     private TilePatternRecorder tile;

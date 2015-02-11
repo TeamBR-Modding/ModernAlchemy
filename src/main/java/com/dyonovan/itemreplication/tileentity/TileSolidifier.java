@@ -281,6 +281,8 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
         return true;
     }
 
+
+
     public int getCookTimeScaled(int scale) {
         return (timeProcessed * scale) / PROCESS_TIME;
     }

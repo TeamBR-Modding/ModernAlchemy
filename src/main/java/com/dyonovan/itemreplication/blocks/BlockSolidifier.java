@@ -35,6 +35,7 @@ public class BlockSolidifier extends BlockBase {
         this.frontActive = iconregister.registerIcon(Constants.MODID + ":solidifier_front_on");
     }
 
+    @Override
     public IIcon getIcon(int side, int meta) {
         boolean active = false;
         if (meta > 10) {
