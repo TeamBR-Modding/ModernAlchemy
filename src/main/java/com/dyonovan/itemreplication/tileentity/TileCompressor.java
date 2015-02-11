@@ -144,18 +144,17 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
         int currentDrain = 0;
         for (TileTeslaCoil coil : coils) {
             if (coil.getEnergyLevel() <= 0) continue;
-            int fill = coil.getEnergyLevel() > ConfigHandler.tickTesla ? ConfigHandler.tickTesla : coil.getEnergyLevel();
+            int fill = coil.getEnergyLevel() > ConfigHandler.maxCoilTransfer ? ConfigHandler.maxCoilTransfer : coil.getEnergyLevel();
             if (currentDrain + fill > maxFill)
                 fill = maxFill - currentDrain;
             currentDrain += fill;
             coil.drainEnergy(fill);
 
-            if(worldObj.isRemote)
-             RenderUtils.renderLightningBolt(worldObj, xCoord, yCoord, zCoord, coil, fill);
+            RenderUtils.sendBoltToClient(xCoord, yCoord, zCoord, coil, fill);
 
         }
         while (currentDrain > 0) {
-            energy.addEnergy(ConfigHandler.tickTesla);
+            energy.addEnergy(ConfigHandler.maxCoilTransfer);
             currentDrain--;
         }
     }

@@ -12,7 +12,7 @@ public class TileTeslaCoil extends BaseTile implements IEnergyHandler, ITeslaHan
 
     protected EnergyStorage energyRF;
     private TeslaBank energyTesla;
-    //TODO make special block unbreakable
+
     public TileTeslaCoil() {
         super();
         energyRF = new EnergyStorage(10000, 1000, 0);
@@ -104,16 +104,16 @@ public class TileTeslaCoil extends BaseTile implements IEnergyHandler, ITeslaHan
         if (worldObj.isRemote) return;
 
         if (energyRF.getEnergyStored() > 0 && energyTesla.getEnergyLevel()  < energyTesla.getMaxCapacity()) {
-            int actualRF = Math.min(ConfigHandler.tickTesla * ConfigHandler.tickRF, energyRF.getEnergyStored());
-            int actualTesla = Math.min(ConfigHandler.tickTesla, energyTesla.getMaxCapacity() - energyTesla.getEnergyLevel());
+            int actualRF = Math.min(ConfigHandler.maxCoilGenerate * ConfigHandler.rfPerTesla, energyRF.getEnergyStored());
+            int actualTesla = Math.min(ConfigHandler.maxCoilGenerate, energyTesla.getMaxCapacity() - energyTesla.getEnergyLevel());
 
-            if (actualTesla * ConfigHandler.tickRF < actualRF) {
+            if (actualTesla * ConfigHandler.rfPerTesla < actualRF) {
                 removeEnergy(actualTesla * 10);
                 energyTesla.addEnergy(actualTesla);
-            } else if (actualTesla * ConfigHandler.tickRF > actualRF && actualRF > 100) {
+            } else if (actualTesla * ConfigHandler.rfPerTesla > actualRF && actualRF > 100) {
                 removeEnergy(actualRF);
-                energyTesla.addEnergy(actualRF / ConfigHandler.tickRF);
-            } else if (actualTesla * ConfigHandler.tickRF == actualRF) {
+                energyTesla.addEnergy(actualRF / ConfigHandler.rfPerTesla);
+            } else if (actualTesla * ConfigHandler.rfPerTesla == actualRF) {
                 removeEnergy(actualRF);
                 energyTesla.addEnergy(actualTesla);
             }

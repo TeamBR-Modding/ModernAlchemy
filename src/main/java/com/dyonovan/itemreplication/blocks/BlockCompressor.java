@@ -6,7 +6,6 @@ import com.dyonovan.itemreplication.lib.Constants;
 import com.dyonovan.itemreplication.tileentity.TileCompressor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,8 +20,6 @@ public class BlockCompressor extends BlockBase {
 
     @SideOnly(Side.CLIENT)
     private IIcon front, frontActive;
-
-    public static boolean isRunning = false;
 
     public BlockCompressor() {
         super(Material.anvil);
@@ -53,13 +50,8 @@ public class BlockCompressor extends BlockBase {
         } else {
             world.setBlockMetadataWithNotify(x, y, z, currentMeta -= 10, 2);
         }
-        isRunning = !(currentMeta < 10);
-        return isRunning;
+        return !(currentMeta < 10);
     }
-
-    /*public boolean isRunning() {
-        return isRunning;
-    }*/
 
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemstack) {
         int l = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;

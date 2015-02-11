@@ -1,6 +1,7 @@
 package com.dyonovan.itemreplication.tileentity;
 
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
+import com.dyonovan.itemreplication.util.RenderUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -47,5 +48,25 @@ public class BaseTile extends TileEntity {
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
     {
         readFromNBT(pkt.func_148857_g());
+    }
+
+    public static List<TileTeslaCoil> findCoils(World world, TileEntity tile) {
+
+        List<TileTeslaCoil> list = new ArrayList<TileTeslaCoil>();
+
+        int tileX = tile.xCoord;
+        int tileY = tile.yCoord;
+        int tileZ = tile.zCoord;
+
+        for (int x = -ConfigHandler.searchRange; x <= ConfigHandler.searchRange; x++) {
+            for (int y = -ConfigHandler.searchRange; y <= ConfigHandler.searchRange; y++) {
+                for (int z = -ConfigHandler.searchRange; z <= ConfigHandler.searchRange; z++) {
+                    if (world.getTileEntity(tileX + x, tileY + y, tileZ + z) instanceof TileTeslaCoil) {
+                        list.add((TileTeslaCoil) world.getTileEntity(tileX + x, tileY + y, tileZ + z));
+                    }
+                }
+            }
+        }
+        return list;
     }
 }

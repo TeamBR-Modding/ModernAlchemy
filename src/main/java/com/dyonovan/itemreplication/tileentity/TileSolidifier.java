@@ -1,23 +1,20 @@
 package com.dyonovan.itemreplication.tileentity;
 
-import com.dyonovan.itemreplication.blocks.BlockCompressor;
+import com.dyonovan.itemreplication.blocks.BlockSolidifier;
 import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
 import com.dyonovan.itemreplication.handlers.ItemHandler;
-import com.dyonovan.itemreplication.util.RenderUtils;
 import com.dyonovan.itemreplication.lib.Constants;
+import com.dyonovan.itemreplication.util.RenderUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHandler, ISidedInventory {
@@ -29,7 +26,6 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
     private boolean isActive;
     private int currentSpeed;
     public ItemStack inventory[];
-    private static final int OUTPUT_SLOT = 0;
     private int timeProcessed;
 
     public TileSolidifier() {
@@ -132,17 +128,18 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
     public void updateEntity() {
         super.updateEntity();
 
+        if (worldObj.isRemote) return;
+
         if (energy.canAcceptEnergy()) {
             chargeFromCoils();
         }
-        //if (worldObj.isRemote) return;
 
         if (isPowered()) {
             if (this.inventory[0] != null && this.inventory[0].stackSize >= 64) return;
             if (energy.getEnergyLevel() > 0 && tank.getFluid() != null && tank.getFluidAmount() > 0) {
                 updateSpeed();
                 if (!isActive)
-                    isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+                    isActive = BlockSolidifier.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 
                 if (timeProcessed < PROCESS_TIME) {
                     if (energy.getEnergyLevel() > 0) {
@@ -160,7 +157,7 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
                 }
                 super.markDirty();
             } else if (isActive) {
-                isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+                isActive = BlockSolidifier.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
                 timeProcessed = 0;
             }
         } else timeProcessed = 0;
@@ -183,41 +180,19 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
         int currentDrain = 0;
         for (TileTeslaCoil coil : coils) {
             if (coil.getEnergyLevel() <= 0) continue;
-            int fill = coil.getEnergyLevel() > ConfigHandler.tickTesla ? ConfigHandler.tickTesla : coil.getEnergyLevel();
+            int fill = coil.getEnergyLevel() > ConfigHandler.maxCoilTransfer ? ConfigHandler.maxCoilTransfer : coil.getEnergyLevel();
             if (currentDrain + fill > maxFill)
                 fill = maxFill - currentDrain;
             currentDrain += fill;
             coil.drainEnergy(fill);
 
-            if (worldObj.isRemote)
-                RenderUtils.renderLightningBolt(worldObj, xCoord, yCoord, zCoord, coil, fill);
+            RenderUtils.sendBoltToClient(xCoord, yCoord, zCoord, coil, fill);
         }
         while (currentDrain > 0) {
-            energy.addEnergy(ConfigHandler.tickTesla);
+            energy.addEnergy(ConfigHandler.maxCoilTransfer);
             currentDrain--;
         }
     }
-
-    public static List<TileTeslaCoil> findCoils(World world, TileEntity tile) {
-
-        List<TileTeslaCoil> list = new ArrayList<TileTeslaCoil>();
-
-        int tileX = tile.xCoord;
-        int tileY = tile.yCoord;
-        int tileZ = tile.zCoord;
-
-        for (int x = -ConfigHandler.searchRange; x <= ConfigHandler.searchRange; x++) {
-            for (int y = -ConfigHandler.searchRange; y <= ConfigHandler.searchRange; y++) {
-                for (int z = -ConfigHandler.searchRange; z <= ConfigHandler.searchRange; z++) {
-                    if (world.getTileEntity(tileX + x, tileY + y, tileZ + z) instanceof TileTeslaCoil) {
-                        list.add((TileTeslaCoil) world.getTileEntity(tileX + x, tileY + y, tileZ + z));
-                    }
-                }
-            }
-        }
-        return list;
-    }
-
 
     @Override
     public int[] getAccessibleSlotsFromSide(int p_94128_1_) {

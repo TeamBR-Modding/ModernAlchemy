@@ -15,12 +15,13 @@ import net.minecraftforge.fluids.FluidStack;
 public class ContainerSolidifier extends Container {
 
     private TileSolidifier tile;
-    //private int lastPower, lastTank;
+    private int lastPower, lastTank;
     private InventoryPlayer inventory;
 
     public ContainerSolidifier(InventoryPlayer inventory, TileSolidifier tile) {
         this.tile = tile;
         this.inventory = inventory;
+        this.lastPower = 0;
 
         addSlotToContainer(new SlotFurnace(inventory.player, tile, 0, 146, 34));
         bindPlayerInventory(inventory);
@@ -44,7 +45,7 @@ public class ContainerSolidifier extends Container {
         return true;
     }
 
-    /*@Override
+    @Override
     public void addCraftingToCrafters(ICrafting crafter) {
         super.addCraftingToCrafters(crafter);
         crafter.sendProgressBarUpdate(this, 0, this.tile.getEnergyLevel());
@@ -78,6 +79,6 @@ public class ContainerSolidifier extends Container {
             case 1:
                 this.tile.tank.setFluid(new FluidStack(BlockHandler.fluidActinium, j));
         }
-    }*/
+    }
 
 }

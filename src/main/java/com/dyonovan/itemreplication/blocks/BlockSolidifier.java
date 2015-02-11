@@ -6,7 +6,6 @@ import com.dyonovan.itemreplication.lib.Constants;
 import com.dyonovan.itemreplication.tileentity.TileSolidifier;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,8 +20,6 @@ public class BlockSolidifier extends BlockBase {
 
     @SideOnly(Side.CLIENT)
     private IIcon front, frontActive;
-
-    public static boolean isRunning = false;
 
     public BlockSolidifier() {
         super(Material.iron);
@@ -54,8 +51,7 @@ public class BlockSolidifier extends BlockBase {
         } else {
             world.setBlockMetadataWithNotify(x, y, z, currentMeta -= 10, 2);
         }
-        isRunning = !(currentMeta < 10);
-        return isRunning;
+        return !(currentMeta < 10);
     }
 
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemstack) {

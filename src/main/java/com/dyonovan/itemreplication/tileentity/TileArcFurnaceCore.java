@@ -15,11 +15,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITeslaHandler, IInventory {
@@ -171,14 +169,13 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     /*******************************************************************************************************************
      ******************************************** Energy Functions *****************************************************
      *******************************************************************************************************************/
-
     public void chargeFromCoils() {
         int maxFill = energyTank.getMaxCapacity() - energyTank.getEnergyLevel();
         List<TileTeslaCoil> coils = findCoils(worldObj, this);
         int currentDrain = 0;
         for(TileTeslaCoil coil : coils) {
             if (coil.getEnergyLevel() <= 0) continue; //fixes looking like its working when coil is empty
-            int fill = coil.getEnergyLevel() > ConfigHandler.tickTesla ? ConfigHandler.tickTesla : coil.getEnergyLevel();
+            int fill = coil.getEnergyLevel() > ConfigHandler.maxCoilTransfer ? ConfigHandler.maxCoilTransfer : coil.getEnergyLevel();
             if(currentDrain + fill > maxFill)
                 fill = maxFill - currentDrain;
             currentDrain += fill;
@@ -194,26 +191,6 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             currentDrain--;
         }
-    }
-
-    public static List<TileTeslaCoil> findCoils(World world, TileEntity tile) {
-
-        List<TileTeslaCoil> list = new ArrayList<TileTeslaCoil>();
-
-        int tileX = tile.xCoord;
-        int tileY = tile.yCoord;
-        int tileZ = tile.zCoord;
-
-        for (int x = -ConfigHandler.searchRange; x <= ConfigHandler.searchRange; x++) {
-            for (int y = -ConfigHandler.searchRange; y <= ConfigHandler.searchRange; y++) {
-                for (int z = -ConfigHandler.searchRange; z <= ConfigHandler.searchRange; z++) {
-                    if (world.getTileEntity(tileX + x, tileY + y, tileZ + z) instanceof TileTeslaCoil) {
-                        list.add((TileTeslaCoil) world.getTileEntity(tileX + x, tileY + y, tileZ + z));
-                    }
-                }
-            }
-        }
-        return list;
     }
 
     @Override

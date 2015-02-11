@@ -1,150 +1,164 @@
 package com.dyonovan.itemreplication.tileentity;
 
+import com.dyonovan.itemreplication.blocks.BlockPatternRecorder;
+import com.dyonovan.itemreplication.blocks.BlockSolidifier;
+import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
-import com.dyonovan.itemreplication.energy.TeslaConsumer;
-import com.dyonovan.itemreplication.energy.TeslaReceiver;
+import com.dyonovan.itemreplication.handlers.ConfigHandler;
+import com.dyonovan.itemreplication.handlers.ItemHandler;
 import com.dyonovan.itemreplication.items.ItemPattern;
+import com.dyonovan.itemreplication.util.RenderUtils;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 
-/**
- * Created by Tim on 2/5/2015.
- */
-public class TilePatternRecorder extends BaseTile implements IInventory {
+import java.util.List;
 
-    public ItemStack inventory[];
-    public static final int PATTERN_INPUT_SLOT = 0;
+public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInventory {
+
+    private static final int PROCESS_TIME = 5000;
+    public static final int INPUT_SLOT = 0;
     public static final int ITEM_SLOT = 1;
-    public static final int PATTERN_OUTPUT_SLOT = 2;
+    public static final int OUTPUT_SLOT = 2;
 
-    private TeslaBank energyTank;
-    private TeslaConsumer teslaConsumer;
-    private TeslaReceiver teslaReceiver;
+    public InventoryTile inventory;
 
-    private static int totalProcessTime = TeslaConsumer.secondsToSpeed(5);
+    private TeslaBank energy;
+    private boolean isActive;
+    private int currentSpeed;
+    private ItemStack itemCopy;
+
     private int currentProcessTime;
 
     public TilePatternRecorder() {
-        inventory = new ItemStack[3];
+        inventory = new InventoryTile(3);
         currentProcessTime = 0;
-
-        energyTank = new TeslaBank(0, 1000);
-        teslaReceiver = new TeslaReceiver(energyTank);
-        teslaConsumer = new TeslaConsumer(energyTank, 1);
+        this.isActive = false;
+        energy = new TeslaBank(0, 1000);
     }
 
-    public TeslaBank getEnergyTank() {return energyTank; }
+    public TeslaBank getEnergyTank() {return energy; }
 
-    public int getProgressScaled(int scale) { return currentProcessTime * scale / totalProcessTime; }
+    public int getProgressScaled(int scale) { return currentProcessTime * scale / PROCESS_TIME; }
 
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-
-        energyTank.readFromNBT(tag);
-
-        NBTTagList itemsTag = tag.getTagList("Items", 10);
-        this.inventory = new ItemStack[getSizeInventory()];
-        for (int i = 0; i < itemsTag.tagCount(); i++)
-        {
-            NBTTagCompound nbtTagCompound1 = itemsTag.getCompoundTagAt(i);
-            NBTBase nbt = nbtTagCompound1.getTag("Slot");
-            int j = -1;
-            if ((nbt instanceof NBTTagByte)) {
-                j = nbtTagCompound1.getByte("Slot") & 0xFF;
-            } else {
-                j = nbtTagCompound1.getShort("Slot");
-            }
-            if ((j >= 0) && (j < this.inventory.length)) {
-                this.inventory[j] = ItemStack.loadItemStackFromNBT(nbtTagCompound1);
-            }
-        }
+        energy.readFromNBT(tag);
+        inventory.readFromNBT(tag, this);
+        currentProcessTime = tag.getInteger("TimeProcessed");
     }
 
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-
-        energyTank.writeToNBT(tag);
-
-        NBTTagList nbtTagList = new NBTTagList();
-        for (int i = 0; i < this.inventory.length; i++) {
-            if (this.inventory[i] != null)
-            {
-                NBTTagCompound nbtTagCompound1 = new NBTTagCompound();
-                nbtTagCompound1.setShort("Slot", (short)i);
-                this.inventory[i].writeToNBT(nbtTagCompound1);
-                nbtTagList.appendTag(nbtTagCompound1);
-            }
-        }
-        tag.setTag("Items", nbtTagList);
+        energy.writeToNBT(tag);
+        inventory.writeToNBT(tag);
+        tag.setInteger("TimeProcessed", currentProcessTime);
     }
 
     @Override
     public void updateEntity() {
         super.updateEntity();
+        
+        if (worldObj.isRemote) return;
 
         // accept energy first
-        if(energyTank.canAcceptEnergy())
-            teslaReceiver.chargeFromCoils(worldObj, this, energyTank);
+        if(energy.canAcceptEnergy())
+            chargeFromCoils();
+        if (canStartWork()) {
 
-        if(currentProcessTime <= 0 && canStartWork()) {
-            startWorking();
-            currentProcessTime = 1;
+            updateSpeed();
+            if (!isActive)
+                isActive = BlockPatternRecorder.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+            
+            if (currentProcessTime <= 0 && canStartWork()) {
+                itemCopy = inventory.getStackInSlot(INPUT_SLOT);
+                decrStackSize(0, 1);
+                decrStackSize(1, 1);
+                currentProcessTime = 1;
+            }
+
+            if (currentProcessTime < PROCESS_TIME) {
+                if (energy.getEnergyLevel() > 0) {
+                    energy.drainEnergy(currentSpeed);
+                    currentProcessTime += currentSpeed;
+                } else {
+                    currentProcessTime = 0;
+                    itemCopy = null;
+                }
+            }
+            if (currentProcessTime >= PROCESS_TIME) {
+                inventory.setStackInSlot(recordPattern(new ItemStack(ItemHandler.itemPattern), itemCopy), 2);
+                currentProcessTime = 0;
+            }
+        } else if (isActive) {
+            isActive = BlockSolidifier.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+            currentProcessTime = 0;
+        } 
+    }
+
+    public static ItemStack recordPattern(ItemStack pattern, ItemStack item) {
+        pattern.stackTagCompound = new NBTTagCompound();
+        
+        GameRegistry.UniqueIdentifier uniqueIdentifier = GameRegistry.findUniqueIdentifierFor(item.getItem());
+        pattern.stackTagCompound.setString("Item", uniqueIdentifier.modId + 
+                ":" + uniqueIdentifier.name + ":" + item.getItemDamage());
+        ((ItemPattern) pattern.getItem()).setIconRecordedPattern();
+        
+        return item;
+    }
+
+    public void updateSpeed() {
+        if(energy.getEnergyLevel() == 0) {
+            currentSpeed = 0;
+            return;
         }
 
-        if(currentProcessTime > 0) {
-            int progress = teslaConsumer.consumeEnergy();
-            if (progress < 0) {
-                // fail
-                currentProcessTime = 0;
-            } else {
-                // do work
-                currentProcessTime += progress;
-            }
-            if(currentProcessTime >= totalProcessTime) {
-                finishWorking();
-                currentProcessTime = 0;
-            }
+        currentSpeed = (energy.getEnergyLevel() * 20) / energy.getMaxCapacity();
+        if(currentSpeed == 0)
+            currentSpeed = 1;
+    }
+
+    public void chargeFromCoils() {
+        int maxFill = energy.getMaxCapacity() - energy.getEnergyLevel();
+        List<TileTeslaCoil> coils = findCoils(worldObj, this);
+        int currentDrain = 0;
+        for (TileTeslaCoil coil : coils) {
+            if (coil.getEnergyLevel() <= 0) continue;
+            int fill = coil.getEnergyLevel() > ConfigHandler.maxCoilTransfer ? ConfigHandler.maxCoilTransfer : coil.getEnergyLevel();
+            if (currentDrain + fill > maxFill)
+                fill = maxFill - currentDrain;
+            currentDrain += fill;
+            coil.drainEnergy(fill);
+
+            RenderUtils.sendBoltToClient(xCoord, yCoord, zCoord, coil, fill);
+        }
+        while (currentDrain > 0) {
+            energy.addEnergy(ConfigHandler.maxCoilTransfer);
+            currentDrain--;
         }
     }
 
     private boolean canStartWork() {
-        return inventory[PATTERN_INPUT_SLOT] != null && inventory[ITEM_SLOT] != null &&
-                inventory[PATTERN_INPUT_SLOT].getItem() instanceof ItemPattern &&  // must have a pattern - doesn't matter if it is already recorded
-                inventory[PATTERN_OUTPUT_SLOT] == null;  // output must be empty
-                //inventory[ITEM_SLOT].getItem() != null; // must have an item - TODO: restrict items?
-    }
-
-    private void startWorking() {
-        // consume resources
-        inventory[PATTERN_INPUT_SLOT].stackSize--;
-        if(inventory[PATTERN_INPUT_SLOT].stackSize == 0)
-            inventory[PATTERN_INPUT_SLOT] = null;
-    }
-
-    private void finishWorking() {
-        // create products
-        inventory[PATTERN_OUTPUT_SLOT] = new ItemStack(new ItemPattern());
-        ItemPattern.recordPattern(inventory[PATTERN_OUTPUT_SLOT], inventory[ITEM_SLOT]);
+        return inventory.getStackInSlot(INPUT_SLOT) != null && inventory.getStackInSlot(ITEM_SLOT) != null &&
+                inventory.getStackInSlot(INPUT_SLOT).getItem() instanceof ItemPattern &&
+                inventory.getStackInSlot(OUTPUT_SLOT) == null;
     }
 
     @Override
     public int getSizeInventory() {
-        return inventory.length;
+        return inventory.getSizeInventory();
     }
 
     @Override
     public ItemStack getStackInSlot(int slot) {
-        return inventory[slot];
+        return inventory.getStackInSlot(slot);
     }
 
     @Override
     public void setInventorySlotContents(int slot, ItemStack stack) {
-        inventory[slot] = stack;
+        inventory.setStackInSlot(stack, slot);
         if (stack != null && stack.stackSize > getInventoryStackLimit()) {
             stack.stackSize = getInventoryStackLimit();
         }
@@ -152,16 +166,19 @@ public class TilePatternRecorder extends BaseTile implements IInventory {
     }
 
     @Override
-    public ItemStack decrStackSize(int slot, int number) {
-        ItemStack newStack = null;
-        if(inventory[slot] != null) {
-            newStack = new ItemStack(inventory[slot].getItem());
-            newStack.stackSize = inventory[slot].stackSize; // should only be 1
-            newStack.setTagCompound(inventory[slot].getTagCompound());
-            inventory[slot] = null;
+    public ItemStack decrStackSize(int slot, int amt) {
+        ItemStack stack = getStackInSlot(slot);
+        if (stack != null) {
+            if (stack.stackSize <= amt) {
+                setInventorySlotContents(slot, null);
+            } else {
+                stack = stack.splitStack(amt);
+                if (stack.stackSize == 0) {
+                    setInventorySlotContents(slot, null);
+                }
+            }
         }
-
-        return newStack;
+        return stack;
     }
 
     @Override
@@ -207,12 +224,32 @@ public class TilePatternRecorder extends BaseTile implements IInventory {
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
         switch(slot){
-            case TilePatternRecorder.ITEM_SLOT:
-                return !(stack.getItem() instanceof ItemPattern); // TODO: how should this be limited?
-            case TilePatternRecorder.PATTERN_INPUT_SLOT:
+            case ITEM_SLOT:
+                return true; // TODO: how should this be limited?
+            case INPUT_SLOT:
                 return stack.getItem() instanceof ItemPattern;
             default:
                 return false;
         }
+    }
+
+    @Override
+    public void addEnergy(int maxAmount) {
+        energy.addEnergy(maxAmount);
+    }
+
+    @Override
+    public int drainEnergy(int maxAmount) {
+        return energy.drainEnergy(maxAmount);
+    }
+
+    @Override
+    public int getEnergyLevel() {
+        return energy.getEnergyLevel();
+    }
+
+    @Override
+    public TeslaBank getEnergyBank() {
+        return energy;
     }
 }
