@@ -184,14 +184,14 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
             currentDrain += fill;
             coil.drainEnergy(fill);
 
-            if(worldObj.isRemote) {
-                RenderUtils.renderLightningBolt(worldObj, xCoord, yCoord, zCoord, coil, fill);
-            }
+            RenderUtils.sendBoltToClient(xCoord, yCoord, zCoord, coil, fill);
+
             if(currentDrain >= maxFill) //Don't want to drain other coils we don't need to
                 break;
         }
         while(currentDrain > 0) {
             energyTank.addEnergy(1);
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             currentDrain--;
         }
     }
@@ -436,6 +436,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     @Override
     public void updateEntity() {
         super.updateEntity();
+        if(worldObj.isRemote) return;
         updateSpeed();
         if(energyTank.canAcceptEnergy() && isValid) {
             chargeFromCoils();
