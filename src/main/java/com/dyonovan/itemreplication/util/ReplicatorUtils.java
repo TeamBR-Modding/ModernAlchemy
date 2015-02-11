@@ -49,6 +49,7 @@ public class ReplicatorUtils {
                     LogHelper.info("Adding values for: " + modid);
                     for(Map.Entry<String, Integer> entry : map.entrySet()) {
                         values.put(entry.getKey(), entry.getValue());
+                        num++;
                     }
                     LogHelper.info("Added " + num + " values for " + modid);
                 }

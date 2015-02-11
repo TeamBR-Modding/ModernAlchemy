@@ -1,37 +1,32 @@
 package com.dyonovan.itemreplication.helpers;
 
 import com.dyonovan.itemreplication.lib.Constants;
-import cpw.mods.fml.common.FMLLog;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class LogHelper {
-    private static Logger logger = Logger.getLogger(Constants.MODID);
+    private static final Logger logger = LogManager.getLogger(Constants.MODID);
 
-    public static void init() {
+    public static void log(Level level, Object object) {
 
-        logger.setParent((Logger) FMLLog.getLogger());
-    }
-
-    public static void log(Level logLevel, Object object) {
-
-        logger.log(logLevel, object.toString());
+        logger.log(level, object.toString());
     }
 
     public static void severe(Object object) {
 
-        log(Level.SEVERE, object.toString());
+        log(Level.FATAL, object.toString());
     }
 
     public static void debug(Object object) {
 
-        log(Level.WARNING, "[DEBUG] " + object.toString());
+        log(Level.DEBUG, "[DEBUG] " + object.toString());
     }
 
     public static void warning(Object object) {
 
-        log(Level.WARNING, object.toString());
+        log(Level.WARN, object.toString());
     }
 
     public static void info(Object object) {
@@ -41,21 +36,6 @@ public class LogHelper {
 
     public static void config(Object object) {
 
-        log(Level.CONFIG, object.toString());
-    }
-
-    public static void fine(Object object) {
-
-        log(Level.FINE, object.toString());
-    }
-
-    public static void finer(Object object) {
-
-        log(Level.FINER, object.toString());
-    }
-
-    public static void finest(Object object) {
-
-        log(Level.FINEST, object.toString());
+        log(Level.INFO, object.toString());
     }
 }
