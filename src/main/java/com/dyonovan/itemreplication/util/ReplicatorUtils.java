@@ -1,6 +1,7 @@
 package com.dyonovan.itemreplication.util;
 
 import com.dyonovan.itemreplication.ItemReplication;
+import com.dyonovan.itemreplication.helpers.LogHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.io.FileUtils;
@@ -9,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 
 public class ReplicatorUtils {
     public static HashMap<String, Integer> values = new HashMap<String, Integer>();
@@ -20,6 +22,7 @@ public class ReplicatorUtils {
         dir.mkdirs();
         fileDirectory = folderLocation;
         moveJson();
+        LogHelper.info("Building Replicator Values List");
         buildList();
     }
 
@@ -42,15 +45,20 @@ public class ReplicatorUtils {
                 String modid = file.getName().substring(0, file.getName().length() - 5);
                 HashMap<String, Integer> map = JsonUtils.readJson(modid);
                 if(map != null) {
-                    System.out.println("Found values for: " + modid);
-                    values.putAll(map);
+                    int num = 0;
+                    LogHelper.info("Adding values for: " + modid);
+                    for(Map.Entry<String, Integer> entry : map.entrySet()) {
+                        values.put(entry.getKey(), entry.getValue());
+                    }
+                    LogHelper.info("Added " + num + " values for " + modid);
                 }
                 else
-                    System.out.println("Could not add " + modid + ".json");
+                    LogHelper.warning("Could not add " + modid + ".json");
             }
+            LogHelper.info("Done with Replicator values");
         }
         else
-            System.out.println("No Files Found for Replicator Values");
+            LogHelper.warning("No Files Found for Replicator Values");
     }
 
     public static int getValueForItem(ItemStack stack) {

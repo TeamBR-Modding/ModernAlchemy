@@ -1,6 +1,5 @@
 package com.dyonovan.itemreplication.util;
 
-import com.dyonovan.itemreplication.ItemReplication;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -27,9 +26,9 @@ public class JsonUtils {
     }
 
     public static HashMap<String, Integer> readJson(String modID) {
-
         try {
-            BufferedReader br = new BufferedReader(new FileReader(ReplicatorUtils.fileDirectory + modID + ".json"));
+            BufferedReader br = new BufferedReader(new FileReader(ReplicatorUtils.fileDirectory + File.separator + modID + ".json"));
+
             Gson gson = new Gson();
             Map<String, Integer> map = gson.fromJson(br, new TypeToken<Map<String, Integer>>(){}.getType());
             if (map != null) {
