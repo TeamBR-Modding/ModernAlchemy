@@ -7,8 +7,8 @@ public class ConfigHandler {
 
     public static String folderLocation;
 
-    public static boolean generateActinium;
-    public static int actiniumMaxLevel, actiniumVeinSize, actiniumVeinsPerChunk, actiniumMinLevel, tickTesla, tickRF;
+    public static boolean generateActinium, machineExplodes;
+    public static int actiniumMaxLevel, actiniumVeinSize, actiniumVeinsPerChunk, actiniumMinLevel;
     public static int searchRange;
     public static int rfPerTesla, maxCoilGenerate, maxCoilTransfer;
 
@@ -26,13 +26,10 @@ public class ConfigHandler {
 
         rfPerTesla              = config.get(Constants.CONFIG_TESLA, "RFs per Tesla", 10).getInt();
         maxCoilTransfer         = config.get(Constants.CONFIG_TESLA, "Max Tesla a coil can transfer per tick", 1).getInt();
-        maxCoilGenerate         = config.get(Constants.CONFIG_TESLA, "Max Tesla a coil can generate per tick", 10).getInt();
-		
-        tickTesla               = config.get(Constants.CONFIG_TESLA, "# of Tesla per Tick", 1).getInt();
-        tickRF                  = config.get(Constants.CONFIG_TESLA, "# of RF's per Tick per Tesla", 10).getInt();
+        maxCoilGenerate         = config.get(Constants.CONFIG_TESLA, "Max Tesla a coil can generate per tick", 1).getInt();
         searchRange             = config.get(Constants.CONFIG_TESLA, "How many blocks (cubed) to search for coils", 10).getInt();
 
-
+        machineExplodes         = config.get(Constants.CONFIG_GENERAL, "Do Machines Explode?", true).getBoolean();
 
         config.save();
     }

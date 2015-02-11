@@ -1,5 +1,6 @@
 package com.dyonovan.itemreplication.blocks;
 
+import com.dyonovan.itemreplication.handlers.ConfigHandler;
 import com.dyonovan.itemreplication.helpers.WrenchHelper;
 import com.dyonovan.itemreplication.util.Location;
 import com.dyonovan.itemreplication.util.WorldUtils;
@@ -65,6 +66,15 @@ public abstract class BlockBase extends BlockContainer{
                 world.setBlockToAir(x, y - i, z);
             }
         }
+    }
+
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block par5, int par6)
+    {
+        super.breakBlock(world, x, y, z, par5, par6);
+
+        if (ConfigHandler.machineExplodes)
+            world.createExplosion(null, x, y, z, 10.F, true);
     }
 
 }
