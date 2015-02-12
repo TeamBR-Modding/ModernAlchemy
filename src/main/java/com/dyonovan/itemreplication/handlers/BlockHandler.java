@@ -87,8 +87,6 @@ public class BlockHandler {
         blockCoil = new BlockTeslaCoil();
         GameRegistry.registerBlock(blockCoil, "blockCoil");
         GameRegistry.registerTileEntity(TileTeslaCoil.class, "blockCoil");
-        blockGhost = new BlockOpenBelow();
-        GameRegistry.registerBlock(blockGhost, "blockGhost");
 
         //Solidifier
         blockSolidifier = new BlockSolidifier();

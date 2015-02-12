@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -28,8 +29,6 @@ public abstract class BlockBase extends BlockContainer{
                 int count = 0;
                 while (true) {
                     if (world.getBlock(loc.x, loc.y, loc.z) instanceof BlockTeslaStand || world.getBlock(loc.x, loc.y, loc.z) instanceof BlockTeslaCoil) {
-                        //WorldUtils.expelItem(world, loc.x, loc.y, loc.z, new ItemStack(Item.getItemFromBlock(world.getBlock(loc.x, loc.y, loc.z))));
-                        //world.setBlockToAir(loc.x, loc.y, loc.z);
                         loc.y += 1;
                         count += 1;
                     } else {
@@ -72,9 +71,5 @@ public abstract class BlockBase extends BlockContainer{
     public void breakBlock(World world, int x, int y, int z, Block par5, int par6)
     {
         super.breakBlock(world, x, y, z, par5, par6);
-
-        if (ConfigHandler.machineExplodes)
-            world.createExplosion(null, x, y, z, 1.0F, true);
     }
-
 }

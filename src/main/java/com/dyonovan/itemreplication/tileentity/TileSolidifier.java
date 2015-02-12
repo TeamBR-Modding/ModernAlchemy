@@ -57,7 +57,6 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
         ItemStack itemstack = getStackInSlot(0);
         NBTTagCompound item = new NBTTagCompound();
         if (itemstack != null) {
-            //item.setByte("Slot", (byte) 0);
             itemstack.writeToNBT(item);
         }
         tag.setTag("Item", item);

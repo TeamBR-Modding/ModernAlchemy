@@ -30,7 +30,7 @@ public class ItemPattern extends Item {
     public void registerIcons(IIconRegister register) {
         iconBlankPattern = register.registerIcon(Constants.MODID + ":blank_pattern");
         iconRecordedPattern = register.registerIcon(Constants.MODID + ":recorded_pattern");
-        this.itemIcon = iconBlankPattern;
+        //this.itemIcon = iconBlankPattern;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class ItemPattern extends Item {
         super.addInformation(itemstack, player, list, par4);
 
         if (itemstack.hasTagCompound()) {
-            list.add("This has an item");
+            list.add("This has an item"); //TODO
         }
     }
 
