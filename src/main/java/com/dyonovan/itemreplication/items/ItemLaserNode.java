@@ -1,7 +1,7 @@
 package com.dyonovan.itemreplication.items;
 
 import com.dyonovan.itemreplication.ItemReplication;
-import com.dyonovan.itemreplication.blocks.BlockFrame;
+import com.dyonovan.itemreplication.blocks.replicator.BlockFrame;
 import com.dyonovan.itemreplication.entities.EntityLaserNode;
 import com.dyonovan.itemreplication.lib.Constants;
 import net.minecraft.entity.player.EntityPlayer;

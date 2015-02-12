@@ -1,6 +1,6 @@
 package com.dyonovan.itemreplication.entities;
 
-import com.dyonovan.itemreplication.blocks.BlockFrame;
+import com.dyonovan.itemreplication.blocks.replicator.BlockFrame;
 import com.dyonovan.itemreplication.helpers.LogHelper;
 import com.dyonovan.itemreplication.util.Location;
 import com.dyonovan.itemreplication.util.WorldUtils;
