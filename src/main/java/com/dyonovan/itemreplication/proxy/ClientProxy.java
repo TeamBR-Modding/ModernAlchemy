@@ -3,10 +3,7 @@ package com.dyonovan.itemreplication.proxy;
 import com.dyonovan.itemreplication.entities.EntityLaserNode;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.renderer.*;
-import com.dyonovan.itemreplication.tileentity.TileFrame;
-import com.dyonovan.itemreplication.tileentity.TileTeslaBase;
-import com.dyonovan.itemreplication.tileentity.TileTeslaCoil;
-import com.dyonovan.itemreplication.tileentity.TileTeslaStand;
+import com.dyonovan.itemreplication.tileentity.*;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -43,5 +40,11 @@ public class ClientProxy extends  CommonProxy{
 
         //Laser Node
         RenderingRegistry.registerEntityRenderingHandler(EntityLaserNode.class, new RenderLaserNode());
+
+        //Stand
+        TileEntitySpecialRenderer renderReplicatorStand = new RenderReplicatorStand();
+        ClientRegistry.bindTileEntitySpecialRenderer(TileReplicatorStand.class, renderReplicatorStand);
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockHandler.blockReplicatorStand),
+                new ItemRenderFrame(renderReplicatorStand, new TileReplicatorStand()));
     }
 }

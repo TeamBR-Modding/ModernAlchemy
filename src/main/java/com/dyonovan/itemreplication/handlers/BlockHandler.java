@@ -11,6 +11,7 @@ import com.dyonovan.itemreplication.blocks.machines.BlockCompressor;
 import com.dyonovan.itemreplication.blocks.machines.BlockPatternRecorder;
 import com.dyonovan.itemreplication.blocks.machines.BlockSolidifier;
 import com.dyonovan.itemreplication.blocks.ore.BlockOreActinium;
+import com.dyonovan.itemreplication.blocks.replicator.BlockReplicatorStand;
 import com.dyonovan.itemreplication.blocks.replicator.BlockFrame;
 import com.dyonovan.itemreplication.blocks.replicator.BlockFrameEnergy;
 import com.dyonovan.itemreplication.blocks.teslacoil.BlockTeslaBase;
@@ -32,7 +33,7 @@ public class BlockHandler {
 
     public static Fluid fluidActinium, fluidCompressedAir;
     public static Block blockArcFurnaceDummy, blockArcFurnaceDummyItemIO, blockArcFurnaceDummyAirValue, blockArcFurnaceDummyOutputValue, blockArcFurnaceCore, blockTeslaStand, blockCoil;
-    public static Block blockOreActinium, blockFluidActinium, blockCompressor, blockFluidAir;
+    public static Block blockOreActinium, blockFluidActinium, blockCompressor, blockFluidAir, blockReplicatorStand;
     public static Block blockPatternRecorder, blockSolidifier, blockTeslaBase, blockFrame, blockFrameEnergy;
 
     public static void init() {
@@ -116,5 +117,10 @@ public class BlockHandler {
         blockFrameEnergy = new BlockFrameEnergy();
         GameRegistry.registerBlock(blockFrameEnergy, "blockFrameEnergy");
         GameRegistry.registerTileEntity(TileFrameEnergy.class, "blockFrameEnergy");
+
+        //BlockCenterStand
+        blockReplicatorStand = new BlockReplicatorStand();
+        GameRegistry.registerBlock(blockReplicatorStand, "blockReplicatorStand");
+        GameRegistry.registerTileEntity(TileReplicatorStand.class, "blockReplicatorStand");
     }
 }

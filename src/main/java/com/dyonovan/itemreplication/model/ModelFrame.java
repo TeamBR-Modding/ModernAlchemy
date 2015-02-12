@@ -395,7 +395,7 @@ public class ModelFrame extends ModelBase
                     Minecraft.getMinecraft().theWorld.getBlock(x - 1, y, z) instanceof BlockFrameEnergy;
         } else if (side.equals("right")) {
             return Minecraft.getMinecraft().theWorld.getBlock(x + 1, y, z) instanceof BlockFrame ||
-                    Minecraft.getMinecraft().theWorld.getBlock(x - 1, y, z) instanceof BlockFrameEnergy;
+                    Minecraft.getMinecraft().theWorld.getBlock(x + 1, y, z) instanceof BlockFrameEnergy;
         }
         return false;
     }

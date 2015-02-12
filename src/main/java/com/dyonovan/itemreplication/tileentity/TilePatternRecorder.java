@@ -41,6 +41,7 @@ public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInv
 
     public int getProgressScaled(int scale) { return this.currentProcessTime * scale / PROCESS_TIME; }
 
+    @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         energy.readFromNBT(tag);
@@ -48,6 +49,7 @@ public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInv
         currentProcessTime = tag.getInteger("TimeProcessed");
     }
 
+    @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         energy.writeToNBT(tag);
