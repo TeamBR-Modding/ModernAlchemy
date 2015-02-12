@@ -66,7 +66,9 @@ public class BlockArcFurnaceCore extends BlockBase {
         TileArcFurnaceCore core = (TileArcFurnaceCore) world.getTileEntity(x, y, z);
         WorldUtils.expelItem(world, core.xCoord, core.yCoord, core.zCoord, core.inventory.getStackInSlot(0));
         WorldUtils.expelItem(world, core.xCoord, core.yCoord, core.zCoord, core.inventory.getStackInSlot(1));
+
         super.breakBlock(world, x, y, z, par5, par6);
+        world.createExplosion(null, x, y, z, 1.0F, true);
 
     }
 }
