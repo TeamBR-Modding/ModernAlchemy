@@ -54,7 +54,6 @@ public class BlockDummy extends BlockBase {
             core.setDirty();
 
         super.breakBlock(world, x, y, z, par5, par6);
-        world.createExplosion(null, x, y, z, 1.0F, true);
     }
 
     @SideOnly(Side.CLIENT)
