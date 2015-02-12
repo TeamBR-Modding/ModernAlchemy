@@ -15,7 +15,7 @@ import net.minecraftforge.fluids.FluidStack;
 public class ContainerSolidifier extends Container {
 
     private TileSolidifier tile;
-    private int lastPower, lastTank;
+    private int lastPower, lastTank, timeProcessed;
     private InventoryPlayer inventory;
 
     public ContainerSolidifier(InventoryPlayer inventory, TileSolidifier tile) {
@@ -50,23 +50,25 @@ public class ContainerSolidifier extends Container {
         super.addCraftingToCrafters(crafter);
         crafter.sendProgressBarUpdate(this, 0, this.tile.getEnergyLevel());
         crafter.sendProgressBarUpdate(this, 1, this.tile.tank.getFluid().amount);
+        crafter.sendProgressBarUpdate(this, 2, this.tile.timeProcessed);
     }
 
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        for (int i = 0; i < this.crafters.size(); i++) {
-            ICrafting icrafting = (ICrafting) this.crafters.get(i);
+        for (Object crafter : this.crafters) {
+            ICrafting icrafting = (ICrafting) crafter;
             if (this.lastPower != this.tile.getEnergyLevel())
                 icrafting.sendProgressBarUpdate(this, 0, this.tile.getEnergyLevel());
-            if (this.tile.tank.getInfo().fluid == null)
-                icrafting.sendProgressBarUpdate(this, 1, 0);;
-            if (this.lastTank != this.tile.tank.getInfo().fluid.amount)
-                icrafting.sendProgressBarUpdate(this, 1, this.tile.tank.getInfo().fluid.amount);
+            if (this.lastTank != this.tile.tank.getFluidAmount())
+                icrafting.sendProgressBarUpdate(this, 1, this.tile.tank.getFluidAmount());
+            if (this.timeProcessed != this.tile.timeProcessed)
+                icrafting.sendProgressBarUpdate(this, 2, this.timeProcessed);
         }
 
         this.lastPower = this.tile.getEnergyLevel();
-        this.lastTank = this.tile.tank.getFluid().amount;
+        this.lastTank = this.tile.tank.getFluidAmount();
+        this.timeProcessed = this.tile.timeProcessed;
     }
 
     @SideOnly(Side.CLIENT)
@@ -78,6 +80,10 @@ public class ContainerSolidifier extends Container {
                 break;
             case 1:
                 this.tile.tank.setFluid(new FluidStack(BlockHandler.fluidActinium, j));
+                break;
+            case 2:
+                this.tile.timeProcessed = j;
+                break;
         }
     }
 

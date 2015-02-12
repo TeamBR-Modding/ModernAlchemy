@@ -1,7 +1,17 @@
 package com.dyonovan.itemreplication.handlers;
 
-import com.dyonovan.itemreplication.blocks.*;
-import com.dyonovan.itemreplication.blocks.dummies.*;
+import com.dyonovan.itemreplication.blocks.arcfurnace.BlockArcFurnaceCore;
+import com.dyonovan.itemreplication.blocks.arcfurnace.dummies.*;
+import com.dyonovan.itemreplication.blocks.fluids.BlockFluidActinium;
+import com.dyonovan.itemreplication.blocks.fluids.BlockFluidCompressedAir;
+import com.dyonovan.itemreplication.blocks.machines.BlockCompressor;
+import com.dyonovan.itemreplication.blocks.machines.BlockPatternRecorder;
+import com.dyonovan.itemreplication.blocks.machines.BlockSolidifier;
+import com.dyonovan.itemreplication.blocks.ore.BlockOreActinium;
+import com.dyonovan.itemreplication.blocks.replicator.BlockFrame;
+import com.dyonovan.itemreplication.blocks.teslacoil.BlockTeslaBase;
+import com.dyonovan.itemreplication.blocks.teslacoil.BlockTeslaCoil;
+import com.dyonovan.itemreplication.blocks.teslacoil.BlockTeslaStand;
 import com.dyonovan.itemreplication.fluids.FluidActinium;
 import com.dyonovan.itemreplication.fluids.FluidCompressedAir;
 import com.dyonovan.itemreplication.tileentity.*;

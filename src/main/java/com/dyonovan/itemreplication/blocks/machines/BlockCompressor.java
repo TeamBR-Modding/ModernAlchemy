@@ -1,9 +1,10 @@
-package com.dyonovan.itemreplication.blocks;
+package com.dyonovan.itemreplication.blocks.machines;
 
 import com.dyonovan.itemreplication.ItemReplication;
+import com.dyonovan.itemreplication.blocks.BlockBase;
 import com.dyonovan.itemreplication.handlers.GuiHandler;
 import com.dyonovan.itemreplication.lib.Constants;
-import com.dyonovan.itemreplication.tileentity.TileSolidifier;
+import com.dyonovan.itemreplication.tileentity.TileCompressor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
@@ -16,26 +17,24 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class BlockSolidifier extends BlockBase {
+public class BlockCompressor extends BlockBase {
 
     @SideOnly(Side.CLIENT)
     private IIcon front, frontActive;
 
-    public BlockSolidifier() {
-        super(Material.iron);
-        this.setBlockName(Constants.MODID + ":blockSolidifier");
-        this.setHardness(1.5F);
+    public BlockCompressor() {
+        super(Material.anvil);
+        this.setBlockName(Constants.MODID + ":blockCompressor");
         this.setCreativeTab(ItemReplication.tabItemReplication);
     }
 
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconregister) {
-        this.blockIcon = iconregister.registerIcon(Constants.MODID + ":solidifier_side");
-        this.front = iconregister.registerIcon(Constants.MODID + ":solidifier_front_off");
-        this.frontActive = iconregister.registerIcon(Constants.MODID + ":solidifier_front_on");
+        this.blockIcon = iconregister.registerIcon(Constants.MODID + ":compressor_side");
+        this.front = iconregister.registerIcon(Constants.MODID + ":compressor_front_off");
+        this.frontActive = iconregister.registerIcon(Constants.MODID + ":compressor_front_on");
     }
 
-    @Override
     public IIcon getIcon(int side, int meta) {
         boolean active = false;
         if (meta > 10) {
@@ -80,9 +79,10 @@ public class BlockSolidifier extends BlockBase {
         return true;
     }
 
+
     @Override
     public TileEntity createNewTileEntity(World world, int i) {
-        return new TileSolidifier();
+        return new TileCompressor();
     }
 
     @Override
@@ -96,11 +96,13 @@ public class BlockSolidifier extends BlockBase {
         }
         else
         {
-            TileSolidifier tile = (TileSolidifier)world.getTileEntity(x, y, z);
+            TileCompressor tile = (TileCompressor)world.getTileEntity(x, y, z);
             if(tile != null) {
-                player.openGui(ItemReplication.instance, GuiHandler.SOLIDIFIER_GUI_ID, world, x, y, z);
+                player.openGui(ItemReplication.instance, GuiHandler.COMPRESSOR_GUI_ID, world, x, y, z);
             }
             return true;
         }
     }
 }
+
+

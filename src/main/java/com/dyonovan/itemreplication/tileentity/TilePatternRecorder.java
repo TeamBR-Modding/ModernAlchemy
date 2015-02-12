@@ -1,7 +1,7 @@
 package com.dyonovan.itemreplication.tileentity;
 
-import com.dyonovan.itemreplication.blocks.BlockPatternRecorder;
-import com.dyonovan.itemreplication.blocks.BlockSolidifier;
+import com.dyonovan.itemreplication.blocks.machines.BlockPatternRecorder;
+import com.dyonovan.itemreplication.blocks.machines.BlockSolidifier;
 import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
@@ -18,7 +18,7 @@ import java.util.List;
 
 public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInventory {
 
-    private static final int PROCESS_TIME = 100;
+    private static final int PROCESS_TIME = 5000;
     public static final int INPUT_SLOT = 0;
     public static final int ITEM_SLOT = 1;
     public static final int OUTPUT_SLOT = 2;
@@ -30,7 +30,7 @@ public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInv
     private int currentSpeed;
     private ItemStack itemCopy;
 
-    private int currentProcessTime;
+    public int currentProcessTime;
 
     public TilePatternRecorder() {
         inventory = new InventoryTile(3);
@@ -39,9 +39,7 @@ public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInv
         energy = new TeslaBank(0, 1000);
     }
 
-    public TeslaBank getEnergyTank() {return energy; }
-
-    public int getProgressScaled(int scale) { return currentProcessTime * scale / PROCESS_TIME; }
+    public int getProgressScaled(int scale) { return this.currentProcessTime * scale / PROCESS_TIME; }
 
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
@@ -92,6 +90,7 @@ public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInv
                 inventory.setStackInSlot(recordPattern(itemCopy), 2);
                 currentProcessTime = 0;
             }
+            super.markDirty();
         } else if (isActive) {
             isActive = BlockSolidifier.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
             currentProcessTime = 0;

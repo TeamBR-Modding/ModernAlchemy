@@ -1,4 +1,4 @@
-package com.dyonovan.itemreplication.blocks;
+package com.dyonovan.itemreplication.blocks.fluids;
 
 import com.dyonovan.itemreplication.ItemReplication;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
@@ -12,19 +12,18 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
 
-public class BlockFluidCompressedAir extends BlockFluidClassic {
+public class BlockFluidActinium extends BlockFluidClassic {
 
     @SideOnly(Side.CLIENT)
     protected IIcon stillIcon;
     @SideOnly(Side.CLIENT)
     protected IIcon flowingIcon;
 
-    public BlockFluidCompressedAir() {
-        super(BlockHandler.fluidCompressedAir, Material.water);
+    public BlockFluidActinium() {
 
-        this.setBlockName(Constants.MODID + ":fluidCompressedAir");
+        super(BlockHandler.fluidActinium, Material.water);
+        this.setBlockName(Constants.MODID + ":fluidActinium");
         this.setCreativeTab(ItemReplication.tabItemReplication);
-
     }
 
     @Override
@@ -35,8 +34,8 @@ public class BlockFluidCompressedAir extends BlockFluidClassic {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(IIconRegister register) {
-        stillIcon = register.registerIcon(Constants.MODID + ":air_still");
-        flowingIcon = register.registerIcon(Constants.MODID + ":air_flowing");
+        stillIcon = register.registerIcon(Constants.MODID + ":actinium_still");
+        flowingIcon = register.registerIcon(Constants.MODID + ":actinium_flowing");
 
         getFluid().setIcons(stillIcon, flowingIcon);
     }

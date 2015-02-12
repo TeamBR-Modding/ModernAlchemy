@@ -1,4 +1,4 @@
-package com.dyonovan.itemreplication.blocks;
+package com.dyonovan.itemreplication.blocks.ore;
 
 import com.dyonovan.itemreplication.ItemReplication;
 import com.dyonovan.itemreplication.lib.Constants;

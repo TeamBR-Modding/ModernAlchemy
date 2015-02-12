@@ -1,6 +1,6 @@
 package com.dyonovan.itemreplication.tileentity;
 
-import com.dyonovan.itemreplication.blocks.dummies.BlockDummy;
+import com.dyonovan.itemreplication.blocks.arcfurnace.dummies.BlockDummy;
 import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.handlers.BlockHandler;

@@ -1,6 +1,6 @@
 package com.dyonovan.itemreplication.tileentity;
 
-import com.dyonovan.itemreplication.blocks.BlockSolidifier;
+import com.dyonovan.itemreplication.blocks.machines.BlockSolidifier;
 import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
@@ -26,7 +26,7 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
     private boolean isActive;
     private int currentSpeed;
     public ItemStack inventory[];
-    private int timeProcessed;
+    public int timeProcessed;
 
     public TileSolidifier() {
         tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 10);
@@ -155,11 +155,14 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
                     timeProcessed = 0;
                 }
                 super.markDirty();
-            } else if (isActive) {
+            } /*else if (isActive) {
                 isActive = BlockSolidifier.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
                 timeProcessed = 0;
-            }
-        } else timeProcessed = 0;
+            }*/
+        } else if (isActive) {
+            isActive = BlockSolidifier.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+            timeProcessed = 0;
+        }
     }
 
     public void updateSpeed() {

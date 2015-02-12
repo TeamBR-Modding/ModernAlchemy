@@ -57,6 +57,7 @@ public class ContainerCompressor extends Container {
                 break;
             case 1:
                 this.tile.tank.setFluid(new FluidStack(BlockHandler.fluidCompressedAir, j));
+                break;
         }
     }
 }

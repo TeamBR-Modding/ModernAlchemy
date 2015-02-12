@@ -1,9 +1,10 @@
-package com.dyonovan.itemreplication.blocks;
+package com.dyonovan.itemreplication.blocks.machines;
 
 import com.dyonovan.itemreplication.ItemReplication;
+import com.dyonovan.itemreplication.blocks.BlockBase;
 import com.dyonovan.itemreplication.handlers.GuiHandler;
 import com.dyonovan.itemreplication.lib.Constants;
-import com.dyonovan.itemreplication.tileentity.TileCompressor;
+import com.dyonovan.itemreplication.tileentity.TilePatternRecorder;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
@@ -16,22 +17,42 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class BlockCompressor extends BlockBase {
+public class BlockPatternRecorder extends BlockBase {
 
     @SideOnly(Side.CLIENT)
     private IIcon front, frontActive;
 
-    public BlockCompressor() {
-        super(Material.anvil);
-        this.setBlockName(Constants.MODID + ":blockCompressor");
+    public BlockPatternRecorder()
+    {
+        super(Material.iron);
+        this.setBlockName(Constants.MODID + ":blockPatternRecorder");
         this.setCreativeTab(ItemReplication.tabItemReplication);
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9)
+    {
+        super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
+
+        if (world.isRemote)
+        {
+            return true;
+        }
+        else
+        {
+            TilePatternRecorder tile = (TilePatternRecorder)world.getTileEntity(x, y, z);
+            if(tile != null) {
+                player.openGui(ItemReplication.instance, GuiHandler.PATTERN_RECORDER_GUI_ID, world, x, y, z);
+            }
+            return true;
+        }
     }
 
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconregister) {
-        this.blockIcon = iconregister.registerIcon(Constants.MODID + ":compressor_side");
-        this.front = iconregister.registerIcon(Constants.MODID + ":compressor_front_off");
-        this.frontActive = iconregister.registerIcon(Constants.MODID + ":compressor_front_on");
+        this.blockIcon = iconregister.registerIcon(Constants.MODID + ":patternrecorder_side");
+        this.front = iconregister.registerIcon(Constants.MODID + ":patternrecorder_front_off");
+        this.frontActive = iconregister.registerIcon(Constants.MODID + ":patternrecorder_front_on");
     }
 
     public IIcon getIcon(int side, int meta) {
@@ -74,34 +95,12 @@ public class BlockCompressor extends BlockBase {
     }
 
     @Override
+    public TileEntity createNewTileEntity(World world, int metadata) {
+        return new TilePatternRecorder();
+    }
+
+    @Override
     public boolean hasTileEntity(int metadata) {
         return true;
     }
-
-
-    @Override
-    public TileEntity createNewTileEntity(World world, int i) {
-        return new TileCompressor();
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9)
-    {
-        super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
-
-        if (world.isRemote)
-        {
-            return true;
-        }
-        else
-        {
-            TileCompressor tile = (TileCompressor)world.getTileEntity(x, y, z);
-            if(tile != null) {
-                player.openGui(ItemReplication.instance, GuiHandler.COMPRESSOR_GUI_ID, world, x, y, z);
-            }
-            return true;
-        }
-    }
 }
-
-

@@ -1,4 +1,4 @@
-package com.dyonovan.itemreplication.blocks.dummies;
+package com.dyonovan.itemreplication.blocks.arcfurnace.dummies;
 
 import com.dyonovan.itemreplication.ItemReplication;
 import com.dyonovan.itemreplication.blocks.BlockBase;

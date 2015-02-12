@@ -1,6 +1,7 @@
-package com.dyonovan.itemreplication.blocks;
+package com.dyonovan.itemreplication.blocks.arcfurnace;
 
 import com.dyonovan.itemreplication.ItemReplication;
+import com.dyonovan.itemreplication.blocks.BlockBase;
 import com.dyonovan.itemreplication.handlers.GuiHandler;
 import com.dyonovan.itemreplication.util.WorldUtils;
 import com.dyonovan.itemreplication.lib.Constants;

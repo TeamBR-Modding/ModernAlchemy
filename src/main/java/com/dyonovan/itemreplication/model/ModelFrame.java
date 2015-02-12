@@ -1,6 +1,6 @@
 package com.dyonovan.itemreplication.model;
 
-import com.dyonovan.itemreplication.blocks.BlockFrame;
+import com.dyonovan.itemreplication.blocks.replicator.BlockFrame;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;

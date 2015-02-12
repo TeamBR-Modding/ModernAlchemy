@@ -12,7 +12,7 @@ public class OnBreakEvent {
     public void onBreakEvent(BlockEvent.BreakEvent event) {
 
         if (event.block instanceof BlockBase && !WrenchHelper.isWrench(event.getPlayer().getCurrentEquippedItem().getItem()) &&
-                ConfigHandler.machineExplodes) {
+                ConfigHandler.machineExplodes && !event.getPlayer().capabilities.isCreativeMode) {
             event.world.createExplosion(event.getPlayer(), event.x, event.y, event.z, 2.0F, true);
         }
     }

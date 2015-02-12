@@ -1,6 +1,7 @@
-package com.dyonovan.itemreplication.blocks;
+package com.dyonovan.itemreplication.blocks.replicator;
 
 import com.dyonovan.itemreplication.ItemReplication;
+import com.dyonovan.itemreplication.blocks.BlockBase;
 import com.dyonovan.itemreplication.lib.Constants;
 import com.dyonovan.itemreplication.tileentity.TileFrame;
 import cpw.mods.fml.relauncher.Side;

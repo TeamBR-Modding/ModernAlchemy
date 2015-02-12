@@ -1,6 +1,6 @@
 package com.dyonovan.itemreplication.tileentity;
 
-import com.dyonovan.itemreplication.blocks.BlockCompressor;
+import com.dyonovan.itemreplication.blocks.machines.BlockCompressor;
 import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.handlers.BlockHandler;

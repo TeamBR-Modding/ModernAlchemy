@@ -1,23 +1,37 @@
-package com.dyonovan.itemreplication.blocks;
+package com.dyonovan.itemreplication.blocks.teslacoil;
 
 import com.dyonovan.itemreplication.ItemReplication;
+import com.dyonovan.itemreplication.blocks.BlockBase;
 import com.dyonovan.itemreplication.lib.Constants;
-import com.dyonovan.itemreplication.tileentity.TileTeslaBase;
+import com.dyonovan.itemreplication.tileentity.TileTeslaStand;
 import com.dyonovan.itemreplication.util.Location;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class BlockTeslaBase extends BlockBase {
+public class BlockTeslaStand extends BlockBase {
 
-    public BlockTeslaBase() {
+    public BlockTeslaStand() {
         super(Material.iron);
-        this.setBlockName(Constants.MODID + ":blockTeslaBase");
+        this.setBlockName(Constants.MODID + ":blockTeslaStand");
         this.setCreativeTab(ItemReplication.tabItemReplication);
         this.setBlockBounds(0.34375F, 0F, 0.34375F, 0.65625F, 1F, 0.65625F);
+    }
+
+    @Override
+    public TileEntity createNewTileEntity(World world, int i) {
+        return new TileTeslaStand();
+    }
+
+    @Override
+    public boolean hasTileEntity(int metadata) {
+        return true;
     }
 
     @Override
@@ -36,19 +50,14 @@ public class BlockTeslaBase extends BlockBase {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int i) {
-        return new TileTeslaBase();
-    }
-
-    @Override
-    public boolean hasTileEntity(int metadata) {
-        return true;
-    }
-
-    @Override
     public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-        return !(world.getBlock(x, y - 1, z) instanceof BlockTeslaBase ||
-                world.getBlock(x, y - 1, z) instanceof BlockTeslaStand || world.getBlock(x, y - 1, z) instanceof BlockTeslaCoil);
+        return world.getBlock(x, y - 1, z) instanceof BlockTeslaBase || world.getBlock(x, y - 1, z) instanceof BlockTeslaStand;
+    }
+
+    //We want the block to have particle effects, so we need to register a block icon even if we don't render it (try falling onto the block and you'll see)
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister iconregister) {
+        this.blockIcon = iconregister.registerIcon("minecraft:iron_block");
     }
 
     @Override
@@ -78,6 +87,4 @@ public class BlockTeslaBase extends BlockBase {
         }
         super.breakBlock(world, x, y, z, par5, par6);
     }
-
-
 }

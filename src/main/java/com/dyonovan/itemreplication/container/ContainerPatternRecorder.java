@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 public class ContainerPatternRecorder extends Container {
 
     private TilePatternRecorder tile;
-    private int lastPower;
+    private int lastPower, currentProcessTime;
 
     public ContainerPatternRecorder(InventoryPlayer playerInventory, TilePatternRecorder tileEntity){
         tile = tileEntity;
@@ -75,19 +75,23 @@ public class ContainerPatternRecorder extends Container {
     public void addCraftingToCrafters(ICrafting crafter) {
         super.addCraftingToCrafters(crafter);
         crafter.sendProgressBarUpdate(this, 0, this.tile.getEnergyLevel());
+        crafter.sendProgressBarUpdate(this, 1, this.tile.currentProcessTime);
     }
 
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
 
-        for (int i = 0; i < this.crafters.size(); ++i) {
-            ICrafting icrafting = (ICrafting)this.crafters.get(i);
+        for (Object crafter : this.crafters) {
+            ICrafting icrafting = (ICrafting) crafter;
             if (this.lastPower != this.tile.getEnergyLevel())
                 icrafting.sendProgressBarUpdate(this, 0, this.tile.getEnergyLevel());
+            if (this.currentProcessTime != this.tile.currentProcessTime)
+                icrafting.sendProgressBarUpdate(this, 1, this.tile.currentProcessTime);
         }
 
         this.lastPower = this.tile.getEnergyLevel();
+        this.currentProcessTime = this.tile.currentProcessTime;
     }
 
     @SideOnly(Side.CLIENT)
@@ -99,6 +103,10 @@ public class ContainerPatternRecorder extends Container {
         switch (i) {
             case 0:
                 this.tile.setEnergy(j);
+                break;
+            case 1:
+                this.tile.currentProcessTime = j;
+                break;
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.dyonovan.itemreplication.blocks;
 
-import com.dyonovan.itemreplication.handlers.ConfigHandler;
+import com.dyonovan.itemreplication.blocks.teslacoil.BlockTeslaBase;
+import com.dyonovan.itemreplication.blocks.teslacoil.BlockTeslaCoil;
+import com.dyonovan.itemreplication.blocks.teslacoil.BlockTeslaStand;
 import com.dyonovan.itemreplication.helpers.WrenchHelper;
 import com.dyonovan.itemreplication.util.Location;
 import com.dyonovan.itemreplication.util.WorldUtils;
@@ -8,7 +10,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
