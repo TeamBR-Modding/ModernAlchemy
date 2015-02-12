@@ -1,10 +1,12 @@
 package com.dyonovan.itemreplication.util;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Random;
 
@@ -42,5 +44,16 @@ public class WorldUtils {
 
     public static void breakBlock(World world, Location loc) {
         breakBlock(world, loc.x, loc.y, loc.z);
+    }
+
+    public static Block getBlockInDirection(World world, Location loc, ForgeDirection dir) {
+        loc.x += dir.offsetX;
+        loc.y += dir.offsetY;
+        loc.z += dir.offsetZ;
+        return world.getBlock(loc.x, loc.y, loc.z);
+    }
+
+    public static Block getBlockInLocation(World world, Location loc) {
+        return world.getBlock(loc.x, loc.y, loc.z);
     }
 }

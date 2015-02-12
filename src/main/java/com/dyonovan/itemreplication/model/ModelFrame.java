@@ -379,7 +379,7 @@ public class ModelFrame extends ModelBase
         if (side.equals("top")) {
             return Minecraft.getMinecraft().theWorld.getBlock(x, y + 1, z) instanceof BlockFrame;
         } else if (side.equals("bottom")) {
-            return Minecraft.getMinecraft().theWorld.getBlock(x, y - 1, z) instanceof BlockFrame;
+            return Minecraft.getMinecraft().theWorld.getBlock(x, y - 1, z) instanceof BlockFrame || !Minecraft.getMinecraft().theWorld.isAirBlock(x, y - 1, z);
         } else if (side.equals("front")) {
             return Minecraft.getMinecraft().theWorld.getBlock(x, y, z - 1) instanceof BlockFrame;
         } else if (side.equals("back")) {
