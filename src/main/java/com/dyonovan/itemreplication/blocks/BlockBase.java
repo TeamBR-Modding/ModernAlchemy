@@ -1,5 +1,6 @@
 package com.dyonovan.itemreplication.blocks;
 
+import com.dyonovan.itemreplication.ItemReplication;
 import com.dyonovan.itemreplication.blocks.teslacoil.BlockTeslaBase;
 import com.dyonovan.itemreplication.blocks.teslacoil.BlockTeslaCoil;
 import com.dyonovan.itemreplication.blocks.teslacoil.BlockTeslaStand;
@@ -21,6 +22,7 @@ public abstract class BlockBase extends BlockContainer{
     public BlockBase(Material mat) {
         super(mat);
         this.setHardness(3.0F);
+        this.setCreativeTab(ItemReplication.tabItemReplication);
     }
 
     public boolean useWrench(World world, int x, int y, int z) {

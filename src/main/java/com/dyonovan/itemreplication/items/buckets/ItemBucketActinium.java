@@ -12,7 +12,7 @@ import net.minecraft.item.ItemBucket;
 public class ItemBucketActinium extends ItemBucket {
     public ItemBucketActinium(Block block) {
         super(block);
-        setUnlocalizedName("bucketActinium").setContainerItem(Items.bucket);
+        setUnlocalizedName(Constants.MODID + ":bucketActinium").setContainerItem(Items.bucket);
         setCreativeTab(ItemReplication.tabItemReplication);
     }
 

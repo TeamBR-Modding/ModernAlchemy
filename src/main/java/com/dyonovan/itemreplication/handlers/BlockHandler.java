@@ -1,7 +1,10 @@
 package com.dyonovan.itemreplication.handlers;
 
 import com.dyonovan.itemreplication.blocks.arcfurnace.BlockArcFurnaceCore;
-import com.dyonovan.itemreplication.blocks.arcfurnace.dummies.*;
+import com.dyonovan.itemreplication.blocks.arcfurnace.dummies.BlockDummy;
+import com.dyonovan.itemreplication.blocks.arcfurnace.dummies.BlockDummyAirValve;
+import com.dyonovan.itemreplication.blocks.arcfurnace.dummies.BlockDummyOutputValve;
+import com.dyonovan.itemreplication.blocks.arcfurnace.dummies.BlockItemIODummy;
 import com.dyonovan.itemreplication.blocks.fluids.BlockFluidActinium;
 import com.dyonovan.itemreplication.blocks.fluids.BlockFluidCompressedAir;
 import com.dyonovan.itemreplication.blocks.machines.BlockCompressor;
@@ -9,6 +12,7 @@ import com.dyonovan.itemreplication.blocks.machines.BlockPatternRecorder;
 import com.dyonovan.itemreplication.blocks.machines.BlockSolidifier;
 import com.dyonovan.itemreplication.blocks.ore.BlockOreActinium;
 import com.dyonovan.itemreplication.blocks.replicator.BlockFrame;
+import com.dyonovan.itemreplication.blocks.replicator.BlockFrameEnergy;
 import com.dyonovan.itemreplication.blocks.teslacoil.BlockTeslaBase;
 import com.dyonovan.itemreplication.blocks.teslacoil.BlockTeslaCoil;
 import com.dyonovan.itemreplication.blocks.teslacoil.BlockTeslaStand;
@@ -28,8 +32,8 @@ public class BlockHandler {
 
     public static Fluid fluidActinium, fluidCompressedAir;
     public static Block blockArcFurnaceDummy, blockArcFurnaceDummyItemIO, blockArcFurnaceDummyAirValue, blockArcFurnaceDummyOutputValue, blockArcFurnaceCore, blockTeslaStand, blockCoil;
-    public static Block blockOreActinium, blockFluidActinium, blockCompressor, blockFluidAir, blockGhost;
-    public static Block blockPatternRecorder, blockSolidifier, blockTeslaBase, blockFrame;
+    public static Block blockOreActinium, blockFluidActinium, blockCompressor, blockFluidAir;
+    public static Block blockPatternRecorder, blockSolidifier, blockTeslaBase, blockFrame, blockFrameEnergy;
 
     public static void init() {
         //Actinium Fluid Registration
@@ -107,5 +111,10 @@ public class BlockHandler {
         blockFrame = new BlockFrame();
         GameRegistry.registerBlock(blockFrame, "blockFrame");
         GameRegistry.registerTileEntity(TileFrame.class, "blockFrame");
+
+        //BlockFrameEnergy
+        blockFrameEnergy = new BlockFrameEnergy();
+        GameRegistry.registerBlock(blockFrameEnergy, "blockFrameEnergy");
+        GameRegistry.registerTileEntity(TileFrameEnergy.class, "blockFrameEnergy");
     }
 }

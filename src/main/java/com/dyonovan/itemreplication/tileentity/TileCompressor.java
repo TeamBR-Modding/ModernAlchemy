@@ -105,11 +105,12 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
     public void updateEntity() {
         super.updateEntity();
 
+        if (worldObj.isRemote) return;
+
         if(energy.canAcceptEnergy()) {
             chargeFromCoils();
         }
 
-        //if (worldObj.isRemote) return;
         if (!isPowered()) {
             if (energy.getEnergyLevel() > 0 && canFill(tank) && !isPowered()) {
                 if (!isActive)
@@ -157,25 +158,5 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
             energy.addEnergy(ConfigHandler.maxCoilTransfer);
             currentDrain--;
         }
-    }
-
-    public static List<TileTeslaCoil> findCoils(World world, TileEntity tile) {
-
-        List<TileTeslaCoil> list = new ArrayList<TileTeslaCoil>();
-
-        int tileX = tile.xCoord;
-        int tileY = tile.yCoord;
-        int tileZ = tile.zCoord;
-
-        for (int x = -ConfigHandler.searchRange; x <= ConfigHandler.searchRange; x++) {
-            for (int y = -ConfigHandler.searchRange; y <= ConfigHandler.searchRange; y++) {
-                for (int z = -ConfigHandler.searchRange; z <= ConfigHandler.searchRange; z++) {
-                    if (world.getTileEntity(tileX + x, tileY + y, tileZ + z) instanceof TileTeslaCoil) {
-                        list.add((TileTeslaCoil) world.getTileEntity(tileX + x, tileY + y, tileZ + z));
-                    }
-                }
-            }
-        }
-        return list;
     }
 }
