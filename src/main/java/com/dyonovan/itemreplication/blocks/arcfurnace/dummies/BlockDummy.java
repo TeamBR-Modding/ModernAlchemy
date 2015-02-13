@@ -4,7 +4,7 @@ import com.dyonovan.itemreplication.ItemReplication;
 import com.dyonovan.itemreplication.blocks.BlockBase;
 import com.dyonovan.itemreplication.lib.Constants;
 import com.dyonovan.itemreplication.tileentity.BaseCore;
-import com.dyonovan.itemreplication.tileentity.dummies.TileDummy;
+import com.dyonovan.itemreplication.tileentity.arcfurnace.dummies.TileDummy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;

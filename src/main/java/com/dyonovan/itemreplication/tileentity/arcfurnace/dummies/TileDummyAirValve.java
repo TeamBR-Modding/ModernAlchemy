@@ -1,7 +1,7 @@
-package com.dyonovan.itemreplication.tileentity.dummies;
+package com.dyonovan.itemreplication.tileentity.arcfurnace.dummies;
 
 import com.dyonovan.itemreplication.handlers.BlockHandler;
-import com.dyonovan.itemreplication.tileentity.TileArcFurnaceCore;
+import com.dyonovan.itemreplication.tileentity.arcfurnace.TileArcFurnaceCore;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;

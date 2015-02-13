@@ -3,7 +3,7 @@ package com.dyonovan.itemreplication.util;
 import com.dyonovan.itemreplication.effects.LightningBolt;
 import com.dyonovan.itemreplication.handlers.PacketHandler;
 import com.dyonovan.itemreplication.network.RenderLightningBoltPacket;
-import com.dyonovan.itemreplication.tileentity.TileTeslaCoil;
+import com.dyonovan.itemreplication.tileentity.teslacoil.TileTeslaCoil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;

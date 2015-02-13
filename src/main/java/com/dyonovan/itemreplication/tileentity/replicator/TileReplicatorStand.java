@@ -1,8 +1,10 @@
-package com.dyonovan.itemreplication.tileentity;
+package com.dyonovan.itemreplication.tileentity.replicator;
 
 import com.dyonovan.itemreplication.items.ItemCube;
 import com.dyonovan.itemreplication.lib.Constants;
 import com.dyonovan.itemreplication.renderer.RenderReplicatorStand;
+import com.dyonovan.itemreplication.tileentity.BaseTile;
+import com.dyonovan.itemreplication.tileentity.InventoryTile;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.item.EntityItem;

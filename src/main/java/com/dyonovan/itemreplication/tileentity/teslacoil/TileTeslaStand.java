@@ -1,7 +1,8 @@
-package com.dyonovan.itemreplication.tileentity;
+package com.dyonovan.itemreplication.tileentity.teslacoil;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
+import com.dyonovan.itemreplication.tileentity.BaseTile;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;

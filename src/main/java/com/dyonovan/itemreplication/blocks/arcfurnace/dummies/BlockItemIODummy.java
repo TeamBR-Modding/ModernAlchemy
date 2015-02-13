@@ -1,7 +1,7 @@
 package com.dyonovan.itemreplication.blocks.arcfurnace.dummies;
 
 import com.dyonovan.itemreplication.lib.Constants;
-import com.dyonovan.itemreplication.tileentity.dummies.TileDummyItemIO;
+import com.dyonovan.itemreplication.tileentity.arcfurnace.dummies.TileDummyItemIO;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;

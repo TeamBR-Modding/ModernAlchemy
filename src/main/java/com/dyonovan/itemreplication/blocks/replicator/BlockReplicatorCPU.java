@@ -4,7 +4,7 @@ import com.dyonovan.itemreplication.ItemReplication;
 import com.dyonovan.itemreplication.blocks.BlockBase;
 import com.dyonovan.itemreplication.handlers.GuiHandler;
 import com.dyonovan.itemreplication.lib.Constants;
-import com.dyonovan.itemreplication.tileentity.TileFrameEnergy;
+import com.dyonovan.itemreplication.tileentity.replicator.ReplicatorCPU;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
@@ -13,9 +13,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class BlockFrameEnergy extends BlockBase {
+public class BlockReplicatorCPU extends BlockBase {
 
-    public BlockFrameEnergy() {
+    public BlockReplicatorCPU() {
         super(Material.iron);
         this.setBlockName(Constants.MODID + ":blockFrameEnergy");
     }
@@ -32,7 +32,7 @@ public class BlockFrameEnergy extends BlockBase {
 
     @Override
     public TileEntity createNewTileEntity(World world, int i) {
-        return new TileFrameEnergy();
+        return new ReplicatorCPU();
     }
 
     @Override
@@ -46,7 +46,7 @@ public class BlockFrameEnergy extends BlockBase {
         }
         else
         {
-            TileFrameEnergy tile = (TileFrameEnergy)world.getTileEntity(x, y, z);
+            ReplicatorCPU tile = (ReplicatorCPU)world.getTileEntity(x, y, z);
             if(tile != null) {
                 player.openGui(ItemReplication.instance, GuiHandler.FRAME_ENERGY_GUI_ID, world, x, y, z);
             }

@@ -4,7 +4,7 @@ import com.dyonovan.itemreplication.container.ContainerTeslaCoil;
 import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.helpers.GuiHelper;
 import com.dyonovan.itemreplication.lib.Constants;
-import com.dyonovan.itemreplication.tileentity.TileTeslaCoil;
+import com.dyonovan.itemreplication.tileentity.teslacoil.TileTeslaCoil;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;

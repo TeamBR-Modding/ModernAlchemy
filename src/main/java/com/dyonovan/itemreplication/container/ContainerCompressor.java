@@ -1,7 +1,7 @@
 package com.dyonovan.itemreplication.container;
 
 import com.dyonovan.itemreplication.handlers.BlockHandler;
-import com.dyonovan.itemreplication.tileentity.TileCompressor;
+import com.dyonovan.itemreplication.tileentity.machines.TileCompressor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;

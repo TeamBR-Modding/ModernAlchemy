@@ -5,7 +5,7 @@ import com.dyonovan.itemreplication.gui.widget.WidgetEnergyBank;
 import com.dyonovan.itemreplication.gui.widget.WidgetLiquidTank;
 import com.dyonovan.itemreplication.helpers.GuiHelper;
 import com.dyonovan.itemreplication.lib.Constants;
-import com.dyonovan.itemreplication.tileentity.TileCompressor;
+import com.dyonovan.itemreplication.tileentity.machines.TileCompressor;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 

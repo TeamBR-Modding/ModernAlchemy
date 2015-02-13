@@ -1,11 +1,14 @@
-package com.dyonovan.itemreplication.tileentity;
+package com.dyonovan.itemreplication.tileentity.arcfurnace;
 
 import com.dyonovan.itemreplication.blocks.arcfurnace.dummies.BlockDummy;
 import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
-import com.dyonovan.itemreplication.tileentity.dummies.TileDummy;
+import com.dyonovan.itemreplication.tileentity.BaseCore;
+import com.dyonovan.itemreplication.tileentity.InventoryTile;
+import com.dyonovan.itemreplication.tileentity.teslacoil.TileTeslaCoil;
+import com.dyonovan.itemreplication.tileentity.arcfurnace.dummies.TileDummy;
 import com.dyonovan.itemreplication.util.Location;
 import com.dyonovan.itemreplication.util.RenderUtils;
 import net.minecraft.entity.player.EntityPlayer;

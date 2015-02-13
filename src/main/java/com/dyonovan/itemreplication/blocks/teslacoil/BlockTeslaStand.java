@@ -3,7 +3,7 @@ package com.dyonovan.itemreplication.blocks.teslacoil;
 import com.dyonovan.itemreplication.ItemReplication;
 import com.dyonovan.itemreplication.blocks.BlockBase;
 import com.dyonovan.itemreplication.lib.Constants;
-import com.dyonovan.itemreplication.tileentity.TileTeslaStand;
+import com.dyonovan.itemreplication.tileentity.teslacoil.TileTeslaStand;
 import com.dyonovan.itemreplication.util.Location;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

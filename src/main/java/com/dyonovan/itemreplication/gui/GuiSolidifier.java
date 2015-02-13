@@ -1,18 +1,14 @@
 package com.dyonovan.itemreplication.gui;
 
 import com.dyonovan.itemreplication.container.ContainerSolidifier;
-import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.gui.widget.WidgetEnergyBank;
 import com.dyonovan.itemreplication.gui.widget.WidgetLiquidTank;
 import com.dyonovan.itemreplication.helpers.GuiHelper;
 import com.dyonovan.itemreplication.lib.Constants;
-import com.dyonovan.itemreplication.tileentity.TileSolidifier;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.Tessellator;
+import com.dyonovan.itemreplication.tileentity.machines.TileSolidifier;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.FluidTank;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;

@@ -1,19 +1,20 @@
-package com.dyonovan.itemreplication.tileentity;
+package com.dyonovan.itemreplication.tileentity.replicator;
 
 import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
+import com.dyonovan.itemreplication.tileentity.BaseTile;
+import com.dyonovan.itemreplication.tileentity.teslacoil.TileTeslaCoil;
 import com.dyonovan.itemreplication.util.RenderUtils;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 
 import java.util.List;
 
-public class TileFrameEnergy extends BaseTile implements ITeslaHandler {
+public class ReplicatorCPU extends BaseTile implements ITeslaHandler {
 
     private TeslaBank energy;
 
-    public TileFrameEnergy() {
+    public ReplicatorCPU() {
         this.energy = new TeslaBank(1000);
     }
 

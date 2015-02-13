@@ -5,7 +5,7 @@ import com.dyonovan.itemreplication.gui.widget.WidgetEnergyBank;
 import com.dyonovan.itemreplication.gui.widget.WidgetLiquidTank;
 import com.dyonovan.itemreplication.helpers.GuiHelper;
 import com.dyonovan.itemreplication.lib.Constants;
-import com.dyonovan.itemreplication.tileentity.TileArcFurnaceCore;
+import com.dyonovan.itemreplication.tileentity.arcfurnace.TileArcFurnaceCore;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;

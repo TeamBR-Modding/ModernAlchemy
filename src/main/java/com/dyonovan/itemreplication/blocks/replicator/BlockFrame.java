@@ -3,7 +3,7 @@ package com.dyonovan.itemreplication.blocks.replicator;
 import com.dyonovan.itemreplication.ItemReplication;
 import com.dyonovan.itemreplication.blocks.BlockBase;
 import com.dyonovan.itemreplication.lib.Constants;
-import com.dyonovan.itemreplication.tileentity.TileFrame;
+import com.dyonovan.itemreplication.tileentity.replicator.TileFrame;
 import com.dyonovan.itemreplication.util.Location;
 import com.dyonovan.itemreplication.util.WorldUtils;
 import cpw.mods.fml.relauncher.Side;

@@ -1,6 +1,6 @@
 package com.dyonovan.itemreplication.container;
 
-import com.dyonovan.itemreplication.tileentity.TileTeslaCoil;
+import com.dyonovan.itemreplication.tileentity.teslacoil.TileTeslaCoil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;

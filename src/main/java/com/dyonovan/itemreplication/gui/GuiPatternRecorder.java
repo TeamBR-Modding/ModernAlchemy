@@ -4,7 +4,7 @@ import com.dyonovan.itemreplication.container.ContainerPatternRecorder;
 import com.dyonovan.itemreplication.gui.widget.WidgetEnergyBank;
 import com.dyonovan.itemreplication.helpers.GuiHelper;
 import com.dyonovan.itemreplication.lib.Constants;
-import com.dyonovan.itemreplication.tileentity.TilePatternRecorder;
+import com.dyonovan.itemreplication.tileentity.machines.TilePatternRecorder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;

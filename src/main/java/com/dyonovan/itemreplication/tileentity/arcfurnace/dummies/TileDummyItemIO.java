@@ -1,7 +1,7 @@
-package com.dyonovan.itemreplication.tileentity.dummies;
+package com.dyonovan.itemreplication.tileentity.arcfurnace.dummies;
 
 import com.dyonovan.itemreplication.handlers.BlockHandler;
-import com.dyonovan.itemreplication.tileentity.TileArcFurnaceCore;
+import com.dyonovan.itemreplication.tileentity.arcfurnace.TileArcFurnaceCore;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;

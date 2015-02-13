@@ -1,7 +1,7 @@
 package com.dyonovan.itemreplication.model;
 
 import com.dyonovan.itemreplication.blocks.replicator.BlockFrame;
-import com.dyonovan.itemreplication.blocks.replicator.BlockFrameEnergy;
+import com.dyonovan.itemreplication.blocks.replicator.BlockReplicatorCPU;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -379,23 +379,23 @@ public class ModelFrame extends ModelBase
 
         if (side.equals("top")) {
             return Minecraft.getMinecraft().theWorld.getBlock(x, y + 1, z) instanceof BlockFrame ||
-                    Minecraft.getMinecraft().theWorld.getBlock(x, y + 1, z) instanceof BlockFrameEnergy;
+                    Minecraft.getMinecraft().theWorld.getBlock(x, y + 1, z) instanceof BlockReplicatorCPU;
         } else if (side.equals("bottom")) {
             return Minecraft.getMinecraft().theWorld.getBlock(x, y - 1, z) instanceof BlockFrame ||
-                    Minecraft.getMinecraft().theWorld.getBlock(x, y - 1, z) instanceof BlockFrameEnergy ||
+                    Minecraft.getMinecraft().theWorld.getBlock(x, y - 1, z) instanceof BlockReplicatorCPU ||
                     !Minecraft.getMinecraft().theWorld.isAirBlock(x, y - 1, z);
         } else if (side.equals("front")) {
             return Minecraft.getMinecraft().theWorld.getBlock(x, y, z - 1) instanceof BlockFrame ||
-                    Minecraft.getMinecraft().theWorld.getBlock(x, y, z - 1) instanceof BlockFrameEnergy;
+                    Minecraft.getMinecraft().theWorld.getBlock(x, y, z - 1) instanceof BlockReplicatorCPU;
         } else if (side.equals("back")) {
             return Minecraft.getMinecraft().theWorld.getBlock(x, y, z + 1) instanceof BlockFrame ||
-                    Minecraft.getMinecraft().theWorld.getBlock(x, y, z + 1) instanceof BlockFrameEnergy;
+                    Minecraft.getMinecraft().theWorld.getBlock(x, y, z + 1) instanceof BlockReplicatorCPU;
         } else if (side.equals("left")) {
             return Minecraft.getMinecraft().theWorld.getBlock(x - 1, y, z) instanceof BlockFrame ||
-                    Minecraft.getMinecraft().theWorld.getBlock(x - 1, y, z) instanceof BlockFrameEnergy;
+                    Minecraft.getMinecraft().theWorld.getBlock(x - 1, y, z) instanceof BlockReplicatorCPU;
         } else if (side.equals("right")) {
             return Minecraft.getMinecraft().theWorld.getBlock(x + 1, y, z) instanceof BlockFrame ||
-                    Minecraft.getMinecraft().theWorld.getBlock(x + 1, y, z) instanceof BlockFrameEnergy;
+                    Minecraft.getMinecraft().theWorld.getBlock(x + 1, y, z) instanceof BlockReplicatorCPU;
         }
         return false;
     }

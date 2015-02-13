@@ -4,7 +4,7 @@ import com.dyonovan.itemreplication.ItemReplication;
 import com.dyonovan.itemreplication.blocks.BlockBase;
 import com.dyonovan.itemreplication.handlers.GuiHandler;
 import com.dyonovan.itemreplication.lib.Constants;
-import com.dyonovan.itemreplication.tileentity.TileSolidifier;
+import com.dyonovan.itemreplication.tileentity.machines.TileSolidifier;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;

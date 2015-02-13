@@ -3,7 +3,7 @@ package com.dyonovan.itemreplication.blocks.teslacoil;
 import com.dyonovan.itemreplication.ItemReplication;
 import com.dyonovan.itemreplication.blocks.BlockBase;
 import com.dyonovan.itemreplication.lib.Constants;
-import com.dyonovan.itemreplication.tileentity.TileTeslaBase;
+import com.dyonovan.itemreplication.tileentity.teslacoil.TileTeslaBase;
 import com.dyonovan.itemreplication.util.Location;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

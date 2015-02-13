@@ -1,6 +1,6 @@
 package com.dyonovan.itemreplication.container;
 
-import com.dyonovan.itemreplication.tileentity.TileArcFurnaceCore;
+import com.dyonovan.itemreplication.tileentity.arcfurnace.TileArcFurnaceCore;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;

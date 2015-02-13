@@ -1,4 +1,4 @@
-package com.dyonovan.itemreplication.tileentity.dummies;
+package com.dyonovan.itemreplication.tileentity.arcfurnace.dummies;
 
 import com.dyonovan.itemreplication.util.Location;
 import com.dyonovan.itemreplication.tileentity.BaseCore;

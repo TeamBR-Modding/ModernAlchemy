@@ -2,11 +2,9 @@ package com.dyonovan.itemreplication.renderer;
 
 import com.dyonovan.itemreplication.lib.Constants;
 import com.dyonovan.itemreplication.model.ModelReplicatorStand;
-import com.dyonovan.itemreplication.tileentity.TileReplicatorStand;
-import net.minecraft.client.renderer.entity.RenderItem;
+import com.dyonovan.itemreplication.tileentity.replicator.TileReplicatorStand;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;

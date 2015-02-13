@@ -13,17 +13,26 @@ import com.dyonovan.itemreplication.blocks.machines.BlockSolidifier;
 import com.dyonovan.itemreplication.blocks.ore.BlockOreActinium;
 import com.dyonovan.itemreplication.blocks.replicator.BlockReplicatorStand;
 import com.dyonovan.itemreplication.blocks.replicator.BlockFrame;
-import com.dyonovan.itemreplication.blocks.replicator.BlockFrameEnergy;
+import com.dyonovan.itemreplication.blocks.replicator.BlockReplicatorCPU;
 import com.dyonovan.itemreplication.blocks.teslacoil.BlockTeslaBase;
 import com.dyonovan.itemreplication.blocks.teslacoil.BlockTeslaCoil;
 import com.dyonovan.itemreplication.blocks.teslacoil.BlockTeslaStand;
 import com.dyonovan.itemreplication.fluids.FluidActinium;
 import com.dyonovan.itemreplication.fluids.FluidCompressedAir;
-import com.dyonovan.itemreplication.tileentity.*;
-import com.dyonovan.itemreplication.tileentity.dummies.TileDummy;
-import com.dyonovan.itemreplication.tileentity.dummies.TileDummyAirValve;
-import com.dyonovan.itemreplication.tileentity.dummies.TileDummyItemIO;
-import com.dyonovan.itemreplication.tileentity.dummies.TileDummyOutputValve;
+import com.dyonovan.itemreplication.tileentity.arcfurnace.TileArcFurnaceCore;
+import com.dyonovan.itemreplication.tileentity.arcfurnace.dummies.TileDummy;
+import com.dyonovan.itemreplication.tileentity.arcfurnace.dummies.TileDummyAirValve;
+import com.dyonovan.itemreplication.tileentity.arcfurnace.dummies.TileDummyItemIO;
+import com.dyonovan.itemreplication.tileentity.arcfurnace.dummies.TileDummyOutputValve;
+import com.dyonovan.itemreplication.tileentity.machines.TileCompressor;
+import com.dyonovan.itemreplication.tileentity.machines.TilePatternRecorder;
+import com.dyonovan.itemreplication.tileentity.machines.TileSolidifier;
+import com.dyonovan.itemreplication.tileentity.replicator.TileFrame;
+import com.dyonovan.itemreplication.tileentity.replicator.ReplicatorCPU;
+import com.dyonovan.itemreplication.tileentity.replicator.TileReplicatorStand;
+import com.dyonovan.itemreplication.tileentity.teslacoil.TileTeslaBase;
+import com.dyonovan.itemreplication.tileentity.teslacoil.TileTeslaCoil;
+import com.dyonovan.itemreplication.tileentity.teslacoil.TileTeslaStand;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraftforge.fluids.Fluid;
@@ -114,9 +123,9 @@ public class BlockHandler {
         GameRegistry.registerTileEntity(TileFrame.class, "blockFrame");
 
         //BlockFrameEnergy
-        blockFrameEnergy = new BlockFrameEnergy();
+        blockFrameEnergy = new BlockReplicatorCPU();
         GameRegistry.registerBlock(blockFrameEnergy, "blockFrameEnergy");
-        GameRegistry.registerTileEntity(TileFrameEnergy.class, "blockFrameEnergy");
+        GameRegistry.registerTileEntity(ReplicatorCPU.class, "blockFrameEnergy");
 
         //BlockCenterStand
         blockReplicatorStand = new BlockReplicatorStand();

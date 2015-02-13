@@ -1,18 +1,17 @@
-package com.dyonovan.itemreplication.tileentity;
+package com.dyonovan.itemreplication.tileentity.machines;
 
 import com.dyonovan.itemreplication.blocks.machines.BlockCompressor;
 import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
+import com.dyonovan.itemreplication.tileentity.BaseTile;
+import com.dyonovan.itemreplication.tileentity.teslacoil.TileTeslaCoil;
 import com.dyonovan.itemreplication.util.RenderUtils;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHandler {

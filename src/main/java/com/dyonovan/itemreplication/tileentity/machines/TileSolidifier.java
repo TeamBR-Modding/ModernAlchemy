@@ -1,4 +1,4 @@
-package com.dyonovan.itemreplication.tileentity;
+package com.dyonovan.itemreplication.tileentity.machines;
 
 import com.dyonovan.itemreplication.blocks.machines.BlockSolidifier;
 import com.dyonovan.itemreplication.energy.ITeslaHandler;
@@ -7,6 +7,8 @@ import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
 import com.dyonovan.itemreplication.handlers.ItemHandler;
 import com.dyonovan.itemreplication.lib.Constants;
+import com.dyonovan.itemreplication.tileentity.BaseTile;
+import com.dyonovan.itemreplication.tileentity.teslacoil.TileTeslaCoil;
 import com.dyonovan.itemreplication.util.RenderUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;

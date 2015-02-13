@@ -1,7 +1,7 @@
 package com.dyonovan.itemreplication.tileentity;
 
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
-import com.dyonovan.itemreplication.util.RenderUtils;
+import com.dyonovan.itemreplication.tileentity.teslacoil.TileTeslaCoil;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;

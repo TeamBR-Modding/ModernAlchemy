@@ -5,7 +5,7 @@ import com.dyonovan.itemreplication.blocks.BlockBase;
 import com.dyonovan.itemreplication.handlers.GuiHandler;
 import com.dyonovan.itemreplication.util.WorldUtils;
 import com.dyonovan.itemreplication.lib.Constants;
-import com.dyonovan.itemreplication.tileentity.TileArcFurnaceCore;
+import com.dyonovan.itemreplication.tileentity.arcfurnace.TileArcFurnaceCore;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
