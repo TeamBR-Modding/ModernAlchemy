@@ -29,8 +29,13 @@ public class RenderUtils {
         Minecraft.getMinecraft().effectRenderer.addEffect(new LightningBolt(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, tx, ty, tz, dis, de, age > 4 ? age : 4, new Color(255, 255, 255, 255)));
     }
 
-    public static void sendBoltToClient(int dimID, double x, double y, double z, double x1, double y1, double z1, double dis, double de, int age) {
-        PacketHandler.net.sendToDimension(new RenderLightningBoltPacket.BoltMessage(x, y, z, x1, y1, z1, dis, de, (age > 4 ? age : 4)), dimID);
+    @SideOnly(Side.CLIENT)
+    public static void renderLightningBolt(World worldObj, double xCoord, double yCoord, double zCoord, double tx, double ty, double tz, double dis, double de, int age, int r, int g, int b) {
+        Minecraft.getMinecraft().effectRenderer.addEffect(new LightningBolt(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, tx, ty, tz, dis, de, age > 4 ? age : 4, new Color(r, g, b)));
+    }
+
+    public static void sendBoltToClient(int dimID, double x, double y, double z, double x1, double y1, double z1, double dis, double de, int age, int r, int g, int b) {
+        PacketHandler.net.sendToDimension(new RenderLightningBoltPacket.BoltMessage(x, y, z, x1, y1, z1, dis, de, (age > 4 ? age : 4), r, g, b), dimID);
     }
 
     public static void sendBoltToClient(int dimID, double x, double y, double z, double x1, double y1, double z1, int age) {

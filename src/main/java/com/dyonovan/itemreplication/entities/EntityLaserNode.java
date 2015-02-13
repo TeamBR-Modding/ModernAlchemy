@@ -110,7 +110,7 @@ public class EntityLaserNode extends Entity {
                 for (int j = -5; j <= 5; j++) {
                     for (int k = -5; k <= 5; k++) {
                         if (worldObj.getBlock((int) posX + i, (int) posY + j, (int) posZ + k) instanceof BlockReplicatorStand) {
-                            RenderUtils.sendBoltToClient(worldObj.provider.dimensionId, posX - 0.5, posY - 0.5, posZ - 0.5, ((int) posX) + i + 0.5, ((int) posY) + j + 0.7, ((int) posZ) + k + 0.5, 0.01, 0.005, 10);
+                            RenderUtils.sendBoltToClient(worldObj.provider.dimensionId, posX - 0.5, posY - 0.5, posZ - 0.5, ((int) posX) + i + 0.5, ((int) posY) + j + 0.7, ((int) posZ) + k + 0.5, 0.01, 0.005, 15, 255, 0, 0);
                             coolDown = 10;
                         }
                     }

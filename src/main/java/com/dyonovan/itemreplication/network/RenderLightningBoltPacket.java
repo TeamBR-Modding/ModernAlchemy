@@ -12,7 +12,7 @@ public class RenderLightningBoltPacket implements IMessageHandler<RenderLightnin
     @Override
     public IMessage onMessage(RenderLightningBoltPacket.BoltMessage message, MessageContext ctx) {
         if (ctx.side.isClient()) {
-            RenderUtils.renderLightningBolt(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z, message.x1, message.y1, message.z1, message.displacement, message.detail, message.age);
+            RenderUtils.renderLightningBolt(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z, message.x1, message.y1, message.z1, message.displacement, message.detail, message.age, message.red, message.green, message.blue);
         }
         return null;
     }
@@ -28,14 +28,17 @@ public class RenderLightningBoltPacket implements IMessageHandler<RenderLightnin
         private int age;
         private double displacement;
         private double detail;
+        private int red;
+        private int green;
+        private int blue;
 
         public BoltMessage() {}
 
         public BoltMessage(double xC, double yC, double zC, double x1C, double y2C, double z3C, int ageC) {
-            this(xC, yC, zC, x1C, y2C, z3C, 1.6, 0.2, ageC);
+            this(xC, yC, zC, x1C, y2C, z3C, 1.6, 0.2, ageC, 255, 255, 255);
         }
 
-        public BoltMessage(double xC, double yC, double zC, double x1C, double y2C, double z3C, double dis, double de, int ageC) {
+        public BoltMessage(double xC, double yC, double zC, double x1C, double y2C, double z3C, double dis, double de, int ageC, int r, int g, int b) {
             x = xC;
             y = yC;
             z = zC;
@@ -45,6 +48,9 @@ public class RenderLightningBoltPacket implements IMessageHandler<RenderLightnin
             age = ageC;
             displacement = dis;
             detail = de;
+            red = r;
+            green = g;
+            blue = b;
         }
 
         @Override
@@ -58,6 +64,9 @@ public class RenderLightningBoltPacket implements IMessageHandler<RenderLightnin
             age = buf.readInt();
             displacement = buf.readDouble();
             detail = buf.readDouble();
+            red = buf.readInt();
+            green = buf.readInt();
+            blue = buf.readInt();
         }
 
         @Override
@@ -71,6 +80,9 @@ public class RenderLightningBoltPacket implements IMessageHandler<RenderLightnin
             buf.writeInt(age);
             buf.writeDouble(displacement);
             buf.writeDouble(detail);
+            buf.writeInt(red);
+            buf.writeInt(green);
+            buf.writeInt(blue);
         }
     }
 }
