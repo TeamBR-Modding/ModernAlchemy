@@ -39,6 +39,8 @@ public class TileReplicatorStand extends BaseTile implements ISidedInventory {
 
     @Override
     public void updateEntity() {
+        super.updateEntity();
+
         if (inventory.getStackInSlot(0) != null) {
             if (entityItem == null || entityItem.getEntityItem() != inventory.getStackInSlot(0)) {
                 entityItem = new EntityItem(this.worldObj, this.xCoord, this.yCoord, this.zCoord, inventory.getStackInSlot(0));
@@ -60,7 +62,7 @@ public class TileReplicatorStand extends BaseTile implements ISidedInventory {
 
     @Override
     public boolean canInsertItem(int slot, ItemStack itemstack, int side) {
-        return !(slot == 1 || side != 0);
+        return isItemValidForSlot(slot, itemstack);
     }
 
     @Override
