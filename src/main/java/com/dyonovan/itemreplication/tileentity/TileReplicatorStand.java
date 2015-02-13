@@ -2,10 +2,16 @@ package com.dyonovan.itemreplication.tileentity;
 
 import com.dyonovan.itemreplication.items.ItemCube;
 import com.dyonovan.itemreplication.lib.Constants;
+import com.dyonovan.itemreplication.renderer.RenderReplicatorStand;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 
 public class TileReplicatorStand extends BaseTile implements ISidedInventory {
 
@@ -13,6 +19,7 @@ public class TileReplicatorStand extends BaseTile implements ISidedInventory {
     public static final int OUTPUT_SLOT = 1;
 
     public InventoryTile inventory;
+    public EntityItem entityItem = null;
 
     public TileReplicatorStand() {
         inventory = new InventoryTile(2);
@@ -28,6 +35,22 @@ public class TileReplicatorStand extends BaseTile implements ISidedInventory {
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         inventory.writeToNBT(tag);
+    }
+
+    @Override
+    public void updateEntity() {
+        if (inventory.getStackInSlot(0) != null) {
+            if (entityItem == null || entityItem.getEntityItem() != inventory.getStackInSlot(0)) {
+                entityItem = new EntityItem(this.worldObj, this.xCoord, this.yCoord, this.zCoord, inventory.getStackInSlot(0));
+                entityItem.hoverStart = 0;
+                entityItem.rotationYaw = 0;
+                entityItem.motionX = 0;
+                entityItem.motionY = 0;
+                entityItem.motionZ = 0;
+            }
+        } else {
+            entityItem = null;
+        }
     }
 
     @Override
@@ -64,7 +87,6 @@ public class TileReplicatorStand extends BaseTile implements ISidedInventory {
                 setInventorySlotContents(slot, null);
             }
             itemstack = itemstack.splitStack(count);
-
         }
         super.markDirty();
         return itemstack;

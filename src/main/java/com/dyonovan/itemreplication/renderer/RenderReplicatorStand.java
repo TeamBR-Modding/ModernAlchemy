@@ -16,7 +16,7 @@ public class RenderReplicatorStand extends TileEntitySpecialRenderer {
     public static final ResourceLocation texture = new ResourceLocation(Constants.MODID + ":textures/models/replicator_stand.png");
 
     private ModelReplicatorStand model;
-    EntityItem entItem = null;
+
 
     public RenderReplicatorStand() {
         this.model = new ModelReplicatorStand();
@@ -37,19 +37,16 @@ public class RenderReplicatorStand extends TileEntitySpecialRenderer {
         GL11.glPopMatrix();
 
         //Render Item on Top
-        int slot = 0;
-        TileReplicatorStand tileEntity = (TileReplicatorStand)tileentity;
+        TileReplicatorStand rs = (TileReplicatorStand)tileentity;
 
-        if(tileEntity.getStackInSlot(slot) != null && (entItem == null || entItem.getEntityItem().getItem() != tileEntity.getStackInSlot(slot).getItem()))
-            entItem = new EntityItem(tileEntity.getWorldObj(), x, y, z, tileEntity.getStackInSlot(slot));
-        if (entItem != null) {
+        if (rs.entityItem != null) {
             GL11.glPushMatrix();
-            this.entItem.hoverStart = 0.0F;
-            RenderItem.renderInFrame = true;
-            GL11.glTranslatef((float) x + 0.5F, (float) y + 1.02F, (float) z + 0.3F);
-            GL11.glRotatef(180, 0, 1, 1);
-            RenderManager.instance.renderEntityWithPosYaw(this.entItem, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
-            RenderItem.renderInFrame = false;
+            GL11.glDisable(GL11.GL_CULL_FACE);
+            GL11.glTranslatef((float) x + 0.5F, (float) y + 1.15F, (float) z + 0.5F);
+            GL11.glRotatef(360, 0, 1, 1);
+            //GL11.glScaled(0.8D, 0.8D, 0.8D);
+            RenderManager.instance.renderEntityWithPosYaw(rs.entityItem, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
+            GL11.glEnable(GL11.GL_CULL_FACE);
             GL11.glPopMatrix();
         }
     }
