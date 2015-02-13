@@ -6,6 +6,7 @@ import com.dyonovan.itemreplication.util.Location;
 import com.dyonovan.itemreplication.util.WorldUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -36,6 +37,14 @@ public class EntityLaserNode extends Entity {
             posX++;
             break;
         }
+        this.boundingBox.setBounds(0.3, 0.3, 0.3, 0.7, 0.7, 0.7);
+        setSize(1.0F, 1.0F);
+    }
+
+    public boolean attackEntityFrom(DamageSource source, float f)
+    {
+        this.setDead();
+        return true;
     }
 
     @Override
@@ -49,10 +58,6 @@ public class EntityLaserNode extends Entity {
                 LogHelper.info("FOUND!");
             }
         }
-    }
-
-    public void moveInside() {
-
     }
 
     @Override

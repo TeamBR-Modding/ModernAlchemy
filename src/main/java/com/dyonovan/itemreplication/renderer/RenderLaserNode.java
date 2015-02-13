@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GL11;
 public class RenderLaserNode extends Render {
 
     private ModelLaserNode model;
-    public static final ResourceLocation texture = new ResourceLocation(Constants.MODID + ":textures/models/tesla_stand.png");
+    public static final ResourceLocation texture = new ResourceLocation(Constants.MODID + ":textures/models/laserNode.png");
 
     public RenderLaserNode() {
         model = new ModelLaserNode();
