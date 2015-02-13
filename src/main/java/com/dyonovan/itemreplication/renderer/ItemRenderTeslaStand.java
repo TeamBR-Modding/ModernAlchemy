@@ -58,7 +58,7 @@ public class ItemRenderTeslaStand implements IItemRenderer {
 
     public void renderCoil(float x, float y, float z, int metaData)
     {
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(Constants.MODID + ":textures/models/teslaCoil.png"));
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(Constants.MODID + ":textures/models/teslaStand.png"));
 
         GL11.glPushMatrix(); //start
         GL11.glTranslatef(x, y, z); //size

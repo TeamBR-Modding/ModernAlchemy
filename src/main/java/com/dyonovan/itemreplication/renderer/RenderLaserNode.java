@@ -24,6 +24,8 @@ public class RenderLaserNode extends Render {
         GL11.glTranslatef((float) x, (float) y + 0.3F, (float) z);
         GL11.glScalef(-1.0F, -1.0F, 1.0F);
 
+        model.setRotation(entity.rotationYaw, entity.rotationPitch, entity.rotationPitch);
+
         this.bindTexture(texture);
         model.render(entity, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 

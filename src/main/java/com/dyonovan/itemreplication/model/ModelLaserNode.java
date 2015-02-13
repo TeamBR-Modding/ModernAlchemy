@@ -26,4 +26,12 @@ public class ModelLaserNode extends ModelBase {
             part.render(mul);
         }
     }
+
+    public void setRotation(float yaw, float pitchX, float pitchZ) {
+        for(ModelRenderer part : bits){
+            part.rotateAngleX = pitchX;
+            part.rotateAngleZ = pitchZ;
+            part.rotateAngleY = yaw;
+        }
+    }
 }

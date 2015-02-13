@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderTeslaStand extends TileEntitySpecialRenderer {
 
-    public static final ResourceLocation texture = new ResourceLocation(Constants.MODID + ":textures/models/teslaCoil.png");
+    public static final ResourceLocation texture = new ResourceLocation(Constants.MODID + ":textures/models/teslaStand.png");
 
     private ModelTeslaStand model;
 

@@ -82,6 +82,17 @@ public class EntityLaserNode extends Entity {
         }
     }
 
+    public boolean hasFrame() {
+        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+            if (dir == ForgeDirection.UP || dir == ForgeDirection.DOWN)
+                continue;
+            if (WorldUtils.getBlockInDirection(worldObj, getLocation(), dir) instanceof BlockFrame) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public void setDead() {
         if(!worldObj.isRemote)
@@ -90,12 +101,12 @@ public class EntityLaserNode extends Entity {
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound tag) {
+    public void readEntityFromNBT(NBTTagCompound tag) {
 
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound tag) {
+    public void writeEntityToNBT(NBTTagCompound tag) {
 
     }
 
@@ -111,14 +122,32 @@ public class EntityLaserNode extends Entity {
                     for (int k = -5; k <= 5; k++) {
                         if (worldObj.getBlock((int) posX + i, (int) posY + j, (int) posZ + k) instanceof BlockReplicatorStand) {
                             RenderUtils.sendBoltToClient(worldObj.provider.dimensionId, posX - 0.5, posY - 0.5, posZ - 0.5, ((int) posX) + i + 0.5, ((int) posY) + j + 0.7, ((int) posZ) + k + 0.5, 0.01, 0.005, 15, 255, 0, 0);
+                            rotateToPosition(posX + i + 0.5, posY + j + 0.7, posZ + k + 0.5);
                             coolDown = 10;
                         }
                     }
                 }
             }
         }
+
+        if(!hasFrame())
+            motionY -= 0.01;
+        else
+            motionY = 0;
+
+        if(!worldObj.isAirBlock((int)Math.floor(posX), (int)Math.floor(posY), (int)Math.floor(posZ)))
+            setDead();
+
         coolDown--;
-        setPosition(posX + motionX, posY, posZ + motionZ);
+        setPosition(posX + motionX, posY + motionY, posZ + motionZ);
+    }
+
+    public void rotateToPosition(double x, double y, double z) {
+        //TODO: Figure this stuff out
+        //this.rotationPitch = 45;
+        float angle = (float)Math.toDegrees(Math.atan2((posX - x), (posZ - z)));
+        angle = (angle + 180.0f) % 360.0f;
+        //this.rotationYaw = 360.0f - angle + 45;
     }
 
     public Location getLocation() {
