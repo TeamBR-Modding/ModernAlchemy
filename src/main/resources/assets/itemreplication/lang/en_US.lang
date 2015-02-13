@@ -13,7 +13,7 @@ tile.itemreplication:arcFurnaceDummyItemIO.name=Arc Furnace Item I/O
 tile.itemreplication:arcFurnaceDummyAirValue.name=Arc Furnace Compressed Air Valve
 tile.itemreplication:blockTeslaBase.name=Tesla Coil Base
 tile.itemreplication:blockFrame.name=Replicator Frame
-tile.itemreplication:blockFrameEnergy.name=Replicator Frame Energy Provider
+tile.itemreplication:blockFrameEnergy.name=Replicator CPU
 
 item.itemreplication:pattern.name=Replicator Pattern
 item.itemreplication:bucketActinium.name=Bucket of Actinium

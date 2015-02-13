@@ -3,6 +3,7 @@ package com.dyonovan.itemreplication.tileentity.replicator;
 import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
+import com.dyonovan.itemreplication.items.ItemPattern;
 import com.dyonovan.itemreplication.items.ItemReplicatorMedium;
 import com.dyonovan.itemreplication.lib.Constants;
 import com.dyonovan.itemreplication.tileentity.BaseTile;
@@ -18,12 +19,16 @@ import java.util.List;
 
 public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISidedInventory {
 
+    private static final int PROCESS_TIME = 5000;
+
     private TeslaBank energy;
     public InventoryTile inventory;
+    public int currentProcessTime;
 
     public TileReplicatorCPU() {
         this.energy = new TeslaBank(1000);
-        this.inventory = new InventoryTile(2);
+        this.inventory = new InventoryTile(3);
+        this.currentProcessTime = 0;
     }
 
     @Override
@@ -64,6 +69,8 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
     public void setEnergy(int amount) {
         energy.setEnergyLevel(amount);
     }
+
+    public int getProgressScaled(int scale) { return this.currentProcessTime * scale / PROCESS_TIME; }
 
     @Override
     public void updateEntity() {
@@ -112,7 +119,7 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
 
     @Override
     public int getSizeInventory() {
-        return 2;
+        return inventory.getSizeInventory();
     }
 
     @Override
@@ -159,12 +166,12 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
 
     @Override
     public int getInventoryStackLimit() {
-        return 1;
+        return 64;
     }
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer player) {
-        return false;
+        return true;
     }
 
     @Override
@@ -179,6 +186,13 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
-        return slot == 0 && itemStack.getItem() instanceof ItemReplicatorMedium;
+        switch (slot) {
+            case 0:
+                return itemStack.getItem() instanceof ItemReplicatorMedium;
+            case 1:
+                return itemStack.getItem() instanceof ItemPattern;
+            default:
+                return false;
+        }
     }
 }

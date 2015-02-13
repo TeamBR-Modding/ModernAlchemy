@@ -48,7 +48,7 @@ public class BlockReplicatorCPU extends BlockBase {
         {
             TileReplicatorCPU tile = (TileReplicatorCPU)world.getTileEntity(x, y, z);
             if(tile != null) {
-                player.openGui(ItemReplication.instance, GuiHandler.FRAME_ENERGY_GUI_ID, world, x, y, z);
+                player.openGui(ItemReplication.instance, GuiHandler.REPLICATOR_CPU_GUI_ID, world, x, y, z);
             }
             return true;
         }
