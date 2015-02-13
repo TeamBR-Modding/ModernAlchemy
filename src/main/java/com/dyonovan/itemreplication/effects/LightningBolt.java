@@ -25,9 +25,15 @@ public class LightningBolt extends EntityFX {
     private double tX = 0.0D;
     private double tY = 0.0D;
     private double tZ = 0.0D;
+    private double displacement = 1.6;
+    private double detail = 0.2;
     private Color color;
 
     public LightningBolt(World world, double x, double y, double z, double targetX, double targetY, double targetZ, int age, Color c) {
+        this(world, x, y, z, targetX, targetY, targetZ, 1.6, 0.2, age, c);
+    }
+
+    public LightningBolt(World world, double x, double y, double z, double targetX, double targetY, double targetZ, double dis, double de, int age, Color c) {
         super(world, x, y, z);
         color = c;
         this.particleMaxAge = age;
@@ -41,14 +47,16 @@ public class LightningBolt extends EntityFX {
         double var7 = MathHelper.sqrt_double(xd * xd + zd * zd);
         this.rotYaw = ((float)(Math.atan2(xd, zd) * 180.0D / 3.141592653589793D));
         this.rotPitch = ((float)(Math.atan2(yd, var7) * 180.0D / 3.141592653589793D));
+        this.displacement = dis;
+        this.detail = de;
     }
 
-    @Override
+        @Override
     public void renderParticle(Tessellator tessellator, float par2, float par3, float par4, float par5, float par6, float par7)
     {
         tessellator.draw();
         super.renderParticle(tessellator, par2, par3, par4, par5, par6, par7);
-        renderBolt(tessellator, posX, posY, posZ, tX, tY, tZ, 1.6, 0.2);
+        renderBolt(tessellator, posX, posY, posZ, tX, tY, tZ, displacement, detail);
         Minecraft.getMinecraft().renderEngine.bindTexture((ResourceLocation) ReflectionHelper.getPrivateValue(EffectRenderer.class, null, new String[]{"particleTextures", "b", "field_110737_b"}));
         tessellator.startDrawingQuads();
     }

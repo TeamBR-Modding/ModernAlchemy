@@ -12,7 +12,7 @@ public class RenderLightningBoltPacket implements IMessageHandler<RenderLightnin
     @Override
     public IMessage onMessage(RenderLightningBoltPacket.BoltMessage message, MessageContext ctx) {
         if (ctx.side.isClient()) {
-            RenderUtils.renderLightningBolt(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z, message.x1, message.y1, message.z1, message.age);
+            RenderUtils.renderLightningBolt(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z, message.x1, message.y1, message.z1, message.displacement, message.detail, message.age);
         }
         return null;
     }
@@ -26,10 +26,16 @@ public class RenderLightningBoltPacket implements IMessageHandler<RenderLightnin
         private double y1;
         private double z1;
         private int age;
+        private double displacement;
+        private double detail;
 
         public BoltMessage() {}
 
         public BoltMessage(double xC, double yC, double zC, double x1C, double y2C, double z3C, int ageC) {
+            this(xC, yC, zC, x1C, y2C, z3C, 1.6, 0.2, ageC);
+        }
+
+        public BoltMessage(double xC, double yC, double zC, double x1C, double y2C, double z3C, double dis, double de, int ageC) {
             x = xC;
             y = yC;
             z = zC;
@@ -37,6 +43,8 @@ public class RenderLightningBoltPacket implements IMessageHandler<RenderLightnin
             y1 = y2C;
             z1 = z3C;
             age = ageC;
+            displacement = dis;
+            detail = de;
         }
 
         @Override
@@ -48,6 +56,8 @@ public class RenderLightningBoltPacket implements IMessageHandler<RenderLightnin
             y1 = buf.readDouble();
             z1 = buf.readDouble();
             age = buf.readInt();
+            displacement = buf.readDouble();
+            detail = buf.readDouble();
         }
 
         @Override
@@ -59,6 +69,8 @@ public class RenderLightningBoltPacket implements IMessageHandler<RenderLightnin
             buf.writeDouble(y1);
             buf.writeDouble(z1);
             buf.writeInt(age);
+            buf.writeDouble(displacement);
+            buf.writeDouble(detail);
         }
     }
 }

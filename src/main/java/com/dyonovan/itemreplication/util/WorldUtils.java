@@ -13,13 +13,13 @@ import java.util.Random;
 public class WorldUtils {
     protected static Random random = new Random();
 
-    public static void expelItem(World worldObj, int xCoord, int yCoord, int zCoord, ItemStack itemstack) {
+    public static void expelItem(World worldObj, double xCoord, double yCoord, double zCoord, ItemStack itemstack) {
         if (itemstack != null) {
             EntityItem entityitem =
                     new EntityItem(worldObj,
-                            (double) xCoord + random.nextFloat() * 0.8F + 0.1F,
-                            (double) yCoord + random.nextFloat() * 0.8F + 0.1F,
-                            (double) zCoord + random.nextFloat() * 0.8F + 0.1F,
+                            xCoord + random.nextFloat() * 0.8F + 0.1F,
+                            yCoord + random.nextFloat() * 0.8F + 0.1F,
+                            zCoord + random.nextFloat() * 0.8F + 0.1F,
                             itemstack
                     );
 

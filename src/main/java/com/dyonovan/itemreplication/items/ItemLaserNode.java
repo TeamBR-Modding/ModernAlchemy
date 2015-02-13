@@ -21,9 +21,10 @@ public class ItemLaserNode extends Item {
     @Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
         if(!world.isRemote) {
-            if(world.getBlock(x, y, z) instanceof BlockFrame) {
+            if(world.getBlock(x, y, z) instanceof BlockFrame && (side != 0 && side != 1)) {
                 world.spawnEntityInWorld(new EntityLaserNode(world, x + 0.5, y, z + 0.5, side));
-                stack.stackSize--;
+                if(!player.capabilities.isCreativeMode)
+                    stack.stackSize--;
                 return true;
             }
             return false;

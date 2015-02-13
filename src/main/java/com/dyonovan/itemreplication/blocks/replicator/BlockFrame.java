@@ -176,8 +176,6 @@ public class BlockFrame extends BlockBase {
         return new RaytraceResult(hits[minIndex], boxes[minIndex], sideHit[minIndex]);
     }
 
-
-
     private void setBlockBounds(AxisAlignedBB bb) {
         setBlockBounds((float) bb.minX, (float) bb.minY, (float) bb.minZ, (float) bb.maxX, (float) bb.maxY, (float) bb.maxZ);
     }
