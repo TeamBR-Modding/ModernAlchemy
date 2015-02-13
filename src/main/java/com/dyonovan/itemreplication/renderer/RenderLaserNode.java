@@ -21,7 +21,7 @@ public class RenderLaserNode extends Render {
     public void renderNode(EntityLaserNode entity, double x, double y, double z, float yaw, float partialTickTime) {
         GL11.glPushMatrix();
 
-        GL11.glTranslatef((float) x, (float) y, (float) z);
+        GL11.glTranslatef((float) x, (float) y + 0.3F, (float) z);
         GL11.glScalef(-1.0F, -1.0F, 1.0F);
 
         this.bindTexture(texture);

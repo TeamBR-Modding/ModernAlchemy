@@ -47,9 +47,7 @@ public class WorldUtils {
     }
 
     public static Block getBlockInDirection(World world, Location loc, ForgeDirection dir) {
-        loc.x += dir.offsetX;
-        loc.y += dir.offsetY;
-        loc.z += dir.offsetZ;
+        loc.moveInDirection(dir);
         return world.getBlock(loc.x, loc.y, loc.z);
     }
 
