@@ -1,21 +1,16 @@
 package com.dyonovan.itemreplication.tileentity.replicator;
 
-import com.dyonovan.itemreplication.items.ItemCube;
+import com.dyonovan.itemreplication.items.ItemReplicatorMedium;
 import com.dyonovan.itemreplication.lib.Constants;
-import com.dyonovan.itemreplication.renderer.RenderReplicatorStand;
 import com.dyonovan.itemreplication.tileentity.BaseTile;
 import com.dyonovan.itemreplication.tileentity.InventoryTile;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 
-public class TileReplicatorStand extends BaseTile implements ISidedInventory {
+public class TileReplicatorStand extends BaseTile implements IInventory {
 
     public static final int INPUT_SLOT = 0;
     public static final int OUTPUT_SLOT = 1;
@@ -58,21 +53,6 @@ public class TileReplicatorStand extends BaseTile implements ISidedInventory {
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int i) {
-        return new int[] {0, 1};
-    }
-
-    @Override
-    public boolean canInsertItem(int slot, ItemStack itemstack, int side) {
-        return isItemValidForSlot(slot, itemstack);
-    }
-
-    @Override
-    public boolean canExtractItem(int slot, ItemStack itemstack, int side) {
-        return !(slot == 0 || side != 0);
-    }
-
-    @Override
     public int getSizeInventory() {
         return 2;
     }
@@ -111,7 +91,7 @@ public class TileReplicatorStand extends BaseTile implements ISidedInventory {
 
     @Override
     public String getInventoryName() {
-        return Constants.MODID + ":blockReplicatorStand";
+        return Constants.MODID + ":blockReplicatorCPU";
     }
 
     @Override
@@ -141,6 +121,6 @@ public class TileReplicatorStand extends BaseTile implements ISidedInventory {
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
-        return slot == 0 && itemStack.getItem() instanceof ItemCube;
+        return slot == 0 && itemStack.getItem() instanceof ItemReplicatorMedium;
     }
 }

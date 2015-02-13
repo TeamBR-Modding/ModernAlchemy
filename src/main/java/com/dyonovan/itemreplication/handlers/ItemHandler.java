@@ -1,6 +1,6 @@
 package com.dyonovan.itemreplication.handlers;
 
-import com.dyonovan.itemreplication.items.ItemCube;
+import com.dyonovan.itemreplication.items.ItemReplicatorMedium;
 import com.dyonovan.itemreplication.items.ItemLaserNode;
 import com.dyonovan.itemreplication.items.ItemPattern;
 import com.dyonovan.itemreplication.items.buckets.ItemBucketActinium;
@@ -27,7 +27,7 @@ public class ItemHandler {
         FluidContainerRegistry.registerFluidContainer(new FluidStack(BlockHandler.fluidActinium, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(itemBucketActinium), new ItemStack(Items.bucket));
 
         //Item Cube
-        itemCube = new ItemCube();
+        itemCube = new ItemReplicatorMedium();
         GameRegistry.registerItem(itemCube, "itemCube");
 
         //Laser Node

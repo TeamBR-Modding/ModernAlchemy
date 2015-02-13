@@ -3,7 +3,10 @@ package com.dyonovan.itemreplication.tileentity.replicator;
 import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
+import com.dyonovan.itemreplication.items.ItemReplicatorMedium;
+import com.dyonovan.itemreplication.lib.Constants;
 import com.dyonovan.itemreplication.tileentity.BaseTile;
+import com.dyonovan.itemreplication.tileentity.InventoryTile;
 import com.dyonovan.itemreplication.tileentity.teslacoil.TileTeslaCoil;
 import com.dyonovan.itemreplication.util.RenderUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,22 +19,25 @@ import java.util.List;
 public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISidedInventory {
 
     private TeslaBank energy;
-
+    public InventoryTile inventory;
 
     public TileReplicatorCPU() {
         this.energy = new TeslaBank(1000);
+        this.inventory = new InventoryTile(2);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         energy.readFromNBT(tag);
+        inventory.readFromNBT(tag, this);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         energy.writeToNBT(tag);
+        inventory.writeToNBT(tag);
     }
 
 
@@ -91,48 +97,59 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
-        return new int[0];
+    public int[] getAccessibleSlotsFromSide(int i) {
+        return new int[] {0, 1};
+    }
+
+    public boolean canInsertItem(int slot, ItemStack itemstack, int side) {
+        return isItemValidForSlot(slot, itemstack);
     }
 
     @Override
-    public boolean canInsertItem(int p_102007_1_, ItemStack p_102007_2_, int p_102007_3_) {
-        return false;
-    }
-
-    @Override
-    public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_, int p_102008_3_) {
-        return false;
+    public boolean canExtractItem(int slot, ItemStack itemstack, int side) {
+        return !(slot == 0 || side != 0);
     }
 
     @Override
     public int getSizeInventory() {
-        return 0;
+        return 2;
     }
 
     @Override
-    public ItemStack getStackInSlot(int p_70301_1_) {
-        return null;
+    public ItemStack getStackInSlot(int slot) {
+        return inventory.getStackInSlot(slot);
     }
 
     @Override
-    public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_) {
-        return null;
+    public ItemStack decrStackSize(int slot, int count) {
+        ItemStack itemstack = getStackInSlot(slot);
+
+        if(itemstack != null) {
+            if(itemstack.stackSize <= count) {
+                setInventorySlotContents(slot, null);
+            }
+            itemstack = itemstack.splitStack(count);
+        }
+        super.markDirty();
+        return itemstack;
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int p_70304_1_) {
-        return null;
+    public ItemStack getStackInSlotOnClosing(int slot) {
+        ItemStack itemStack = getStackInSlot(slot);
+        setInventorySlotContents(slot, null);
+        return itemStack;
     }
 
     @Override
-    public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {
-
+    public void setInventorySlotContents(int slot, ItemStack itemStack) {
+        inventory.setStackInSlot(itemStack, slot);
+        worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
     }
 
     @Override
     public String getInventoryName() {
-        return null;
+        return Constants.MODID + ":blockReplicatorCPU";
     }
 
     @Override
@@ -142,11 +159,11 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
 
     @Override
     public int getInventoryStackLimit() {
-        return 0;
+        return 1;
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
+    public boolean isUseableByPlayer(EntityPlayer player) {
         return false;
     }
 
@@ -161,7 +178,7 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
     }
 
     @Override
-    public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
-        return false;
+    public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
+        return slot == 0 && itemStack.getItem() instanceof ItemReplicatorMedium;
     }
 }
