@@ -4,7 +4,7 @@ import com.dyonovan.itemreplication.ItemReplication;
 import com.dyonovan.itemreplication.blocks.BlockBase;
 import com.dyonovan.itemreplication.handlers.GuiHandler;
 import com.dyonovan.itemreplication.lib.Constants;
-import com.dyonovan.itemreplication.tileentity.replicator.ReplicatorCPU;
+import com.dyonovan.itemreplication.tileentity.replicator.TileReplicatorCPU;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
@@ -32,7 +32,7 @@ public class BlockReplicatorCPU extends BlockBase {
 
     @Override
     public TileEntity createNewTileEntity(World world, int i) {
-        return new ReplicatorCPU();
+        return new TileReplicatorCPU();
     }
 
     @Override
@@ -46,7 +46,7 @@ public class BlockReplicatorCPU extends BlockBase {
         }
         else
         {
-            ReplicatorCPU tile = (ReplicatorCPU)world.getTileEntity(x, y, z);
+            TileReplicatorCPU tile = (TileReplicatorCPU)world.getTileEntity(x, y, z);
             if(tile != null) {
                 player.openGui(ItemReplication.instance, GuiHandler.FRAME_ENERGY_GUI_ID, world, x, y, z);
             }

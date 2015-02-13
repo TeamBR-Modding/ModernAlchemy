@@ -3,7 +3,7 @@ package com.dyonovan.itemreplication.blocks.replicator;
 import com.dyonovan.itemreplication.ItemReplication;
 import com.dyonovan.itemreplication.blocks.BlockBase;
 import com.dyonovan.itemreplication.lib.Constants;
-import com.dyonovan.itemreplication.tileentity.replicator.TileFrame;
+import com.dyonovan.itemreplication.tileentity.replicator.TileReplicatorFrame;
 import com.dyonovan.itemreplication.util.Location;
 import com.dyonovan.itemreplication.util.WorldUtils;
 import cpw.mods.fml.relauncher.Side;
@@ -25,12 +25,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.Arrays;
 import java.util.List;
 
-public class BlockFrame extends BlockBase {
+public class BlockReplicatorFrame extends BlockBase {
 
     private static final float PIPE_MIN_POS = 0.2F;
     private static final float PIPE_MAX_POS = 0.8F;
 
-    public BlockFrame() {
+    public BlockReplicatorFrame() {
         super(Material.iron);
         this.setCreativeTab(ItemReplication.tabItemReplication);
         this.setBlockName(Constants.MODID + ":blockFrame");
@@ -42,34 +42,34 @@ public class BlockFrame extends BlockBase {
         super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, par7Entity);
 
         Block block = world.getBlock(x, y, z);
-        if (block instanceof BlockFrame) {
+        if (block instanceof BlockReplicatorFrame) {
 
-            if (WorldUtils.getBlockInDirection(world, new Location(x, y, z), ForgeDirection.WEST) instanceof BlockFrame) {
+            if (WorldUtils.getBlockInDirection(world, new Location(x, y, z), ForgeDirection.WEST) instanceof BlockReplicatorFrame) {
                 setBlockBounds(0.0F, PIPE_MIN_POS, PIPE_MIN_POS, PIPE_MAX_POS, PIPE_MAX_POS, PIPE_MAX_POS);
                 super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, par7Entity);
             }
 
-            if (WorldUtils.getBlockInDirection(world, new Location(x, y, z), ForgeDirection.EAST) instanceof BlockFrame) {
+            if (WorldUtils.getBlockInDirection(world, new Location(x, y, z), ForgeDirection.EAST) instanceof BlockReplicatorFrame) {
                 setBlockBounds(PIPE_MIN_POS, PIPE_MIN_POS, PIPE_MIN_POS, 1.0F, PIPE_MAX_POS, PIPE_MAX_POS);
                 super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, par7Entity);
             }
 
-            if (WorldUtils.getBlockInDirection(world, new Location(x, y, z), ForgeDirection.DOWN) instanceof BlockFrame) {
+            if (WorldUtils.getBlockInDirection(world, new Location(x, y, z), ForgeDirection.DOWN) instanceof BlockReplicatorFrame) {
                 setBlockBounds(PIPE_MIN_POS, 0.0F, PIPE_MIN_POS, PIPE_MAX_POS, PIPE_MAX_POS, PIPE_MAX_POS);
                 super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, par7Entity);
             }
 
-            if (WorldUtils.getBlockInDirection(world, new Location(x, y, z), ForgeDirection.UP) instanceof BlockFrame) {
+            if (WorldUtils.getBlockInDirection(world, new Location(x, y, z), ForgeDirection.UP) instanceof BlockReplicatorFrame) {
                 setBlockBounds(PIPE_MIN_POS, PIPE_MIN_POS, PIPE_MIN_POS, PIPE_MAX_POS, 1.0F, PIPE_MAX_POS);
                 super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, par7Entity);
             }
 
-            if (WorldUtils.getBlockInDirection(world, new Location(x, y, z), ForgeDirection.NORTH) instanceof BlockFrame) {
+            if (WorldUtils.getBlockInDirection(world, new Location(x, y, z), ForgeDirection.NORTH) instanceof BlockReplicatorFrame) {
                 setBlockBounds(PIPE_MIN_POS, PIPE_MIN_POS, 0.0F, PIPE_MAX_POS, PIPE_MAX_POS, PIPE_MAX_POS);
                 super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, par7Entity);
             }
 
-            if (WorldUtils.getBlockInDirection(world, new Location(x, y, z), ForgeDirection.SOUTH) instanceof BlockFrame) {
+            if (WorldUtils.getBlockInDirection(world, new Location(x, y, z), ForgeDirection.SOUTH) instanceof BlockReplicatorFrame) {
                 setBlockBounds(PIPE_MIN_POS, PIPE_MIN_POS, PIPE_MIN_POS, PIPE_MAX_POS, PIPE_MAX_POS, 1.0F);
                 super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, par7Entity);
             }
@@ -101,7 +101,7 @@ public class BlockFrame extends BlockBase {
 
     @Override
     public TileEntity createNewTileEntity(World world, int i) {
-        return new TileFrame();
+        return new TileReplicatorFrame();
     }
 
     @Override
@@ -143,7 +143,7 @@ public class BlockFrame extends BlockBase {
         Arrays.fill(sideHit, ForgeDirection.UNKNOWN);
 
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            if (side == ForgeDirection.UNKNOWN || (WorldUtils.getBlockInDirection(world, new Location(x, y, z), side) instanceof BlockFrame)) {
+            if (side == ForgeDirection.UNKNOWN || (WorldUtils.getBlockInDirection(world, new Location(x, y, z), side) instanceof BlockReplicatorFrame)) {
                 AxisAlignedBB bb = getPipeBoundingBox(side);
                 setBlockBounds(bb);
                 boxes[side.ordinal()] = bb;

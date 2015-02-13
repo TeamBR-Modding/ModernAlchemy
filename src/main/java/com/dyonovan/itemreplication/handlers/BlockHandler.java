@@ -12,7 +12,7 @@ import com.dyonovan.itemreplication.blocks.machines.BlockPatternRecorder;
 import com.dyonovan.itemreplication.blocks.machines.BlockSolidifier;
 import com.dyonovan.itemreplication.blocks.ore.BlockOreActinium;
 import com.dyonovan.itemreplication.blocks.replicator.BlockReplicatorStand;
-import com.dyonovan.itemreplication.blocks.replicator.BlockFrame;
+import com.dyonovan.itemreplication.blocks.replicator.BlockReplicatorFrame;
 import com.dyonovan.itemreplication.blocks.replicator.BlockReplicatorCPU;
 import com.dyonovan.itemreplication.blocks.teslacoil.BlockTeslaBase;
 import com.dyonovan.itemreplication.blocks.teslacoil.BlockTeslaCoil;
@@ -27,8 +27,8 @@ import com.dyonovan.itemreplication.tileentity.arcfurnace.dummies.TileDummyOutpu
 import com.dyonovan.itemreplication.tileentity.machines.TileCompressor;
 import com.dyonovan.itemreplication.tileentity.machines.TilePatternRecorder;
 import com.dyonovan.itemreplication.tileentity.machines.TileSolidifier;
-import com.dyonovan.itemreplication.tileentity.replicator.TileFrame;
-import com.dyonovan.itemreplication.tileentity.replicator.ReplicatorCPU;
+import com.dyonovan.itemreplication.tileentity.replicator.TileReplicatorFrame;
+import com.dyonovan.itemreplication.tileentity.replicator.TileReplicatorCPU;
 import com.dyonovan.itemreplication.tileentity.replicator.TileReplicatorStand;
 import com.dyonovan.itemreplication.tileentity.teslacoil.TileTeslaBase;
 import com.dyonovan.itemreplication.tileentity.teslacoil.TileTeslaCoil;
@@ -118,14 +118,14 @@ public class BlockHandler {
         GameRegistry.registerTileEntity(TileSolidifier.class, "blockSolidifier");
 
         //BlockFrame
-        blockFrame = new BlockFrame();
+        blockFrame = new BlockReplicatorFrame();
         GameRegistry.registerBlock(blockFrame, "blockFrame");
-        GameRegistry.registerTileEntity(TileFrame.class, "blockFrame");
+        GameRegistry.registerTileEntity(TileReplicatorFrame.class, "blockFrame");
 
         //BlockFrameEnergy
         blockFrameEnergy = new BlockReplicatorCPU();
         GameRegistry.registerBlock(blockFrameEnergy, "blockFrameEnergy");
-        GameRegistry.registerTileEntity(ReplicatorCPU.class, "blockFrameEnergy");
+        GameRegistry.registerTileEntity(TileReplicatorCPU.class, "blockFrameEnergy");
 
         //BlockCenterStand
         blockReplicatorStand = new BlockReplicatorStand();

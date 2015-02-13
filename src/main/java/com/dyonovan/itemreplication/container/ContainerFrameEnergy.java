@@ -1,12 +1,12 @@
 package com.dyonovan.itemreplication.container;
 
-import com.dyonovan.itemreplication.tileentity.replicator.ReplicatorCPU;
+import com.dyonovan.itemreplication.tileentity.replicator.TileReplicatorCPU;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 
 public class ContainerFrameEnergy extends Container {
 
-    public ContainerFrameEnergy(ReplicatorCPU tileEntity) {
+    public ContainerFrameEnergy(TileReplicatorCPU tileEntity) {
     }
 
     @Override

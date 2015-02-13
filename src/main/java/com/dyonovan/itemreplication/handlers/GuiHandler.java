@@ -6,7 +6,7 @@ import com.dyonovan.itemreplication.tileentity.arcfurnace.TileArcFurnaceCore;
 import com.dyonovan.itemreplication.tileentity.machines.TileCompressor;
 import com.dyonovan.itemreplication.tileentity.machines.TilePatternRecorder;
 import com.dyonovan.itemreplication.tileentity.machines.TileSolidifier;
-import com.dyonovan.itemreplication.tileentity.replicator.ReplicatorCPU;
+import com.dyonovan.itemreplication.tileentity.replicator.TileReplicatorCPU;
 import com.dyonovan.itemreplication.tileentity.teslacoil.TileTeslaCoil;
 import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,7 +34,7 @@ public class GuiHandler implements IGuiHandler {
         case SOLIDIFIER_GUI_ID :
             return new ContainerSolidifier(player.inventory, (TileSolidifier) world.getTileEntity(x, y, z));
         case FRAME_ENERGY_GUI_ID :
-                return new ContainerFrameEnergy((ReplicatorCPU) world.getTileEntity(x, y, z));
+                return new ContainerFrameEnergy((TileReplicatorCPU) world.getTileEntity(x, y, z));
         }
         return null;
     }
@@ -53,7 +53,7 @@ public class GuiHandler implements IGuiHandler {
         case SOLIDIFIER_GUI_ID :
             return new GuiSolidifier(player.inventory, (TileSolidifier) world.getTileEntity(x, y, z));
         case FRAME_ENERGY_GUI_ID :
-            return new GuiFrameEnergy((ReplicatorCPU) world.getTileEntity(x, y, z));
+            return new GuiFrameEnergy((TileReplicatorCPU) world.getTileEntity(x, y, z));
         }
         return null;
     }

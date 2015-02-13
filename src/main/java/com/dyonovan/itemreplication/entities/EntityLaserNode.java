@@ -1,6 +1,6 @@
 package com.dyonovan.itemreplication.entities;
 
-import com.dyonovan.itemreplication.blocks.replicator.BlockFrame;
+import com.dyonovan.itemreplication.blocks.replicator.BlockReplicatorFrame;
 import com.dyonovan.itemreplication.blocks.replicator.BlockReplicatorStand;
 import com.dyonovan.itemreplication.handlers.ItemHandler;
 import com.dyonovan.itemreplication.util.Location;
@@ -74,7 +74,7 @@ public class EntityLaserNode extends Entity {
         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             if (dir == ForgeDirection.UP || dir == ForgeDirection.DOWN)
                 continue;
-            if (WorldUtils.getBlockInDirection(worldObj, getLocation(), dir) instanceof BlockFrame) {
+            if (WorldUtils.getBlockInDirection(worldObj, getLocation(), dir) instanceof BlockReplicatorFrame) {
                 posX += (double) dir.offsetX / 8;
                 posZ += (double) dir.offsetZ / 8;
                 break;
@@ -86,7 +86,7 @@ public class EntityLaserNode extends Entity {
         for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             if (dir == ForgeDirection.UP || dir == ForgeDirection.DOWN)
                 continue;
-            if (WorldUtils.getBlockInDirection(worldObj, getLocation(), dir) instanceof BlockFrame) {
+            if (WorldUtils.getBlockInDirection(worldObj, getLocation(), dir) instanceof BlockReplicatorFrame) {
                 return true;
             }
         }
