@@ -5,7 +5,6 @@ import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.handlers.BlockHandler;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
-import com.dyonovan.itemreplication.tileentity.BaseCore;
 import com.dyonovan.itemreplication.tileentity.InventoryTile;
 import com.dyonovan.itemreplication.tileentity.teslacoil.TileTeslaCoil;
 import com.dyonovan.itemreplication.tileentity.arcfurnace.dummies.TileDummy;

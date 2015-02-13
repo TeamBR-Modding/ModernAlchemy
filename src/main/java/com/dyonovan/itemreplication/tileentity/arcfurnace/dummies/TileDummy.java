@@ -1,7 +1,7 @@
 package com.dyonovan.itemreplication.tileentity.arcfurnace.dummies;
 
 import com.dyonovan.itemreplication.util.Location;
-import com.dyonovan.itemreplication.tileentity.BaseCore;
+import com.dyonovan.itemreplication.tileentity.arcfurnace.BaseCore;
 import com.dyonovan.itemreplication.tileentity.BaseTile;
 import net.minecraft.nbt.NBTTagCompound;
 

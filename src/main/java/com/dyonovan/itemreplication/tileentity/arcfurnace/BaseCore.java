@@ -1,5 +1,6 @@
-package com.dyonovan.itemreplication.tileentity;
+package com.dyonovan.itemreplication.tileentity.arcfurnace;
 
+import com.dyonovan.itemreplication.tileentity.BaseTile;
 import net.minecraft.nbt.NBTTagCompound;
 
 public abstract class BaseCore extends BaseTile {
