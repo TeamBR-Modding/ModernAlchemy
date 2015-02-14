@@ -67,7 +67,8 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
                     if (getEnergyLevel() >= 2 * listLaser.size()) {
                         energy.drainEnergy(2 * listLaser.size());
                         currentProcessTime += listLaser.size();
-                        //TODO Fire Lasers
+                        for(EntityLaserNode node : listLaser)
+                            node.fireLaser(stand.x + 0.5, stand.y + 1.5, stand.z + 0.5);
                     } else {
                         //TODO return slag
                         currentProcessTime = 0;

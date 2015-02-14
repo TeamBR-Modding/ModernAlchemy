@@ -1,7 +1,6 @@
 package com.dyonovan.itemreplication.entities;
 
 import com.dyonovan.itemreplication.blocks.replicator.BlockReplicatorFrame;
-import com.dyonovan.itemreplication.blocks.replicator.BlockReplicatorStand;
 import com.dyonovan.itemreplication.handlers.ItemHandler;
 import com.dyonovan.itemreplication.util.Location;
 import com.dyonovan.itemreplication.util.RenderUtils;
@@ -116,20 +115,6 @@ public class EntityLaserNode extends Entity {
         super.onUpdate();
         if(worldObj.isRemote) return;
 
-        if(coolDown < 0) {
-            for (int i = -5; i <= 5; i++) {
-                for (int j = -5; j <= 5; j++) {
-                    for (int k = -5; k <= 5; k++) {
-                        if (worldObj.getBlock((int) posX + i, (int) posY + j, (int) posZ + k) instanceof BlockReplicatorStand) {
-                            RenderUtils.sendBoltToClient(worldObj.provider.dimensionId, posX - 0.5, posY - 0.5, posZ - 0.5, ((int) posX) + i + 0.5, ((int) posY) + j + 0.7, ((int) posZ) + k + 0.5, 0.01, 0.005, 15, 255, 0, 0);
-                            rotateToPosition(posX + i + 0.5, posY + j + 0.7, posZ + k + 0.5);
-                            coolDown = 10;
-                        }
-                    }
-                }
-            }
-        }
-
         if(!hasFrame())
             motionY -= 0.01;
         else
@@ -140,6 +125,15 @@ public class EntityLaserNode extends Entity {
 
         coolDown--;
         setPosition(posX + motionX, posY + motionY, posZ + motionZ);
+    }
+
+    public void fireLaser(double x, double y, double z) {
+        RenderUtils.sendBoltToClient(worldObj.provider.dimensionId, //Dimension
+                posX - 0.5, posY - 0.5, posZ - 0.5, //Position
+                x, y, z,  //Destination
+                0.01, 0.005, 2, //Lightning things
+                255, 0, 0); //Color
+        rotateToPosition(x, y, z);
     }
 
     public void rotateToPosition(double x, double y, double z) {
