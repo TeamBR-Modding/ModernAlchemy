@@ -1,7 +1,9 @@
 package com.dyonovan.itemreplication.tileentity.replicator;
 
+import com.dyonovan.itemreplication.blocks.replicator.BlockReplicatorStand;
 import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
+import com.dyonovan.itemreplication.entities.EntityLaserNode;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
 import com.dyonovan.itemreplication.items.ItemPattern;
 import com.dyonovan.itemreplication.items.ItemReplicatorMedium;
@@ -9,11 +11,13 @@ import com.dyonovan.itemreplication.lib.Constants;
 import com.dyonovan.itemreplication.tileentity.BaseTile;
 import com.dyonovan.itemreplication.tileentity.InventoryTile;
 import com.dyonovan.itemreplication.tileentity.teslacoil.TileTeslaCoil;
+import com.dyonovan.itemreplication.util.Location;
 import com.dyonovan.itemreplication.util.RenderUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 
 import java.util.List;
 
@@ -24,11 +28,79 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
     private TeslaBank energy;
     public InventoryTile inventory;
     public int currentProcessTime;
+    private Location stand;
+    private List<EntityLaserNode> listLaser;
+
 
     public TileReplicatorCPU() {
         this.energy = new TeslaBank(1000);
         this.inventory = new InventoryTile(3);
         this.currentProcessTime = 0;
+    }
+
+    @Override
+    public void updateEntity() {
+        super.updateEntity();
+
+        if (worldObj.isRemote) return;
+
+        if(energy.canAcceptEnergy()) {
+            chargeFromCoils();
+        }
+
+        if (inventory.getStackInSlot(0) == null || inventory.getStackInSlot(1) == null) return;
+
+        if (findLasers() && findStand()) {
+
+        }
+    }
+
+    private boolean findStand() {
+        stand = null;
+
+        for (int i = 0; i < 4; i++) {
+            if (stand != null) break;
+            switch (i) {
+                case 0:
+                    if (worldObj.getBlock(xCoord + 2, yCoord, zCoord + 2) instanceof BlockReplicatorStand)
+                        stand = new Location(xCoord + 2, yCoord, zCoord + 2);
+                case 1:
+                    if (worldObj.getBlock(xCoord + 2, yCoord, zCoord - 2) instanceof BlockReplicatorStand)
+                        stand = new Location(xCoord + 2, yCoord, zCoord - 2);
+                case 2:
+                    if (worldObj.getBlock(xCoord - 2, yCoord, zCoord + 2) instanceof BlockReplicatorStand)
+                        stand = new Location(xCoord - 2, yCoord, zCoord + 2);
+                case 3:
+                    if (worldObj.getBlock(xCoord - 2, yCoord, zCoord - 2) instanceof BlockReplicatorStand)
+                        stand = new Location(xCoord - 2, yCoord, zCoord - 2);
+            }
+        }
+        return (stand != null);
+    }
+
+    private boolean findLasers() {
+        listLaser = null;
+        AxisAlignedBB bounds = null;
+
+        for (int i = 0; i < 4; i++) {
+            if (listLaser != null && listLaser.size() > 0) break;
+            switch (i) {
+                case 0:
+                    bounds = AxisAlignedBB.getBoundingBox(xCoord, yCoord + 2, zCoord, xCoord + 4, yCoord + 4, zCoord + 4);
+                    break;
+                case 1:
+                    bounds = AxisAlignedBB.getBoundingBox(xCoord, yCoord + 2, zCoord - 4, xCoord + 4, yCoord + 4, zCoord);
+                    break;
+                case 2:
+                    bounds = AxisAlignedBB.getBoundingBox(xCoord - 4, yCoord + 2, zCoord - 4, xCoord, yCoord + 4, zCoord);
+                    break;
+                case 3:
+                    bounds = AxisAlignedBB.getBoundingBox(xCoord - 4, yCoord + 2, zCoord, xCoord, yCoord + 4, zCoord + 4);
+                    break;
+            }
+            listLaser = worldObj.getEntitiesWithinAABB(EntityLaserNode.class, bounds);
+        }
+        return listLaser.size() > 0;
     }
 
     @Override
@@ -71,17 +143,6 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
     }
 
     public int getProgressScaled(int scale) { return this.currentProcessTime * scale / PROCESS_TIME; }
-
-    @Override
-    public void updateEntity() {
-        super.updateEntity();
-
-        if (worldObj.isRemote) return;
-
-        if(energy.canAcceptEnergy()) {
-            chargeFromCoils();
-        }
-    }
 
     public void chargeFromCoils() {
         int maxFill = energy.getMaxCapacity() - energy.getEnergyLevel();
