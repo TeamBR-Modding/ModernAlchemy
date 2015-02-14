@@ -14,7 +14,7 @@ import net.minecraftforge.fluids.FluidStack;
 public class ItemHandler {
 
     public static ItemPattern itemPattern;
-    public static Item itemBucketActinium, itemCube;
+    public static Item itemBucketActinium, itemReplicationMedium;
     public static Item laserNode;
 
     public static void init() {
@@ -27,8 +27,8 @@ public class ItemHandler {
         FluidContainerRegistry.registerFluidContainer(new FluidStack(BlockHandler.fluidActinium, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(itemBucketActinium), new ItemStack(Items.bucket));
 
         //Item Cube
-        itemCube = new ItemReplicatorMedium();
-        GameRegistry.registerItem(itemCube, "itemCube");
+        itemReplicationMedium = new ItemReplicatorMedium();
+        GameRegistry.registerItem(itemReplicationMedium, "itemReplicationMedium");
 
         //Laser Node
         laserNode = new ItemLaserNode();

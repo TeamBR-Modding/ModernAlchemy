@@ -7,7 +7,7 @@ import net.minecraft.item.Item;
 public class ItemReplicatorMedium extends Item {
 
     public ItemReplicatorMedium() {
-        this.setUnlocalizedName(Constants.MODID + ":itemCube");
+        this.setUnlocalizedName(Constants.MODID + ":itemReplicationMedium");
         this.setCreativeTab(ItemReplication.tabItemReplication);
         this.setTextureName(Constants.MODID + ":cube");
         this.setMaxStackSize(64);

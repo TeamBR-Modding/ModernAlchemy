@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 public class ContainerReplicatorCpu extends Container {
 
     private TileReplicatorCPU tile;
-    private int lastPower, currentProcessTime;
+    private int lastPower, currentProcessTime, requiredProcessTime;
 
     public ContainerReplicatorCpu(InventoryPlayer playerInventory, TileReplicatorCPU tileEntity) {
 
@@ -79,6 +79,7 @@ public class ContainerReplicatorCpu extends Container {
         super.addCraftingToCrafters(crafter);
         crafter.sendProgressBarUpdate(this, 0, this.tile.getEnergyLevel());
         crafter.sendProgressBarUpdate(this, 1, this.tile.currentProcessTime);
+        crafter.sendProgressBarUpdate(this, 2, this.tile.requiredProcessTime);
     }
 
     @Override
@@ -91,10 +92,13 @@ public class ContainerReplicatorCpu extends Container {
                 icrafting.sendProgressBarUpdate(this, 0, this.tile.getEnergyLevel());
             if (this.currentProcessTime != this.tile.currentProcessTime)
                 icrafting.sendProgressBarUpdate(this, 1, this.tile.currentProcessTime);
+            if (this.requiredProcessTime != this.tile.requiredProcessTime)
+                icrafting.sendProgressBarUpdate(this, 2, this.tile.requiredProcessTime);
         }
 
         this.lastPower = this.tile.getEnergyLevel();
         this.currentProcessTime = this.tile.currentProcessTime;
+        this.requiredProcessTime = this.tile.requiredProcessTime;
     }
 
     @SideOnly(Side.CLIENT)
@@ -109,6 +113,9 @@ public class ContainerReplicatorCpu extends Container {
                 break;
             case 1:
                 this.tile.currentProcessTime = j;
+                break;
+            case 2:
+                this.requiredProcessTime = j;
                 break;
         }
     }

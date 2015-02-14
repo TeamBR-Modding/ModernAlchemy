@@ -152,7 +152,7 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
                     timeProcessed += currentSpeed;
                 }
                 if (timeProcessed >= PROCESS_TIME) {
-                    if (inventory[0] == null) setInventorySlotContents(0, new ItemStack(ItemHandler.itemCube));
+                    if (inventory[0] == null) setInventorySlotContents(0, new ItemStack(ItemHandler.itemReplicationMedium));
                     else inventory[0].stackSize++;
                     timeProcessed = 0;
                 }

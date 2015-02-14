@@ -5,6 +5,7 @@ import com.dyonovan.itemreplication.energy.ITeslaHandler;
 import com.dyonovan.itemreplication.energy.TeslaBank;
 import com.dyonovan.itemreplication.entities.EntityLaserNode;
 import com.dyonovan.itemreplication.handlers.ConfigHandler;
+import com.dyonovan.itemreplication.handlers.ItemHandler;
 import com.dyonovan.itemreplication.items.ItemPattern;
 import com.dyonovan.itemreplication.items.ItemReplicatorMedium;
 import com.dyonovan.itemreplication.lib.Constants;
@@ -13,8 +14,11 @@ import com.dyonovan.itemreplication.tileentity.InventoryTile;
 import com.dyonovan.itemreplication.tileentity.teslacoil.TileTeslaCoil;
 import com.dyonovan.itemreplication.util.Location;
 import com.dyonovan.itemreplication.util.RenderUtils;
+import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -22,13 +26,12 @@ import net.minecraft.util.AxisAlignedBB;
 import java.util.List;
 
 public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISidedInventory {
-
-    private static final int PROCESS_TIME = 5000;
-
     private TeslaBank energy;
     public InventoryTile inventory;
     public int currentProcessTime;
+    public int requiredProcessTime;
     private Location stand;
+    private String item;
     private List<EntityLaserNode> listLaser;
 
 
@@ -36,6 +39,7 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
         this.energy = new TeslaBank(1000);
         this.inventory = new InventoryTile(3);
         this.currentProcessTime = 0;
+        this.requiredProcessTime = 0;
     }
 
     @Override
@@ -47,12 +51,81 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
         if(energy.canAcceptEnergy()) {
             chargeFromCoils();
         }
+        if (canStartWork() || currentProcessTime > 0) {
+            //TODO make sure slot 2 is empty or same as item
+            if (findLasers() && findStand()) {
+                if (currentProcessTime <= 0 && canStartWork()) {
+                    item = inventory.getStackInSlot(1).getTagCompound().getString("Item");
+                    //TODO Get req process time from file
+                    requiredProcessTime = 1000;
+                    currentProcessTime = 1;
+                    copyToStand(true);
+                    decrStackSize(0, 1);
+                }
 
-        if (inventory.getStackInSlot(0) == null || inventory.getStackInSlot(1) == null) return;
+                if (currentProcessTime < requiredProcessTime) {
+                    if (getEnergyLevel() >= 2 * listLaser.size()) {
+                        energy.drainEnergy(2 * listLaser.size());
+                        currentProcessTime += listLaser.size();
+                        //TODO Fire Lasers
+                    } else {
+                        //TODO return slag
+                        currentProcessTime = 0;
+                        requiredProcessTime = 0;
+                    }
+                }
 
-        if (findLasers() && findStand()) {
-
+                if (currentProcessTime >= requiredProcessTime) {
+                    copyToStand(false);
+                    currentProcessTime = 0;
+                    requiredProcessTime = 0;
+                    ItemStack itemStack = getReturn(item);
+                    if (inventory.getStackInSlot(2) == null) inventory.setStackInSlot(itemStack, 2);
+                    else {
+                        //TODO increase current stack
+                    }
+                }
+                this.markDirty();
+            }
+        } else {
+            if (stand == null) findStand();
+            copyToStand(false);
         }
+    }
+
+    private ItemStack getReturn(String item) {
+        ItemStack itemStack;
+        String itemReturn[] = item.split(":");
+        if (GameRegistry.findBlock(itemReturn[0], itemReturn[1]) != null) {
+            Block objReturn = GameRegistry.findBlock(itemReturn[0], itemReturn[1]);
+            if (itemReturn.length > 2)
+                itemStack = new ItemStack(objReturn, 1, Integer.parseInt(itemReturn[2]));
+            else
+                itemStack = new ItemStack(objReturn);
+        } else {
+            Item objReturn = GameRegistry.findItem(itemReturn[0], itemReturn[1]);
+            if (itemReturn.length > 2)
+                itemStack = new ItemStack(objReturn, 1, Integer.parseInt(itemReturn[2]));
+            else
+                itemStack = new ItemStack(objReturn);
+        }
+        return itemStack;
+    }
+
+    private void copyToStand(Boolean insert) {
+        TileReplicatorStand tileStand = (TileReplicatorStand) worldObj.getTileEntity(stand.x, stand.y, stand.z);
+        if (tileStand != null) {
+            if (insert)
+                tileStand.setInventorySlotContents(0, new ItemStack(ItemHandler.itemReplicationMedium));
+            else tileStand.setInventorySlotContents(0, null);
+        }
+    }
+
+    private boolean canStartWork() {
+        return inventory.getStackInSlot(0) != null && inventory.getStackInSlot(1) != null &&
+                inventory.getStackInSlot(1).getItem() instanceof ItemPattern &&
+                inventory.getStackInSlot(0).getItem() instanceof ItemReplicatorMedium &&
+                inventory.getStackInSlot(1).hasTagCompound();
     }
 
     private boolean findStand() {
@@ -142,7 +215,9 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
         energy.setEnergyLevel(amount);
     }
 
-    public int getProgressScaled(int scale) { return this.currentProcessTime * scale / PROCESS_TIME; }
+    public int getProgressScaled(int scale) {
+        return requiredProcessTime == 0 ? 0 : this.currentProcessTime * scale / requiredProcessTime;
+    }
 
     public void chargeFromCoils() {
         int maxFill = energy.getMaxCapacity() - energy.getEnergyLevel();

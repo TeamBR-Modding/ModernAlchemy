@@ -21,7 +21,7 @@ import java.util.List;
 
 public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInventory {
 
-    private static final int PROCESS_TIME = 5000;
+    private static final int PROCESS_TIME = 100;
     public static final int INPUT_SLOT = 0;
     public static final int ITEM_SLOT = 1;
     public static final int OUTPUT_SLOT = 2;
@@ -76,7 +76,7 @@ public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInv
                 isActive = BlockPatternRecorder.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
             
             if (currentProcessTime <= 0 && canStartWork()) {
-                itemCopy = inventory.getStackInSlot(INPUT_SLOT);
+                itemCopy = inventory.getStackInSlot(ITEM_SLOT);
                 decrStackSize(0, 1);
                 decrStackSize(1, 1);
                 currentProcessTime = 1;
