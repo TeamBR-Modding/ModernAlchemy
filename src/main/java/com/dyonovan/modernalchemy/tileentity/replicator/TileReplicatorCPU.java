@@ -58,7 +58,7 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
                 if (currentProcessTime <= 0 && canStartWork() && getEnergyLevel() >= 2 * listLaser.size()) {
                     item = inventory.getStackInSlot(1).getTagCompound().getString("Item");
                     //TODO Get req process time from file
-                    requiredProcessTime = 10000;
+                    requiredProcessTime = 1000;
                     currentProcessTime = 1;
                     copyToStand(true);
                     decrStackSize(0, 1);
@@ -77,14 +77,14 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
                     }
                 }
 
-                if (currentProcessTime >= requiredProcessTime) {
+                if (currentProcessTime != 0 && currentProcessTime >= requiredProcessTime) {
                     copyToStand(false);
                     currentProcessTime = 0;
                     requiredProcessTime = 0;
                     ItemStack itemStack = getReturn(item);
                     if (inventory.getStackInSlot(2) == null) inventory.setStackInSlot(itemStack, 2);
                     else {
-                        //TODO increase current stack
+                        inventory.getStackInSlot(2).stackSize += 1;
                     }
                 }
                 this.markDirty();
@@ -183,6 +183,8 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
         super.readFromNBT(tag);
         energy.readFromNBT(tag);
         inventory.readFromNBT(tag, this);
+        currentProcessTime = tag.getInteger("TimeProcessed");
+        requiredProcessTime = tag.getInteger("RequiredTime");
     }
 
     @Override
@@ -190,6 +192,8 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
         super.writeToNBT(tag);
         energy.writeToNBT(tag);
         inventory.writeToNBT(tag);
+        tag.setInteger("TimeProcessed", currentProcessTime);
+        tag.setInteger("RequiredTime", requiredProcessTime);
     }
 
 

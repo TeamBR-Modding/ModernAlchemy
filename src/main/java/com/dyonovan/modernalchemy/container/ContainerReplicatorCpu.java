@@ -114,7 +114,7 @@ public class ContainerReplicatorCpu extends Container {
                 this.tile.currentProcessTime = j;
                 break;
             case 2:
-                this.requiredProcessTime = j;
+                this.tile.requiredProcessTime = j;
                 break;
         }
     }
