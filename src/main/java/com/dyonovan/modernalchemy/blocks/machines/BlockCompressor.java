@@ -25,7 +25,7 @@ public class BlockCompressor extends BlockBase {
     public BlockCompressor() {
         super(Material.anvil);
         this.setBlockName(Constants.MODID + ":blockCompressor");
-        this.setCreativeTab(ModernAlchemy.tabItemReplication);
+        this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
     }
 
     @SideOnly(Side.CLIENT)

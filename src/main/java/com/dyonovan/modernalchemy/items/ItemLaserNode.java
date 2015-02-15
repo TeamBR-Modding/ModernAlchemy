@@ -13,7 +13,7 @@ public class ItemLaserNode extends Item {
 
     public ItemLaserNode() {
         super();
-        setCreativeTab(ModernAlchemy.tabItemReplication);
+        setCreativeTab(ModernAlchemy.tabModernAlchemy);
         setUnlocalizedName(Constants.MODID + ":laserNodeItem");
         this.setTextureName(Constants.MODID + ":cube");
     }

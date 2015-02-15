@@ -13,7 +13,7 @@ public class ItemBucketActinium extends ItemBucket {
     public ItemBucketActinium(Block block) {
         super(block);
         setUnlocalizedName(Constants.MODID + ":bucketActinium").setContainerItem(Items.bucket);
-        setCreativeTab(ModernAlchemy.tabItemReplication);
+        setCreativeTab(ModernAlchemy.tabModernAlchemy);
     }
 
     @SideOnly(Side.CLIENT)

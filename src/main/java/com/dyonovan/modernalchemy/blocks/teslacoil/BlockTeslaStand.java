@@ -20,7 +20,7 @@ public class BlockTeslaStand extends BlockBase {
     public BlockTeslaStand() {
         super(Material.iron);
         this.setBlockName(Constants.MODID + ":blockTeslaStand");
-        this.setCreativeTab(ModernAlchemy.tabItemReplication);
+        this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
         this.setBlockBounds(0.34375F, 0F, 0.34375F, 0.65625F, 1F, 0.65625F);
     }
 

@@ -22,7 +22,7 @@ public abstract class BlockBase extends BlockContainer{
     public BlockBase(Material mat) {
         super(mat);
         this.setHardness(3.0F);
-        this.setCreativeTab(ModernAlchemy.tabItemReplication);
+        this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
     }
 
     public boolean useWrench(World world, int x, int y, int z) {

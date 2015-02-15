@@ -31,7 +31,7 @@ public class ModernAlchemy {
             serverSide = "com.dyonovan." + Constants.MODID + ".proxy.CommonProxy")
     public static CommonProxy proxy;
 
-    public static CreativeTabs tabItemReplication = new CreativeTabs("tabItemReplication") {
+    public static CreativeTabs tabModernAlchemy = new CreativeTabs("tabModernAlchemy") {
         @Override
         @SideOnly(Side.CLIENT)
         public Item getTabIconItem() {

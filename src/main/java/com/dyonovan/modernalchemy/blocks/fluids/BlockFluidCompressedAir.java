@@ -23,7 +23,7 @@ public class BlockFluidCompressedAir extends BlockFluidClassic {
         super(BlockHandler.fluidCompressedAir, Material.water);
 
         this.setBlockName(Constants.MODID + ":fluidCompressedAir");
-        this.setCreativeTab(ModernAlchemy.tabItemReplication);
+        this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
 
     }
 

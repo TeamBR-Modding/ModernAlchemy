@@ -21,7 +21,7 @@ public class ItemPattern extends Item {
 
     public ItemPattern() {
         this.setUnlocalizedName(Constants.MODID + ":pattern");
-        this.setCreativeTab(ModernAlchemy.tabItemReplication);
+        this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
         this.setMaxStackSize(1);
     }
 

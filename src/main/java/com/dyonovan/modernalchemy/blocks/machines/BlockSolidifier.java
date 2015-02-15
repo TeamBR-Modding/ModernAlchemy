@@ -26,7 +26,7 @@ public class BlockSolidifier extends BlockBase {
         super(Material.iron);
         this.setBlockName(Constants.MODID + ":blockSolidifier");
         this.setHardness(1.5F);
-        this.setCreativeTab(ModernAlchemy.tabItemReplication);
+        this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
     }
 
     @SideOnly(Side.CLIENT)

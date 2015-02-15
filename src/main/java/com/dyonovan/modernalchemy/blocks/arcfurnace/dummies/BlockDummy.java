@@ -23,7 +23,7 @@ public class BlockDummy extends BlockBase {
     public BlockDummy(String name) {
         super(Material.rock);
         this.setBlockName(Constants.MODID + ":" + name);
-        this.setCreativeTab(ModernAlchemy.tabItemReplication);
+        this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
     }
 
     @Override

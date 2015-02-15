@@ -13,7 +13,7 @@ public class BlockOreActinium extends Block {
     public BlockOreActinium() {
         super(Material.rock);
         this.setBlockName(Constants.MODID + ":blockOreActinium");
-        this.setCreativeTab(ModernAlchemy.tabItemReplication);
+        this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
     }
 
     @SideOnly(Side.CLIENT)

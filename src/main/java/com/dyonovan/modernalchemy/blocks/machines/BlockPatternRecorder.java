@@ -26,7 +26,7 @@ public class BlockPatternRecorder extends BlockBase {
     {
         super(Material.iron);
         this.setBlockName(Constants.MODID + ":blockPatternRecorder");
-        this.setCreativeTab(ModernAlchemy.tabItemReplication);
+        this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
     }
 
     @Override

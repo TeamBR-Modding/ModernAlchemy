@@ -22,7 +22,7 @@ public class BlockTeslaCoil extends BlockBase {
     public BlockTeslaCoil() {
         super(Material.iron);
 
-        this.setCreativeTab(ModernAlchemy.tabItemReplication);
+        this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
         this.setBlockName(Constants.MODID + ":blockTeslaCoil");
         this.setBlockBounds(0.34375F, 0F, 0.34375F, 0.65625F, 0.9F, 0.65625F);
     }

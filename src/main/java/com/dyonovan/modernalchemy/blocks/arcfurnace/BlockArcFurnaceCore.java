@@ -23,7 +23,7 @@ public class BlockArcFurnaceCore extends BlockBase {
     public BlockArcFurnaceCore() {
         super(Material.rock);
         this.setBlockName(Constants.MODID + ":blockArcFurnaceCore");
-        this.setCreativeTab(ModernAlchemy.tabItemReplication);
+        this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
         this.setLightLevel(8F);
     }
 

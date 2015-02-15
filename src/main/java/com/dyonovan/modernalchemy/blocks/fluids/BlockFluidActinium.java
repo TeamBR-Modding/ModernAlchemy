@@ -23,7 +23,7 @@ public class BlockFluidActinium extends BlockFluidClassic {
 
         super(BlockHandler.fluidActinium, Material.water);
         this.setBlockName(Constants.MODID + ":fluidActinium");
-        this.setCreativeTab(ModernAlchemy.tabItemReplication);
+        this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
     }
 
     @Override
