@@ -71,6 +71,7 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
                             node.fireLaser(stand.x + 0.5, stand.y + 1.5, stand.z + 0.5);
                     } else {
                         //TODO return slag
+                        //TODO fix
                         currentProcessTime = 0;
                         requiredProcessTime = 0;
                     }
