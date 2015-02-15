@@ -1,6 +1,6 @@
 package com.dyonovan.modernalchemy.blocks.machines;
 
-import com.dyonovan.modernalchemy.ItemReplication;
+import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.BlockBase;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
@@ -26,7 +26,7 @@ public class BlockPatternRecorder extends BlockBase {
     {
         super(Material.iron);
         this.setBlockName(Constants.MODID + ":blockPatternRecorder");
-        this.setCreativeTab(ItemReplication.tabItemReplication);
+        this.setCreativeTab(ModernAlchemy.tabItemReplication);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class BlockPatternRecorder extends BlockBase {
         {
             TilePatternRecorder tile = (TilePatternRecorder)world.getTileEntity(x, y, z);
             if(tile != null) {
-                player.openGui(ItemReplication.instance, GuiHandler.PATTERN_RECORDER_GUI_ID, world, x, y, z);
+                player.openGui(ModernAlchemy.instance, GuiHandler.PATTERN_RECORDER_GUI_ID, world, x, y, z);
             }
             return true;
         }

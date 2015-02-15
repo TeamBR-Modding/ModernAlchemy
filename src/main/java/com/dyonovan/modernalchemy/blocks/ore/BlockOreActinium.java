@@ -1,6 +1,6 @@
 package com.dyonovan.modernalchemy.blocks.ore;
 
-import com.dyonovan.modernalchemy.ItemReplication;
+import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.lib.Constants;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -13,7 +13,7 @@ public class BlockOreActinium extends Block {
     public BlockOreActinium() {
         super(Material.rock);
         this.setBlockName(Constants.MODID + ":blockOreActinium");
-        this.setCreativeTab(ItemReplication.tabItemReplication);
+        this.setCreativeTab(ModernAlchemy.tabItemReplication);
     }
 
     @SideOnly(Side.CLIENT)

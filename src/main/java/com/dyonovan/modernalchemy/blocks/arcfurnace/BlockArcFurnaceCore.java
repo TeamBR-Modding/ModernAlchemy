@@ -1,6 +1,6 @@
 package com.dyonovan.modernalchemy.blocks.arcfurnace;
 
-import com.dyonovan.modernalchemy.ItemReplication;
+import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.BlockBase;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.util.WorldUtils;
@@ -23,7 +23,7 @@ public class BlockArcFurnaceCore extends BlockBase {
     public BlockArcFurnaceCore() {
         super(Material.rock);
         this.setBlockName(Constants.MODID + ":blockArcFurnaceCore");
-        this.setCreativeTab(ItemReplication.tabItemReplication);
+        this.setCreativeTab(ModernAlchemy.tabItemReplication);
         this.setLightLevel(8F);
     }
 
@@ -55,7 +55,7 @@ public class BlockArcFurnaceCore extends BlockBase {
         {
             TileArcFurnaceCore core = (TileArcFurnaceCore)par1World.getTileEntity(par2, par3, par4);
             if(core != null && core.isWellFormed()) {
-                par5EntityPlayer.openGui(ItemReplication.instance, GuiHandler.BLAST_FURNACE_GUI_ID, par1World, par2, par3, par4);
+                par5EntityPlayer.openGui(ModernAlchemy.instance, GuiHandler.BLAST_FURNACE_GUI_ID, par1World, par2, par3, par4);
             }
             return true;
         }

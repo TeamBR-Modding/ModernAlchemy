@@ -1,7 +1,7 @@
 [
 {
-  "modid": "itemreplication",
-  "name": "Item Replication",
+  "modid": "modernalchemy",
+  "name": "Modern Alchemy",
   "description": "Mid to End Game Item Replication Mod.",
   "version": "${version}",
   "mcversion": "${mcversion}",

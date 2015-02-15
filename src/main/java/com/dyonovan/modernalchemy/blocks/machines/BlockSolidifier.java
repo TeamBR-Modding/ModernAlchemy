@@ -1,6 +1,6 @@
 package com.dyonovan.modernalchemy.blocks.machines;
 
-import com.dyonovan.modernalchemy.ItemReplication;
+import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.BlockBase;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
@@ -26,7 +26,7 @@ public class BlockSolidifier extends BlockBase {
         super(Material.iron);
         this.setBlockName(Constants.MODID + ":blockSolidifier");
         this.setHardness(1.5F);
-        this.setCreativeTab(ItemReplication.tabItemReplication);
+        this.setCreativeTab(ModernAlchemy.tabItemReplication);
     }
 
     @SideOnly(Side.CLIENT)
@@ -99,7 +99,7 @@ public class BlockSolidifier extends BlockBase {
         {
             TileSolidifier tile = (TileSolidifier)world.getTileEntity(x, y, z);
             if(tile != null) {
-                player.openGui(ItemReplication.instance, GuiHandler.SOLIDIFIER_GUI_ID, world, x, y, z);
+                player.openGui(ModernAlchemy.instance, GuiHandler.SOLIDIFIER_GUI_ID, world, x, y, z);
             }
             return true;
         }

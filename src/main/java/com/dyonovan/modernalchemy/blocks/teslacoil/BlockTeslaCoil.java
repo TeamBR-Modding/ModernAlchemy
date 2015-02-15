@@ -1,6 +1,6 @@
 package com.dyonovan.modernalchemy.blocks.teslacoil;
 
-import com.dyonovan.modernalchemy.ItemReplication;
+import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.BlockBase;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
@@ -22,7 +22,7 @@ public class BlockTeslaCoil extends BlockBase {
     public BlockTeslaCoil() {
         super(Material.iron);
 
-        this.setCreativeTab(ItemReplication.tabItemReplication);
+        this.setCreativeTab(ModernAlchemy.tabItemReplication);
         this.setBlockName(Constants.MODID + ":blockTeslaCoil");
         this.setBlockBounds(0.34375F, 0F, 0.34375F, 0.65625F, 0.9F, 0.65625F);
     }
@@ -84,7 +84,7 @@ public class BlockTeslaCoil extends BlockBase {
         {
             TileTeslaCoil tile = (TileTeslaCoil)world.getTileEntity(x, y, z);
             if(tile != null) {
-                player.openGui(ItemReplication.instance, GuiHandler.TESLA_COIL_GUI_ID, world, x, y, z);
+                player.openGui(ModernAlchemy.instance, GuiHandler.TESLA_COIL_GUI_ID, world, x, y, z);
             }
             return true;
         }

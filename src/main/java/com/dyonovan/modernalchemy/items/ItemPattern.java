@@ -1,6 +1,6 @@
 package com.dyonovan.modernalchemy.items;
 
-import com.dyonovan.modernalchemy.ItemReplication;
+import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.handlers.ItemHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
 import cpw.mods.fml.relauncher.Side;
@@ -21,7 +21,7 @@ public class ItemPattern extends Item {
 
     public ItemPattern() {
         this.setUnlocalizedName(Constants.MODID + ":pattern");
-        this.setCreativeTab(ItemReplication.tabItemReplication);
+        this.setCreativeTab(ModernAlchemy.tabItemReplication);
         this.setMaxStackSize(1);
     }
 

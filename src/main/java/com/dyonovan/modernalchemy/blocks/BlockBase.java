@@ -1,6 +1,6 @@
 package com.dyonovan.modernalchemy.blocks;
 
-import com.dyonovan.modernalchemy.ItemReplication;
+import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.teslacoil.BlockTeslaBase;
 import com.dyonovan.modernalchemy.blocks.teslacoil.BlockTeslaCoil;
 import com.dyonovan.modernalchemy.blocks.teslacoil.BlockTeslaStand;
@@ -22,7 +22,7 @@ public abstract class BlockBase extends BlockContainer{
     public BlockBase(Material mat) {
         super(mat);
         this.setHardness(3.0F);
-        this.setCreativeTab(ItemReplication.tabItemReplication);
+        this.setCreativeTab(ModernAlchemy.tabItemReplication);
     }
 
     public boolean useWrench(World world, int x, int y, int z) {

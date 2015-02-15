@@ -1,6 +1,6 @@
 package com.dyonovan.modernalchemy.blocks.teslacoil;
 
-import com.dyonovan.modernalchemy.ItemReplication;
+import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.BlockBase;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaBase;
@@ -17,7 +17,7 @@ public class BlockTeslaBase extends BlockBase {
     public BlockTeslaBase() {
         super(Material.iron);
         this.setBlockName(Constants.MODID + ":blockTeslaBase");
-        this.setCreativeTab(ItemReplication.tabItemReplication);
+        this.setCreativeTab(ModernAlchemy.tabItemReplication);
         this.setBlockBounds(0.34375F, 0F, 0.34375F, 0.65625F, 1F, 0.65625F);
     }
 

@@ -1,6 +1,6 @@
 package com.dyonovan.modernalchemy.blocks.machines;
 
-import com.dyonovan.modernalchemy.ItemReplication;
+import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.BlockBase;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
@@ -25,7 +25,7 @@ public class BlockCompressor extends BlockBase {
     public BlockCompressor() {
         super(Material.anvil);
         this.setBlockName(Constants.MODID + ":blockCompressor");
-        this.setCreativeTab(ItemReplication.tabItemReplication);
+        this.setCreativeTab(ModernAlchemy.tabItemReplication);
     }
 
     @SideOnly(Side.CLIENT)
@@ -98,7 +98,7 @@ public class BlockCompressor extends BlockBase {
         {
             TileCompressor tile = (TileCompressor)world.getTileEntity(x, y, z);
             if(tile != null) {
-                player.openGui(ItemReplication.instance, GuiHandler.COMPRESSOR_GUI_ID, world, x, y, z);
+                player.openGui(ModernAlchemy.instance, GuiHandler.COMPRESSOR_GUI_ID, world, x, y, z);
             }
             return true;
         }

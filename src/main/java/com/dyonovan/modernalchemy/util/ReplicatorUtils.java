@@ -1,6 +1,6 @@
 package com.dyonovan.modernalchemy.util;
 
-import com.dyonovan.modernalchemy.ItemReplication;
+import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.helpers.LogHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.ItemStack;
@@ -29,7 +29,7 @@ public class ReplicatorUtils {
     private static void moveJson() {
         File file = new File(fileDirectory + File.separator + "minecraft.json");
         if (!file.exists()) {
-            URL jsonUrl = ItemReplication.class.getResource("/minecraft.json");
+            URL jsonUrl = ModernAlchemy.class.getResource("/minecraft.json");
             try {
                 FileUtils.copyURLToFile(jsonUrl, file);
             } catch (IOException e) {

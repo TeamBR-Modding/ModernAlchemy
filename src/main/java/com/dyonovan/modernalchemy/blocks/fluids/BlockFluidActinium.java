@@ -1,6 +1,6 @@
 package com.dyonovan.modernalchemy.blocks.fluids;
 
-import com.dyonovan.modernalchemy.ItemReplication;
+import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
 import cpw.mods.fml.relauncher.Side;
@@ -23,7 +23,7 @@ public class BlockFluidActinium extends BlockFluidClassic {
 
         super(BlockHandler.fluidActinium, Material.water);
         this.setBlockName(Constants.MODID + ":fluidActinium");
-        this.setCreativeTab(ItemReplication.tabItemReplication);
+        this.setCreativeTab(ModernAlchemy.tabItemReplication);
     }
 
     @Override

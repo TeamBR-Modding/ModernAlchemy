@@ -1,6 +1,6 @@
 package com.dyonovan.modernalchemy.items;
 
-import com.dyonovan.modernalchemy.ItemReplication;
+import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.replicator.BlockReplicatorFrame;
 import com.dyonovan.modernalchemy.entities.EntityLaserNode;
 import com.dyonovan.modernalchemy.lib.Constants;
@@ -13,7 +13,7 @@ public class ItemLaserNode extends Item {
 
     public ItemLaserNode() {
         super();
-        setCreativeTab(ItemReplication.tabItemReplication);
+        setCreativeTab(ModernAlchemy.tabItemReplication);
         setUnlocalizedName(Constants.MODID + ":laserNodeItem");
         this.setTextureName(Constants.MODID + ":cube");
     }

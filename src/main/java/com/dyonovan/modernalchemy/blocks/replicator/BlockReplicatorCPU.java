@@ -1,6 +1,6 @@
 package com.dyonovan.modernalchemy.blocks.replicator;
 
-import com.dyonovan.modernalchemy.ItemReplication;
+import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.BlockBase;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
@@ -48,7 +48,7 @@ public class BlockReplicatorCPU extends BlockBase {
         {
             TileReplicatorCPU tile = (TileReplicatorCPU)world.getTileEntity(x, y, z);
             if(tile != null) {
-                player.openGui(ItemReplication.instance, GuiHandler.REPLICATOR_CPU_GUI_ID, world, x, y, z);
+                player.openGui(ModernAlchemy.instance, GuiHandler.REPLICATOR_CPU_GUI_ID, world, x, y, z);
             }
             return true;
         }

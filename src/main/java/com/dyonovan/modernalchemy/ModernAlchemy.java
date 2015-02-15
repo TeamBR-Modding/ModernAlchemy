@@ -22,10 +22,10 @@ import java.io.File;
 
 @Mod(name = Constants.MODNAME, modid = Constants.MODID, version = Constants.VERSION, dependencies = Constants.DEPENDENCIES)
 
-public class ItemReplication {
+public class ModernAlchemy {
 
     @Instance(Constants.MODID)
-    public static ItemReplication instance;
+    public static ModernAlchemy instance;
 
     @SidedProxy(clientSide = "com.dyonovan." + Constants.MODID + ".proxy.ClientProxy",
             serverSide = "com.dyonovan." + Constants.MODID + ".proxy.CommonProxy")

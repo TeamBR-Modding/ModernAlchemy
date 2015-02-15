@@ -1,6 +1,6 @@
 package com.dyonovan.modernalchemy.blocks.replicator;
 
-import com.dyonovan.modernalchemy.ItemReplication;
+import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.BlockBase;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.replicator.TileReplicatorFrame;
@@ -32,7 +32,7 @@ public class BlockReplicatorFrame extends BlockBase {
 
     public BlockReplicatorFrame() {
         super(Material.iron);
-        this.setCreativeTab(ItemReplication.tabItemReplication);
+        this.setCreativeTab(ModernAlchemy.tabItemReplication);
         this.setBlockName(Constants.MODID + ":blockFrame");
     }
 

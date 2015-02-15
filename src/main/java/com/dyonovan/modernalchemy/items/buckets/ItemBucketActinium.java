@@ -1,6 +1,6 @@
 package com.dyonovan.modernalchemy.items.buckets;
 
-import com.dyonovan.modernalchemy.ItemReplication;
+import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.lib.Constants;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -13,7 +13,7 @@ public class ItemBucketActinium extends ItemBucket {
     public ItemBucketActinium(Block block) {
         super(block);
         setUnlocalizedName(Constants.MODID + ":bucketActinium").setContainerItem(Items.bucket);
-        setCreativeTab(ItemReplication.tabItemReplication);
+        setCreativeTab(ModernAlchemy.tabItemReplication);
     }
 
     @SideOnly(Side.CLIENT)

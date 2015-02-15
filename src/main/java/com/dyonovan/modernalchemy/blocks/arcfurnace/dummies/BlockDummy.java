@@ -1,6 +1,6 @@
 package com.dyonovan.modernalchemy.blocks.arcfurnace.dummies;
 
-import com.dyonovan.modernalchemy.ItemReplication;
+import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.BlockBase;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.BaseCore;
@@ -23,7 +23,7 @@ public class BlockDummy extends BlockBase {
     public BlockDummy(String name) {
         super(Material.rock);
         this.setBlockName(Constants.MODID + ":" + name);
-        this.setCreativeTab(ItemReplication.tabItemReplication);
+        this.setCreativeTab(ModernAlchemy.tabItemReplication);
     }
 
     @Override
