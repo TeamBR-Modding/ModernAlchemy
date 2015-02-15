@@ -91,7 +91,7 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
             }
         } else {
             if (stand == null) findStand();
-            copyToStand(false);
+            if (stand != null) copyToStand(false);
         }
     }
 
