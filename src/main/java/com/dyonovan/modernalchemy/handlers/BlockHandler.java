@@ -43,7 +43,7 @@ public class BlockHandler {
     public static Fluid fluidActinium, fluidCompressedAir;
     public static Block blockArcFurnaceDummy, blockArcFurnaceDummyItemIO, blockArcFurnaceDummyAirValue, blockArcFurnaceDummyOutputValue, blockArcFurnaceCore, blockTeslaStand, blockCoil;
     public static Block blockOreActinium, blockFluidActinium, blockCompressor, blockFluidAir, blockReplicatorStand;
-    public static Block blockPatternRecorder, blockSolidifier, blockTeslaBase, blockFrame, blockFrameEnergy;
+    public static Block blockPatternRecorder, blockSolidifier, blockTeslaBase, blockReplicatorFrame, blockReplicatorCPU;
 
     public static void init() {
         //Actinium Fluid Registration
@@ -51,6 +51,12 @@ public class BlockHandler {
         FluidRegistry.registerFluid(fluidActinium);
         blockFluidActinium = new BlockFluidActinium();
         GameRegistry.registerBlock(blockFluidActinium, "fluidActinium");
+
+        //Fluid Compressed Air
+        fluidCompressedAir = new FluidCompressedAir();
+        FluidRegistry.registerFluid(fluidCompressedAir);
+        blockFluidAir = new BlockFluidCompressedAir();
+        GameRegistry.registerBlock(blockFluidAir, "blockFluidAir");
 
         //Ore Actinium
         blockOreActinium = new BlockOreActinium();
@@ -60,6 +66,21 @@ public class BlockHandler {
         blockCompressor = new BlockCompressor();
         GameRegistry.registerBlock(blockCompressor, "blockCompressor");
         GameRegistry.registerTileEntity(TileCompressor.class, "teCompressor");
+
+        //Solidifier
+        blockSolidifier = new BlockSolidifier();
+        GameRegistry.registerBlock(blockSolidifier, "blockSolidifier");
+        GameRegistry.registerTileEntity(TileSolidifier.class, "blockSolidifier");
+
+        // Block Pattern Recorder
+        blockPatternRecorder = new BlockPatternRecorder();
+        GameRegistry.registerBlock(blockPatternRecorder, "patternRecorder");
+        GameRegistry.registerTileEntity(TilePatternRecorder.class, "patternRecorder");
+
+        //ArcFurnaceCore
+        blockArcFurnaceCore = new BlockArcFurnaceCore();
+        GameRegistry.registerBlock(blockArcFurnaceCore, "arcFurnaceCore");
+        GameRegistry.registerTileEntity(TileArcFurnaceCore.class, "arcFurnaceCore");
 
         //ArcFurnaceDummy
         blockArcFurnaceDummy = new BlockDummy("arcFurnaceDummy");
@@ -81,22 +102,6 @@ public class BlockHandler {
         GameRegistry.registerBlock(blockArcFurnaceDummyOutputValue, "arcFurnaceDummyOutputValve");
         GameRegistry.registerTileEntity(TileDummyOutputValve.class, "tileDummyOutputValve");
 
-        // Block Pattern Recorder
-        blockPatternRecorder = new BlockPatternRecorder();
-        GameRegistry.registerBlock(blockPatternRecorder, "patternRecorder");
-        GameRegistry.registerTileEntity(TilePatternRecorder.class, "patternRecorder");
-
-        //ArcFurnaceCore
-        blockArcFurnaceCore = new BlockArcFurnaceCore();
-        GameRegistry.registerBlock(blockArcFurnaceCore, "arcFurnaceCore");
-        GameRegistry.registerTileEntity(TileArcFurnaceCore.class, "arcFurnaceCore");
-
-        //Fluid Compressed Air
-        fluidCompressedAir = new FluidCompressedAir();
-        FluidRegistry.registerFluid(fluidCompressedAir);
-        blockFluidAir = new BlockFluidCompressedAir();
-        GameRegistry.registerBlock(blockFluidAir, "blockFluidAir");
-
         //Tesla Base
         blockTeslaBase = new BlockTeslaBase();
         GameRegistry.registerBlock(blockTeslaBase, "blockTeslaBase");
@@ -112,20 +117,15 @@ public class BlockHandler {
         GameRegistry.registerBlock(blockCoil, "blockCoil");
         GameRegistry.registerTileEntity(TileTeslaCoil.class, "blockCoil");
 
-        //Solidifier
-        blockSolidifier = new BlockSolidifier();
-        GameRegistry.registerBlock(blockSolidifier, "blockSolidifier");
-        GameRegistry.registerTileEntity(TileSolidifier.class, "blockSolidifier");
+        //BlockFrameEnergy
+        blockReplicatorCPU = new BlockReplicatorCPU();
+        GameRegistry.registerBlock(blockReplicatorCPU, "blockReplicatorCPU");
+        GameRegistry.registerTileEntity(TileReplicatorCPU.class, "blockReplicatorCPU");
 
         //BlockFrame
-        blockFrame = new BlockReplicatorFrame();
-        GameRegistry.registerBlock(blockFrame, "blockFrame");
-        GameRegistry.registerTileEntity(TileReplicatorFrame.class, "blockFrame");
-
-        //BlockFrameEnergy
-        blockFrameEnergy = new BlockReplicatorCPU();
-        GameRegistry.registerBlock(blockFrameEnergy, "blockFrameEnergy");
-        GameRegistry.registerTileEntity(TileReplicatorCPU.class, "blockFrameEnergy");
+        blockReplicatorFrame = new BlockReplicatorFrame();
+        GameRegistry.registerBlock(blockReplicatorFrame, "blockReplicatorFrame");
+        GameRegistry.registerTileEntity(TileReplicatorFrame.class, "blockReplicatorFrame");
 
         //BlockCenterStand
         blockReplicatorStand = new BlockReplicatorStand();

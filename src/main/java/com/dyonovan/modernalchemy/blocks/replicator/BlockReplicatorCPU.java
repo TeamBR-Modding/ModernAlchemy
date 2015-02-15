@@ -17,7 +17,7 @@ public class BlockReplicatorCPU extends BlockBase {
 
     public BlockReplicatorCPU() {
         super(Material.iron);
-        this.setBlockName(Constants.MODID + ":blockFrameEnergy");
+        this.setBlockName(Constants.MODID + ":blockReplicatorCPU");
     }
 
     @SideOnly(Side.CLIENT)

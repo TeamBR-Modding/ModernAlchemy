@@ -39,7 +39,7 @@ public class ClientProxy extends  CommonProxy{
         //Frame
         TileEntitySpecialRenderer renderFrame = new RenderFrame();
         ClientRegistry.bindTileEntitySpecialRenderer(TileReplicatorFrame.class, renderFrame);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockHandler.blockFrame),
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockHandler.blockReplicatorFrame),
                 new ItemRenderFrame(renderFrame, new TileReplicatorFrame()));
 
         //Laser Node

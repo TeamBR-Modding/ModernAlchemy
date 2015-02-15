@@ -33,7 +33,7 @@ public class BlockReplicatorFrame extends BlockBase {
     public BlockReplicatorFrame() {
         super(Material.iron);
         this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
-        this.setBlockName(Constants.MODID + ":blockFrame");
+        this.setBlockName(Constants.MODID + ":blockReplicatorFrame");
     }
 
     @Override
