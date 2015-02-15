@@ -48,6 +48,7 @@ public class ModernAlchemy {
         WorldGeneratorHandler.init();
         EventManager.init();
         proxy.registerRenderer();
+        RecipeHandler.init();
 
         BucketHandler.INSTANCE.buckets.put(BlockHandler.blockFluidActinium, ItemHandler.itemBucketActinium);
 
