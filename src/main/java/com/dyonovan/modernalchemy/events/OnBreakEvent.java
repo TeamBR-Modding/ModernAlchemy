@@ -11,9 +11,13 @@ public class OnBreakEvent {
     @SubscribeEvent
     public void onBreakEvent(BlockEvent.BreakEvent event) {
 
-        if (event.block instanceof BlockBase && !WrenchHelper.isWrench(event.getPlayer().getCurrentEquippedItem().getItem()) &&
-                ConfigHandler.machineExplodes && !event.getPlayer().capabilities.isCreativeMode) {
-            event.world.createExplosion(event.getPlayer(), event.x, event.y, event.z, 2.0F, true);
-        }
+        if (event.block instanceof BlockBase && ConfigHandler.machineExplodes && !event.getPlayer().capabilities.isCreativeMode) {
+            if (event.getPlayer().getCurrentEquippedItem() != null) {
+                if (WrenchHelper.isWrench(event.getPlayer().getCurrentEquippedItem().getItem())) {
+                    return;
+                }
+            }
+        } else return;
+        event.world.createExplosion(event.getPlayer(), event.x, event.y, event.z, 2.0F, true);
     }
 }

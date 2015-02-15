@@ -4,6 +4,7 @@ import com.dyonovan.modernalchemy.items.ItemReplicatorMedium;
 import com.dyonovan.modernalchemy.items.ItemLaserNode;
 import com.dyonovan.modernalchemy.items.ItemPattern;
 import com.dyonovan.modernalchemy.items.buckets.ItemBucketActinium;
+import com.dyonovan.modernalchemy.items.buckets.ItemSlag;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -15,7 +16,7 @@ public class ItemHandler {
 
     public static ItemPattern itemPattern;
     public static Item itemBucketActinium, itemReplicationMedium;
-    public static Item laserNode;
+    public static Item laserNode, itemSlag;
 
     public static void init() {
         itemPattern = new ItemPattern();
@@ -29,6 +30,10 @@ public class ItemHandler {
         //Item Cube
         itemReplicationMedium = new ItemReplicatorMedium();
         GameRegistry.registerItem(itemReplicationMedium, "itemReplicationMedium");
+
+        //Item Cube
+        itemSlag = new ItemSlag();
+        GameRegistry.registerItem(itemSlag, "itemSlag");
 
         //Laser Node
         laserNode = new ItemLaserNode();

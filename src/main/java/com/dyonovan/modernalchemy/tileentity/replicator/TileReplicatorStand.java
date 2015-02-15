@@ -12,14 +12,11 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class TileReplicatorStand extends BaseTile implements IInventory {
 
-    public static final int INPUT_SLOT = 0;
-    public static final int OUTPUT_SLOT = 1;
-
     public InventoryTile inventory;
     public EntityItem entityItem = null;
 
     public TileReplicatorStand() {
-        inventory = new InventoryTile(2);
+        inventory = new InventoryTile(1);
     }
 
     @Override
@@ -54,7 +51,7 @@ public class TileReplicatorStand extends BaseTile implements IInventory {
 
     @Override
     public int getSizeInventory() {
-        return 2;
+        return 1;
     }
 
     @Override
@@ -91,7 +88,7 @@ public class TileReplicatorStand extends BaseTile implements IInventory {
 
     @Override
     public String getInventoryName() {
-        return Constants.MODID + ":blockReplicatorCPU";
+        return Constants.MODID + ":blockReplicatorStand";
     }
 
     @Override

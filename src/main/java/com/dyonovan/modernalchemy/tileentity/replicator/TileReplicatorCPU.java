@@ -14,6 +14,7 @@ import com.dyonovan.modernalchemy.tileentity.InventoryTile;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
 import com.dyonovan.modernalchemy.util.Location;
 import com.dyonovan.modernalchemy.util.RenderUtils;
+import com.dyonovan.modernalchemy.util.WorldUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -57,7 +58,7 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
                 if (currentProcessTime <= 0 && canStartWork()) {
                     item = inventory.getStackInSlot(1).getTagCompound().getString("Item");
                     //TODO Get req process time from file
-                    requiredProcessTime = 1000;
+                    requiredProcessTime = 10000;
                     currentProcessTime = 1;
                     copyToStand(true);
                     decrStackSize(0, 1);
@@ -74,6 +75,7 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
                         //TODO fix
                         currentProcessTime = 0;
                         requiredProcessTime = 0;
+                        WorldUtils.expelItem(worldObj, stand.x, stand.y + 1, stand.z, new ItemStack(ItemHandler.itemSlag));
                     }
                 }
 
