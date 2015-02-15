@@ -55,7 +55,7 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
         if (canStartWork() || currentProcessTime > 0) {
             //TODO make sure slot 2 is empty or same as item
             if (findLasers() && findStand()) {
-                if (currentProcessTime <= 0 && canStartWork()) {
+                if (currentProcessTime <= 0 && canStartWork() && getEnergyLevel() >= 2 * listLaser.size()) {
                     item = inventory.getStackInSlot(1).getTagCompound().getString("Item");
                     //TODO Get req process time from file
                     requiredProcessTime = 10000;
@@ -71,8 +71,6 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
                         for(EntityLaserNode node : listLaser)
                             node.fireLaser(stand.x + 0.5, stand.y + 1.5, stand.z + 0.5);
                     } else {
-                        //TODO return slag
-                        //TODO fix
                         currentProcessTime = 0;
                         requiredProcessTime = 0;
                         WorldUtils.expelItem(worldObj, stand.x, stand.y + 1, stand.z, new ItemStack(ItemHandler.itemSlag));

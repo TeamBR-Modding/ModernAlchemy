@@ -4,7 +4,7 @@ import com.dyonovan.modernalchemy.items.ItemReplicatorMedium;
 import com.dyonovan.modernalchemy.items.ItemLaserNode;
 import com.dyonovan.modernalchemy.items.ItemPattern;
 import com.dyonovan.modernalchemy.items.buckets.ItemBucketActinium;
-import com.dyonovan.modernalchemy.items.buckets.ItemSlag;
+import com.dyonovan.modernalchemy.items.ItemSlag;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;

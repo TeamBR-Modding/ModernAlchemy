@@ -1,4 +1,4 @@
-package com.dyonovan.modernalchemy.items.buckets;
+package com.dyonovan.modernalchemy.items;
 
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.lib.Constants;
