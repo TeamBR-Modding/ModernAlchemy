@@ -21,9 +21,9 @@ import java.util.List;
 
 public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInventory {
 
-    private static final int PROCESS_TIME = 100;
-    public static final int INPUT_SLOT = 0;
-    public static final int ITEM_SLOT = 1;
+    private static final int PROCESS_TIME = 6000; //5 mins with 1 T/Tick
+    public static final int INPUT_SLOT = 1;
+    public static final int ITEM_SLOT = 0;
     public static final int OUTPUT_SLOT = 2;
 
     public InventoryTile inventory;
@@ -231,7 +231,7 @@ public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInv
 
         switch(slot){
             case ITEM_SLOT:
-                return true; // TODO: how should this be limited?
+                return true; //TODO add check for replication value
             case INPUT_SLOT:
                 return stack.getItem() instanceof ItemPattern;
             default:
