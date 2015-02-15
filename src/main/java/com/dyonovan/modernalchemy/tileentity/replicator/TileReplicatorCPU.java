@@ -185,6 +185,7 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
         inventory.readFromNBT(tag, this);
         currentProcessTime = tag.getInteger("TimeProcessed");
         requiredProcessTime = tag.getInteger("RequiredTime");
+        item = tag.getString("ItemName");
     }
 
     @Override
@@ -194,6 +195,7 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
         inventory.writeToNBT(tag);
         tag.setInteger("TimeProcessed", currentProcessTime);
         tag.setInteger("RequiredTime", requiredProcessTime);
+        tag.setString("ItemName", item);
     }
 
 
