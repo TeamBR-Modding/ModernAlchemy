@@ -159,12 +159,17 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
                     doReset();
                 }
                 super.markDirty();
+            } else {
+                doReset();
             }
     }
 
     private void doReset() {
-        timeProcessed = 0;
-        isActive = BlockSolidifier.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+
+        if (isActive()) {
+            isActive = BlockSolidifier.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+            timeProcessed = 0;
+        }
     }
 
     public void updateSpeed() {
