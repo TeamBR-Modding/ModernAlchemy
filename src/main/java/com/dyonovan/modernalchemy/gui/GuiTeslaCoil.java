@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy.gui;
 
 import com.dyonovan.modernalchemy.container.ContainerTeslaCoil;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
+import com.dyonovan.modernalchemy.gui.widget.WidgetPulse;
 import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
@@ -13,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiTeslaCoil extends GuiContainer {
+public class GuiTeslaCoil extends BaseGui {
 
     private ResourceLocation background = new ResourceLocation(Constants.MODID + ":textures/gui/tesla_coil.png");
     private TileTeslaCoil tile;
@@ -25,7 +26,7 @@ public class GuiTeslaCoil extends GuiContainer {
         this.xSize = 108;
         this.ySize = 86;
 
-        //tile.addEnergy(1000);
+        widgets.add(new WidgetPulse(this, tile, 79, 42));
     }
 
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {

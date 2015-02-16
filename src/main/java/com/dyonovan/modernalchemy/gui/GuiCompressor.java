@@ -3,6 +3,7 @@ package com.dyonovan.modernalchemy.gui;
 import com.dyonovan.modernalchemy.container.ContainerCompressor;
 import com.dyonovan.modernalchemy.gui.widget.WidgetEnergyBank;
 import com.dyonovan.modernalchemy.gui.widget.WidgetLiquidTank;
+import com.dyonovan.modernalchemy.gui.widget.WidgetPulse;
 import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.machines.TileCompressor;
@@ -25,6 +26,7 @@ public class GuiCompressor extends BaseGui {
 
         widgets.add(new WidgetLiquidTank(this, this.tile.tank, 81, 78, 52));
         widgets.add(new WidgetEnergyBank(this, this.tile.getEnergyBank(), 12, 78));
+        widgets.add(new WidgetPulse(this, tile, 42, 58));
     }
 
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
@@ -42,7 +44,7 @@ public class GuiCompressor extends BaseGui {
         this.mc.renderEngine.bindTexture(background);
         int x = (width - xSize) / 2;
         int y = (height - ySize) / 2;
-        drawTexturedModalRect(x, y, 25, 0, xSize, ySize);
+        drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
 
         super.drawGuiContainerBackgroundLayer(f, i, j);
     }
