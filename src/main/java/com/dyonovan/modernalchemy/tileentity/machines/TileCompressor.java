@@ -18,7 +18,6 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
 
     public FluidTank tank;
     private TeslaBank energy;
-    private boolean isActive;
     private int currentSpeed;
 
     public TileCompressor() {
@@ -53,12 +52,12 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
         {
             return null;
         }
-        return tank.drain(resource.amount, true);
+        return tank.drain(resource.amount, doDrain);
     }
 
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-        return tank.drain(maxDrain, true);
+        return tank.drain(maxDrain, doDrain);
     }
 
     @Override
