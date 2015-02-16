@@ -62,7 +62,8 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
                     requiredProcessTime = inventory.getStackInSlot(1).getTagCompound().getInteger("Value");
                     stackReturn = ReplicatorUtils.getReturn(item);
                 }
-                if (inventory.getStackInSlot(2) != null && (inventory.getStackInSlot(2).getItem() != stackReturn.getItem() ||
+                if (inventory.getStackInSlot(2) != null && item != "" &&
+                                (inventory.getStackInSlot(2).getItem() != stackReturn.getItem() ||
                                 inventory.getStackInSlot(2).stackSize >= inventory.getStackInSlot(2).getMaxStackSize())) {
                     resetCounts();
                     return;
