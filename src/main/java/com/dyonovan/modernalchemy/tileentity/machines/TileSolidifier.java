@@ -25,7 +25,6 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
 
     public FluidTank tank;
     private TeslaBank energy;
-    private boolean isActive;
     private int currentSpeed;
     public ItemStack inventory[];
     public int timeProcessed;

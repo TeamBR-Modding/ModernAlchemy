@@ -49,7 +49,7 @@ public class ContainerSolidifier extends Container {
     public void addCraftingToCrafters(ICrafting crafter) {
         super.addCraftingToCrafters(crafter);
         crafter.sendProgressBarUpdate(this, 0, this.tile.getEnergyLevel());
-        crafter.sendProgressBarUpdate(this, 1, this.tile.tank.getFluid().amount);
+        crafter.sendProgressBarUpdate(this, 1, this.tile.tank.getFluidAmount());
         crafter.sendProgressBarUpdate(this, 2, this.tile.timeProcessed);
     }
 

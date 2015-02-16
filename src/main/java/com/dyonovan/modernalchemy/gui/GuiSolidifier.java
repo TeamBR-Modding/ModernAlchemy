@@ -3,6 +3,7 @@ package com.dyonovan.modernalchemy.gui;
 import com.dyonovan.modernalchemy.container.ContainerSolidifier;
 import com.dyonovan.modernalchemy.gui.widget.WidgetEnergyBank;
 import com.dyonovan.modernalchemy.gui.widget.WidgetLiquidTank;
+import com.dyonovan.modernalchemy.gui.widget.WidgetPulse;
 import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.machines.TileSolidifier;
@@ -25,6 +26,7 @@ public class GuiSolidifier extends BaseGui  {
 
         widgets.add(new WidgetLiquidTank(this, tile.tank, 37, 78, 52));
         widgets.add(new WidgetEnergyBank(this, tile.getEnergyBank(), 8, 78));
+        widgets.add(new WidgetPulse(this, tile, 79, 42));
     }
 
     @Override
@@ -65,7 +67,7 @@ public class GuiSolidifier extends BaseGui  {
         }
         if(GuiHelper.isInBounds(mouseX, mouseY, x + 37, y + 26, x + 52, y + 77)) {
             List<String> toolTip = new ArrayList<String>();
-            toolTip.add(GuiHelper.GuiColor.YELLOW + "Actinium");
+            toolTip.add(GuiHelper.GuiColor.YELLOW + "Molten Actinium");
             toolTip.add(tile.tank.getFluidAmount() + "/" + tile.tank.getCapacity() + GuiHelper.GuiColor.ORANGE + "mb");
             renderToolTip(mouseX, mouseY, toolTip);
         }

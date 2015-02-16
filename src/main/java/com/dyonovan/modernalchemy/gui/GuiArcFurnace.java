@@ -74,7 +74,7 @@ public class GuiArcFurnace extends BaseGui {
         }
         if(GuiHelper.isInBounds(mouseX, mouseY, x + 147, y + 26, x + 162, y + 77)) {
             List<String> toolTip = new ArrayList<String>();
-            toolTip.add(GuiHelper.GuiColor.YELLOW + "Actinium");
+            toolTip.add(GuiHelper.GuiColor.YELLOW + "Molten Actinium");
             toolTip.add(core.getOutputTank().getFluidAmount() + "/" + core.getOutputTank().getCapacity() + GuiHelper.GuiColor.ORANGE + "mb");
             renderToolTip(mouseX, mouseY, toolTip);
         }
