@@ -34,6 +34,7 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
     private Location stand;
     private String item;
     private List<EntityLaserNode> listLaser;
+    private ItemStack stackReturn;
 
 
     public TileReplicatorCPU() {
@@ -53,12 +54,8 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
             chargeFromCoils();
         }
         if (canStartWork() || currentProcessTime > 0) {
-            //TODO make sure slot 2 is empty or same as item
             if (findLasers() && findStand()) {
                 if (currentProcessTime <= 0 && canStartWork() && getEnergyLevel() >= 2 * listLaser.size()) {
-                    item = inventory.getStackInSlot(1).getTagCompound().getString("Item");
-                    //TODO Get req process time from file
-                    requiredProcessTime = 1000;
                     currentProcessTime = 1;
                     copyToStand(true);
                     decrStackSize(0, 1);
@@ -71,21 +68,18 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
                         for(EntityLaserNode node : listLaser)
                             node.fireLaser(stand.x + 0.5, stand.y + 1.5, stand.z + 0.5);
                     } else {
-                        currentProcessTime = 0;
-                        requiredProcessTime = 0;
+                        resetCounts();
                         WorldUtils.expelItem(worldObj, stand.x, stand.y + 1, stand.z, new ItemStack(ItemHandler.itemSlag));
                     }
                 }
 
                 if (currentProcessTime != 0 && currentProcessTime >= requiredProcessTime) {
                     copyToStand(false);
-                    currentProcessTime = 0;
-                    requiredProcessTime = 0;
-                    ItemStack itemStack = getReturn(item);
-                    if (inventory.getStackInSlot(2) == null) inventory.setStackInSlot(itemStack, 2);
+                    if (inventory.getStackInSlot(2) == null) inventory.setStackInSlot(stackReturn, 2);
                     else {
                         inventory.getStackInSlot(2).stackSize += 1;
                     }
+                    resetCounts();
                 }
                 this.markDirty();
             }
@@ -93,6 +87,13 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
             if (stand == null) findStand();
             if (stand != null) copyToStand(false);
         }
+    }
+
+    private void resetCounts() {
+        currentProcessTime = 0;
+        requiredProcessTime = 0;
+        item = null;
+        stackReturn = null;
     }
 
     private ItemStack getReturn(String item) {
@@ -124,10 +125,17 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
     }
 
     private boolean canStartWork() {
+        if (item == null) {
+            item = inventory.getStackInSlot(1).getTagCompound().getString("Item");
+            requiredProcessTime = inventory.getStackInSlot(1).getTagCompound().getInteger("Value");
+            stackReturn = getReturn(item);
+        }
         return inventory.getStackInSlot(0) != null && inventory.getStackInSlot(1) != null &&
                 inventory.getStackInSlot(1).getItem() instanceof ItemPattern &&
                 inventory.getStackInSlot(0).getItem() instanceof ItemReplicatorMedium &&
-                inventory.getStackInSlot(1).hasTagCompound();
+                inventory.getStackInSlot(1).hasTagCompound() && (inventory.getStackInSlot(2) == null ||
+                (inventory.getStackInSlot(2).getItem() == stackReturn.getItem() &&
+                        inventory.getStackInSlot(2).stackSize < inventory.getStackInSlot(2).getMaxStackSize()));
     }
 
     private boolean findStand() {
