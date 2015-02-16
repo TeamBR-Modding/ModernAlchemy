@@ -134,36 +134,37 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
             chargeFromCoils();
         }
 
-        if (isPowered()) {
-            if (this.inventory[0] != null && this.inventory[0].stackSize >= 64) return;
-            if (energy.getEnergyLevel() > 0 && tank.getFluid() != null && tank.getFluidAmount() > 0) {
-                updateSpeed();
-                if (!isActive)
-                    isActive = BlockSolidifier.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 
-                if (timeProcessed < PROCESS_TIME) {
-                    if (energy.getEnergyLevel() > 0) {
+            if (this.inventory[0] != null && this.inventory[0].stackSize >= 64) return;
+            if (energy.getEnergyLevel() > 0  && isPowered()) {
+                updateSpeed();
+                if (timeProcessed == 0 && tank.getFluidAmount() > 0) {
+                    isActive = BlockSolidifier.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+                    timeProcessed = 1;
+                }
+                if (timeProcessed > 0 && timeProcessed < PROCESS_TIME) {
+                    if (energy.getEnergyLevel() > 0 && (tank.getFluid() != null || tank.getFluidAmount() > 10 * currentSpeed)) {
                         energy.drainEnergy(currentSpeed);
+                        tank.drain(10, true);
+                        timeProcessed += currentSpeed;
+                    } else {
+                        doReset();
+                        return;
                     }
                 }
-                if (tank.getFluid() != null || tank.getFluidAmount() > 10 * currentSpeed) {
-                    tank.drain(10, true);
-                    timeProcessed += currentSpeed;
-                }
+
                 if (timeProcessed >= PROCESS_TIME) {
                     if (inventory[0] == null) setInventorySlotContents(0, new ItemStack(ItemHandler.itemReplicationMedium));
                     else inventory[0].stackSize++;
-                    timeProcessed = 0;
+                    doReset();
                 }
                 super.markDirty();
-            } /*else if (isActive) {
-                isActive = BlockSolidifier.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-                timeProcessed = 0;
-            }*/
-        } else if (isActive) {
-            isActive = BlockSolidifier.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-            timeProcessed = 0;
-        }
+            }
+    }
+
+    private void doReset() {
+        timeProcessed = 0;
+        isActive = BlockSolidifier.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
     }
 
     public void updateSpeed() {

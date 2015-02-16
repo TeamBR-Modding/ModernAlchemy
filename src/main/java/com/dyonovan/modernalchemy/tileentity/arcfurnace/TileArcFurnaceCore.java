@@ -27,7 +27,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     /**
      * Duration in ticks for the Cook Process
      */
-    private static final int COOK_TIME = 2500;
+    private static final int COOK_TIME = 500;
 
     //Tanks
     private FluidTank outputTank;
