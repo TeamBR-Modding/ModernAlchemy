@@ -26,6 +26,13 @@ public class InventoryTile {
         return inventory.length;
     }
 
+    public ItemStack [] getValues() { return inventory; }
+
+    public void clear() {
+        for(int i = 0; i < inventory.length; i++)
+            inventory[i] = null;
+    }
+
     public void readFromNBT(NBTTagCompound tagCompound, IInventory parent) {
         NBTTagList itemsTag = tagCompound.getTagList("Items", 10);
         this.inventory = new ItemStack[parent.getSizeInventory()];

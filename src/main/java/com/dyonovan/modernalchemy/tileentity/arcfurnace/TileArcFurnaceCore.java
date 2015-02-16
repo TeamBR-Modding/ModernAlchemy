@@ -10,6 +10,7 @@ import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.dummies.TileDummy;
 import com.dyonovan.modernalchemy.util.Location;
 import com.dyonovan.modernalchemy.util.RenderUtils;
+import com.dyonovan.modernalchemy.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -111,7 +112,20 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
                 }
             }
         }
+        if(!worldObj.isRemote)
+            reset();
         isValid = false;
+    }
+
+    public void reset() {
+        this.airTank.setFluid(null);
+        this.outputTank.setFluid(null);
+        this.energyTank.setEnergyLevel(0);
+        for(ItemStack item : inventory.getValues()) {
+            WorldUtils.expelItem(worldObj, xCoord + 0.5, yCoord, zCoord + 0.5, item);
+        }
+        this.inventory.clear();
+        timeCooked = 0;
     }
 
     /*******************************************************************************************************************
@@ -121,7 +135,6 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     public void doSmelting() {
         if(canSmelt() && timeCooked == 0) {
             //Consume Resources
-            airTank.drain(100, true);
             inventory.getStackInSlot(0).stackSize--;
             if(inventory.getStackInSlot(0).stackSize == 0)
                 inventory.setStackInSlot(null, 0);
@@ -134,6 +147,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
         else if(timeCooked > 0 && timeCooked < COOK_TIME) {
             timeCooked += currentSpeed;
             energyTank.drainEnergy(currentSpeed);
+            airTank.drain(currentSpeed * 4, true);
             isActive = true;
         }
         else if(timeCooked >= COOK_TIME)
@@ -235,12 +249,12 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
         int amount = 0;
         if(canFill(from, resource.getFluid())) {
             switch(from) {
-            case NORTH :
-                amount = airTank.fill(resource, doFill);
-                break;
-            case SOUTH :
-                amount = outputTank.fill(resource, doFill);
-                break;
+                case NORTH :
+                    amount = airTank.fill(resource, doFill);
+                    break;
+                case SOUTH :
+                    amount = outputTank.fill(resource, doFill);
+                    break;
             }
         }
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -255,10 +269,10 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
         switch(from) {
-        case NORTH :
-            return airTank.drain(maxDrain, doDrain);
-        case SOUTH :
-            return outputTank.drain(maxDrain, doDrain);
+            case NORTH :
+                return airTank.drain(maxDrain, doDrain);
+            case SOUTH :
+                return outputTank.drain(maxDrain, doDrain);
         }
         return null;
     }
@@ -359,10 +373,10 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
         switch(slot) {
-        case INPUT_SLOT :
-            return itemStack.getItem() == Item.getItemFromBlock(BlockHandler.blockOreActinium);
-        case CATALYST_SLOT :
-            return itemStack.getItem() == Items.coal;
+            case INPUT_SLOT :
+                return itemStack.getItem() == Item.getItemFromBlock(BlockHandler.blockOreActinium);
+            case CATALYST_SLOT :
+                return itemStack.getItem() == Items.coal;
 
         }
         return false;
