@@ -23,14 +23,13 @@ import java.util.List;
 public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInventory {
 
     private static final int PROCESS_TIME = 6000; //5 mins with 1 T/Tick
-    public static final int INPUT_SLOT = 0;
-    public static final int ITEM_SLOT = 1;
+    public static final int INPUT_SLOT = 1;
+    public static final int ITEM_SLOT = 0;
     public static final int OUTPUT_SLOT = 2;
 
     public InventoryTile inventory;
 
     private TeslaBank energy;
-    private boolean isActive;
     private int currentSpeed;
     private ItemStack itemCopy;
 
@@ -38,8 +37,7 @@ public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInv
 
     public TilePatternRecorder() {
         inventory = new InventoryTile(3);
-        currentProcessTime = 0;
-        this.isActive = false;
+        //currentProcessTime = 0;
         energy = new TeslaBank(0, 1000);
     }
 
@@ -51,6 +49,7 @@ public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInv
         energy.readFromNBT(tag);
         inventory.readFromNBT(tag, this);
         currentProcessTime = tag.getInteger("TimeProcessed");
+        itemCopy = ItemStack.loadItemStackFromNBT(tag);
     }
 
     @Override
@@ -59,6 +58,7 @@ public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInv
         energy.writeToNBT(tag);
         inventory.writeToNBT(tag);
         tag.setInteger("TimeProcessed", currentProcessTime);
+        if (itemCopy != null) { itemCopy.writeToNBT(tag); }
     }
 
     @Override
@@ -71,7 +71,7 @@ public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInv
             chargeFromCoils();
 
         if (canStartWork() || currentProcessTime > 0) {
-
+                                //todo make sure item has replicator value
             updateSpeed();
             if (!isActive)
                 isActive = BlockPatternRecorder.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
@@ -96,11 +96,11 @@ public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInv
                 inventory.setStackInSlot(recordPattern(itemCopy), 2);
                 currentProcessTime = 0;
             }
-            super.markDirty();
         } else if (isActive) {
             isActive = BlockSolidifier.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
             currentProcessTime = 0;
-        } 
+        }
+        super.markDirty();
     }
 
     public static ItemStack recordPattern(ItemStack item) {

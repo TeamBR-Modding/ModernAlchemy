@@ -42,6 +42,7 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
         this.inventory = new InventoryTile(3);
         this.currentProcessTime = 0;
         this.requiredProcessTime = 0;
+        this.item = "";
     }
 
     @Override
@@ -55,6 +56,16 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
         }
         if (canStartWork() || currentProcessTime > 0) {
             if (findLasers() && findStand()) {
+                if (item.equals("")) {
+                    item = inventory.getStackInSlot(1).getTagCompound().getString("Item");
+                    requiredProcessTime = inventory.getStackInSlot(1).getTagCompound().getInteger("Value");
+                    stackReturn = getReturn(item);
+                }
+                if (inventory.getStackInSlot(2) != null && (inventory.getStackInSlot(2).getItem() != stackReturn.getItem() ||
+                                inventory.getStackInSlot(2).stackSize >= inventory.getStackInSlot(2).getMaxStackSize())) {
+                    resetCounts();
+                    return;
+                }
                 if (currentProcessTime <= 0 && canStartWork() && getEnergyLevel() >= 2 * listLaser.size()) {
                     currentProcessTime = 1;
                     copyToStand(true);
@@ -92,7 +103,7 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
     private void resetCounts() {
         currentProcessTime = 0;
         requiredProcessTime = 0;
-        item = null;
+        item = "";
         stackReturn = null;
     }
 
@@ -125,17 +136,11 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
     }
 
     private boolean canStartWork() {
-        if (item == null) {
-            item = inventory.getStackInSlot(1).getTagCompound().getString("Item");
-            requiredProcessTime = inventory.getStackInSlot(1).getTagCompound().getInteger("Value");
-            stackReturn = getReturn(item);
-        }
+
         return inventory.getStackInSlot(0) != null && inventory.getStackInSlot(1) != null &&
                 inventory.getStackInSlot(1).getItem() instanceof ItemPattern &&
                 inventory.getStackInSlot(0).getItem() instanceof ItemReplicatorMedium &&
-                inventory.getStackInSlot(1).hasTagCompound() && (inventory.getStackInSlot(2) == null ||
-                (inventory.getStackInSlot(2).getItem() == stackReturn.getItem() &&
-                        inventory.getStackInSlot(2).stackSize < inventory.getStackInSlot(2).getMaxStackSize()));
+                inventory.getStackInSlot(1).hasTagCompound();
     }
 
     private boolean findStand() {

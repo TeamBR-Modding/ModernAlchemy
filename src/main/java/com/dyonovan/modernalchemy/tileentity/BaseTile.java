@@ -13,7 +13,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseTile extends TileEntity {
+public abstract class BaseTile extends TileEntity {
 
     protected boolean isActive;
 
