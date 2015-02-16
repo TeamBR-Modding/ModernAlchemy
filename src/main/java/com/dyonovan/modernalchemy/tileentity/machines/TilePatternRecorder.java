@@ -11,6 +11,7 @@ import com.dyonovan.modernalchemy.tileentity.BaseTile;
 import com.dyonovan.modernalchemy.tileentity.InventoryTile;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
 import com.dyonovan.modernalchemy.util.RenderUtils;
+import com.dyonovan.modernalchemy.util.ReplicatorUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -110,8 +111,7 @@ public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInv
         tag.setString("Item", uniqueIdentifier.modId +
                 ":" + uniqueIdentifier.name + ":" + item.getItemDamage());
         pattern.setTagCompound(tag);
-
-        //((ItemPattern) pattern.getItem()).setIconRecordedPattern();
+        tag.setInteger("Value", ReplicatorUtils.getValueForItem(item));
         return pattern;
     }
 

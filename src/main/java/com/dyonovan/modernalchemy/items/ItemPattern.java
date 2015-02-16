@@ -2,7 +2,9 @@ package com.dyonovan.modernalchemy.items;
 
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.handlers.ItemHandler;
+import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -59,7 +61,11 @@ public class ItemPattern extends Item {
         super.addInformation(itemstack, player, list, par4);
 
         if (itemstack.hasTagCompound()) {
-            list.add("This has an item"); //TODO
+            String itemName = itemstack.getTagCompound().getString("Item");
+            Item item = GameRegistry.findItem(itemName.split(":")[0], itemName.split(":")[1]);
+            if(item != null)
+                list.add(GuiHelper.GuiColor.YELLOW + "Item Stored: " + GuiHelper.GuiColor.TURQUISE + item.getItemStackDisplayName(new ItemStack(item, 1)));
+            list.add(GuiHelper.GuiColor.YELLOW + "Replicator Cost: " + GuiHelper.GuiColor.TURQUISE + itemstack.getTagCompound().getInteger("Value"));
         }
     }
 
