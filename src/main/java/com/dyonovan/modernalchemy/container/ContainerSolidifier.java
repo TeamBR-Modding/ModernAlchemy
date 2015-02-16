@@ -26,7 +26,6 @@ public class ContainerSolidifier extends Container {
 
         addSlotToContainer(new SlotFurnace(inventory.player, tile, 0, 146, 34));
         bindPlayerInventory(inventory);
-
     }
 
     private void bindPlayerInventory(InventoryPlayer playerInventory)
@@ -89,54 +88,43 @@ public class ContainerSolidifier extends Container {
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
-    {
-        ItemStack itemstack = null;
-        Slot slot = (Slot)this.inventorySlots.get(par2);
-        if (slot != null && slot.getHasStack())
-        {
-            ItemStack itemstack1 = slot.getStack();
-            itemstack = itemstack1.copy();
-
-            /*if (par2 != 0) {
-                if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
+    public ItemStack transferStackInSlot(EntityPlayer player, int slot) {
+        ItemStack stack = null;
+        Slot slotObject = (Slot)this.inventorySlots.get(slot);
+        //null checks and checks if the item can be stacked (maxStackSize > 1)
+        if (slotObject != null && slotObject.getHasStack()) {
+            ItemStack stackInSlot = slotObject.getStack();
+            stack = stackInSlot.copy();
+            //merges the item into player inventory since its in the tileEntity
+            if (slot < 1) {
+                if (!this.mergeItemStack(stackInSlot, 1, 37, true)) {
                     return null;
                 }
             }
-            else */
-            if (par2 >= 1 && par2 <= 27)
-            {
-                if (!this.mergeItemStack(itemstack1, 28, 37, false))
-                {
+
+            //Inventory to HotBar
+            else if(slot >= 1 && slot <= 27) {
+                if(!this.mergeItemStack(stackInSlot, 28, 37, false))
                     return null;
-                }
             }
-            else if (par2 >= 28 && par2 <= 36 && !this.mergeItemStack(itemstack1, 1, 28, false))
-            {
+
+            //HotBar to inventory
+            else if(slot >= 28 && slot <= 36) {
+                if(!this.mergeItemStack(stackInSlot, 1, 28, false))
+                    return null;
+            }
+
+            if (stackInSlot.stackSize == 0) {
+                slotObject.putStack(null);
+            } else {
+                slotObject.onSlotChanged();
+            }
+
+            if (stackInSlot.stackSize == stack.stackSize) {
                 return null;
             }
-
-            else if (!this.mergeItemStack(itemstack1, 1, 37, false))
-            {
-                return null;
-            }
-
-            if (itemstack1.stackSize == 0)
-            {
-                slot.putStack((ItemStack)null);
-            }
-            else
-            {
-                slot.onSlotChanged();
-            }
-
-            if (itemstack1.stackSize == itemstack.stackSize)
-            {
-                return null;
-            }
-
-            slot.onPickupFromSlot(par1EntityPlayer, itemstack1);
+            slotObject.onPickupFromSlot(player, stackInSlot);
         }
-        return itemstack;
+        return stack;
     }
 }
