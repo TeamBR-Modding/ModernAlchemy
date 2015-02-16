@@ -66,7 +66,6 @@ public class ReplicatorUtils {
 
     public static int getValueForItem(ItemStack stack) {
         GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(stack.getItem());
-        HashMap<String, Integer> map = JsonUtils.readJson(id.modId);
 
         //Check our generated map first
         if(values != null) {
@@ -77,8 +76,10 @@ public class ReplicatorUtils {
                 return values.get(id.name);
         }
 
+        HashMap<String, Integer> map = JsonUtils.readJson(id.modId);
+
         //Check from files
-        else if(map != null) {
+       if(map != null && map.size() > 0) {
             values.putAll(map);
 
             if(map.containsKey(id.name + ":" + stack.getItemDamage())) {
@@ -95,20 +96,13 @@ public class ReplicatorUtils {
     public static ItemStack getReturn(String item) {
         ItemStack stack;
         String itemReturn[] = item.split(":");
-        if (GameRegistry.findBlock(itemReturn[0], itemReturn[1]) != null) {
-            Block objReturn = GameRegistry.findBlock(itemReturn[0], itemReturn[1]);
-            if (itemReturn.length > 2)
-                stack = new ItemStack(objReturn, 1, Integer.parseInt(itemReturn[2]));
-            else
-                stack = new ItemStack(objReturn);
-        } else {
+        if (GameRegistry.findItem(itemReturn[0], itemReturn[1]) != null) {
             Item objReturn = GameRegistry.findItem(itemReturn[0], itemReturn[1]);
-            if (itemReturn.length > 2)
-                stack = new ItemStack(objReturn, 1, Integer.parseInt(itemReturn[2]));
-            else
-                stack = new ItemStack(objReturn);
+                stack = new ItemStack(objReturn, 1, Integer.valueOf(itemReturn[2]));
+        } else {
+            Block objReturn = GameRegistry.findBlock(itemReturn[0], itemReturn[1]);
+                stack = new ItemStack(Item.getItemFromBlock(objReturn), 1, Integer.valueOf(itemReturn[2]));
         }
         return stack;
     }
-
 }

@@ -35,10 +35,10 @@ public class JsonUtils {
                 HashMap<String, Integer> hashMap = (map instanceof HashMap) ? (HashMap) map : new HashMap<String, Integer>(map);
                 return hashMap.size() == 0 ? null : hashMap;
             } else {
-                return null;
+                return new HashMap<String, Integer>();
             }
         } catch (FileNotFoundException e) {
-            return null;
+            return new HashMap<String, Integer>();
         }
     }
 }
