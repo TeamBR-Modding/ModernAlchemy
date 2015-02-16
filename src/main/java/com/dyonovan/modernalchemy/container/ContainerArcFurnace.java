@@ -3,6 +3,7 @@ package com.dyonovan.modernalchemy.container;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.TileArcFurnaceCore;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -45,13 +46,13 @@ public class ContainerArcFurnace extends Container {
             itemstack = itemstack1.copy();
 
             if (par2 != 1 && par2 != 0) {
-               /* if (itemstack1.getItem() == Items.coal) {
+                if (itemstack1.getItem() == Items.coal) {
                     if (!this.mergeItemStack(itemstack1, 1, 2, false)) {
                         return null;
                     }
-                }*/
+                }
 
-                if (!this.mergeItemStack(itemstack1, 0, 2, false)) {
+                else if (!this.mergeItemStack(itemstack1, 0, 2, false)) {
                     return null;
                 }
             }
