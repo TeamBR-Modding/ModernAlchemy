@@ -3,6 +3,7 @@ package com.dyonovan.modernalchemy.gui;
 import com.dyonovan.modernalchemy.container.ContainerArcFurnace;
 import com.dyonovan.modernalchemy.gui.widget.WidgetEnergyBank;
 import com.dyonovan.modernalchemy.gui.widget.WidgetLiquidTank;
+import com.dyonovan.modernalchemy.gui.widget.WidgetPulse;
 import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.TileArcFurnaceCore;
@@ -22,9 +23,10 @@ public class GuiArcFurnace extends BaseGui {
     public GuiArcFurnace(InventoryPlayer inventoryPlayer, TileArcFurnaceCore core) {
         super(new ContainerArcFurnace(inventoryPlayer, core));
         this.core = core;
-        widgets.add(new WidgetLiquidTank(this, core.getAirTank(), 37, 78, 52));
+        widgets.add(new WidgetLiquidTank(this, core.getAirTank(),     37, 78, 52));
         widgets.add(new WidgetLiquidTank(this, core.getOutputTank(), 147, 78, 52));
-        widgets.add(new WidgetEnergyBank(this, core.getEnergyBank(), 8, 78));
+        widgets.add(new WidgetEnergyBank(this, core.getEnergyBank(),   8, 78));
+        widgets.add(new      WidgetPulse(this, core,                  67, 54));
     }
 
     @Override
@@ -45,17 +47,6 @@ public class GuiArcFurnace extends BaseGui {
         int x = (width - xSize) / 2;
         int y = (height - ySize) / 2;
         drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
-
-        //Render pulse
-        GL11.glPushMatrix();
-        Tessellator tess = Tessellator.instance;
-        tess.startDrawingQuads();
-        tess.addVertexWithUV(x + 66, y + 53, 0,     0.6875F, 0.08203125F);
-        tess.addVertexWithUV(x + 93, y + 53, 0, 0.78515625F, 0.08203125F);
-        tess.addVertexWithUV(x + 93, y + 32, 0, 0.78515625F,        0.0F);
-        tess.addVertexWithUV(x + 66, y + 32, 0,     0.6875F,        0.0F);
-        tess.draw();
-        GL11.glPopMatrix();
 
         //Draw Arrow
         int arrow = core.getCookTimeScaled(24);

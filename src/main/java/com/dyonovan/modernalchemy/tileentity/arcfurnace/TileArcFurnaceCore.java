@@ -129,10 +129,12 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
             if(inventory.getStackInSlot(1).stackSize == 0)
                 inventory.setStackInSlot(null, 1);
             timeCooked += currentSpeed;
+            isActive = true;
         }
         else if(timeCooked > 0 && timeCooked < COOK_TIME) {
             timeCooked += currentSpeed;
             energyTank.drainEnergy(currentSpeed);
+            isActive = true;
         }
         else if(timeCooked >= COOK_TIME)
             smelt();
@@ -141,6 +143,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     public void smelt() {
         timeCooked = 0;
         outputTank.fill(new FluidStack(BlockHandler.fluidActinium, FluidContainerRegistry.BUCKET_VOLUME), true);
+        isActive = false;
     }
 
     public boolean canSmelt() {

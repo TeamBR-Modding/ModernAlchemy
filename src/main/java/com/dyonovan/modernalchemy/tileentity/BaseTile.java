@@ -15,6 +15,8 @@ import java.util.List;
 
 public class BaseTile extends TileEntity {
 
+    protected boolean isActive;
+
     public boolean isPowered() {
         return isPoweringTo(worldObj, xCoord, yCoord + 1, zCoord, 0) ||
                 isPoweringTo(worldObj, xCoord, yCoord - 1, zCoord, 1) ||
@@ -35,6 +37,22 @@ public class BaseTile extends TileEntity {
 
         if (worldObj != null && worldObj.blockExists(x, y, z)) { return worldObj.getTileEntity(x, y, z); }
         return null;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound tag){
+        super.writeToNBT(tag);
+        tag.setBoolean("isActive", isActive);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        isActive = tag.getBoolean("isActive");
     }
 
     @Override

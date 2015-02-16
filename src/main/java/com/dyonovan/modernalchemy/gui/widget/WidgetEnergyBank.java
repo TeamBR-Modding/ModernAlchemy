@@ -28,8 +28,8 @@ public class WidgetEnergyBank extends Widget {
 
         Tessellator tess = Tessellator.instance;
         tess.startDrawingQuads();
-        tess.addVertexWithUV(x + xPos,              yPos + y, 0,     0,                    0);
-        tess.addVertexWithUV(x + xPos + 16,         yPos + y, 0,     1,                    0);
+        tess.addVertexWithUV(x + xPos,               yPos + y, 0,     0,                    0);
+        tess.addVertexWithUV(x + xPos + 16,          yPos + y, 0,     1,                    0);
         tess.addVertexWithUV(x + xPos + 16, y + yPos - height, 0,     1,  (float) height / 52);
         tess.addVertexWithUV(x + xPos,      y + yPos - height, 0,     0,  (float) height / 52);
         tess.draw();
