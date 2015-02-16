@@ -23,8 +23,8 @@ import java.util.List;
 public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInventory {
 
     private static final int PROCESS_TIME = 6000; //5 mins with 1 T/Tick
-    public static final int INPUT_SLOT = 1;
-    public static final int ITEM_SLOT = 0;
+    public static final int INPUT_SLOT = 0;
+    public static final int ITEM_SLOT = 1;
     public static final int OUTPUT_SLOT = 2;
 
     public InventoryTile inventory;
