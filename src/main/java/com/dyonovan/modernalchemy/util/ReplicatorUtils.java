@@ -93,22 +93,22 @@ public class ReplicatorUtils {
     }
 
     public static ItemStack getReturn(String item) {
-        ItemStack itemStack;
+        ItemStack stack;
         String itemReturn[] = item.split(":");
         if (GameRegistry.findBlock(itemReturn[0], itemReturn[1]) != null) {
             Block objReturn = GameRegistry.findBlock(itemReturn[0], itemReturn[1]);
             if (itemReturn.length > 2)
-                itemStack = new ItemStack(objReturn, 1, Integer.parseInt(itemReturn[2]));
+                stack = new ItemStack(objReturn, 1, Integer.parseInt(itemReturn[2]));
             else
-                itemStack = new ItemStack(objReturn);
+                stack = new ItemStack(objReturn);
         } else {
             Item objReturn = GameRegistry.findItem(itemReturn[0], itemReturn[1]);
             if (itemReturn.length > 2)
-                itemStack = new ItemStack(objReturn, 1, Integer.parseInt(itemReturn[2]));
+                stack = new ItemStack(objReturn, 1, Integer.parseInt(itemReturn[2]));
             else
-                itemStack = new ItemStack(objReturn);
+                stack = new ItemStack(objReturn);
         }
-        return itemStack;
+        return stack;
     }
 
 }

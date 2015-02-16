@@ -148,6 +148,7 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
         return (stand != null);
     }
 
+    @SuppressWarnings("unchecked")
     private boolean findLasers() {
         listLaser = null;
         AxisAlignedBB bounds = null;

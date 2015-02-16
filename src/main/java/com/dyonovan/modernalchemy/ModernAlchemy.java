@@ -55,12 +55,14 @@ public class ModernAlchemy {
         ReplicatorUtils.buildDirectory(event.getModConfigurationDirectory().getAbsolutePath() + File.separator + Constants.MODID.toLowerCase() + File.separator + "replicatorValues");
     }
 
+    @SuppressWarnings("unused")
     @EventHandler
     public void init(FMLInitializationEvent event) {
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
         PacketHandler.initPackets();
     }
 
+    @SuppressWarnings("unused")
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {}
 }
