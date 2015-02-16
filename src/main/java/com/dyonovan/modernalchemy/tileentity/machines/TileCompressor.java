@@ -105,21 +105,21 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
 
         if (worldObj.isRemote) return;
 
-        if(energy.canAcceptEnergy()) {
+        if (energy.canAcceptEnergy()) {
             chargeFromCoils();
         }
 
-        if (!isPowered()) {
-            if (energy.getEnergyLevel() > 0 && canFill(tank) && !isPowered()) {
-                if (!isActive)
-                    isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-                updateSpeed();
-                energy.drainEnergy(currentSpeed);
-                tank.fill(new FluidStack(BlockHandler.fluidCompressedAir, 10 * currentSpeed), true);
-                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-            }
+
+        if (energy.getEnergyLevel() > 0 && canFill(tank) && !isPowered()) {
+            if (!isActive)
+                isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+            updateSpeed();
+            energy.drainEnergy(currentSpeed);
+            tank.fill(new FluidStack(BlockHandler.fluidCompressedAir, 10 * currentSpeed), true);
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         } else if (isActive)
             isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+
     }
 
     public void updateSpeed() {
