@@ -14,6 +14,7 @@ import com.dyonovan.modernalchemy.tileentity.InventoryTile;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
 import com.dyonovan.modernalchemy.util.Location;
 import com.dyonovan.modernalchemy.util.RenderUtils;
+import com.dyonovan.modernalchemy.util.ReplicatorUtils;
 import com.dyonovan.modernalchemy.util.WorldUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
@@ -59,7 +60,7 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
                 if (item.equals("")) {
                     item = inventory.getStackInSlot(1).getTagCompound().getString("Item");
                     requiredProcessTime = inventory.getStackInSlot(1).getTagCompound().getInteger("Value");
-                    stackReturn = getReturn(item);
+                    stackReturn = ReplicatorUtils.getReturn(item);
                 }
                 if (inventory.getStackInSlot(2) != null && (inventory.getStackInSlot(2).getItem() != stackReturn.getItem() ||
                                 inventory.getStackInSlot(2).stackSize >= inventory.getStackInSlot(2).getMaxStackSize())) {
@@ -105,25 +106,6 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
         requiredProcessTime = 0;
         item = "";
         stackReturn = null;
-    }
-
-    private ItemStack getReturn(String item) {
-        ItemStack itemStack;
-        String itemReturn[] = item.split(":");
-        if (GameRegistry.findBlock(itemReturn[0], itemReturn[1]) != null) {
-            Block objReturn = GameRegistry.findBlock(itemReturn[0], itemReturn[1]);
-            if (itemReturn.length > 2)
-                itemStack = new ItemStack(objReturn, 1, Integer.parseInt(itemReturn[2]));
-            else
-                itemStack = new ItemStack(objReturn);
-        } else {
-            Item objReturn = GameRegistry.findItem(itemReturn[0], itemReturn[1]);
-            if (itemReturn.length > 2)
-                itemStack = new ItemStack(objReturn, 1, Integer.parseInt(itemReturn[2]));
-            else
-                itemStack = new ItemStack(objReturn);
-        }
-        return itemStack;
     }
 
     private void copyToStand(Boolean insert) {

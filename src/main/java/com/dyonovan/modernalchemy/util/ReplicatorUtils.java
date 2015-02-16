@@ -3,6 +3,8 @@ package com.dyonovan.modernalchemy.util;
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.helpers.LogHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.io.FileUtils;
 
@@ -89,4 +91,24 @@ public class ReplicatorUtils {
         }
         return 0;
     }
+
+    public static ItemStack getReturn(String item) {
+        ItemStack itemStack;
+        String itemReturn[] = item.split(":");
+        if (GameRegistry.findBlock(itemReturn[0], itemReturn[1]) != null) {
+            Block objReturn = GameRegistry.findBlock(itemReturn[0], itemReturn[1]);
+            if (itemReturn.length > 2)
+                itemStack = new ItemStack(objReturn, 1, Integer.parseInt(itemReturn[2]));
+            else
+                itemStack = new ItemStack(objReturn);
+        } else {
+            Item objReturn = GameRegistry.findItem(itemReturn[0], itemReturn[1]);
+            if (itemReturn.length > 2)
+                itemStack = new ItemStack(objReturn, 1, Integer.parseInt(itemReturn[2]));
+            else
+                itemStack = new ItemStack(objReturn);
+        }
+        return itemStack;
+    }
+
 }

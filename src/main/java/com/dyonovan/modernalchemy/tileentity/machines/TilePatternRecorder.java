@@ -31,14 +31,14 @@ public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInv
 
     private TeslaBank energy;
     private int currentSpeed;
-    private ItemStack itemCopy;
-
+    private String itemCopy;
     public int currentProcessTime;
 
     public TilePatternRecorder() {
         inventory = new InventoryTile(3);
-        //currentProcessTime = 0;
+        currentProcessTime = 0;
         energy = new TeslaBank(0, 1000);
+        itemCopy = "";
     }
 
     public int getProgressScaled(int scale) { return this.currentProcessTime * scale / PROCESS_TIME; }
@@ -49,7 +49,7 @@ public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInv
         energy.readFromNBT(tag);
         inventory.readFromNBT(tag, this);
         currentProcessTime = tag.getInteger("TimeProcessed");
-        itemCopy = ItemStack.loadItemStackFromNBT(tag);
+        itemCopy = tag.getString("Item");
     }
 
     @Override
@@ -58,7 +58,7 @@ public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInv
         energy.writeToNBT(tag);
         inventory.writeToNBT(tag);
         tag.setInteger("TimeProcessed", currentProcessTime);
-        if (itemCopy != null) { itemCopy.writeToNBT(tag); }
+        tag.setString("Item", itemCopy);
     }
 
     @Override
@@ -77,7 +77,9 @@ public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInv
                 isActive = BlockPatternRecorder.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
             
             if (currentProcessTime <= 0 && canStartWork()) {
-                itemCopy = inventory.getStackInSlot(ITEM_SLOT);
+                GameRegistry.UniqueIdentifier uniqueIdentifier = GameRegistry.findUniqueIdentifierFor(inventory.getStackInSlot(0).getItem());
+                itemCopy = uniqueIdentifier.modId + ":" + uniqueIdentifier.name + ":" + inventory.getStackInSlot(0).getItemDamage();
+
                 decrStackSize(0, 1);
                 decrStackSize(1, 1);
                 currentProcessTime = 1;
@@ -103,15 +105,13 @@ public class TilePatternRecorder extends BaseTile implements ITeslaHandler, IInv
         super.markDirty();
     }
 
-    public static ItemStack recordPattern(ItemStack item) {
+    public static ItemStack recordPattern(String item) {
 
         ItemStack pattern = new ItemStack(ItemHandler.itemPattern, 1);
         NBTTagCompound tag = new NBTTagCompound();
-        GameRegistry.UniqueIdentifier uniqueIdentifier = GameRegistry.findUniqueIdentifierFor(item.getItem());
-        tag.setString("Item", uniqueIdentifier.modId +
-                ":" + uniqueIdentifier.name + ":" + item.getItemDamage());
+        tag.setString("Item", item);
+        tag.setInteger("Value", ReplicatorUtils.getValueForItem(ReplicatorUtils.getReturn(item)));
         pattern.setTagCompound(tag);
-        tag.setInteger("Value", ReplicatorUtils.getValueForItem(item));
         return pattern;
     }
 
