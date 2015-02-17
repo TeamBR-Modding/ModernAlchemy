@@ -190,7 +190,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
      *******************************************************************************************************************/
     public void chargeFromCoils() {
         int maxFill = energyTank.getMaxCapacity() - energyTank.getEnergyLevel();
-        List<TileTeslaCoil> coils = findCoils(worldObj, this);
+        List<TileTeslaCoil> coils = findCoils(worldObj);
         int currentDrain = 0;
         for(TileTeslaCoil coil : coils) {
             if (coil.getEnergyLevel() <= 0) continue; //fixes looking like its working when coil is empty

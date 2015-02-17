@@ -227,7 +227,7 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
 
     public void chargeFromCoils() {
         int maxFill = energy.getMaxCapacity() - energy.getEnergyLevel();
-        List<TileTeslaCoil> coils = findCoils(worldObj, this);
+        List<TileTeslaCoil> coils = findCoils(worldObj);
         int currentDrain = 0;
         for (TileTeslaCoil coil : coils) {
             if (coil.getEnergyLevel() <= 0) continue;

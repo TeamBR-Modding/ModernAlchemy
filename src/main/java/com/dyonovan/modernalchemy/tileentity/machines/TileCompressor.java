@@ -139,7 +139,7 @@ public class TileCompressor extends BaseTile implements IFluidHandler, ITeslaHan
 
     public void chargeFromCoils() {
         int maxFill = energy.getMaxCapacity() - energy.getEnergyLevel();
-        List<TileTeslaCoil> coils = findCoils(worldObj, this);
+        List<TileTeslaCoil> coils = findCoils(worldObj);
         int currentDrain = 0;
         for (TileTeslaCoil coil : coils) {
             if (coil.getEnergyLevel() <= 0) continue;
