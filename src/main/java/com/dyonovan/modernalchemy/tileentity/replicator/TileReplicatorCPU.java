@@ -70,13 +70,14 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
                     currentProcessTime = 1;
                     copyToStand(true);
                     decrStackSize(0, 1);
-                    this.isActive = true;
+                    isActive = true;
                 }
 
                 if (currentProcessTime < requiredProcessTime) {
                     if (getEnergyLevel() >= 2 * listLaser.size()) {
                         energy.drainEnergy(2 * listLaser.size());
                         currentProcessTime += listLaser.size();
+                        isActive = true;
                         for(EntityLaserNode node : listLaser)
                             node.fireLaser(stand.x + 0.5, stand.y + 1.5, stand.z + 0.5);
                     } else {
@@ -93,7 +94,6 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
                     }
                     resetCounts();
                 }
-                this.markDirty();
             }
         } else {
             if (stand == null) findStand();
@@ -106,7 +106,7 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
         requiredProcessTime = 0;
         item = "";
         stackReturn = null;
-        this.isActive = false;
+        isActive = false;
         this.markDirty();
     }
 
