@@ -126,6 +126,12 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
         }
         this.inventory.clear();
         timeCooked = 0;
+        isActive = false;
+    }
+
+    public void resetSoft() {
+        timeCooked = 0;
+        isActive = false;
     }
 
     /*******************************************************************************************************************
@@ -144,12 +150,14 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
             timeCooked += currentSpeed;
             isActive = true;
         }
-        else if(timeCooked > 0 && timeCooked < COOK_TIME) {
+        else if(timeCooked > 0 && timeCooked < COOK_TIME && energyTank.getEnergyLevel() - currentSpeed > 0) {
             timeCooked += currentSpeed;
             energyTank.drainEnergy(currentSpeed);
             airTank.drain(currentSpeed * 4, true);
             isActive = true;
         }
+        else if(timeCooked > 0 && timeCooked < COOK_TIME && energyTank.getEnergyLevel() - currentSpeed <= 0)
+            resetSoft();
         else if(timeCooked >= COOK_TIME)
             smelt();
     }
@@ -165,7 +173,8 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
             return airTank.getFluidAmount() > 100 &&
                     inventory.getStackInSlot(0).getItem() == Item.getItemFromBlock(BlockHandler.blockOreActinium) &&
                     inventory.getStackInSlot(1).getItem() == Items.coal &&
-                    outputTank.getCapacity() - outputTank.getFluidAmount() >= FluidContainerRegistry.BUCKET_VOLUME;
+                    outputTank.getCapacity() - outputTank.getFluidAmount() >= FluidContainerRegistry.BUCKET_VOLUME &&
+                    energyTank.getEnergyLevel() > currentSpeed;
         else
             return false;
     }
@@ -230,6 +239,24 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     @Override
     public TeslaBank getEnergyBank() {
         return energyTank;
+    }
+
+    @Override
+    public boolean hasClearPath(double x1, double y1, double z1, double x2, double y2, double z2) {
+        float t = 0.1F;
+        while(t < 1.0F) {
+            double checkX = x1 + ((x2 - x1) * t);
+            double checkY = y1 + ((y2 - y1) * t);
+            double checkZ = z1 + ((z2 - z1) * t);
+            if(!worldObj.isAirBlock((int)Math.floor(checkX), (int)Math.floor(checkY), (int)Math.floor(checkZ)) &&
+                    (worldObj.getBlock((int)Math.floor(checkX), (int)Math.floor(checkY), (int)Math.floor(checkZ)) != this.getBlockType()) &&
+                    (worldObj.getBlock((int)Math.floor(checkX), (int)Math.floor(checkY), (int)Math.floor(checkZ)) != BlockHandler.blockCoil) &&
+                    !(worldObj.getBlock((int)Math.floor(checkX), (int)Math.floor(checkY), (int)Math.floor(checkZ)) instanceof BlockDummy)) {
+                return false;
+            }
+            t += 0.01F;
+        }
+        return true;
     }
 
     /*******************************************************************************************************************
