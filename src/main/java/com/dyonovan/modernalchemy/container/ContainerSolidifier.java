@@ -17,6 +17,7 @@ public class ContainerSolidifier extends Container {
 
     private TileSolidifier tile;
     private int lastPower, lastTank, timeProcessed;
+    private boolean isActive;
     private InventoryPlayer inventory;
 
     public ContainerSolidifier(InventoryPlayer inventory, TileSolidifier tile) {

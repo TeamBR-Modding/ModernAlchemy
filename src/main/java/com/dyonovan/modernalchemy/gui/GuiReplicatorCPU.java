@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy.gui;
 
 import com.dyonovan.modernalchemy.container.ContainerReplicatorCpu;
 import com.dyonovan.modernalchemy.gui.widget.WidgetEnergyBank;
+import com.dyonovan.modernalchemy.gui.widget.WidgetPulse;
 import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.replicator.TileReplicatorCPU;
@@ -23,6 +24,7 @@ public class GuiReplicatorCPU extends BaseGui {
 
         tile = tileEntity;
         widgets.add(new WidgetEnergyBank(this, tile.getEnergyBank(), 8, 78));
+        widgets.add(new WidgetPulse(this, tile, 89, 68));
     }
 
     @Override

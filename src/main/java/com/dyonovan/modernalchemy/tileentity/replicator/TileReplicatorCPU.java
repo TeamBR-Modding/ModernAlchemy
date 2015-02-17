@@ -16,11 +16,8 @@ import com.dyonovan.modernalchemy.util.Location;
 import com.dyonovan.modernalchemy.util.RenderUtils;
 import com.dyonovan.modernalchemy.util.ReplicatorUtils;
 import com.dyonovan.modernalchemy.util.WorldUtils;
-import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -44,6 +41,7 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
         this.currentProcessTime = 0;
         this.requiredProcessTime = 0;
         this.item = "";
+        this.isActive = false;
     }
 
     @Override
@@ -62,7 +60,7 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
                     requiredProcessTime = inventory.getStackInSlot(1).getTagCompound().getInteger("Value");
                     stackReturn = ReplicatorUtils.getReturn(item);
                 }
-                if (inventory.getStackInSlot(2) != null && item != "" &&
+                if (inventory.getStackInSlot(2) != null && !item.equals("") &&
                                 (inventory.getStackInSlot(2).getItem() != stackReturn.getItem() ||
                                 inventory.getStackInSlot(2).stackSize >= inventory.getStackInSlot(2).getMaxStackSize())) {
                     resetCounts();
@@ -72,6 +70,7 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
                     currentProcessTime = 1;
                     copyToStand(true);
                     decrStackSize(0, 1);
+                    this.isActive = true;
                 }
 
                 if (currentProcessTime < requiredProcessTime) {
@@ -107,6 +106,7 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
         requiredProcessTime = 0;
         item = "";
         stackReturn = null;
+        this.isActive = false;
     }
 
     private void copyToStand(Boolean insert) {
