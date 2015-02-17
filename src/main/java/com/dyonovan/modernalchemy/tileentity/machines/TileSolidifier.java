@@ -145,7 +145,7 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
                 if (timeProcessed > 0 && timeProcessed < PROCESS_TIME) {
                     if (energy.getEnergyLevel() > 0 && (tank.getFluid() != null || tank.getFluidAmount() > 10 * currentSpeed)) {
                         energy.drainEnergy(currentSpeed);
-                        tank.drain(10, true);
+                        tank.drain(10 * currentSpeed, true);
                         timeProcessed += currentSpeed;
                     } else {
                         doReset();
