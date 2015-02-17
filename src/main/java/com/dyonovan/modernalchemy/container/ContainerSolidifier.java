@@ -13,7 +13,7 @@ import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public class ContainerSolidifier extends Container {
+public class ContainerSolidifier extends BaseContainer {
 
     private TileSolidifier tile;
     private int lastPower, lastTank, timeProcessed;
@@ -26,19 +26,8 @@ public class ContainerSolidifier extends Container {
         this.lastPower = 0;
 
         addSlotToContainer(new SlotFurnace(inventory.player, tile, 0, 146, 34));
-        bindPlayerInventory(inventory);
-    }
-
-    private void bindPlayerInventory(InventoryPlayer playerInventory)
-    {
-        // Inventory
-        for(int y = 0; y < 3; y++)
-            for(int x = 0; x < 9; x++)
-                addSlotToContainer(new Slot(playerInventory, x + y * 9 + 9, 8 + x * 18, 84 + y * 18));
-
-        // Action Bar
-        for(int x = 0; x < 9; x++)
-            addSlotToContainer(new Slot(playerInventory, x, 8 + x * 18, 142));
+        bindPlayerInventory(inventory, 8, 84);
+        setCanSendToTile(false);
     }
 
     @Override
@@ -86,46 +75,5 @@ public class ContainerSolidifier extends Container {
                 this.tile.timeProcessed = j;
                 break;
         }
-    }
-
-    @Override
-    public ItemStack transferStackInSlot(EntityPlayer player, int slot) {
-        ItemStack stack = null;
-        Slot slotObject = (Slot)this.inventorySlots.get(slot);
-        //null checks and checks if the item can be stacked (maxStackSize > 1)
-        if (slotObject != null && slotObject.getHasStack()) {
-            ItemStack stackInSlot = slotObject.getStack();
-            stack = stackInSlot.copy();
-            //merges the item into player inventory since its in the tileEntity
-            if (slot < 1) {
-                if (!this.mergeItemStack(stackInSlot, 1, 37, true)) {
-                    return null;
-                }
-            }
-
-            //Inventory to HotBar
-            else if(slot >= 1 && slot <= 27) {
-                if(!this.mergeItemStack(stackInSlot, 28, 37, false))
-                    return null;
-            }
-
-            //HotBar to inventory
-            else if(slot >= 28 && slot <= 36) {
-                if(!this.mergeItemStack(stackInSlot, 1, 28, false))
-                    return null;
-            }
-
-            if (stackInSlot.stackSize == 0) {
-                slotObject.putStack(null);
-            } else {
-                slotObject.onSlotChanged();
-            }
-
-            if (stackInSlot.stackSize == stack.stackSize) {
-                return null;
-            }
-            slotObject.onPickupFromSlot(player, stackInSlot);
-        }
-        return stack;
     }
 }
