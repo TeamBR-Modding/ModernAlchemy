@@ -139,7 +139,8 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
             if (energy.getEnergyLevel() > 0  && isPowered()) {
                 updateSpeed();
                 if (timeProcessed == 0 && tank.getFluidAmount() > 0) {
-                    isActive = BlockSolidifier.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+                    BlockSolidifier.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+                    isActive = true;
                     timeProcessed = 1;
                 }
                 if (timeProcessed > 0 && timeProcessed < PROCESS_TIME) {
@@ -167,7 +168,8 @@ public class TileSolidifier extends BaseTile implements IFluidHandler, ITeslaHan
     private void doReset() {
 
         if (isActive()) {
-            isActive = BlockSolidifier.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+            BlockSolidifier.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+            isActive = false;
             timeProcessed = 0;
         }
     }

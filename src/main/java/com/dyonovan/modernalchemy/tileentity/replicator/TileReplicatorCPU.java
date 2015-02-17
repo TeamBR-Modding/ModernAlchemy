@@ -107,7 +107,6 @@ public class TileReplicatorCPU extends BaseTile implements ITeslaHandler, ISided
         item = "";
         stackReturn = null;
         isActive = false;
-        this.markDirty();
     }
 
     private void copyToStand(Boolean insert) {
