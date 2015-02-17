@@ -11,10 +11,10 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
 
-public class ContainerReplicatorCpu extends Container {
+public class ContainerReplicatorCpu extends BaseContainer {
 
     private TileReplicatorCPU tile;
-    private int lastPower, currentProcessTime, requiredProcessTime;
+    private int lastPower, currentProcessTime, requiredProcessTime, active;
 
     public ContainerReplicatorCpu(InventoryPlayer playerInventory, TileReplicatorCPU tileEntity) {
 
@@ -41,36 +41,6 @@ public class ContainerReplicatorCpu extends Container {
         // Action Bar
         for(int x = 0; x < 9; x++)
             addSlotToContainer(new Slot(playerInventory, x, 8 + x * 18, 142));
-    }
-
-    @Override
-    public ItemStack transferStackInSlot(EntityPlayer player, int i) {
-
-        Slot slot = getSlot(i);
-
-        if(slot != null && slot.getHasStack()) {
-
-            if(!this.tile.isItemValidForSlot(i, slot.getStack())) return null;
-            ItemStack itemstack = slot.getStack();
-            ItemStack result = itemstack.copy();
-
-            if(i >= 36) {
-                if(!mergeItemStack(itemstack, 0, 36, false)) {
-                    return null;
-                }
-            } else if(!mergeItemStack(itemstack, 36, 36 + tile.getSizeInventory(), false)) {
-                return null;
-            }
-
-            if(itemstack.stackSize == 0) {
-                slot.putStack(null);
-            } else {
-                slot.onSlotChanged();
-            }
-            slot.onPickupFromSlot(player, itemstack);
-            return result;
-        }
-        return null;
     }
 
     @Override
