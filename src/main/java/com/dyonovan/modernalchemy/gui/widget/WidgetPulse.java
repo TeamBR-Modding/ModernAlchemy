@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy.gui.widget;
 
 
 import com.dyonovan.modernalchemy.lib.Constants;
+import com.dyonovan.modernalchemy.tileentity.BaseMachine;
 import com.dyonovan.modernalchemy.tileentity.BaseTile;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -11,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 
 public class WidgetPulse extends Widget {
 
-    private BaseTile tileEntity;
+    private BaseMachine tileEntity;
     private float alpha;
     private float offSet = 0.005F;
     private int rot = 0;
@@ -21,7 +22,7 @@ public class WidgetPulse extends Widget {
      * @param x   How far from guiLeft
      * @param y   How far down from guiTop
      */
-    public WidgetPulse(Gui gui, BaseTile tile, int x, int y) {
+    public WidgetPulse(Gui gui, BaseMachine tile, int x, int y) {
         super(gui, x, y);
         tileEntity = tile;
     }

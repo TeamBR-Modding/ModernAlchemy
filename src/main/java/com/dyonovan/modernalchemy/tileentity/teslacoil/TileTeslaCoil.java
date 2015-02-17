@@ -5,33 +5,31 @@ import cofh.api.energy.IEnergyHandler;
 import com.dyonovan.modernalchemy.energy.ITeslaHandler;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.ConfigHandler;
+import com.dyonovan.modernalchemy.tileentity.BaseMachine;
 import com.dyonovan.modernalchemy.tileentity.BaseTile;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileTeslaCoil extends BaseTile implements IEnergyHandler, ITeslaHandler {
+public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
 
     protected EnergyStorage energyRF;
-    private TeslaBank energyTesla;
 
     public TileTeslaCoil() {
         super();
         energyRF = new EnergyStorage(10000, 1000, 0);
-        energyTesla = new TeslaBank(1000);
+        energyTank = new TeslaBank(1000);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         energyRF.readFromNBT(tag);
-        energyTesla.readFromNBT(tag);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         energyRF.writeToNBT(tag);
-        energyTesla.writeToNBT(tag);
     }
 
     @Override
@@ -75,28 +73,8 @@ public class TileTeslaCoil extends BaseTile implements IEnergyHandler, ITeslaHan
         return side == ForgeDirection.DOWN; //TODO Why BC Pipes dont update on load
     }
 
-    @Override
-    public void addEnergy(int maxAmount) {
-        energyTesla.addEnergy(maxAmount);
-    }
-
-    @Override
-    public int drainEnergy(int maxAmount) {
-        return energyTesla.drainEnergy(maxAmount);
-    }
-
-    @Override
-    public int getEnergyLevel() {
-        return energyTesla.getEnergyLevel();
-    }
-
-    @Override
-    public TeslaBank getEnergyBank() {
-        return energyTesla;
-    }
-
     public void setTeslaEnergyStored(int i) {
-        energyTesla.setEnergyLevel(i);
+        energyTank.setEnergyLevel(i);
     }
 
     @Override
@@ -104,19 +82,19 @@ public class TileTeslaCoil extends BaseTile implements IEnergyHandler, ITeslaHan
         super.updateEntity();
         if (worldObj.isRemote) return;
 
-        if (energyRF.getEnergyStored() > 0 && energyTesla.getEnergyLevel()  < energyTesla.getMaxCapacity()) {
+        if (energyRF.getEnergyStored() > 0 && energyTank.getEnergyLevel()  < energyTank.getMaxCapacity()) {
             int actualRF = Math.min(ConfigHandler.maxCoilGenerate * ConfigHandler.rfPerTesla, energyRF.getEnergyStored());
-            int actualTesla = Math.min(ConfigHandler.maxCoilGenerate, energyTesla.getMaxCapacity() - energyTesla.getEnergyLevel());
+            int actualTesla = Math.min(ConfigHandler.maxCoilGenerate, energyTank.getMaxCapacity() - energyTank.getEnergyLevel());
 
             if (actualTesla * ConfigHandler.rfPerTesla < actualRF) {
                 removeEnergy(actualTesla * 10);
-                energyTesla.addEnergy(actualTesla);
+                energyTank.addEnergy(actualTesla);
             } else if (actualTesla * ConfigHandler.rfPerTesla > actualRF && actualRF > 100) {
                 removeEnergy(actualRF);
-                energyTesla.addEnergy(actualRF / ConfigHandler.rfPerTesla);
+                energyTank.addEnergy(actualRF / ConfigHandler.rfPerTesla);
             } else if (actualTesla * ConfigHandler.rfPerTesla == actualRF) {
                 removeEnergy(actualRF);
-                energyTesla.addEnergy(actualTesla);
+                energyTank.addEnergy(actualTesla);
             }
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }

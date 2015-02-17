@@ -24,7 +24,6 @@ public class GuiPatternRecorder extends BaseGui {
         tile = tileEntity;
 
         widgets.add(new WidgetEnergyBank(this, tile.getEnergyBank(), 8, 78));
-
     }
 
     @Override
@@ -42,30 +41,6 @@ public class GuiPatternRecorder extends BaseGui {
         int x = (width - xSize) / 2;
         int y = (height - ySize) / 2;
         drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
-
-        /*//Render energy
-        TeslaBank energyTank = tile.getEnergyTank();
-        int height = energyTank.getEnergyLevel() * 52 / energyTank.getMaxCapacity();
-
-        Tessellator tess = Tessellator.instance;
-        tess.startDrawingQuads();
-        tess.addVertexWithUV(x + 8,           y + 78, 0,     0.6875F,                 0.35546875F);
-        tess.addVertexWithUV(x + 24,          y + 78, 0, 0.74609375F,                 0.35546875F);
-        tess.addVertexWithUV(x + 24, y + 78 - height, 0, 0.74609375F, (float) (91 - height) / 256);
-        tess.addVertexWithUV(x + 8,  y + 78 - height, 0,     0.6875F, (float) (91 - height) / 256);
-        tess.draw();*/
-
-        //Render pulse
-        Tessellator tess = Tessellator.instance;
-        GL11.glPushMatrix();
-        tess.startDrawingQuads();
-        GL11.glTranslatef(10, 26, 0); // offset the pulse because we are drawing it in a different location
-        tess.addVertexWithUV(x + 66, y + 53, 0,     0.6875F, 0.08203125F);
-        tess.addVertexWithUV(x + 93, y + 53, 0, 0.78515625F, 0.08203125F);
-        tess.addVertexWithUV(x + 93, y + 32, 0, 0.78515625F,        0.0F);
-        tess.addVertexWithUV(x + 66, y + 32, 0,     0.6875F,        0.0F);
-        tess.draw();
-        GL11.glPopMatrix();
 
         //Draw Arrow
         int arrow = tile.getProgressScaled(24);

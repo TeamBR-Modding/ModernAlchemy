@@ -34,7 +34,7 @@ public class ClientProxy extends  CommonProxy{
         TileEntitySpecialRenderer renderBase = new RenderTeslaBase();
         ClientRegistry.bindTileEntitySpecialRenderer(TileTeslaBase.class, renderBase);
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockHandler.blockTeslaBase),
-                new ItemRenderTeslaBase(renderBase, new TileTeslaBase()));
+                new ItemRenderTeslaBase());
 
         //Frame
         TileEntitySpecialRenderer renderFrame = new RenderFrame();

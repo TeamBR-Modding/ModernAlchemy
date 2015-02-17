@@ -18,7 +18,6 @@ public class BlockTeslaBase extends BlockBase {
         super(Material.iron);
         this.setBlockName(Constants.MODID + ":blockTeslaBase");
         this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
-        this.setBlockBounds(0.34375F, 0F, 0.34375F, 0.65625F, 1F, 0.65625F);
     }
 
     @Override

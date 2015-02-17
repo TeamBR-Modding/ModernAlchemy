@@ -38,22 +38,7 @@ public class BlockSolidifier extends BlockBase {
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        boolean active = false;
-        if (meta > 10) {
-            meta -= 10;
-            active = true;
-        }
-        return side == meta ? (active ? frontActive : front) : blockIcon;
-    }
-
-    public static boolean toggleIsActive(World world, int x, int y, int z) {
-        int currentMeta = world.getBlockMetadata(x, y, z);
-        if (currentMeta < 10) {
-            world.setBlockMetadataWithNotify(x, y, z, currentMeta += 10, 2);
-        } else {
-            world.setBlockMetadataWithNotify(x, y, z, currentMeta -= 10, 2);
-        }
-        return !(currentMeta < 10);
+        return side == meta ? front : blockIcon;
     }
 
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemstack) {

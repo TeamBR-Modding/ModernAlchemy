@@ -5,6 +5,7 @@ import com.dyonovan.modernalchemy.energy.ITeslaHandler;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.handlers.ConfigHandler;
+import com.dyonovan.modernalchemy.tileentity.BaseMachine;
 import com.dyonovan.modernalchemy.tileentity.InventoryTile;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.dummies.TileDummy;
@@ -33,9 +34,6 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     //Tanks
     private FluidTank outputTank;
     private FluidTank airTank;
-
-    //Energy
-    private TeslaBank energyTank;
 
     //Inventory
     public InventoryTile inventory;
@@ -197,50 +195,6 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     /*******************************************************************************************************************
      ******************************************** Energy Functions *****************************************************
      *******************************************************************************************************************/
-    public void chargeFromCoils() {
-        int maxFill = energyTank.getMaxCapacity() - energyTank.getEnergyLevel();
-        List<TileTeslaCoil> coils = findCoils(worldObj);
-        int currentDrain = 0;
-        for(TileTeslaCoil coil : coils) {
-            if (coil.getEnergyLevel() <= 0) continue; //fixes looking like its working when coil is empty
-            int fill = coil.getEnergyLevel() > ConfigHandler.maxCoilTransfer ? ConfigHandler.maxCoilTransfer : coil.getEnergyLevel();
-            if(currentDrain + fill > maxFill)
-                fill = maxFill - currentDrain;
-            currentDrain += fill;
-            coil.drainEnergy(fill);
-
-            RenderUtils.sendBoltToClient(xCoord, yCoord, zCoord, coil, fill);
-            WorldUtils.hurtEntitiesInRange(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, coil.xCoord + 0.5, coil.yCoord + 0.5, coil.zCoord + 0.5);
-
-            if(currentDrain >= maxFill) //Don't want to drain other coils we don't need to
-                break;
-        }
-        while(currentDrain > 0) {
-            energyTank.addEnergy(1);
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-            currentDrain--;
-        }
-    }
-
-    @Override
-    public void addEnergy(int maxAmount) {
-        energyTank.addEnergy(maxAmount);
-    }
-
-    @Override
-    public int drainEnergy(int maxAmount) {
-        return energyTank.drainEnergy(maxAmount);
-    }
-
-    @Override
-    public int getEnergyLevel() {
-        return energyTank.getEnergyLevel();
-    }
-
-    @Override
-    public TeslaBank getEnergyBank() {
-        return energyTank;
-    }
 
     @Override
     public boolean hasClearPath(double x1, double y1, double z1, double x2, double y2, double z2) {
@@ -421,7 +375,6 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
         timeCooked = tagCompound.getInteger("TimeCooking");
 
         inventory.readFromNBT(tagCompound, this);
-        energyTank.readFromNBT(tagCompound);
 
         if(tagCompound.getBoolean("hasOutputFluid")) {
             outputTank.setFluid(FluidRegistry.getFluidStack(tagCompound.getString("outputFluid"), tagCompound.getInteger("outputFluidAmount")));
@@ -442,7 +395,6 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
 
         tagCompound.setInteger("TimeCooking", timeCooked);
 
-        energyTank.writeToNBT(tagCompound);
         inventory.writeToNBT(tagCompound);
 
         tagCompound.setBoolean("hasOutputFluid", outputTank.getFluid() != null);
