@@ -210,6 +210,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
             coil.drainEnergy(fill);
 
             RenderUtils.sendBoltToClient(xCoord, yCoord, zCoord, coil, fill);
+            WorldUtils.hurtEntitiesInRange(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, coil.xCoord + 0.5, coil.yCoord + 0.5, coil.zCoord + 0.5);
 
             if(currentDrain >= maxFill) //Don't want to drain other coils we don't need to
                 break;
