@@ -17,6 +17,7 @@ public class GuiTeslaCoilLinks extends BaseGui {
     private ResourceLocation background = new ResourceLocation(Constants.MODID + ":textures/gui/coil_link.png");
     private int high, low;
 
+
     public GuiTeslaCoilLinks(TileTeslaCoil tileEntity) {
         super(new ContainerTeslaCoilLinks(tileEntity));
         tile = tileEntity;
