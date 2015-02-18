@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -33,6 +34,7 @@ public class WorldUtils {
             List<Entity> entities = new ArrayList<Entity>();
             List<EntityLiving> livings = worldObj.getEntitiesWithinAABB(EntityLiving.class, bb);
             List<EntityPlayer> players = worldObj.getEntitiesWithinAABB(EntityPlayer.class, bb);
+            List<EntityCreeper> creepers = worldObj.getEntitiesWithinAABB(EntityCreeper.class, bb);
             entities.addAll(livings);
             entities.addAll(players);
             if(entities.size() > 0) {
@@ -41,6 +43,10 @@ public class WorldUtils {
                     entityLiving.setFire(1);
                 }
             }
+
+            for(EntityCreeper creeper : creepers)
+                creeper.getDataWatcher().updateObject(17, Byte.valueOf((byte)1));
+
             t += 0.01F;
         }
     }
