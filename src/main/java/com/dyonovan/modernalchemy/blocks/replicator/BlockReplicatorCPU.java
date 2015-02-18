@@ -4,9 +4,12 @@ import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.BlockBase;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
+import com.dyonovan.modernalchemy.tileentity.arcfurnace.TileArcFurnaceCore;
 import com.dyonovan.modernalchemy.tileentity.replicator.TileReplicatorCPU;
+import com.dyonovan.modernalchemy.util.WorldUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -52,5 +55,15 @@ public class BlockReplicatorCPU extends BlockBase {
             }
             return true;
         }
+    }
+
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block par5, int par6)
+    {
+        TileReplicatorCPU core = (TileReplicatorCPU) world.getTileEntity(x, y, z);
+        WorldUtils.expelItem(world, core.xCoord, core.yCoord, core.zCoord, core.inventory.getStackInSlot(0));
+        WorldUtils.expelItem(world, core.xCoord, core.yCoord, core.zCoord, core.inventory.getStackInSlot(1));
+        WorldUtils.expelItem(world, core.xCoord, core.yCoord, core.zCoord, core.inventory.getStackInSlot(2));
+        super.breakBlock(world, x, y, z, par5, par6);
     }
 }

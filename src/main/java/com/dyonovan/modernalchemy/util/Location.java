@@ -12,6 +12,12 @@ public class Location {
         this(0, 0, 0);
     }
 
+    public Location(Location l1, Location l2) {
+        x = l1.x + l2.x;
+        y = l1.y + l2.y;
+        z = l1.z + l2.z;
+    }
+
     public Location(int xLocation, int yLocation, int zLocation) {
         this.x = xLocation;
         this.y = yLocation;
