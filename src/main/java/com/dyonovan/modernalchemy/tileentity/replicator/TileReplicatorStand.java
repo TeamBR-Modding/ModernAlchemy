@@ -20,7 +20,7 @@ public class TileReplicatorStand extends BaseTile implements IInventory {
     }
 
     @Override
-    public void onWrench() {
+    public void onWrench(EntityPlayer player) {
 
     }
 

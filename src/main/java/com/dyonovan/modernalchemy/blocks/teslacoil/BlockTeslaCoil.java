@@ -79,9 +79,7 @@ public class BlockTeslaCoil extends BlockBase {
         if (world.isRemote)
         {
             return true;
-        }
-        else
-        {
+        } else {
             TileTeslaCoil tile = (TileTeslaCoil)world.getTileEntity(x, y, z);
             if(tile != null) {
                 player.openGui(ModernAlchemy.instance, GuiHandler.TESLA_COIL_GUI_ID, world, x, y, z);

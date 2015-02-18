@@ -36,10 +36,17 @@ public class GuiTeslaCoil extends BaseGui {
         fontRendererObj.drawString(title2, (108 - fontRendererObj.getStringWidth(title2)) / 2, 14, 4210752);
 
         String strLink = "Link:";
+        int color;
         fontRendererObj.drawString(strLink, (108 - fontRendererObj.getStringWidth(strLink)) / 2, 40, 4210752);
-        if (tile.link.containsKey("Any")) strLink = "Any";
-        else strLink = "Restricted";
-        fontRendererObj.drawString(strLink, (108 - fontRendererObj.getStringWidth(strLink)) / 2, 50, 4210752);
+        if (tile.link.containsKey("Any")) {
+            strLink = "Any";
+            color = 0x35D62F;
+        }
+        else {
+            strLink = "Restricted";
+            color = 0xD62F2F;
+        }
+        fontRendererObj.drawString(strLink, (108 - fontRendererObj.getStringWidth(strLink)) / 2, 50, color);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.dyonovan.modernalchemy.tileentity.teslacoil;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import com.dyonovan.modernalchemy.tileentity.BaseTile;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -12,7 +13,7 @@ public class TileTeslaStand extends BaseTile implements IEnergyHandler {
     protected EnergyStorage energy = new EnergyStorage(1000, 1000, 1000);
 
     @Override
-    public void onWrench() {
+    public void onWrench(EntityPlayer player) {
 
     }
 

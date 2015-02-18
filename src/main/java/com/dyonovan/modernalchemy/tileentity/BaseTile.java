@@ -4,6 +4,7 @@ import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.handlers.ConfigHandler;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
 import com.dyonovan.modernalchemy.util.Location;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public abstract class BaseTile extends TileEntity {
 
-    public abstract void onWrench();
+    public abstract void onWrench(EntityPlayer player);
 
     public boolean isPowered() {
         return isPoweringTo(worldObj, xCoord, yCoord + 1, zCoord, 0) ||

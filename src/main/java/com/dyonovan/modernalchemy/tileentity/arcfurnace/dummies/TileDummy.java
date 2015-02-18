@@ -3,13 +3,14 @@ package com.dyonovan.modernalchemy.tileentity.arcfurnace.dummies;
 import com.dyonovan.modernalchemy.util.Location;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.BaseCore;
 import com.dyonovan.modernalchemy.tileentity.BaseTile;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class TileDummy extends BaseTile {
     private Location coreLocation = new Location(-100, -100, -100);
 
     @Override
-    public void onWrench() {
+    public void onWrench(EntityPlayer player) {
 
     }
 

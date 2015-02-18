@@ -7,6 +7,7 @@ import com.dyonovan.modernalchemy.handlers.ConfigHandler;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
 import com.dyonovan.modernalchemy.util.RenderUtils;
 import com.dyonovan.modernalchemy.util.WorldUtils;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
@@ -25,7 +26,7 @@ public class BaseMachine extends BaseTile implements ITeslaHandler {
     }
 
     @Override
-    public void onWrench() {
+    public void onWrench(EntityPlayer player) {
 
     }
 

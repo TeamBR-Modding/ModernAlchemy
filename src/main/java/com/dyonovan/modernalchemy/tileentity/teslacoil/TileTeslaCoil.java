@@ -2,10 +2,14 @@ package com.dyonovan.modernalchemy.tileentity.teslacoil;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
+import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.ConfigHandler;
+import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.tileentity.BaseMachine;
 import com.dyonovan.modernalchemy.util.Location;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -16,13 +20,14 @@ import java.util.Map;
 public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
 
     protected EnergyStorage energyRF;
-    public HashMap<String, Location> link = new HashMap<String, Location>();
+    public HashMap<String, Location> link;
 
 
     public TileTeslaCoil() {
         super();
         energyRF = new EnergyStorage(10000, 1000, 0);
         energyTank = new TeslaBank(1000);
+        link = new HashMap<String, Location>();
         link.put("Any", new Location(0,0,0));
     }
 
@@ -102,6 +107,11 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
     /*******************************************************************************************************************
      ********************************************** Tile Functions *****************************************************
      *******************************************************************************************************************/
+
+    @Override
+    public void onWrench(EntityPlayer player) {
+         player.openGui(ModernAlchemy.instance, GuiHandler.TESLA_COIL_LINKS_GUI_ID, worldObj, xCoord, yCoord, zCoord);
+    }
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
