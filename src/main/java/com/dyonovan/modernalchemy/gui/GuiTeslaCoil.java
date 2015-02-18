@@ -1,13 +1,11 @@
 package com.dyonovan.modernalchemy.gui;
 
 import com.dyonovan.modernalchemy.container.ContainerTeslaCoil;
-import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.gui.widget.WidgetEnergyBank;
 import com.dyonovan.modernalchemy.gui.widget.WidgetPulse;
 import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -36,6 +34,12 @@ public class GuiTeslaCoil extends BaseGui {
         final String title2 = "Coil";
         fontRendererObj.drawString(title1, (108 - fontRendererObj.getStringWidth(title1)) / 2, 4, 4210752);
         fontRendererObj.drawString(title2, (108 - fontRendererObj.getStringWidth(title2)) / 2, 14, 4210752);
+
+        String strLink = "Link:";
+        fontRendererObj.drawString(strLink, (108 - fontRendererObj.getStringWidth(strLink)) / 2, 40, 4210752);
+        if (tile.link.containsKey("Any")) strLink = "Any";
+        else strLink = "Restricted";
+        fontRendererObj.drawString(strLink, (108 - fontRendererObj.getStringWidth(strLink)) / 2, 50, 4210752);
     }
 
     @Override

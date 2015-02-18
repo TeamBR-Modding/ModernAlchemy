@@ -5,18 +5,25 @@ import cofh.api.energy.IEnergyHandler;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.ConfigHandler;
 import com.dyonovan.modernalchemy.tileentity.BaseMachine;
+import com.dyonovan.modernalchemy.util.Location;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
 
     protected EnergyStorage energyRF;
+    public HashMap<String, Location> link = new HashMap<String, Location>();
 
 
     public TileTeslaCoil() {
         super();
         energyRF = new EnergyStorage(10000, 1000, 0);
         energyTank = new TeslaBank(1000);
+        link.put("Any", new Location(0,0,0));
     }
 
     /*******************************************************************************************************************
@@ -100,12 +107,29 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         energyRF.readFromNBT(tag);
+        NBTTagList nbtList = tag.getTagList("Links", 10);
+        link.clear();
+        for (int i = 0; i < nbtList.tagCount(); i++) {
+            NBTTagCompound tag1 = nbtList.getCompoundTagAt(i);
+            link.put(tag1.getString("Machine"), new Location(
+                    tag1.getInteger("X"), tag1.getInteger("Y"), tag1.getInteger("Z")));
+        }
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         energyRF.writeToNBT(tag);
+        NBTTagList nbtList = new NBTTagList();
+        for (Map.Entry<String, Location> entry : link.entrySet()) {
+            NBTTagCompound tag1 = new NBTTagCompound();
+            tag1.setString("Machine", entry.getKey());
+            tag1.setInteger("X", entry.getValue().x);
+            tag1.setInteger("Y", entry.getValue().y);
+            tag1.setInteger("Z", entry.getValue().z);
+            nbtList.appendTag(tag1);
+        }
+        tag.setTag("Links", nbtList);
     }
 
     @Override
