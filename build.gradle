@@ -25,7 +25,7 @@ configFile.withReader {
     project.ext.config = new ConfigSlurper().parse prop
 }
 
-version = "${config.minecraft_version}-${config.mod_version}-" + System.getenv("BUILD_NUMBER")
+version = "${config.minecraft_version}-${config.mod_version}-B" + System.getenv("BUILD_NUMBER")
 group= "com.dyonovan.modernalchemy" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "modernalchemy"
 
