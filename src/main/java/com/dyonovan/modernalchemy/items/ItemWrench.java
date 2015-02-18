@@ -4,6 +4,7 @@ package com.dyonovan.modernalchemy.items;
 import cofh.api.item.IToolHammer;
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.lib.Constants;
+import com.dyonovan.modernalchemy.tileentity.BaseTile;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -35,10 +36,17 @@ public class ItemWrench extends Item implements IToolHammer {
             return false;
         }
         Block block = world.getBlock(x, y, z);
-        if(block != null && !player.isSneaking() && block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(side))) {
+        if(world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof BaseTile) {
+            BaseTile tile = (BaseTile)world.getTileEntity(x, y, z);
+            tile.onWrench();
             player.swingItem();
             return true;
         }
+        else if(block != null && !player.isSneaking() && block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(side))) {
+            player.swingItem();
+            return true;
+        }
+
         return false;
     }
 
