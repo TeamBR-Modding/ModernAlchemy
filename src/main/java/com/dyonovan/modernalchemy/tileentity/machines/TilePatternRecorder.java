@@ -1,6 +1,5 @@
 package com.dyonovan.modernalchemy.tileentity.machines;
 
-import com.dyonovan.modernalchemy.blocks.machines.BlockPatternRecorder;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.ItemHandler;
 import com.dyonovan.modernalchemy.items.ItemPattern;
@@ -33,40 +32,16 @@ public class TilePatternRecorder extends BaseMachine implements  IInventory {
         itemCopy = "";
     }
 
-    public int getProgressScaled(int scale) { return this.currentProcessTime * scale / PROCESS_TIME; }
+    /*******************************************************************************************************************
+     ************************************* Pattern Recorder Functions **************************************************
+     *******************************************************************************************************************/
 
-    @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        super.readFromNBT(tag);
-        inventory.readFromNBT(tag, this);
-        currentProcessTime = tag.getInteger("TimeProcessed");
-        if(tag.hasKey("Item"))
-            itemCopy = tag.getString("Item");
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound tag) {
-        super.writeToNBT(tag);
-        inventory.writeToNBT(tag);
-        tag.setInteger("TimeProcessed", currentProcessTime);
-        if(itemCopy != null && itemCopy.length() > 0)
-            tag.setString("Item", itemCopy);
-    }
-
-    @Override
-    public void updateEntity() {
-        super.updateEntity();
-
-        if (worldObj.isRemote) return;
-
-        if(energyTank.canAcceptEnergy())
-            chargeFromCoils();
-
+    private void doRecording() {
         if (canStartWork() || currentProcessTime > 0) {
             //todo make sure item has replicator value
             updateSpeed();
             if (!isActive)
-                isActive = BlockPatternRecorder.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+                isActive = true;
 
             if (currentProcessTime <= 0 && canStartWork()) {
                 GameRegistry.UniqueIdentifier uniqueIdentifier = GameRegistry.findUniqueIdentifierFor(inventory.getStackInSlot(0).getItem());
@@ -91,13 +66,23 @@ public class TilePatternRecorder extends BaseMachine implements  IInventory {
                 currentProcessTime = 0;
             }
         } else if (isActive) {
-            isActive = BlockPatternRecorder.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+            isActive = false;
             currentProcessTime = 0;
         }
-        super.markDirty();
     }
 
-    public static ItemStack recordPattern(String item) {
+    private void updateSpeed() {
+        if (energyTank.getEnergyLevel() == 0) {
+            currentSpeed = 0;
+            return;
+        }
+
+        currentSpeed = (energyTank.getEnergyLevel() * 20) / energyTank.getMaxCapacity();
+        if (currentSpeed == 0)
+            currentSpeed = 1;
+    }
+
+    private static ItemStack recordPattern(String item) {
         ItemStack pattern = new ItemStack(ItemHandler.itemPattern, 1);
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("Item", item);
@@ -106,22 +91,17 @@ public class TilePatternRecorder extends BaseMachine implements  IInventory {
         return pattern;
     }
 
-    public void updateSpeed() {
-        if(energyTank.getEnergyLevel() == 0) {
-            currentSpeed = 0;
-            return;
-        }
-
-        currentSpeed = (energyTank.getEnergyLevel() * 20) / energyTank.getMaxCapacity();
-        if(currentSpeed == 0)
-            currentSpeed = 1;
-    }
-
     private boolean canStartWork() {
         return inventory.getStackInSlot(INPUT_SLOT) != null && inventory.getStackInSlot(ITEM_SLOT) != null &&
                 inventory.getStackInSlot(INPUT_SLOT).getItem() instanceof ItemPattern &&
                 inventory.getStackInSlot(OUTPUT_SLOT) == null;
     }
+
+    public int getProgressScaled(int scale) { return this.currentProcessTime * scale / PROCESS_TIME; }
+
+    /*******************************************************************************************************************
+     ********************************************** Item Functions *****************************************************
+     *******************************************************************************************************************/
 
     @Override
     public int getSizeInventory() {
@@ -179,7 +159,7 @@ public class TilePatternRecorder extends BaseMachine implements  IInventory {
 
     @Override
     public int getInventoryStackLimit() {
-        return 1;
+        return 64;
     }
 
     @Override
@@ -188,14 +168,10 @@ public class TilePatternRecorder extends BaseMachine implements  IInventory {
     }
 
     @Override
-    public void openInventory() {
-
-    }
+    public void openInventory() {}
 
     @Override
-    public void closeInventory() {
-
-    }
+    public void closeInventory() {}
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
@@ -208,5 +184,37 @@ public class TilePatternRecorder extends BaseMachine implements  IInventory {
             default:
                 return false;
         }
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        inventory.readFromNBT(tag, this);
+        currentProcessTime = tag.getInteger("TimeProcessed");
+        if(tag.hasKey("Item"))
+            itemCopy = tag.getString("Item");
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+        inventory.writeToNBT(tag);
+        tag.setInteger("TimeProcessed", currentProcessTime);
+        if(itemCopy != null && itemCopy.length() > 0)
+            tag.setString("Item", itemCopy);
+    }
+
+    /*******************************************************************************************************************
+     ********************************************** Tile Functions *****************************************************
+     *******************************************************************************************************************/
+
+    @Override
+    public void updateEntity() {
+        super.updateEntity();
+        if (worldObj.isRemote) return;
+        if(energyTank.canAcceptEnergy())
+            chargeFromCoils();
+        doRecording();
+        markDirty();
     }
 }

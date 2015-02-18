@@ -23,5 +23,4 @@ public class ContainerPatternRecorder extends BaseContainer {
         addSlotToContainer(new SlotFurnace(playerInventory.player, tile, TilePatternRecorder.OUTPUT_SLOT, 142, 35));
         bindPlayerInventory(playerInventory, 8, 84);
     }
-
 }

@@ -1,6 +1,5 @@
 package com.dyonovan.modernalchemy.tileentity.machines;
 
-import com.dyonovan.modernalchemy.blocks.machines.BlockCompressor;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.tileentity.BaseMachine;
@@ -19,18 +18,40 @@ public class TileCompressor extends BaseMachine implements IFluidHandler {
         this.isActive = false;
     }
 
-    @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        super.readFromNBT(tag);
-        tank.readFromNBT(tag);
+    /*******************************************************************************************************************
+     ****************************************** Compressor Functions ***************************************************
+     *******************************************************************************************************************/
+
+    private void updateSpeed() {
+        if(energyTank.getEnergyLevel() == 0) {
+            currentSpeed = 0;
+            return;
+        }
+
+        currentSpeed = (energyTank.getEnergyLevel() * 20) / energyTank.getMaxCapacity();
+        if(currentSpeed == 0)
+            currentSpeed = 1;
     }
 
-    @Override
-    public void writeToNBT(NBTTagCompound tag) {
-        super.writeToNBT(tag);
-        tank.writeToNBT(tag);
+    private void compress() {
+        if (energyTank.getEnergyLevel() > 0 && canFill(tank) && !isPowered()) {
+            if (!isActive)
+                isActive = true;
+            updateSpeed();
+            energyTank.drainEnergy(currentSpeed);
+            tank.fill(new FluidStack(BlockHandler.fluidCompressedAir, 10 * currentSpeed), true);
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        } else if (isActive)
+            isActive = false;
     }
 
+    /*******************************************************************************************************************
+     ********************************************* Fluid Functions *****************************************************
+     *******************************************************************************************************************/
+
+    public boolean canFill(FluidTank tank) {
+        return tank.getFluid() == null || tank.getFluid().amount < tank.getCapacity();
+    }
 
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
@@ -66,41 +87,29 @@ public class TileCompressor extends BaseMachine implements IFluidHandler {
         return new FluidTankInfo[] {tank.getInfo()};
     }
 
+    /*******************************************************************************************************************
+     ********************************************** Tile Functions *****************************************************
+     *******************************************************************************************************************/
+
     @Override
     public void updateEntity() {
         super.updateEntity();
-
         if (worldObj.isRemote) return;
-
         if (energyTank.canAcceptEnergy()) {
             chargeFromCoils();
         }
-
-
-        if (energyTank.getEnergyLevel() > 0 && canFill(tank) && !isPowered()) {
-            if (!isActive)
-                isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-            updateSpeed();
-            energyTank.drainEnergy(currentSpeed);
-            tank.fill(new FluidStack(BlockHandler.fluidCompressedAir, 10 * currentSpeed), true);
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        } else if (isActive)
-            isActive = BlockCompressor.toggleIsActive(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-
+        compress();
     }
 
-    public void updateSpeed() {
-        if(energyTank.getEnergyLevel() == 0) {
-            currentSpeed = 0;
-            return;
-        }
-
-        currentSpeed = (energyTank.getEnergyLevel() * 20) / energyTank.getMaxCapacity();
-        if(currentSpeed == 0)
-            currentSpeed = 1;
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        tank.readFromNBT(tag);
     }
 
-    public boolean canFill(FluidTank tank) {
-        return tank.getFluid() == null || tank.getFluid().amount < tank.getCapacity();
+    @Override
+    public void writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+        tank.writeToNBT(tag);
     }
 }

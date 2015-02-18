@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 public class BlockPatternRecorder extends BlockBase {
 
     @SideOnly(Side.CLIENT)
-    private IIcon front, frontActive;
+    private IIcon front;
 
     public BlockPatternRecorder()
     {
@@ -52,26 +52,11 @@ public class BlockPatternRecorder extends BlockBase {
     public void registerBlockIcons(IIconRegister iconregister) {
         this.blockIcon = iconregister.registerIcon(Constants.MODID + ":patternrecorder_side");
         this.front = iconregister.registerIcon(Constants.MODID + ":patternrecorder_front_off");
-        this.frontActive = iconregister.registerIcon(Constants.MODID + ":patternrecorder_front_on");
     }
 
     public IIcon getIcon(int side, int meta) {
-        boolean active = false;
-        if (meta > 10) {
-            meta -= 10;
-            active = true;
-        }
-        return side == meta ? (active ? frontActive : front) : blockIcon;
-    }
 
-    public static boolean toggleIsActive(World world, int x, int y, int z) {
-        int currentMeta = world.getBlockMetadata(x, y, z);
-        if (currentMeta < 10) {
-            world.setBlockMetadataWithNotify(x, y, z, currentMeta += 10, 2);
-        } else {
-            world.setBlockMetadataWithNotify(x, y, z, currentMeta -= 10, 2);
-        }
-        return !(currentMeta < 10);
+        return side == meta ? front : blockIcon;
     }
 
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemstack) {
