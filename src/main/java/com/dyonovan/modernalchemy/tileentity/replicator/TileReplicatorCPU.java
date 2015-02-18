@@ -40,28 +40,85 @@ public class TileReplicatorCPU extends BaseMachine implements ISidedInventory {
         this.inventory = new InventoryTile(3);
         this.currentProcessTime = 0;
         this.requiredProcessTime = 0;
-        this.item = "";
+        this.item = "null";
         this.isActive = false;
     }
 
-    @Override
-    public void updateEntity() {
-        super.updateEntity();
+    /*******************************************************************************************************************
+     **************************************** MultiBlock Functions *****************************************************
+     *******************************************************************************************************************/
 
-        if (worldObj.isRemote) return;
-
-        if(energyTank.canAcceptEnergy()) {
-            chargeFromCoils();
+    private void copyToStand(Boolean insert) {
+        TileReplicatorStand tileStand = (TileReplicatorStand) worldObj.getTileEntity(stand.x, stand.y, stand.z);
+        if (tileStand != null) {
+            if (insert)
+                tileStand.setInventorySlotContents(0, new ItemStack(ItemHandler.itemReplicationMedium));
+            else tileStand.setInventorySlotContents(0, null);
         }
+    }
+
+    private boolean findStand() {
+        stand = null;
+        for (int i = 0; i < 4; i++) {
+            if (stand != null) break;
+            switch (i) {
+                case 0:
+                    if (worldObj.getBlock(xCoord + 2, yCoord, zCoord + 2) instanceof BlockReplicatorStand)
+                        stand = new Location(xCoord + 2, yCoord, zCoord + 2);
+                case 1:
+                    if (worldObj.getBlock(xCoord + 2, yCoord, zCoord - 2) instanceof BlockReplicatorStand)
+                        stand = new Location(xCoord + 2, yCoord, zCoord - 2);
+                case 2:
+                    if (worldObj.getBlock(xCoord - 2, yCoord, zCoord + 2) instanceof BlockReplicatorStand)
+                        stand = new Location(xCoord - 2, yCoord, zCoord + 2);
+                case 3:
+                    if (worldObj.getBlock(xCoord - 2, yCoord, zCoord - 2) instanceof BlockReplicatorStand)
+                        stand = new Location(xCoord - 2, yCoord, zCoord - 2);
+            }
+        }
+        return (stand != null);
+    }
+
+    @SuppressWarnings("unchecked")
+    private boolean findLasers() {
+        listLaser = null;
+        AxisAlignedBB bounds = null;
+
+        for (int i = 0; i < 4; i++) {
+            if (listLaser != null && listLaser.size() > 0) break;
+            switch (i) {
+                case 0:
+                    bounds = AxisAlignedBB.getBoundingBox(xCoord, yCoord + 2, zCoord, xCoord + 4, yCoord + 4, zCoord + 4);
+                    break;
+                case 1:
+                    bounds = AxisAlignedBB.getBoundingBox(xCoord, yCoord + 2, zCoord - 4, xCoord + 4, yCoord + 4, zCoord);
+                    break;
+                case 2:
+                    bounds = AxisAlignedBB.getBoundingBox(xCoord - 4, yCoord + 2, zCoord - 4, xCoord, yCoord + 4, zCoord);
+                    break;
+                case 3:
+                    bounds = AxisAlignedBB.getBoundingBox(xCoord - 4, yCoord + 2, zCoord, xCoord, yCoord + 4, zCoord + 4);
+                    break;
+            }
+            listLaser = worldObj.getEntitiesWithinAABB(EntityLaserNode.class, bounds);
+        }
+        return listLaser.size() > 0;
+    }
+
+    /*******************************************************************************************************************
+     ****************************************** Replicator Functions ***************************************************
+     *******************************************************************************************************************/
+
+    private void doReplication() {
         if (canStartWork() || currentProcessTime > 0) {
             if (findLasers() && findStand()) {
-                if (item.equals("")) {
+                if (item.equals("null")) {
                     item = inventory.getStackInSlot(1).getTagCompound().getString("Item");
                     requiredProcessTime = inventory.getStackInSlot(1).getTagCompound().getInteger("Value");
                     stackReturn = ReplicatorUtils.getReturn(item);
                 }
-                if (inventory.getStackInSlot(2) != null && !item.equals("") &&
-                                (inventory.getStackInSlot(2).getItem() != stackReturn.getItem() ||
+                if (inventory.getStackInSlot(2) != null && !item.equals("null") &&
+                        (inventory.getStackInSlot(2).getItem() != stackReturn.getItem() ||
                                 inventory.getStackInSlot(2).stackSize >= inventory.getStackInSlot(2).getMaxStackSize())) {
                     resetCounts();
                     return;
@@ -109,93 +166,20 @@ public class TileReplicatorCPU extends BaseMachine implements ISidedInventory {
         isActive = false;
     }
 
-    private void copyToStand(Boolean insert) {
-        TileReplicatorStand tileStand = (TileReplicatorStand) worldObj.getTileEntity(stand.x, stand.y, stand.z);
-        if (tileStand != null) {
-            if (insert)
-                tileStand.setInventorySlotContents(0, new ItemStack(ItemHandler.itemReplicationMedium));
-            else tileStand.setInventorySlotContents(0, null);
-        }
-    }
-
     private boolean canStartWork() {
-
         return inventory.getStackInSlot(0) != null && inventory.getStackInSlot(1) != null &&
                 inventory.getStackInSlot(1).getItem() instanceof ItemPattern &&
                 inventory.getStackInSlot(0).getItem() instanceof ItemReplicatorMedium &&
                 inventory.getStackInSlot(1).hasTagCompound();
     }
 
-    private boolean findStand() {
-        stand = null;
-
-        for (int i = 0; i < 4; i++) {
-            if (stand != null) break;
-            switch (i) {
-                case 0:
-                    if (worldObj.getBlock(xCoord + 2, yCoord, zCoord + 2) instanceof BlockReplicatorStand)
-                        stand = new Location(xCoord + 2, yCoord, zCoord + 2);
-                case 1:
-                    if (worldObj.getBlock(xCoord + 2, yCoord, zCoord - 2) instanceof BlockReplicatorStand)
-                        stand = new Location(xCoord + 2, yCoord, zCoord - 2);
-                case 2:
-                    if (worldObj.getBlock(xCoord - 2, yCoord, zCoord + 2) instanceof BlockReplicatorStand)
-                        stand = new Location(xCoord - 2, yCoord, zCoord + 2);
-                case 3:
-                    if (worldObj.getBlock(xCoord - 2, yCoord, zCoord - 2) instanceof BlockReplicatorStand)
-                        stand = new Location(xCoord - 2, yCoord, zCoord - 2);
-            }
-        }
-        return (stand != null);
-    }
-
-    @SuppressWarnings("unchecked")
-    private boolean findLasers() {
-        listLaser = null;
-        AxisAlignedBB bounds = null;
-
-        for (int i = 0; i < 4; i++) {
-            if (listLaser != null && listLaser.size() > 0) break;
-            switch (i) {
-                case 0:
-                    bounds = AxisAlignedBB.getBoundingBox(xCoord, yCoord + 2, zCoord, xCoord + 4, yCoord + 4, zCoord + 4);
-                    break;
-                case 1:
-                    bounds = AxisAlignedBB.getBoundingBox(xCoord, yCoord + 2, zCoord - 4, xCoord + 4, yCoord + 4, zCoord);
-                    break;
-                case 2:
-                    bounds = AxisAlignedBB.getBoundingBox(xCoord - 4, yCoord + 2, zCoord - 4, xCoord, yCoord + 4, zCoord);
-                    break;
-                case 3:
-                    bounds = AxisAlignedBB.getBoundingBox(xCoord - 4, yCoord + 2, zCoord, xCoord, yCoord + 4, zCoord + 4);
-                    break;
-            }
-            listLaser = worldObj.getEntitiesWithinAABB(EntityLaserNode.class, bounds);
-        }
-        return listLaser.size() > 0;
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        super.readFromNBT(tag);
-        inventory.readFromNBT(tag, this);
-        currentProcessTime = tag.getInteger("TimeProcessed");
-        requiredProcessTime = tag.getInteger("RequiredTime");
-        item = tag.getString("ItemName");
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound tag) {
-        super.writeToNBT(tag);
-        inventory.writeToNBT(tag);
-        tag.setInteger("TimeProcessed", currentProcessTime);
-        tag.setInteger("RequiredTime", requiredProcessTime);
-        tag.setString("ItemName", item);
-    }
-
     public int getProgressScaled(int scale) {
         return requiredProcessTime == 0 ? 0 : this.currentProcessTime * scale / requiredProcessTime;
     }
+
+    /*******************************************************************************************************************
+     ********************************************** Item Functions *****************************************************
+     *******************************************************************************************************************/
 
     @Override
     public int[] getAccessibleSlotsFromSide(int i) {
@@ -269,14 +253,10 @@ public class TileReplicatorCPU extends BaseMachine implements ISidedInventory {
     }
 
     @Override
-    public void openInventory() {
-
-    }
+    public void openInventory() {}
 
     @Override
-    public void closeInventory() {
-
-    }
+    public void closeInventory() {}
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
@@ -288,5 +268,37 @@ public class TileReplicatorCPU extends BaseMachine implements ISidedInventory {
             default:
                 return false;
         }
+    }
+
+    /*******************************************************************************************************************
+     ********************************************** Tile Functions *****************************************************
+     *******************************************************************************************************************/
+
+    @Override
+    public void updateEntity() {
+        super.updateEntity();
+        if (worldObj.isRemote) return;
+        if(energyTank.canAcceptEnergy()) {
+            chargeFromCoils();
+        }
+        doReplication();
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        inventory.readFromNBT(tag, this);
+        currentProcessTime = tag.getInteger("TimeProcessed");
+        requiredProcessTime = tag.getInteger("RequiredTime");
+        item = tag.getString("ItemName");
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+        inventory.writeToNBT(tag);
+        tag.setInteger("TimeProcessed", currentProcessTime);
+        tag.setInteger("RequiredTime", requiredProcessTime);
+        tag.setString("ItemName", item);
     }
 }
