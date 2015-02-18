@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 public class BlockSolidifier extends BlockBase {
 
     @SideOnly(Side.CLIENT)
-    private IIcon front, frontActive;
+    private IIcon front;
 
     public BlockSolidifier() {
         super(Material.iron);
@@ -32,13 +32,13 @@ public class BlockSolidifier extends BlockBase {
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconregister) {
         this.blockIcon = iconregister.registerIcon(Constants.MODID + ":solidifier_side");
-        this.front = iconregister.registerIcon(Constants.MODID + ":solidifier_front_off");
-        this.frontActive = iconregister.registerIcon(Constants.MODID + ":solidifier_front_on");
+        this.front = iconregister.registerIcon(Constants.MODID + ":solidifier_front");
     }
 
-    @Override
-    public IIcon getIcon(int side, int meta) {
-        return side == meta ? front : blockIcon;
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int par1, int par2)
+    {
+        return par2 == 0 && par1 == 4 ? this.front : (par1 != par2 ? this.blockIcon : par1 != 0 ? this.front : blockIcon);
     }
 
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemstack) {

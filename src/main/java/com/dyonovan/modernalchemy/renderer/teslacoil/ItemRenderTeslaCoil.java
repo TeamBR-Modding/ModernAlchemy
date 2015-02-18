@@ -1,7 +1,7 @@
-package com.dyonovan.modernalchemy.renderer;
+package com.dyonovan.modernalchemy.renderer.teslacoil;
 
 import com.dyonovan.modernalchemy.lib.Constants;
-import com.dyonovan.modernalchemy.model.ModelTeslaCoil;
+import com.dyonovan.modernalchemy.model.teslacoil.ModelTeslaCoil;
 import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;

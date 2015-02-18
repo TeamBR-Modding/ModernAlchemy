@@ -1,20 +1,20 @@
-package com.dyonovan.modernalchemy.renderer;
+package com.dyonovan.modernalchemy.renderer.teslacoil;
 
 import com.dyonovan.modernalchemy.lib.Constants;
-import com.dyonovan.modernalchemy.model.ModelTeslaStand;
+import com.dyonovan.modernalchemy.model.teslacoil.ModelTeslaBase;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-public class RenderTeslaStand extends TileEntitySpecialRenderer {
+public class RenderTeslaBase extends TileEntitySpecialRenderer {
 
-    public static final ResourceLocation texture = new ResourceLocation(Constants.MODID + ":textures/models/teslaStand.png");
+    public static final ResourceLocation texture = new ResourceLocation(Constants.MODID + ":textures/models/teslaBase.png");
 
-    private ModelTeslaStand model;
+    private ModelTeslaBase model;
 
-    public RenderTeslaStand() {
-        this.model = new ModelTeslaStand();
+    public RenderTeslaBase() {
+        this.model = new ModelTeslaBase();
     }
 
     @Override
@@ -23,11 +23,10 @@ public class RenderTeslaStand extends TileEntitySpecialRenderer {
         GL11.glPushMatrix();
 
         GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
-        GL11.glRotatef(180, 0F, 0F, 1F);
-
+        GL11.glDisable(GL11.GL_CULL_FACE);
         this.bindTexture(texture);
-
         this.model.render();
+        GL11.glEnable(GL11.GL_CULL_FACE);
 
         GL11.glPopMatrix();
     }

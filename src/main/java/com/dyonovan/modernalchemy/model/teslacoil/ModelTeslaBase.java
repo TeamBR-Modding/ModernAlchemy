@@ -1,4 +1,4 @@
-package com.dyonovan.modernalchemy.model;
+package com.dyonovan.modernalchemy.model.teslacoil;
 
 import com.dyonovan.modernalchemy.lib.Constants;
 import net.minecraft.util.ResourceLocation;

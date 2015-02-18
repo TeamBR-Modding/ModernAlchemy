@@ -1,4 +1,4 @@
-package com.dyonovan.modernalchemy.renderer;
+package com.dyonovan.modernalchemy.renderer.replicator;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;

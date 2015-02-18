@@ -31,13 +31,14 @@ public class BlockCompressor extends BlockBase {
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconregister) {
         this.blockIcon = iconregister.registerIcon(Constants.MODID + ":compressor_side");
-        this.front = iconregister.registerIcon(Constants.MODID + ":compressor_front_off");
+        this.front = iconregister.registerIcon(Constants.MODID + ":compressor_front");
     }
 
-    public IIcon getIcon(int side, int meta) {
-        return side == meta ? front : blockIcon;
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int par1, int par2)
+    {
+        return par2 == 0 && par1 == 4 ? this.front : (par1 != par2 ? this.blockIcon : par1 != 0 ? this.front : blockIcon);
     }
-
 
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemstack) {
         int l = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;

@@ -2,7 +2,11 @@ package com.dyonovan.modernalchemy.proxy;
 
 import com.dyonovan.modernalchemy.entities.EntityLaserNode;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
-import com.dyonovan.modernalchemy.renderer.*;
+import com.dyonovan.modernalchemy.renderer.replicator.ItemRenderFrame;
+import com.dyonovan.modernalchemy.renderer.replicator.RenderFrame;
+import com.dyonovan.modernalchemy.renderer.replicator.RenderLaserNode;
+import com.dyonovan.modernalchemy.renderer.replicator.RenderReplicatorStand;
+import com.dyonovan.modernalchemy.renderer.teslacoil.*;
 import com.dyonovan.modernalchemy.tileentity.replicator.TileReplicatorFrame;
 import com.dyonovan.modernalchemy.tileentity.replicator.TileReplicatorStand;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaBase;

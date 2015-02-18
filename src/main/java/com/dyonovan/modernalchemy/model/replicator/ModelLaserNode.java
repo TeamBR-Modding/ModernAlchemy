@@ -1,4 +1,4 @@
-package com.dyonovan.modernalchemy.model;
+package com.dyonovan.modernalchemy.model.replicator;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;

@@ -1,8 +1,8 @@
-package com.dyonovan.modernalchemy.renderer;
+package com.dyonovan.modernalchemy.renderer.replicator;
 
 import com.dyonovan.modernalchemy.entities.EntityLaserNode;
 import com.dyonovan.modernalchemy.lib.Constants;
-import com.dyonovan.modernalchemy.model.ModelLaserNode;
+import com.dyonovan.modernalchemy.model.replicator.ModelLaserNode;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;

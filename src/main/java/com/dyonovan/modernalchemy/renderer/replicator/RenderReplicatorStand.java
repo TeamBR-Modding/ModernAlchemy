@@ -1,7 +1,7 @@
-package com.dyonovan.modernalchemy.renderer;
+package com.dyonovan.modernalchemy.renderer.replicator;
 
 import com.dyonovan.modernalchemy.lib.Constants;
-import com.dyonovan.modernalchemy.model.ModelReplicatorStand;
+import com.dyonovan.modernalchemy.model.replicator.ModelReplicatorStand;
 import com.dyonovan.modernalchemy.tileentity.replicator.TileReplicatorStand;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;

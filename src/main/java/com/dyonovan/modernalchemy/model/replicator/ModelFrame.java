@@ -1,4 +1,4 @@
-package com.dyonovan.modernalchemy.model;
+package com.dyonovan.modernalchemy.model.replicator;
 
 import com.dyonovan.modernalchemy.blocks.replicator.BlockReplicatorFrame;
 import com.dyonovan.modernalchemy.blocks.replicator.BlockReplicatorCPU;
