@@ -24,7 +24,6 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
     protected EnergyStorage energyRF;
     public LinkedHashMap<String, Location> link;
 
-
     public TileTeslaCoil() {
         super();
         energyRF = new EnergyStorage(10000, 1000, 0);
