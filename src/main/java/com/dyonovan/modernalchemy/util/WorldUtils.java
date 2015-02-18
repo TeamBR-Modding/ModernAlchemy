@@ -1,7 +1,5 @@
 package com.dyonovan.modernalchemy.util;
 
-import com.dyonovan.modernalchemy.handlers.BlockHandler;
-import com.sun.istack.internal.NotNull;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;

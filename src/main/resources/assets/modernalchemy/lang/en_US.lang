@@ -18,5 +18,6 @@ tile.modernalchemy:blockFrameEnergy.name=Replicator CPU
 item.modernalchemy:pattern.name=Replicator Pattern
 item.modernalchemy:bucketActinium.name=Bucket of Actinium
 item.modernalchemy:itemCube.name=Replicator Medium
+item.modernalchemy:wrench.name=Wrench
 
 itemGroup.tabmodernalchemy=Modern Alchemy

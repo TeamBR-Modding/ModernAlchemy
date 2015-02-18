@@ -38,7 +38,7 @@ public class ItemHandler {
 
         //itemWrench
         itemWrench = new ItemWrench();
-        GameRegistry.registerItem(itemWrench, "itemWrench");
+        GameRegistry.registerItem(itemWrench, "wrench");
     }
 
 

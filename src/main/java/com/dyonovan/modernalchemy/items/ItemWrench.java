@@ -1,6 +1,8 @@
 package com.dyonovan.modernalchemy.items;
 
 
+import buildcraft.api.tools.IToolWrench;
+import cofh.api.block.IDismantleable;
 import cofh.api.item.IToolHammer;
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.lib.Constants;
@@ -16,7 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class ItemWrench extends Item implements IToolHammer {
+public class ItemWrench extends Item implements IToolWrench, IToolHammer {
 
     public ItemWrench() {
         this.setUnlocalizedName(Constants.MODID + ":wrench");
@@ -32,21 +34,22 @@ public class ItemWrench extends Item implements IToolHammer {
 
     @Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-        if(world.isRemote) {
-            return false;
-        }
         Block block = world.getBlock(x, y, z);
-        if(world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof BaseTile) {
+        if(!player.isSneaking() && world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof BaseTile) {
             BaseTile tile = (BaseTile)world.getTileEntity(x, y, z);
             tile.onWrench();
             player.swingItem();
             return true;
         }
-        else if(block != null && !player.isSneaking() && block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(side))) {
+        if(player.isSneaking() && (block instanceof IDismantleable) && ((IDismantleable)block).canDismantle(player, world, x, y, z))
+        {
+            ((IDismantleable)block).dismantleBlock(player, world, x, y, z, false);
+            return true;
+        }
+        if(block != null && !player.isSneaking() && block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(side))) {
             player.swingItem();
             return true;
         }
-
         return false;
     }
 
@@ -71,5 +74,20 @@ public class ItemWrench extends Item implements IToolHammer {
     @Override
     public void toolUsed(ItemStack itemStack, EntityLivingBase entityLivingBase, int i, int i1, int i2) {
 
+    }
+
+    @Override
+    public boolean canWrench(EntityPlayer player, int x, int y, int z) {
+        return true;
+    }
+
+    @Override
+    public void wrenchUsed(EntityPlayer player, int x, int y, int z) {
+        player.swingItem();
+    }
+
+    @Override
+    public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player) {
+        return true;
     }
 }

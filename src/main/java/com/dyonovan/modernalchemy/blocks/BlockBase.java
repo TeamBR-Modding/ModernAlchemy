@@ -1,5 +1,6 @@
 package com.dyonovan.modernalchemy.blocks;
 
+import cofh.api.item.IToolHammer;
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.teslacoil.BlockTeslaBase;
 import com.dyonovan.modernalchemy.blocks.teslacoil.BlockTeslaCoil;

@@ -1,6 +1,7 @@
 package com.dyonovan.modernalchemy.helpers;
 
 import cofh.api.item.IToolHammer;
+import com.dyonovan.modernalchemy.handlers.ItemHandler;
 import cpw.mods.fml.common.Loader;
 import net.minecraft.item.Item;
 
