@@ -90,7 +90,7 @@ public class ReplicatorUtils {
             else
                 return 0;
         }
-        return 0;
+        return -1;
     }
 
     public static ItemStack getReturn(String item) {

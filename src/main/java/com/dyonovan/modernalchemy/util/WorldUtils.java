@@ -39,6 +39,11 @@ public class WorldUtils {
             entities.addAll(players);
             if(entities.size() > 0) {
                 for(Entity entityLiving : entities) {
+                    if(entityLiving instanceof EntityPlayer) {
+                        EntityPlayer player = (EntityPlayer)entityLiving;
+                        if(player.capabilities.isCreativeMode)
+                            continue;
+                    }
                     entityLiving.attackEntityFrom(DamageSource.inFire, 2.0F);
                     entityLiving.setFire(1);
                 }

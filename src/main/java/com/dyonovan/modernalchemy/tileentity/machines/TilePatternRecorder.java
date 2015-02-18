@@ -23,6 +23,7 @@ public class TilePatternRecorder extends BaseMachine implements  IInventory {
 
     private int currentSpeed;
     private String itemCopy;
+    private float lastQuality = 0.0F;
     public int currentProcessTime;
 
     public TilePatternRecorder() {
@@ -38,17 +39,22 @@ public class TilePatternRecorder extends BaseMachine implements  IInventory {
 
     private void doRecording() {
         if (canStartWork() || currentProcessTime > 0) {
-            //todo make sure item has replicator value
             updateSpeed();
             if (!isActive)
                 isActive = true;
 
             if (currentProcessTime <= 0 && canStartWork()) {
-                GameRegistry.UniqueIdentifier uniqueIdentifier = GameRegistry.findUniqueIdentifierFor(inventory.getStackInSlot(0).getItem());
-                itemCopy = uniqueIdentifier.modId + ":" + uniqueIdentifier.name + ":" + inventory.getStackInSlot(0).getItemDamage();
-
-                decrStackSize(0, 1);
-                decrStackSize(1, 1);
+                GameRegistry.UniqueIdentifier uniqueIdentifier = GameRegistry.findUniqueIdentifierFor(inventory.getStackInSlot(ITEM_SLOT).getItem());
+                itemCopy = uniqueIdentifier.modId + ":" + uniqueIdentifier.name + ":" + inventory.getStackInSlot(ITEM_SLOT).getItemDamage();
+                if(inventory.getStackInSlot(INPUT_SLOT).hasTagCompound()) {
+                    lastQuality = inventory.getStackInSlot(INPUT_SLOT).getTagCompound().getFloat("Quality");
+                    if(!inventory.getStackInSlot(INPUT_SLOT).getTagCompound().getString("Item").equalsIgnoreCase(itemCopy)) //Must be a pattern of same item type
+                        return;
+                }
+                else
+                    lastQuality = 0.0F;
+                decrStackSize(ITEM_SLOT, 1);
+                decrStackSize(INPUT_SLOT, 1);
                 currentProcessTime = 1;
             }
 
@@ -82,19 +88,26 @@ public class TilePatternRecorder extends BaseMachine implements  IInventory {
             currentSpeed = 1;
     }
 
-    private static ItemStack recordPattern(String item) {
+    private ItemStack recordPattern(String item) {
         ItemStack pattern = new ItemStack(ItemHandler.itemPattern, 1);
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("Item", item);
         tag.setInteger("Value", ReplicatorUtils.getValueForItem(ReplicatorUtils.getReturn(item)));
+        float value = Math.max((1000 / (ReplicatorUtils.getValueForItem(ReplicatorUtils.getReturn(item)) / 10)), 0.1F);
+        if(lastQuality > 0)
+            tag.setFloat("Quality", lastQuality + value <= 100 ? lastQuality + value : 100);
+        else
+            tag.setFloat("Quality", value <= 100 ? value : 100);
         pattern.setTagCompound(tag);
+
         return pattern;
     }
 
     private boolean canStartWork() {
         return inventory.getStackInSlot(INPUT_SLOT) != null && inventory.getStackInSlot(ITEM_SLOT) != null &&
                 inventory.getStackInSlot(INPUT_SLOT).getItem() instanceof ItemPattern &&
-                inventory.getStackInSlot(OUTPUT_SLOT) == null;
+                inventory.getStackInSlot(OUTPUT_SLOT) == null &&
+                ReplicatorUtils.getValueForItem(inventory.getStackInSlot(ITEM_SLOT)) > 0;
     }
 
     public int getProgressScaled(int scale) { return this.currentProcessTime * scale / PROCESS_TIME; }
@@ -186,24 +199,6 @@ public class TilePatternRecorder extends BaseMachine implements  IInventory {
         }
     }
 
-    @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        super.readFromNBT(tag);
-        inventory.readFromNBT(tag, this);
-        currentProcessTime = tag.getInteger("TimeProcessed");
-        if(tag.hasKey("Item"))
-            itemCopy = tag.getString("Item");
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound tag) {
-        super.writeToNBT(tag);
-        inventory.writeToNBT(tag);
-        tag.setInteger("TimeProcessed", currentProcessTime);
-        if(itemCopy != null && itemCopy.length() > 0)
-            tag.setString("Item", itemCopy);
-    }
-
     /*******************************************************************************************************************
      ********************************************** Tile Functions *****************************************************
      *******************************************************************************************************************/
@@ -216,5 +211,25 @@ public class TilePatternRecorder extends BaseMachine implements  IInventory {
             chargeFromCoils();
         doRecording();
         markDirty();
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        inventory.readFromNBT(tag, this);
+        currentProcessTime = tag.getInteger("TimeProcessed");
+        lastQuality = tag.getFloat("Quality");
+        if(tag.hasKey("Item"))
+            itemCopy = tag.getString("Item");
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+        inventory.writeToNBT(tag);
+        tag.setInteger("TimeProcessed", currentProcessTime);
+        tag.setFloat("Quality", lastQuality);
+        if(itemCopy != null && itemCopy.length() > 0)
+            tag.setString("Item", itemCopy);
     }
 }
