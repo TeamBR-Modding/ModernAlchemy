@@ -8,32 +8,52 @@ import com.dyonovan.modernalchemy.handlers.ConfigHandler;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.tileentity.BaseMachine;
 import com.dyonovan.modernalchemy.util.Location;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
 
     protected EnergyStorage energyRF;
-    public HashMap<String, Location> link;
+    public LinkedHashMap<String, Location> link;
 
 
     public TileTeslaCoil() {
         super();
         energyRF = new EnergyStorage(10000, 1000, 0);
         energyTank = new TeslaBank(1000);
-        link = new HashMap<String, Location>();
+        link = new LinkedHashMap<String, Location>();
         link.put("Any", new Location(0,0,0));
     }
 
     /*******************************************************************************************************************
      ************************************* Tesla Coil Functions ********************************************************
      *******************************************************************************************************************/
+
+    public void searchMachines() {
+        link.clear();
+        for (int x = -ConfigHandler.searchRange; x <= ConfigHandler.searchRange; x++) {
+            for (int y = -ConfigHandler.searchRange; y <= ConfigHandler.searchRange; y++) {
+                for (int z = -ConfigHandler.searchRange; z <= ConfigHandler.searchRange; z++) {
+                    TileEntity te = worldObj.getTileEntity(xCoord + x, yCoord + y, zCoord + z);
+                    if (te instanceof BaseMachine && !(te instanceof TileTeslaCoil)) {
+                        link.put(te.getBlockType().getLocalizedName(), new Location(xCoord + x, yCoord + y, zCoord + z));
+                    }
+                }
+            }
+        }
+        if (link.size() < 1) {
+            link.put("Any", new Location(0, 0, 0));
+        }
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
 
     private boolean doConvert() {
         if (energyRF.getEnergyStored() > 0 && energyTank.getEnergyLevel()  < energyTank.getMaxCapacity()) {
@@ -63,10 +83,6 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
     public int receiveEnergy(ForgeDirection side, int maxReceive, boolean simulate) {
         return energyRF.receiveEnergy(maxReceive, simulate);
     }
-
-    /*public void setRFEnergyStored(int i) {
-        energyRF.setEnergyStored(i);
-    }*/
 
     @Override
     public int extractEnergy(ForgeDirection forgeDirection, int maxReceive, boolean simulate) {
@@ -100,17 +116,14 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
         return side == ForgeDirection.DOWN; //TODO Why BC Pipes dont update on load
     }
 
-    /*public void setTeslaEnergyStored(int i) {
-        energyTank.setEnergyLevel(i);
-    }*/
-
     /*******************************************************************************************************************
      ********************************************** Tile Functions *****************************************************
      *******************************************************************************************************************/
 
     @Override
     public void onWrench(EntityPlayer player) {
-         player.openGui(ModernAlchemy.instance, GuiHandler.TESLA_COIL_LINKS_GUI_ID, worldObj, xCoord, yCoord, zCoord);
+        searchMachines();
+        player.openGui(ModernAlchemy.instance, GuiHandler.TESLA_COIL_LINKS_GUI_ID, worldObj, xCoord, yCoord, zCoord);
     }
 
     @Override
