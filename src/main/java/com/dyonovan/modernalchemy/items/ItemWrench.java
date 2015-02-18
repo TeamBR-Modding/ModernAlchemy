@@ -4,6 +4,7 @@ package com.dyonovan.modernalchemy.items;
 import buildcraft.api.tools.IToolWrench;
 import cofh.api.block.IDismantleable;
 import cofh.api.item.IToolHammer;
+import cofh.asm.relauncher.Strippable;
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.BaseTile;
@@ -18,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+@Strippable({"buildcraft.api.tools.IToolWrench"})
 public class ItemWrench extends Item implements IToolWrench, IToolHammer {
 
     public ItemWrench() {

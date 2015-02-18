@@ -1,5 +1,6 @@
 package com.dyonovan.modernalchemy.helpers;
 
+import buildcraft.api.tools.IToolWrench;
 import cofh.api.item.IToolHammer;
 import com.dyonovan.modernalchemy.handlers.ItemHandler;
 import cpw.mods.fml.common.Loader;
@@ -13,10 +14,6 @@ public class WrenchHelper {
      * @return true if it is a wrench that we like
      */
     public static boolean isWrench(Item item) {
-        if(Loader.isModLoaded("BuildCraft|Core")) {
-            if(item.getUnlocalizedName().equalsIgnoreCase("item.wrenchItem"))
-                return true;
-        }
-        return (item instanceof IToolHammer);
+        return (item instanceof IToolHammer) || (item instanceof IToolWrench);
     }
 }
