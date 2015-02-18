@@ -43,11 +43,7 @@ public class ItemWrench extends Item implements IToolWrench, IToolHammer {
             player.swingItem();
             return true;
         }
-        if(player.isSneaking() && (block instanceof IDismantleable) && ((IDismantleable)block).canDismantle(player, world, x, y, z))
-        {
-            ((IDismantleable)block).dismantleBlock(player, world, x, y, z, false);
-            return true;
-        }
+
         if(block != null && !player.isSneaking() && block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(side))) {
             player.swingItem();
             return true;
