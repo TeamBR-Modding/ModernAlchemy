@@ -32,7 +32,6 @@ public class GuiTeslaCoil extends BaseGui {
     }
 
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-
         final String title1 = "Tesla";
         final String title2 = "Coil";
         fontRendererObj.drawString(title1, (108 - fontRendererObj.getStringWidth(title1)) / 2, 4, 4210752);
@@ -59,19 +58,7 @@ public class GuiTeslaCoil extends BaseGui {
         tessRF.addVertexWithUV(x + 12, y + 78 - heightRF, 0, 0.625F, (float) (91 - heightRF) / 256);
         tessRF.draw();
 
-        /*//Render energy
-        TeslaBank energyTank = tile.getEnergyBank();
-        int heightTesla = energyTank.getEnergyLevel() * 52 / energyTank.getMaxCapacity();
-
-        Tessellator tessTesla = Tessellator.instance;
-        tessTesla.startDrawingQuads();
-        tessTesla.addVertexWithUV(x + 81, y + 78, 0, 0.6875F, 0.35546875F);
-        tessTesla.addVertexWithUV(x + 97, y + 78, 0, 0.74609375F, 0.35546875F);
-        tessTesla.addVertexWithUV(x + 97, y + 78 - heightTesla, 0, 0.74609375F, (float) (91 - heightTesla) / 256);
-        tessTesla.addVertexWithUV( x + 81, y + 78 - heightTesla, 0, 0.6875F, (float) (91 - heightTesla) / 256);
-        tessTesla.draw();*/
         super.drawGuiContainerBackgroundLayer(f, i, j);
-
     }
 
     @Override
