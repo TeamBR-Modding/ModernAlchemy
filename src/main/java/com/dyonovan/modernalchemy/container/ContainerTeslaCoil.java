@@ -1,30 +1,20 @@
 package com.dyonovan.modernalchemy.container;
 
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
 
-public class ContainerTeslaCoil extends Container {
+public class ContainerTeslaCoil extends BaseContainer {
 
     private TileTeslaCoil tile;
-    private int lastRFPower = 0;
-    private int lastTeslaPower = 0;
+    //private int lastRFPower = 0;
+    //private int lastTeslaPower = 0;
 
-    public ContainerTeslaCoil(TileTeslaCoil tile) {
-        super();
+    public ContainerTeslaCoil(TileTeslaCoil tileentity) {
+        //super();
 
-        this.tile = tile;
+        this.tile = tileentity;
     }
 
-    @Override
-    public boolean canInteractWith(EntityPlayer player) {
-        return true;
-    }
-
-    @Override
+    /*@Override
     public void addCraftingToCrafters(ICrafting crafter) {
         super.addCraftingToCrafters(crafter);
         crafter.sendProgressBarUpdate(this, 0, this.tile.getRFEnergyStored());
@@ -59,6 +49,6 @@ public class ContainerTeslaCoil extends Container {
                 this.tile.setTeslaEnergyStored(j);
                 break;
         }
-    }
+    }*/
 
 }

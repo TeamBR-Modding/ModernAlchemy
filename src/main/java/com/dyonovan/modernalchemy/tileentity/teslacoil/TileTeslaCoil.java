@@ -2,11 +2,9 @@ package com.dyonovan.modernalchemy.tileentity.teslacoil;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
-import com.dyonovan.modernalchemy.energy.ITeslaHandler;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.ConfigHandler;
 import com.dyonovan.modernalchemy.tileentity.BaseMachine;
-import com.dyonovan.modernalchemy.tileentity.BaseTile;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -14,32 +12,47 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
 
     protected EnergyStorage energyRF;
 
+
     public TileTeslaCoil() {
         super();
         energyRF = new EnergyStorage(10000, 1000, 0);
         energyTank = new TeslaBank(1000);
     }
 
-    @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        super.readFromNBT(tag);
-        energyRF.readFromNBT(tag);
+    /*******************************************************************************************************************
+     ************************************* Tesla Coil Functions ********************************************************
+     *******************************************************************************************************************/
+
+    private void doConvert() {
+        if (energyRF.getEnergyStored() > 0 && energyTank.getEnergyLevel()  < energyTank.getMaxCapacity()) {
+            int actualRF = Math.min(ConfigHandler.maxCoilGenerate * ConfigHandler.rfPerTesla, energyRF.getEnergyStored());
+            int actualTesla = Math.min(ConfigHandler.maxCoilGenerate, energyTank.getMaxCapacity() - energyTank.getEnergyLevel());
+
+            if (actualTesla * ConfigHandler.rfPerTesla < actualRF) {
+                removeEnergy(actualTesla * 10);
+                energyTank.addEnergy(actualTesla);
+            } else if (actualTesla * ConfigHandler.rfPerTesla > actualRF && actualRF > 100) {
+                removeEnergy(actualRF);
+                energyTank.addEnergy(actualRF / ConfigHandler.rfPerTesla);
+            } else if (actualTesla * ConfigHandler.rfPerTesla == actualRF) {
+                removeEnergy(actualRF);
+                energyTank.addEnergy(actualTesla);
+            }
+        }
     }
 
-    @Override
-    public void writeToNBT(NBTTagCompound tag) {
-        super.writeToNBT(tag);
-        energyRF.writeToNBT(tag);
-    }
+    /*******************************************************************************************************************
+     ******************************************** Energy Functions *****************************************************
+     *******************************************************************************************************************/
 
     @Override
     public int receiveEnergy(ForgeDirection side, int maxReceive, boolean simulate) {
         return energyRF.receiveEnergy(maxReceive, simulate);
     }
 
-    public void setRFEnergyStored(int i) {
+    /*public void setRFEnergyStored(int i) {
         energyRF.setEnergyStored(i);
-    }
+    }*/
 
     @Override
     public int extractEnergy(ForgeDirection forgeDirection, int maxReceive, boolean simulate) {
@@ -47,7 +60,7 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
     }
 
     public void removeEnergy(int amount) {
-       energyRF.setEnergyStored(energyRF.getEnergyStored() - amount);
+        energyRF.setEnergyStored(energyRF.getEnergyStored() - amount);
     }
 
     @Override
@@ -73,30 +86,31 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
         return side == ForgeDirection.DOWN; //TODO Why BC Pipes dont update on load
     }
 
-    public void setTeslaEnergyStored(int i) {
+    /*public void setTeslaEnergyStored(int i) {
         energyTank.setEnergyLevel(i);
+    }*/
+
+    /*******************************************************************************************************************
+     ********************************************** Tile Functions *****************************************************
+     *******************************************************************************************************************/
+
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        energyRF.readFromNBT(tag);
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+        energyRF.writeToNBT(tag);
     }
 
     @Override
     public void updateEntity() {
         super.updateEntity();
         if (worldObj.isRemote) return;
-
-        if (energyRF.getEnergyStored() > 0 && energyTank.getEnergyLevel()  < energyTank.getMaxCapacity()) {
-            int actualRF = Math.min(ConfigHandler.maxCoilGenerate * ConfigHandler.rfPerTesla, energyRF.getEnergyStored());
-            int actualTesla = Math.min(ConfigHandler.maxCoilGenerate, energyTank.getMaxCapacity() - energyTank.getEnergyLevel());
-
-            if (actualTesla * ConfigHandler.rfPerTesla < actualRF) {
-                removeEnergy(actualTesla * 10);
-                energyTank.addEnergy(actualTesla);
-            } else if (actualTesla * ConfigHandler.rfPerTesla > actualRF && actualRF > 100) {
-                removeEnergy(actualRF);
-                energyTank.addEnergy(actualRF / ConfigHandler.rfPerTesla);
-            } else if (actualTesla * ConfigHandler.rfPerTesla == actualRF) {
-                removeEnergy(actualRF);
-                energyTank.addEnergy(actualTesla);
-            }
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        }
+        doConvert();
+        markDirty();
     }
 }

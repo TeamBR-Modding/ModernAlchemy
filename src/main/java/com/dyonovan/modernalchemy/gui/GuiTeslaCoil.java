@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy.gui;
 
 import com.dyonovan.modernalchemy.container.ContainerTeslaCoil;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
+import com.dyonovan.modernalchemy.gui.widget.WidgetEnergyBank;
 import com.dyonovan.modernalchemy.gui.widget.WidgetPulse;
 import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
@@ -27,6 +28,7 @@ public class GuiTeslaCoil extends BaseGui {
         this.ySize = 86;
 
         widgets.add(new WidgetPulse(this, tile, 79, 42));
+        widgets.add((new WidgetEnergyBank(this, tile.getEnergyBank(), 81, 78)));
     }
 
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
@@ -38,7 +40,7 @@ public class GuiTeslaCoil extends BaseGui {
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+    protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F); //Could do some fun colors and transparency here
         this.mc.renderEngine.bindTexture(background);
@@ -57,7 +59,7 @@ public class GuiTeslaCoil extends BaseGui {
         tessRF.addVertexWithUV(x + 12, y + 78 - heightRF, 0, 0.625F, (float) (91 - heightRF) / 256);
         tessRF.draw();
 
-        //Render energy
+        /*//Render energy
         TeslaBank energyTank = tile.getEnergyBank();
         int heightTesla = energyTank.getEnergyLevel() * 52 / energyTank.getMaxCapacity();
 
@@ -67,8 +69,8 @@ public class GuiTeslaCoil extends BaseGui {
         tessTesla.addVertexWithUV(x + 97, y + 78, 0, 0.74609375F, 0.35546875F);
         tessTesla.addVertexWithUV(x + 97, y + 78 - heightTesla, 0, 0.74609375F, (float) (91 - heightTesla) / 256);
         tessTesla.addVertexWithUV( x + 81, y + 78 - heightTesla, 0, 0.6875F, (float) (91 - heightTesla) / 256);
-        tessTesla.draw();
-
+        tessTesla.draw();*/
+        super.drawGuiContainerBackgroundLayer(f, i, j);
 
     }
 
