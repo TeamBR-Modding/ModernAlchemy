@@ -25,6 +25,11 @@ public class BaseMachine extends BaseTile implements ITeslaHandler {
     }
 
     @Override
+    public void onWrench() {
+
+    }
+
+    @Override
     public void writeToNBT(NBTTagCompound tag){
         super.writeToNBT(tag);
         tag.setBoolean("isActive", isActive);
@@ -123,4 +128,5 @@ public class BaseMachine extends BaseTile implements ITeslaHandler {
     public TeslaBank getEnergyBank() {
         return energyTank;
     }
+
 }

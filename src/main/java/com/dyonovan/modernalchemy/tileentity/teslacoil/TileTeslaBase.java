@@ -16,6 +16,11 @@ public class TileTeslaBase extends BaseTile implements IEnergyHandler {
     }
 
     @Override
+    public void onWrench() {
+
+    }
+
+    @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         energy.readFromNBT(tag);

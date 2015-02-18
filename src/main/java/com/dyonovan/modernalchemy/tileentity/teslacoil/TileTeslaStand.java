@@ -12,6 +12,11 @@ public class TileTeslaStand extends BaseTile implements IEnergyHandler {
     protected EnergyStorage energy = new EnergyStorage(1000, 1000, 1000);
 
     @Override
+    public void onWrench() {
+
+    }
+
+    @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         energy.readFromNBT(tag);

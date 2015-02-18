@@ -18,6 +18,8 @@ import java.util.List;
 
 public abstract class BaseTile extends TileEntity {
 
+    public abstract void onWrench();
+
     public boolean isPowered() {
         return isPoweringTo(worldObj, xCoord, yCoord + 1, zCoord, 0) ||
                 isPoweringTo(worldObj, xCoord, yCoord - 1, zCoord, 1) ||

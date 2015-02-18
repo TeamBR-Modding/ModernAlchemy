@@ -20,6 +20,11 @@ public class TileReplicatorStand extends BaseTile implements IInventory {
     }
 
     @Override
+    public void onWrench() {
+
+    }
+
+    @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         inventory.readFromNBT(tag, this);
