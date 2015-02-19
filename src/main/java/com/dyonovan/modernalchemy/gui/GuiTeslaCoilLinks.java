@@ -1,10 +1,14 @@
 package com.dyonovan.modernalchemy.gui;
 
 import com.dyonovan.modernalchemy.container.ContainerTeslaCoilLinks;
+import com.dyonovan.modernalchemy.gui.buttons.ItemStackButton;
+import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
 import com.dyonovan.modernalchemy.util.Location;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
@@ -14,7 +18,7 @@ import java.util.List;
 public class GuiTeslaCoilLinks extends BaseGui {
 
     private TileTeslaCoil tile;
-    private ResourceLocation background = new ResourceLocation(Constants.MODID + ":textures/gui/coil_link.png");
+    private ResourceLocation background = new ResourceLocation(Constants.MODID + ":textures/gui/energy.png");
     private int high, low;
 
     public GuiTeslaCoilLinks(TileTeslaCoil tileEntity) {
@@ -37,7 +41,7 @@ public class GuiTeslaCoilLinks extends BaseGui {
             String string = (new ArrayList<String>(tile.link.keySet())).get(i);
             Location loc = (new ArrayList<Location>(tile.link.values())).get(i);
             String list = string + " - " + Integer.toString(loc.x) + Integer.toString(loc.y) + Integer.toString(loc.z);
-            this.buttonList.add(new GuiButton(i, 135, x, 150, 12, list));
+            this.buttonList.add(new ItemStackButton(i, 135, x, new ItemStack(BlockHandler.blockArcFurnaceCore)));
             x += 15;
         }
     }
