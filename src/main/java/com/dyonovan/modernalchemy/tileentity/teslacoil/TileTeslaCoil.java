@@ -125,6 +125,7 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
 
     @Override
     public void onWrench(EntityPlayer player) {
+        if (worldObj.isRemote) return;
         searchMachines();
         player.openGui(ModernAlchemy.instance, GuiHandler.TESLA_COIL_LINKS_GUI_ID, worldObj, xCoord, yCoord, zCoord);
     }
@@ -138,7 +139,21 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
             linkedMachines.clear();
             for (int i = 0; i < nbtList.tagCount(); i++) {
                 NBTTagCompound tag1 = nbtList.getCompoundTagAt(i);
-                linkedMachines.add(new Location(tag1.getInteger("X"), tag1.getInteger("Y"), tag1.getInteger("Z")));
+                int x = tag1.getInteger("X");
+                int y = tag1.getInteger("Y");
+                int z = tag1.getInteger("Z");
+                linkedMachines.add(new Location(x, y, z));
+            }
+        }
+        if (tag.hasKey("Found")) {
+            NBTTagList nbtList = tag.getTagList("Found", 10);
+            rangeMachines.clear();
+            for (int i = 0; i < nbtList.tagCount(); i++) {
+                NBTTagCompound tag1 = nbtList.getCompoundTagAt(i);
+                int x = tag1.getInteger("X");
+                int y = tag1.getInteger("Y");
+                int z = tag1.getInteger("Z");
+                rangeMachines.add(new Location(x, y, z));
             }
         }
     }
@@ -157,6 +172,17 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
                 nbtList.appendTag(tag1);
             }
             tag.setTag("Links", nbtList);
+        }
+        if (rangeMachines.size() > 0) {
+            NBTTagList nbtList = new NBTTagList();
+            for (Location loc : rangeMachines) {
+                NBTTagCompound tag1 = new NBTTagCompound();
+                tag1.setInteger("X", loc.x);
+                tag1.setInteger("Y", loc.y);
+                tag1.setInteger("Z", loc.z);
+                nbtList.appendTag(tag1);
+            }
+            tag.setTag("Found", nbtList);
         }
     }
 

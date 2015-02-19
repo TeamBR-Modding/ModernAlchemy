@@ -39,9 +39,11 @@ public class GuiTeslaCoilLinks extends BaseGui {
         int y = 54;
         index1 = 0;
         int index2 = 0;
+        toolTips.clear();
+        this.buttonList.clear();
 
         //TODO Deal with more then 24 machines
-        this.buttonList.clear();
+
         if (tile.rangeMachines.size() > 0) {
             int rows = (int) Math.ceil(tile.rangeMachines.size() / 8.0);
             for (int i = 0; i < rows; i++) {
@@ -68,9 +70,8 @@ public class GuiTeslaCoilLinks extends BaseGui {
         y = 132;
         if (tile.linkedMachines.size() > 0) {
             int rows = (int) Math.ceil(tile.linkedMachines.size() / 8.0);
-
-            for (int k = 0; k < rows; k++) {
-                for (int l = 0; l < 8; l++) {
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < 8; j++) {
                     if (tile.linkedMachines.size() > index2) {
                         Block block = tile.getWorldObj().getBlock(tile.linkedMachines.get(index2).x, tile.linkedMachines.get(index2).y, tile.linkedMachines.get(index2).z);
                         this.buttonList.add(new ItemStackButton(index1 + index2, x, y, new ItemStack(block)));
@@ -93,11 +94,11 @@ public class GuiTeslaCoilLinks extends BaseGui {
     @Override
     protected void actionPerformed(GuiButton button) {
 
-        if (button.id < index1) {
+        if (button.id < index1 && tile.rangeMachines.size() > 0) {
             tile.linkedMachines.add(new Location(tile.rangeMachines.get(button.id).x,
                     tile.rangeMachines.get(button.id).y, tile.rangeMachines.get(button.id).z));
             tile.rangeMachines.remove(button.id);
-        } else if (button.id >= index1) {
+        } else if (tile.rangeMachines.size() == 0 || button.id >= index1) {
             tile.rangeMachines.add(new Location(tile.linkedMachines.get(button.id - index1).x,
                     tile.linkedMachines.get(button.id - index1).y, tile.linkedMachines.get(button.id - index1).z));
             tile.linkedMachines.remove(button.id - index1);
@@ -107,7 +108,7 @@ public class GuiTeslaCoilLinks extends BaseGui {
         PacketHandler.net.sendToServer(new UpdateServerCoilLists.UpdateMessage(tile.xCoord, tile.yCoord, tile.zCoord,
                 "rangeMachines", tile.rangeMachines));
         guiButtons();
-        this.updateScreen();
+        //this.updateScreen();
     }
 
     @Override

@@ -36,6 +36,7 @@ public class ItemWrench extends Item implements IToolWrench, IToolHammer {
 
     @Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+        if (world.isRemote) return false;
         Block block = world.getBlock(x, y, z);
         if(!player.isSneaking() && world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof BaseTile) {
             BaseTile tile = (BaseTile)world.getTileEntity(x, y, z);
@@ -43,7 +44,6 @@ public class ItemWrench extends Item implements IToolWrench, IToolHammer {
             player.swingItem();
             return true;
         }
-
         if(block != null && !player.isSneaking() && block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(side))) {
             player.swingItem();
             return true;

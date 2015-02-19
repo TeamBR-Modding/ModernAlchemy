@@ -3,6 +3,7 @@ package com.dyonovan.modernalchemy.blocks.teslacoil;
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.BlockBase;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
+import com.dyonovan.modernalchemy.items.ItemWrench;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
 import cpw.mods.fml.relauncher.Side;
