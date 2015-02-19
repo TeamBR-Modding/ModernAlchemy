@@ -24,7 +24,7 @@ public class GuiReplicatorCPU extends BaseGui {
 
         tile = tileEntity;
         widgets.add(new WidgetEnergyBank(this, tile.getEnergyBank(), 8, 78));
-        widgets.add(new WidgetPulse(this, tile, 89, 68));
+        widgets.add(new WidgetPulse(this, tile, 106, 54));
     }
 
     @Override

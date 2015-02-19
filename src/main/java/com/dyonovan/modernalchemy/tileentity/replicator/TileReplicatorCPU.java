@@ -185,13 +185,14 @@ public class TileReplicatorCPU extends BaseMachine implements ISidedInventory {
 
     private void doReplication() {
         if (canStartWork() || currentProcessTime > 0) {
-            if (findLasers() && findStand() && exploreFrame()) {
+            if (findLasers() && findStand() && exploreFrame() && inventory.getStackInSlot(1) != null) {
                 if (item.equals("null")) {
                     item = inventory.getStackInSlot(1).getTagCompound().getString("Item");
                     requiredProcessTime = inventory.getStackInSlot(1).getTagCompound().getInteger("Value");
                     stackReturn = ReplicatorUtils.getReturn(item);
                 }
                 if (inventory.getStackInSlot(2) != null && !item.equals("null") &&
+                        stackReturn != null &&
                         (inventory.getStackInSlot(2).getItem() != stackReturn.getItem() ||
                                 inventory.getStackInSlot(2).stackSize >= inventory.getStackInSlot(2).getMaxStackSize())) {
                     resetCounts();
@@ -230,6 +231,7 @@ public class TileReplicatorCPU extends BaseMachine implements ISidedInventory {
                 }
             }
         } else {
+            resetCounts();
             if (stand == null) findStand();
             if (stand != null) copyToStand(false);
         }

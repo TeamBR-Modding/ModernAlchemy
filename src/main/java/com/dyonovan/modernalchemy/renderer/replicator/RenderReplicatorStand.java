@@ -15,7 +15,7 @@ public class RenderReplicatorStand extends TileEntitySpecialRenderer {
 
     private ModelReplicatorStand model;
 
-
+    private float rotMod = 0.0F;
     public RenderReplicatorStand() {
         this.model = new ModelReplicatorStand();
     }
@@ -38,11 +38,12 @@ public class RenderReplicatorStand extends TileEntitySpecialRenderer {
         TileReplicatorStand rs = (TileReplicatorStand)tileentity;
 
         if (rs.entityItem != null) {
+            rotMod += ((rotMod % 360) / 360) + 1;
             GL11.glPushMatrix();
             GL11.glDisable(GL11.GL_CULL_FACE);
             GL11.glTranslatef((float) x + 0.5F, (float) y + 1.15F, (float) z + 0.5F);
             GL11.glRotatef(360, 0, 1, 1);
-            //GL11.glScaled(0.8D, 0.8D, 0.8D);
+            GL11.glRotatef(rotMod, 0.0F, 1.0F, 0.0F);
             RenderManager.instance.renderEntityWithPosYaw(rs.entityItem, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
             GL11.glEnable(GL11.GL_CULL_FACE);
             GL11.glPopMatrix();
