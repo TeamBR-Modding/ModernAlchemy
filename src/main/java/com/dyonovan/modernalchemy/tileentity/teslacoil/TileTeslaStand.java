@@ -14,7 +14,10 @@ public class TileTeslaStand extends BaseTile implements IEnergyHandler {
 
     @Override
     public void onWrench(EntityPlayer player) {
-
+        if(getTileInDirection(ForgeDirection.UP) instanceof TileTeslaStand)
+            ((TileTeslaStand)getTileInDirection(ForgeDirection.UP)).onWrench(player);
+        else if(getTileInDirection(ForgeDirection.UP) instanceof TileTeslaCoil)
+            ((TileTeslaCoil)getTileInDirection(ForgeDirection.UP)).onWrench(player);
     }
 
     @Override

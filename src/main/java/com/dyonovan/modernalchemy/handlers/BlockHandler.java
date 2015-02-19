@@ -1,10 +1,7 @@
 package com.dyonovan.modernalchemy.handlers;
 
 import com.dyonovan.modernalchemy.blocks.arcfurnace.BlockArcFurnaceCore;
-import com.dyonovan.modernalchemy.blocks.arcfurnace.dummies.BlockDummy;
-import com.dyonovan.modernalchemy.blocks.arcfurnace.dummies.BlockDummyAirValve;
-import com.dyonovan.modernalchemy.blocks.arcfurnace.dummies.BlockDummyOutputValve;
-import com.dyonovan.modernalchemy.blocks.arcfurnace.dummies.BlockItemIODummy;
+import com.dyonovan.modernalchemy.blocks.arcfurnace.dummies.*;
 import com.dyonovan.modernalchemy.blocks.fluids.BlockFluidActinium;
 import com.dyonovan.modernalchemy.blocks.fluids.BlockFluidCompressedAir;
 import com.dyonovan.modernalchemy.blocks.machines.BlockCompressor;
@@ -20,10 +17,7 @@ import com.dyonovan.modernalchemy.blocks.teslacoil.BlockTeslaStand;
 import com.dyonovan.modernalchemy.fluids.FluidActinium;
 import com.dyonovan.modernalchemy.fluids.FluidCompressedAir;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.TileArcFurnaceCore;
-import com.dyonovan.modernalchemy.tileentity.arcfurnace.dummies.TileDummy;
-import com.dyonovan.modernalchemy.tileentity.arcfurnace.dummies.TileDummyAirValve;
-import com.dyonovan.modernalchemy.tileentity.arcfurnace.dummies.TileDummyItemIO;
-import com.dyonovan.modernalchemy.tileentity.arcfurnace.dummies.TileDummyOutputValve;
+import com.dyonovan.modernalchemy.tileentity.arcfurnace.dummies.*;
 import com.dyonovan.modernalchemy.tileentity.machines.TileCompressor;
 import com.dyonovan.modernalchemy.tileentity.machines.TilePatternRecorder;
 import com.dyonovan.modernalchemy.tileentity.machines.TileSolidifier;
@@ -41,7 +35,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 public class BlockHandler {
 
     public static Fluid fluidActinium, fluidCompressedAir;
-    public static Block blockArcFurnaceDummy, blockArcFurnaceDummyItemIO, blockArcFurnaceDummyAirValue, blockArcFurnaceDummyOutputValue, blockArcFurnaceCore, blockTeslaStand, blockCoil;
+    public static Block blockArcFurnaceDummy, blockArcFurnaceDummyItemIO, blockArcFurnaceDummyAirValue, blockArcFurnaceDummyOutputValue, blockArcFurnaceDummyEnergy, blockArcFurnaceCore, blockTeslaStand, blockCoil;
     public static Block blockOreActinium, blockFluidActinium, blockCompressor, blockFluidAir, blockReplicatorStand;
     public static Block blockPatternRecorder, blockSolidifier, blockTeslaBase, blockReplicatorFrame, blockReplicatorCPU;
 
@@ -86,6 +80,11 @@ public class BlockHandler {
         blockArcFurnaceDummy = new BlockDummy("arcFurnaceDummy");
         GameRegistry.registerBlock(blockArcFurnaceDummy, "arcFurnaceDummy");
         GameRegistry.registerTileEntity(TileDummy.class, "tileDummy");
+
+        //ArcFurnaceDummy Energy
+        blockArcFurnaceDummyEnergy = new BlockDummyEnergyReciever("arcFurnaceDummyEnergy");
+        GameRegistry.registerBlock(blockArcFurnaceDummyEnergy, "arcFurnaceDummyEnergy");
+        GameRegistry.registerTileEntity(TileDummyEnergyReciever.class, "tileDummyEnergy");
 
         //ArcFurnaceDummyItemIO
         blockArcFurnaceDummyItemIO = new BlockItemIODummy("arcFurnaceDummyItemIO");

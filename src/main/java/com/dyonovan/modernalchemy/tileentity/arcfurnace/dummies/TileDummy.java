@@ -33,6 +33,10 @@ public class TileDummy extends BaseTile {
         coreLocation = loc;
     }
 
+    protected void updateCore() {
+        worldObj.markBlockForUpdate(coreLocation.x, coreLocation.y, coreLocation.z);
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound tagCompound) {
         super.readFromNBT(tagCompound);

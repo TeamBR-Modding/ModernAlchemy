@@ -199,20 +199,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
 
     @Override
     public boolean hasClearPath(double x1, double y1, double z1, double x2, double y2, double z2) {
-        float t = 0.1F;
-        while(t < 1.0F) {
-            double checkX = x1 + ((x2 - x1) * t);
-            double checkY = y1 + ((y2 - y1) * t);
-            double checkZ = z1 + ((z2 - z1) * t);
-            if(!worldObj.isAirBlock((int)Math.floor(checkX), (int)Math.floor(checkY), (int)Math.floor(checkZ)) &&
-                    (worldObj.getBlock((int)Math.floor(checkX), (int)Math.floor(checkY), (int)Math.floor(checkZ)) != this.getBlockType()) &&
-                    (worldObj.getBlock((int)Math.floor(checkX), (int)Math.floor(checkY), (int)Math.floor(checkZ)) != BlockHandler.blockCoil) &&
-                    !(worldObj.getBlock((int)Math.floor(checkX), (int)Math.floor(checkY), (int)Math.floor(checkZ)) instanceof BlockDummy)) {
-                return false;
-            }
-            t += 0.01F;
-        }
-        return true;
+        return false;
     }
 
     /*******************************************************************************************************************
