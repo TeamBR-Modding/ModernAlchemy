@@ -20,8 +20,7 @@ public class GuiTeslaCoilLinks extends BaseGui {
 
     private TileTeslaCoil tile;
     private ResourceLocation background = new ResourceLocation(Constants.MODID + ":textures/gui/coil_link.png");
-    private int index1 = 0;
-    private int index2 = 0;
+    private int index1;
 
     public GuiTeslaCoilLinks(TileTeslaCoil tileEntity) {
         super(new ContainerTeslaCoilLinks(tileEntity));
@@ -38,11 +37,13 @@ public class GuiTeslaCoilLinks extends BaseGui {
     protected void guiButtons() {
         int x = 133;
         int y = 54;
+        index1 = 0;
+        int index2 = 0;
 
+        //TODO Deal with more then 24 machines
+        this.buttonList.clear();
         if (tile.rangeMachines.size() > 0) {
             int rows = (int) Math.ceil(tile.rangeMachines.size() / 8.0);
-            this.buttonList.clear();
-
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < 8; j++) {
                     if (tile.rangeMachines.size() > index1) {
@@ -97,15 +98,15 @@ public class GuiTeslaCoilLinks extends BaseGui {
                     tile.rangeMachines.get(button.id).y, tile.rangeMachines.get(button.id).z));
             tile.rangeMachines.remove(button.id);
         } else if (button.id >= index1) {
-            tile.rangeMachines.add(new Location(tile.linkedMachines.get(index1 - button.id).x,
-                    tile.linkedMachines.get(index1 - button.id).y, tile.linkedMachines.get(index1 - button.id).z));
-            tile.linkedMachines.remove(index1 - button.id);
+            tile.rangeMachines.add(new Location(tile.linkedMachines.get(button.id - index1).x,
+                    tile.linkedMachines.get(button.id - index1).y, tile.linkedMachines.get(button.id - index1).z));
+            tile.linkedMachines.remove(button.id - index1);
         }
+        PacketHandler.net.sendToServer(new UpdateServerCoilLists.UpdateMessage(tile.xCoord, tile.yCoord, tile.zCoord,
+                "linkedMachines", tile.linkedMachines));
+        PacketHandler.net.sendToServer(new UpdateServerCoilLists.UpdateMessage(tile.xCoord, tile.yCoord, tile.zCoord,
+                "rangeMachines", tile.rangeMachines));
         guiButtons();
-        PacketHandler.net.sendToDimension(new UpdateServerCoilLists.UpdateMessage(tile.xCoord, tile.yCoord, tile.zCoord,
-                "linkedMachines", tile.linkedMachines), 0);
-        PacketHandler.net.sendToDimension(new UpdateServerCoilLists.UpdateMessage(tile.xCoord, tile.yCoord, tile.zCoord,
-                "rangeMachines", tile.rangeMachines), 0);
         this.updateScreen();
     }
 

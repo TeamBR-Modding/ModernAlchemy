@@ -4,7 +4,10 @@ import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
 
 public class ContainerTeslaCoilLinks extends BaseContainer {
 
-    @SuppressWarnings("unused")
+    TileTeslaCoil tile;
+
+
     public ContainerTeslaCoilLinks(TileTeslaCoil tileEntity) {
+        this.tile = tileEntity;
     }
 }

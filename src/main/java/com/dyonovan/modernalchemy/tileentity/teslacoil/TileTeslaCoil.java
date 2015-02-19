@@ -47,6 +47,14 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
                 }
             }
         }
+        for (int i = 0; i < linkedMachines.size(); i++) {
+            if (rangeMachines.contains(linkedMachines.get(i))) {
+                rangeMachines.remove(linkedMachines.get(i));
+            } else {
+                linkedMachines.remove(i);
+                i--;
+            }
+        }
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 

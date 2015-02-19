@@ -7,7 +7,6 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 
 import java.util.LinkedList;
 
@@ -16,7 +15,7 @@ public class UpdateServerCoilLists implements IMessageHandler<UpdateServerCoilLi
     @Override
     public IMessage onMessage(UpdateServerCoilLists.UpdateMessage message, MessageContext ctx) {
         if (ctx.side.isServer()) {
-            TileTeslaCoil tile = (TileTeslaCoil) Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z);
+            TileTeslaCoil tile = (TileTeslaCoil) ctx.getServerHandler().playerEntity.worldObj.getTileEntity(message.x, message.y, message.z);
             if (message.listName.equals("linkedMachines")) {
                 tile.linkedMachines.clear();
                 tile.linkedMachines.addAll(message.list);
@@ -24,6 +23,7 @@ public class UpdateServerCoilLists implements IMessageHandler<UpdateServerCoilLi
                 tile.rangeMachines.clear();
                 tile.rangeMachines.addAll(message.list);
             }
+            ctx.getServerHandler().playerEntity.worldObj.markBlockForUpdate(message.x, message.y, message.z);
         }
         return null;
     }
