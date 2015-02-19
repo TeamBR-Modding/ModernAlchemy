@@ -2,30 +2,22 @@ package com.dyonovan.modernalchemy.gui;
 
 import com.dyonovan.modernalchemy.container.ContainerTeslaCoilLinks;
 import com.dyonovan.modernalchemy.gui.buttons.ItemStackButton;
-import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
-import com.dyonovan.modernalchemy.util.Location;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GuiTeslaCoilLinks extends BaseGui {
 
     private TileTeslaCoil tile;
     private ResourceLocation background = new ResourceLocation(Constants.MODID + ":textures/gui/coil_link.png");
-    private int high, low;
 
     public GuiTeslaCoilLinks(TileTeslaCoil tileEntity) {
         super(new ContainerTeslaCoilLinks(tileEntity));
         tile = tileEntity;
-        low = 0;
-        high = tile.link.size() > 9 ? 10 : tile.link.size();
     }
 
     @Override
@@ -34,15 +26,25 @@ public class GuiTeslaCoilLinks extends BaseGui {
         guiButtons();
     }
 
+    @SuppressWarnings("unchecked")
     protected void guiButtons() {
-        int x = 60;
-        this.buttonList.clear();
-        for (int i = 0; i < high; i++) {
-            String string = (new ArrayList<String>(tile.link.keySet())).get(i);
-            Location loc = (new ArrayList<Location>(tile.link.values())).get(i);
-            String list = string + " - " + Integer.toString(loc.x) + Integer.toString(loc.y) + Integer.toString(loc.z);
-            this.buttonList.add(new ItemStackButton(i, 135, x, new ItemStack(BlockHandler.blockArcFurnaceCore)));
-            x += 15;
+        int x = 135;
+        int y = 54;
+
+        if (tile.rangeMachines.size() > 0) {
+            int rows = (tile.rangeMachines.size() / 7) + 1;
+            int cols = tile.rangeMachines.size() / rows;
+            this.buttonList.clear();
+
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < cols; j++) {
+                    this.buttonList.add(new ItemStackButton(j, x, y, new ItemStack(
+                            tile.getWorldObj().getBlock(tile.rangeMachines.get(i + j).x, tile.rangeMachines.get(i + j).y, tile.rangeMachines.get(i + j).z))));
+                    x += 20;
+                }
+                x = 135;
+                y += 20;
+            }
         }
     }
 

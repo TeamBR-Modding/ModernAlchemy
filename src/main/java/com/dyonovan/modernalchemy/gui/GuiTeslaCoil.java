@@ -38,7 +38,7 @@ public class GuiTeslaCoil extends BaseGui {
         String strLink = "Link:";
         int color;
         fontRendererObj.drawString(strLink, (108 - fontRendererObj.getStringWidth(strLink)) / 2, 40, 4210752);
-        if (tile.link.containsKey("Any")) {
+        if (tile.rangeMachines.size() == 0) {
             strLink = "Any";
             color = 0x35D62F;
         }

@@ -14,22 +14,21 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.LinkedList;
 
 public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
 
     protected EnergyStorage energyRF;
-    public LinkedHashMap<String, Location> link;
+    public LinkedList<Location> rangeMachines;
+    public LinkedList<Location> linkedMachines;
+
 
     public TileTeslaCoil() {
         super();
         energyRF = new EnergyStorage(10000, 1000, 0);
         energyTank = new TeslaBank(1000);
-        link = new LinkedHashMap<String, Location>();
-        link.put("Any", new Location(0,0,0));
+        rangeMachines = new LinkedList<Location>();
+        linkedMachines = new LinkedList<Location>();
     }
 
     /*******************************************************************************************************************
@@ -37,19 +36,16 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
      *******************************************************************************************************************/
 
     public void searchMachines() {
-        link.clear();
+        rangeMachines.clear();
         for (int x = -ConfigHandler.searchRange; x <= ConfigHandler.searchRange; x++) {
             for (int y = -ConfigHandler.searchRange; y <= ConfigHandler.searchRange; y++) {
                 for (int z = -ConfigHandler.searchRange; z <= ConfigHandler.searchRange; z++) {
                     TileEntity te = worldObj.getTileEntity(xCoord + x, yCoord + y, zCoord + z);
                     if (te instanceof BaseMachine && !(te instanceof TileTeslaCoil)) {
-                        link.put(te.getBlockType().getLocalizedName(), new Location(xCoord + x, yCoord + y, zCoord + z));
+                        rangeMachines.add(new Location(xCoord + x, yCoord + y, zCoord + z));
                     }
                 }
             }
-        }
-        if (link.size() < 1) {
-            link.put("Any", new Location(0, 0, 0));
         }
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
@@ -129,12 +125,13 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         energyRF.readFromNBT(tag);
-        NBTTagList nbtList = tag.getTagList("Links", 10);
-        link.clear();
-        for (int i = 0; i < nbtList.tagCount(); i++) {
-            NBTTagCompound tag1 = nbtList.getCompoundTagAt(i);
-            link.put(tag1.getString("Machine"), new Location(
-                    tag1.getInteger("X"), tag1.getInteger("Y"), tag1.getInteger("Z")));
+        if (tag.hasKey("Links")) {
+            NBTTagList nbtList = tag.getTagList("Links", 10);
+            linkedMachines.clear();
+            for (int i = 0; i < nbtList.tagCount(); i++) {
+                NBTTagCompound tag1 = nbtList.getCompoundTagAt(i);
+                linkedMachines.add(new Location(tag1.getInteger("X"), tag1.getInteger("Y"), tag1.getInteger("Z")));
+            }
         }
     }
 
@@ -142,16 +139,17 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         energyRF.writeToNBT(tag);
-        NBTTagList nbtList = new NBTTagList();
-        for (Map.Entry<String, Location> entry : link.entrySet()) {
-            NBTTagCompound tag1 = new NBTTagCompound();
-            tag1.setString("Machine", entry.getKey());
-            tag1.setInteger("X", entry.getValue().x);
-            tag1.setInteger("Y", entry.getValue().y);
-            tag1.setInteger("Z", entry.getValue().z);
-            nbtList.appendTag(tag1);
+        if (linkedMachines.size() > 0) {
+            NBTTagList nbtList = new NBTTagList();
+            for (Location loc : linkedMachines) {
+                NBTTagCompound tag1 = new NBTTagCompound();
+                tag1.setInteger("X", loc.x);
+                tag1.setInteger("Y", loc.y);
+                tag1.setInteger("Z", loc.z);
+                nbtList.appendTag(tag1);
+            }
+            tag.setTag("Links", nbtList);
         }
-        tag.setTag("Links", nbtList);
     }
 
     @Override
