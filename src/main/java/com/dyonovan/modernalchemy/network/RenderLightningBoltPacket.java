@@ -32,6 +32,7 @@ public class RenderLightningBoltPacket implements IMessageHandler<RenderLightnin
         private int green;
         private int blue;
 
+        @SuppressWarnings("unused")
         public BoltMessage() {}
 
         public BoltMessage(double xC, double yC, double zC, double x1C, double y2C, double z3C, int ageC) {
