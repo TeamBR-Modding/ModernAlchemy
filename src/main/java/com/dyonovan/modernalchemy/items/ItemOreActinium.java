@@ -23,15 +23,15 @@ public class ItemOreActinium extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister register) {
-        this.itemIcon = register.registerIcon(Constants.MODID + ":itemActinium");
+        this.itemIcon = register.registerIcon(Constants.MODID + ":item_actinium");
     }
 
     @Override
     public void onUpdate(ItemStack itemStack, World world, Entity entity, int i, boolean whoknows) {
         super.onUpdate(itemStack, world, entity, i, whoknows);
-
+        //TODO cancel if wearing feridy armour
         if (entity instanceof EntityPlayer) { //todo ADD Config option for this
-            ((EntityPlayer) entity).addPotionEffect(new PotionEffect(Potion.poison.getId(), 100, 1));
+            ((EntityPlayer) entity).addPotionEffect(new PotionEffect(Potion.poison.getId(), 100, 10));
         }
     }
 }

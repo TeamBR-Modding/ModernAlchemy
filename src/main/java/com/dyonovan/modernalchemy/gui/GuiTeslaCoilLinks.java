@@ -18,7 +18,7 @@ import java.util.List;
 public class GuiTeslaCoilLinks extends BaseGui {
 
     private TileTeslaCoil tile;
-    private ResourceLocation background = new ResourceLocation(Constants.MODID + ":textures/gui/energy.png");
+    private ResourceLocation background = new ResourceLocation(Constants.MODID + ":textures/gui/coil_link.png");
     private int high, low;
 
     public GuiTeslaCoilLinks(TileTeslaCoil tileEntity) {

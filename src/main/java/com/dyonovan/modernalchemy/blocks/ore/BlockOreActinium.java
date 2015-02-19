@@ -3,14 +3,12 @@ package com.dyonovan.modernalchemy.blocks.ore;
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.handlers.ItemHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
-import com.dyonovan.modernalchemy.util.WorldUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.item.Item;
 
 import java.util.Random;
 
@@ -20,6 +18,8 @@ public class BlockOreActinium extends Block {
         super(Material.rock);
         this.setBlockName(Constants.MODID + ":blockOreActinium");
         this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
+        this.setHardness(2.0F);
+        this.setHarvestLevel("pickaxe", 3);
     }
 
     @SideOnly(Side.CLIENT)
@@ -35,9 +35,17 @@ public class BlockOreActinium extends Block {
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, Block par5, int par6)
-    {
-        super.breakBlock(world, x, y, z, par5, par6);
-        WorldUtils.expelItem(world, x, y, z, new ItemStack(ItemHandler.itemActinium));
+    public Item getItemDropped(int meta, Random random, int fortune) {
+        return ItemHandler.itemActinium;
+    }
+
+    @Override
+    public int damageDropped(int metadata) {
+        return 0;
+    }
+
+    @Override
+    public int quantityDropped(int meta, int fortune, Random random) {
+        return 1;
     }
 }

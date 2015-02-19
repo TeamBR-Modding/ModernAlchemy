@@ -5,6 +5,7 @@ import com.dyonovan.modernalchemy.energy.ITeslaHandler;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.handlers.ConfigHandler;
+import com.dyonovan.modernalchemy.handlers.ItemHandler;
 import com.dyonovan.modernalchemy.tileentity.BaseMachine;
 import com.dyonovan.modernalchemy.tileentity.InventoryTile;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
@@ -169,7 +170,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     public boolean canSmelt() {
         if(inventory.getStackInSlot(0) != null && inventory.getStackInSlot(1) != null)
             return airTank.getFluidAmount() > 100 &&
-                    inventory.getStackInSlot(0).getItem() == Item.getItemFromBlock(BlockHandler.blockOreActinium) &&
+                    inventory.getStackInSlot(0).getItem() == ItemHandler.itemActinium &&
                     inventory.getStackInSlot(1).getItem() == Items.coal &&
                     outputTank.getCapacity() - outputTank.getFluidAmount() >= FluidContainerRegistry.BUCKET_VOLUME &&
                     energyTank.getEnergyLevel() > currentSpeed;
