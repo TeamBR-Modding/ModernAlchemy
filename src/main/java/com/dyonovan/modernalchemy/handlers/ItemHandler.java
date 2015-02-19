@@ -13,7 +13,7 @@ public class ItemHandler {
 
     public static ItemPattern itemPattern;
     public static Item itemBucketActinium, itemReplicationMedium;
-    public static Item laserNode, itemSlag, itemWrench;
+    public static Item laserNode, itemSlag, itemWrench, itemActinium;
 
     public static void init() {
         itemPattern = new ItemPattern();
@@ -39,6 +39,11 @@ public class ItemHandler {
         //itemWrench
         itemWrench = new ItemWrench();
         GameRegistry.registerItem(itemWrench, "wrench");
+
+        //itemActinium
+        itemActinium = new ItemOreActinium();
+        GameRegistry.registerItem(itemActinium, "itemActinium");
+
     }
 
 
