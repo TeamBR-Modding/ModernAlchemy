@@ -30,7 +30,7 @@ public class ItemOreActinium extends Item {
     public void onUpdate(ItemStack itemStack, World world, Entity entity, int i, boolean whoknows) {
         super.onUpdate(itemStack, world, entity, i, whoknows);
 
-        if (entity instanceof EntityPlayer) {
+        if (entity instanceof EntityPlayer) { //todo ADD Config option for this
             ((EntityPlayer) entity).addPotionEffect(new PotionEffect(Potion.poison.getId(), 100, 1));
         }
     }
