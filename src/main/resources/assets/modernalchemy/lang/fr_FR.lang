@@ -1,0 +1,23 @@
+tile.modernalchemy:blockTeslaCoil.name=Bobine tesla
+tile.modernalchemy:blockTeslaStand.name=Stand de bobine tesla
+tile.modernalchemy:fluidCompressedAir.name=Air comprimé
+tile.modernalchemy:fluidActinium.name=Actinium liquide
+tile.modernalchemy:blockOreActinium.name=Minerai d'actinium
+tile.modernalchemy:arcFurnaceDummy.name=Enveloppe de four d'arc
+tile.modernalchemy:blockArcFurnaceCore.name=Processeur de four d'arc
+tile.modernalchemy:blockCompressor.name=Soufflet électrique
+tile.modernalchemy:blockSolidifier.name=Amalgamateur
+tile.modernalchemy:blockPatternRecorder.name=Enregistreur de modèle
+tile.modernalchemy:arcFurnaceDummyOutputValue.name=Valve sortante de four d'arc
+tile.modernalchemy:arcFurnaceDummyItemIO.name=E/S d'élément de four d'arc
+tile.modernalchemy:arcFurnaceDummyAirValue.name=Valve d'air comprimé de four d'arc
+tile.modernalchemy:blockTeslaBase.name=Bobine tesla de base
+tile.modernalchemy:blockFrame.name=Cadre de duplicateur
+tile.modernalchemy:blockFrameEnergy.name=UPC de duplicateur
+
+item.modernalchemy:pattern.name=Modèle du duplicateur
+item.modernalchemy:bucketActinium.name=Sceau d'actinium
+item.modernalchemy:itemCube.name=Moyen du duplicateur
+item.modernalchemy:wrench.name=Clé
+
+itemGroup.tabmodernalchemy=Modern Alchemy
