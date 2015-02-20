@@ -1,5 +1,6 @@
 package com.dyonovan.modernalchemy.util;
 
+import com.dyonovan.modernalchemy.items.ItemFaradayArmor;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -21,6 +22,7 @@ import java.util.Random;
 public class WorldUtils {
     protected static Random random = new Random();
 
+    @SuppressWarnings("unchecked")
     public static void hurtEntitiesInRange(World worldObj, double x1, double y1, double z1, double x2, double y2, double z2) {
         float t = 0.1F;
         double range = 0.5F;
@@ -39,7 +41,7 @@ public class WorldUtils {
                 for(Entity entityLiving : entities) {
                     if(entityLiving instanceof EntityPlayer) {
                         EntityPlayer player = (EntityPlayer)entityLiving;
-                        if(player.capabilities.isCreativeMode)
+                        if(player.capabilities.isCreativeMode || checkArmor(player))
                             continue;
                     }
                     entityLiving.attackEntityFrom(DamageSource.inFire, 2.0F);
@@ -48,10 +50,18 @@ public class WorldUtils {
             }
 
             for(EntityCreeper creeper : creepers)
-                creeper.getDataWatcher().updateObject(17, Byte.valueOf((byte)1));
+                creeper.getDataWatcher().updateObject(17, (byte) 1);
 
             t += 0.01F;
         }
+    }
+
+    public static boolean checkArmor(EntityPlayer player) {
+        for (int i = 0; i < 4; i++) {
+            if (player.getCurrentArmor(i) == null ||
+                    !(player.getCurrentArmor(i).getItem() instanceof ItemFaradayArmor)) return false;
+        }
+        return true;
     }
 
     public static void expelItem(World worldObj, double xCoord, double yCoord, double zCoord, ItemStack itemstack) {

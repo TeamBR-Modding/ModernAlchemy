@@ -13,7 +13,7 @@ public class ItemFaradayArmor extends ItemArmor {
     public ItemFaradayArmor(String unLoc, ArmorMaterial material, String texture, int type) {
         super(material, 0, type);
         this.texture = texture;
-        this.setUnlocalizedName(unLoc);
+        this.setUnlocalizedName(Constants.MODID + ":" + unLoc);
         this.setTextureName(Constants.MODID + ":" + unLoc);
         this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
     }
