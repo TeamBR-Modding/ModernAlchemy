@@ -70,8 +70,6 @@ public class UpdateServerCoilLists implements IMessageHandler<UpdateServerCoilLi
                 list.add(new Location(tempX, tempY, tempZ));
             }
             listName = ByteBufUtils.readUTF8String(buf);
-
-
         }
 
         @Override

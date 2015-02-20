@@ -7,10 +7,14 @@ import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.network.UpdateServerCoilLists;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
 import com.dyonovan.modernalchemy.util.Location;
+import com.dyonovan.modernalchemy.util.WorldUtils;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -92,8 +96,26 @@ public class GuiTeslaCoilLinks extends BaseGui {
     }
 
     @Override
-    protected void actionPerformed(GuiButton button) {
+    public void mouseClicked(int x, int y, int button) {
+        for(Object button1 : buttonList) {
+            GuiButton guiButton = (GuiButton)button1;
+            if(x >= guiButton.xPosition && x <= guiButton.xPosition + 20 && y >= guiButton.yPosition && y <= guiButton.yPosition + 20) {
+                GuiScreenEvent.ActionPerformedEvent.Pre event = new GuiScreenEvent.ActionPerformedEvent.Pre(this, guiButton, this.buttonList);
+                if (MinecraftForge.EVENT_BUS.post(event))
+                    break;
+                event.button.func_146113_a(this.mc.getSoundHandler());
+                this.actionPerformed(event.button);
+                if (this.equals(this.mc.currentScreen))
+                    MinecraftForge.EVENT_BUS.post(new GuiScreenEvent.ActionPerformedEvent.Post(this, event.button, this.buttonList));
 
+                return;
+            }
+        }
+    }
+
+    @Override
+    protected void actionPerformed(GuiButton button) {
+        System.out.println(button.id);
         if (button.id < index1 && tile.rangeMachines.size() > 0) {
             tile.linkedMachines.add(new Location(tile.rangeMachines.get(button.id).x,
                     tile.rangeMachines.get(button.id).y, tile.rangeMachines.get(button.id).z));
@@ -103,12 +125,12 @@ public class GuiTeslaCoilLinks extends BaseGui {
                     tile.linkedMachines.get(button.id - index1).y, tile.linkedMachines.get(button.id - index1).z));
             tile.linkedMachines.remove(button.id - index1);
         }
+
         PacketHandler.net.sendToServer(new UpdateServerCoilLists.UpdateMessage(tile.xCoord, tile.yCoord, tile.zCoord,
                 "linkedMachines", tile.linkedMachines));
         PacketHandler.net.sendToServer(new UpdateServerCoilLists.UpdateMessage(tile.xCoord, tile.yCoord, tile.zCoord,
                 "rangeMachines", tile.rangeMachines));
         guiButtons();
-        //this.updateScreen();
     }
 
     @Override
