@@ -7,7 +7,7 @@ public class ConfigHandler {
 
     public static String folderLocation;
 
-    public static boolean generateActinium, machineExplodes;
+    public static boolean generateActinium, machineExplodes, machineSounds;
     public static int actiniumMaxLevel, actiniumVeinSize, actiniumVeinsPerChunk, actiniumMinLevel;
     public static int searchRange;
     public static int rfPerTesla, maxCoilGenerate, maxCoilTransfer;
@@ -30,6 +30,7 @@ public class ConfigHandler {
         searchRange             = config.get(Constants.CONFIG_TESLA, "How many blocks (cubed) to search for coils", 10).getInt();
 
         machineExplodes         = config.get(Constants.CONFIG_GENERAL, "Do Machines Explode?", true).getBoolean();
+        machineSounds           = config.get(Constants.CONFIG_GENERAL, "Disable Machine Sounds?", false).getBoolean();
 
         config.save();
     }
