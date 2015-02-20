@@ -1,5 +1,8 @@
 package com.dyonovan.modernalchemy.lib;
 
+import net.minecraft.item.ItemArmor;
+import net.minecraftforge.common.util.EnumHelper;
+
 public class Constants {
 
     public static final String MODID = "modernalchemy";
