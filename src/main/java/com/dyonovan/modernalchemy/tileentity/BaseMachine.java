@@ -5,10 +5,10 @@ import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.handlers.ConfigHandler;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
+import com.dyonovan.modernalchemy.util.Location;
 import com.dyonovan.modernalchemy.util.RenderUtils;
 import com.dyonovan.modernalchemy.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
@@ -91,18 +91,20 @@ public class BaseMachine extends BaseTile implements ITeslaHandler {
         List<TileTeslaCoil> coils = findCoils(worldObj);
         int currentDrain = 0;
         for(TileTeslaCoil coil : coils) {
-            if (coil.getEnergyLevel() <= 0) continue; //fixes looking like its working when coil is empty
-            int fill = coil.getEnergyLevel() > ConfigHandler.maxCoilTransfer ? ConfigHandler.maxCoilTransfer : coil.getEnergyLevel();
-            if(currentDrain + fill > maxFill)
-                fill = maxFill - currentDrain;
-            currentDrain += fill;
-            coil.drainEnergy(fill);
+            if (coil.linkedMachines.contains(new Location(xCoord, yCoord, zCoord)) || coil.linkedMachines.size() == 0) {
+                if (coil.getEnergyLevel() <= 0) continue; //fixes looking like its working when coil is empty
+                int fill = coil.getEnergyLevel() > ConfigHandler.maxCoilTransfer ? ConfigHandler.maxCoilTransfer : coil.getEnergyLevel();
+                if (currentDrain + fill > maxFill)
+                    fill = maxFill - currentDrain;
+                currentDrain += fill;
+                coil.drainEnergy(fill);
 
-            RenderUtils.sendBoltToClient(xCoord, yCoord, zCoord, coil, fill);
-            WorldUtils.hurtEntitiesInRange(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, coil.xCoord + 0.5, coil.yCoord + 0.5, coil.zCoord + 0.5);
+                RenderUtils.sendBoltToClient(xCoord, yCoord, zCoord, coil, fill);
+                WorldUtils.hurtEntitiesInRange(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, coil.xCoord + 0.5, coil.yCoord + 0.5, coil.zCoord + 0.5);
 
-            if(currentDrain >= maxFill) //Don't want to drain other coils we don't need to
-                break;
+                if (currentDrain >= maxFill) //Don't want to drain other coils we don't need to
+                    break;
+            }
         }
         while(currentDrain > 0) {
             energyTank.addEnergy(1);
