@@ -1,0 +1,11 @@
+{
+    "shock": {
+        "category": "master",
+        "sounds": [
+            {
+                "name": "shock",
+                "stream": false
+            }
+        ]
+    }
+}
