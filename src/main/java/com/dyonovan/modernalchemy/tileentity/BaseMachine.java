@@ -102,8 +102,6 @@ public class BaseMachine extends BaseTile implements ITeslaHandler {
 
                 RenderUtils.sendBoltToClient(xCoord, yCoord, zCoord, coil, fill);
                 WorldUtils.hurtEntitiesInRange(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, coil.xCoord + 0.5, coil.yCoord + 0.5, coil.zCoord + 0.5);
-                if(worldObj.rand.nextInt(8) == 0)
-                    SoundHelper.playSound("shock", xCoord, yCoord, zCoord, 0.05F, 1.0F);
 
                 if (currentDrain >= maxFill) //Don't want to drain other coils we don't need to
                     break;

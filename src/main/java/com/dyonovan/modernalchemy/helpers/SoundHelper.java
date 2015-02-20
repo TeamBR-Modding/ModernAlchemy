@@ -10,8 +10,8 @@ import net.minecraft.util.ResourceLocation;
 public class SoundHelper {
 
     @SideOnly(Side.CLIENT)
-    public static void playSound(String soundName, float xCoord, float yCoord, float zCoord, float volume, float pitch)
+    public static void playSound(String soundName, double xCoord, double yCoord, double zCoord, float volume, float pitch)
     {
-        FMLClientHandler.instance().getClient().getSoundHandler().playSound(new PositionedSoundRecord(new ResourceLocation(Constants.MODID, soundName), volume, pitch, xCoord, yCoord, zCoord));
+        FMLClientHandler.instance().getClient().getSoundHandler().playSound(new PositionedSoundRecord(new ResourceLocation(Constants.MODID, soundName), volume, pitch, (float) xCoord, (float) yCoord, (float) zCoord));
     }
 }
