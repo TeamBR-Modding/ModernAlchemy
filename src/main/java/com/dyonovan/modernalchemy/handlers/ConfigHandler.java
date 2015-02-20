@@ -7,7 +7,7 @@ public class ConfigHandler {
 
     public static String folderLocation;
 
-    public static boolean generateActinium, machineExplodes, machineSounds;
+    public static boolean generateActinium, machineExplodes, machineSounds, poisonDust;
     public static int actiniumMaxLevel, actiniumVeinSize, actiniumVeinsPerChunk, actiniumMinLevel;
     public static int searchRange;
     public static int rfPerTesla, maxCoilGenerate, maxCoilTransfer;
@@ -31,6 +31,7 @@ public class ConfigHandler {
 
         machineExplodes         = config.get(Constants.CONFIG_GENERAL, "Do Machines Explode?", true).getBoolean();
         machineSounds           = config.get(Constants.CONFIG_GENERAL, "Disable Machine Sounds?", false).getBoolean();
+        poisonDust              = config.get(Constants.CONFIG_GENERAL, "Disable Poison from Actinium Dust?", false).getBoolean();
 
         config.save();
     }

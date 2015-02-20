@@ -1,6 +1,7 @@
 package com.dyonovan.modernalchemy.items;
 
 import com.dyonovan.modernalchemy.ModernAlchemy;
+import com.dyonovan.modernalchemy.handlers.ConfigHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -29,8 +30,8 @@ public class ItemOreActinium extends Item {
     @Override
     public void onUpdate(ItemStack itemStack, World world, Entity entity, int i, boolean whoknows) {
         super.onUpdate(itemStack, world, entity, i, whoknows);
-        //TODO cancel if wearing feridy armour
-        if (entity instanceof EntityPlayer) { //todo ADD Config option for this
+        //TODO cancel if wearing rad proof helm
+        if (entity instanceof EntityPlayer && !ConfigHandler.poisonDust) {
             ((EntityPlayer) entity).addPotionEffect(new PotionEffect(Potion.poison.getId(), 100, 10));
         }
     }
