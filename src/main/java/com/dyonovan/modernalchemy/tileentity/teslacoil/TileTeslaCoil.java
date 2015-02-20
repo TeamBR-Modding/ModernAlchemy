@@ -6,15 +6,20 @@ import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.ConfigHandler;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
+import com.dyonovan.modernalchemy.handlers.PacketHandler;
+import com.dyonovan.modernalchemy.network.UpdateServerCoilLists;
 import com.dyonovan.modernalchemy.tileentity.BaseMachine;
 import com.dyonovan.modernalchemy.util.Location;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
 
@@ -35,7 +40,7 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
      ************************************* Tesla Coil Functions ********************************************************
      *******************************************************************************************************************/
 
-    public void searchMachines() {
+    public void searchMachines(EntityPlayer player) {
         rangeMachines.clear();
         for (int x = -ConfigHandler.searchRange; x <= ConfigHandler.searchRange; x++) {
             for (int y = -ConfigHandler.searchRange; y <= ConfigHandler.searchRange; y++) {
@@ -55,7 +60,17 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
                 i--;
             }
         }
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        //worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        List<EntityPlayerMP> players = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+        for (EntityPlayerMP pr : players) {
+            if (pr.getDisplayName().equals(player.getDisplayName())) {
+                PacketHandler.net.sendTo(new UpdateServerCoilLists.UpdateMessage(xCoord, yCoord, zCoord,
+                        "linkedMachines", linkedMachines), pr);
+                PacketHandler.net.sendTo(new UpdateServerCoilLists.UpdateMessage(xCoord, yCoord, zCoord,
+                        "rangeMachines", rangeMachines), pr);
+            }
+        }
+
     }
 
     private boolean doConvert() {
@@ -126,7 +141,7 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
     @Override
     public void onWrench(EntityPlayer player) {
         if (worldObj.isRemote) return;
-        searchMachines();
+        searchMachines(player);
         player.openGui(ModernAlchemy.instance, GuiHandler.TESLA_COIL_LINKS_GUI_ID, worldObj, xCoord, yCoord, zCoord);
     }
 
