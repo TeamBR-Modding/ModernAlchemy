@@ -39,8 +39,8 @@ public class GuiTeslaCoilLinks extends BaseGui {
 
     @SuppressWarnings("unchecked")
     protected void guiButtons() {
-        int x = 133;
-        int y = 54;
+        int x = guiLeft + 8;
+        int y = guiTop + 16;
         index1 = 0;
         int index2 = 0;
         toolTips.clear();
@@ -70,8 +70,8 @@ public class GuiTeslaCoilLinks extends BaseGui {
             }
         }
 
-        x = 133;
-        y = 132;
+        x = guiLeft + 8;
+        y = guiTop + 95;
         if (tile.linkedMachines.size() > 0) {
             int rows = (int) Math.ceil(tile.linkedMachines.size() / 8.0);
             for (int i = 0; i < rows; i++) {
@@ -115,7 +115,6 @@ public class GuiTeslaCoilLinks extends BaseGui {
 
     @Override
     protected void actionPerformed(GuiButton button) {
-        System.out.println(button.id);
         if (button.id < index1 && tile.rangeMachines.size() > 0) {
             tile.linkedMachines.add(new Location(tile.rangeMachines.get(button.id).x,
                     tile.rangeMachines.get(button.id).y, tile.rangeMachines.get(button.id).z));
