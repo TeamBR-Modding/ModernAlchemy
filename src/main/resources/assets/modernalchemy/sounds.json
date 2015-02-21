@@ -7,5 +7,15 @@
                 "stream": false
             }
         ]
-    }
+    },
+
+  "compressor": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "machines/compressor",
+        "stream": false
+      }
+    ]
+  }
 }

@@ -32,6 +32,7 @@ public class ConfigHandler {
         machineExplodes         = config.get(Constants.CONFIG_GENERAL, "Do Machines Explode?", true).getBoolean();
         machineSounds           = config.get(Constants.CONFIG_GENERAL, "Disable Machine Sounds?", false).getBoolean();
         poisonDust              = config.get(Constants.CONFIG_GENERAL, "Disable Poison from Actinium Dust?", false).getBoolean();
+        machineSounds           = config.get(Constants.CONFIG_GENERAL, "Do Machine Sounds?", true).getBoolean();
 
         config.save();
     }

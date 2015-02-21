@@ -1,4 +1,4 @@
-package com.dyonovan.modernalchemy.helpers;
+package com.dyonovan.modernalchemy.audio;
 
 import com.dyonovan.modernalchemy.lib.Constants;
 import cpw.mods.fml.client.FMLClientHandler;
