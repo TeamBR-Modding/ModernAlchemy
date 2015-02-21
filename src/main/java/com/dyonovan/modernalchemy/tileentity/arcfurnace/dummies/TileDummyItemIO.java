@@ -1,6 +1,7 @@
 package com.dyonovan.modernalchemy.tileentity.arcfurnace.dummies;
 
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
+import com.dyonovan.modernalchemy.handlers.ItemHandler;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.TileArcFurnaceCore;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -21,7 +22,7 @@ public class TileDummyItemIO extends TileDummy implements ISidedInventory {
         if(core != null) {
             switch (slot) {
             case 0:
-                if (item.getItem() == Item.getItemFromBlock(BlockHandler.blockOreActinium)) {
+                if (item.getItem() == ItemHandler.itemActinium) {
                     return core.inventory.getStackInSlot(slot) == null || item.stackSize + core.inventory.getStackInSlot(slot).stackSize <= 64;
                 }
                 break;
@@ -114,12 +115,7 @@ public class TileDummyItemIO extends TileDummy implements ISidedInventory {
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
         TileArcFurnaceCore core = (TileArcFurnaceCore) getCore();
         if(core != null) {
-            switch(slot) {
-            case 0 :
-                return stack.getItem() == Item.getItemFromBlock(BlockHandler.blockOreActinium);
-            case 1 :
-                return stack.getItem() == Items.coal;
-            }
+            return core.isItemValidForSlot(slot, stack);
         }
         return false;
     }

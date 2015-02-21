@@ -344,7 +344,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
         switch(slot) {
             case INPUT_SLOT :
-                return itemStack.getItem() == Item.getItemFromBlock(BlockHandler.blockOreActinium);
+                return itemStack.getItem() == ItemHandler.itemActinium;
             case CATALYST_SLOT :
                 return itemStack.getItem() == Items.coal;
 

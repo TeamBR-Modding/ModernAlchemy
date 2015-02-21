@@ -25,7 +25,6 @@ public class GuiTeslaCoil extends BaseGui {
         this.xSize = 108;
         this.ySize = 86;
 
-        widgets.add(new WidgetPulse(this, tile, 79, 42));
         widgets.add((new WidgetEnergyBank(this, tile.getEnergyBank(), 81, 78)));
     }
 
