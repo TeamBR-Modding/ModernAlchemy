@@ -191,7 +191,7 @@ public class TilePatternRecorder extends BaseMachine implements  IInventory {
 
         switch(slot){
             case ITEM_SLOT:
-                return true; //TODO add check for replication value
+                return true;
             case INPUT_SLOT:
                 return stack.getItem() instanceof ItemPattern;
             default:
