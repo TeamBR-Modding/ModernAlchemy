@@ -75,6 +75,7 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
 
     private boolean doConvert() {
         if (energyRF.getEnergyStored() > 0 && energyTank.getEnergyLevel()  < energyTank.getMaxCapacity()) {
+            isActive = true;
             int actualRF = Math.min(ConfigHandler.maxCoilGenerate * ConfigHandler.rfPerTesla, energyRF.getEnergyStored());
             int actualTesla = Math.min(ConfigHandler.maxCoilGenerate, energyTank.getMaxCapacity() - energyTank.getEnergyLevel());
 
@@ -90,6 +91,8 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
             }
             return true;
         }
+        isActive = false;
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         return false;
     }
 

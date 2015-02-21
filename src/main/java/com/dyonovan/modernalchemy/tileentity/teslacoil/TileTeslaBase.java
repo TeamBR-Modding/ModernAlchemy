@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy.tileentity.teslacoil;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
+import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.tileentity.BaseTile;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,6 +15,21 @@ public class TileTeslaBase extends BaseTile implements IEnergyHandler {
 
     public TileTeslaBase() {
 
+    }
+
+    public boolean isCoilCharging() {
+        int y = yCoord + 1;
+        while(!worldObj.isAirBlock(xCoord, y, zCoord)) {
+            if(worldObj.getBlock(xCoord, y, zCoord) == BlockHandler.blockTeslaStand) {
+                y++;
+                continue;
+            }
+              else if(worldObj.getBlock(xCoord, y, zCoord) == BlockHandler.blockCoil)
+                return ((TileTeslaCoil)worldObj.getTileEntity(xCoord, y, zCoord)).isActive();
+            else
+                return false;
+        }
+        return false;
     }
 
     @Override

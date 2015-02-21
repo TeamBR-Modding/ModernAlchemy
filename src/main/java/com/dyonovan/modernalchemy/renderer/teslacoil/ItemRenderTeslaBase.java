@@ -63,7 +63,7 @@ public class ItemRenderTeslaBase implements IItemRenderer {
         GL11.glTranslatef(x, y, z); //size
         GL11.glDisable(GL11.GL_CULL_FACE);
 
-        base.render();
+        base.renderMain();
 
         GL11.glEnable(GL11.GL_CULL_FACE);
 
