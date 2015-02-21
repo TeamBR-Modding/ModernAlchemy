@@ -30,7 +30,7 @@ public class ConfigHandler {
         searchRange             = config.get(Constants.CONFIG_TESLA, "How many blocks (cubed) to search for coils", 10).getInt();
 
         machineExplodes         = config.get(Constants.CONFIG_GENERAL, "Do Machines Explode?", true).getBoolean();
-        machineSounds           = config.get(Constants.CONFIG_GENERAL, "Disable Machine Sounds?", false).getBoolean();
+        machineSounds           = config.get(Constants.CONFIG_GENERAL, "Do Machine Sounds?", true).getBoolean();
 
         config.save();
     }

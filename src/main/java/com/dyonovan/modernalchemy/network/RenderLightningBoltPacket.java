@@ -1,7 +1,7 @@
 package com.dyonovan.modernalchemy.network;
 
 import com.dyonovan.modernalchemy.handlers.ConfigHandler;
-import com.dyonovan.modernalchemy.helpers.SoundHelper;
+import com.dyonovan.modernalchemy.audio.SoundHelper;
 import com.dyonovan.modernalchemy.util.RenderUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
@@ -17,7 +17,6 @@ public class RenderLightningBoltPacket implements IMessageHandler<RenderLightnin
             RenderUtils.renderLightningBolt(Minecraft.getMinecraft().theWorld, message.x, message.y, message.z, message.x1, message.y1, message.z1, message.displacement, message.detail, message.age, message.red, message.green, message.blue);
             if(Minecraft.getMinecraft().theWorld.rand.nextInt(8) == 0 && ConfigHandler.machineSounds)
                 SoundHelper.playSound("shock", message.x, message.y, message.z, 0.05F, 1.5F);
-
         }
         return null;
     }

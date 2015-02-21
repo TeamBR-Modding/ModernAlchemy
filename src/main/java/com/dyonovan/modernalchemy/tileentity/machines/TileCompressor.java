@@ -1,8 +1,13 @@
 package com.dyonovan.modernalchemy.tileentity.machines;
 
+import com.dyonovan.modernalchemy.audio.MachineSound;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
+import com.dyonovan.modernalchemy.audio.SoundHelper;
+import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.BaseMachine;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.ISound;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
@@ -11,6 +16,7 @@ public class TileCompressor extends BaseMachine implements IFluidHandler {
 
     public FluidTank tank;
     private int currentSpeed;
+    private int soundCoolDown = 0;
 
     public TileCompressor() {
         this.energyTank = new TeslaBank(1000);
@@ -35,8 +41,11 @@ public class TileCompressor extends BaseMachine implements IFluidHandler {
 
     private void compress() {
         if (energyTank.getEnergyLevel() > 0 && canFill(tank) && !isPowered()) {
-            if (!isActive)
+            if (!isActive) {
+                ISound eventHorizonSound = new MachineSound(Constants.MODID + ":compressor", this, 0.1F, 1);
+                Minecraft.getMinecraft().getSoundHandler().playSound(eventHorizonSound);
                 isActive = true;
+            }
             updateSpeed();
             energyTank.drainEnergy(currentSpeed);
             tank.fill(new FluidStack(BlockHandler.fluidCompressedAir, 10 * currentSpeed), true);
@@ -94,7 +103,15 @@ public class TileCompressor extends BaseMachine implements IFluidHandler {
     @Override
     public void updateEntity() {
         super.updateEntity();
-        if (worldObj.isRemote) return;
+        if (worldObj.isRemote) {
+            /*if(isActive && soundCoolDown <= 0) {
+                SoundHelper.playSound("compressor", xCoord, yCoord, zCoord, 0.05F, 0.8F);
+                soundCoolDown = 20;
+            }
+            soundCoolDown--;*/
+            return;
+        }
+
         if (energyTank.canAcceptEnergy()) {
             chargeFromCoils();
         }
