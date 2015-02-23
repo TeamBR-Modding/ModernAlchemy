@@ -7,6 +7,7 @@ import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.handlers.ConfigHandler;
 import com.dyonovan.modernalchemy.handlers.ItemHandler;
+import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.tileentity.BaseMachine;
 import com.dyonovan.modernalchemy.tileentity.InventoryTile;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
@@ -367,7 +368,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
         super.readFromNBT(tagCompound);
 
         timeCooked = tagCompound.getInteger("TimeCooking");
-
+        currentSpeed = tagCompound.getInteger("CurrentSpeed");
         inventory.readFromNBT(tagCompound, this);
 
         if(tagCompound.getBoolean("hasOutputFluid")) {
@@ -388,7 +389,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
         super.writeToNBT(tagCompound);
 
         tagCompound.setInteger("TimeCooking", timeCooked);
-
+        tagCompound.setInteger("CurrentSpeed", currentSpeed);
         inventory.writeToNBT(tagCompound);
 
         tagCompound.setBoolean("hasOutputFluid", outputTank.getFluid() != null);
@@ -420,7 +421,10 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     @Override
     public List<String> returnWailaHead() {
         List<String> head = new ArrayList<String>();
-        head.add("Test");
+        head.add(GuiHelper.GuiColor.YELLOW + "Energy: " + GuiHelper.GuiColor.WHITE + energyTank.getEnergyLevel() + "/" + energyTank.getMaxCapacity() + GuiHelper.GuiColor.YELLOW + "T");
+        head.add(GuiHelper.GuiColor.YELLOW + "Air: " + GuiHelper.GuiColor.WHITE + airTank.getFluidAmount() + "/" + airTank.getCapacity() + GuiHelper.GuiColor.YELLOW + "mb");
+        head.add(GuiHelper.GuiColor.YELLOW + "Actinium: " + GuiHelper.GuiColor.WHITE + outputTank.getFluidAmount() + "/" + outputTank.getCapacity() + GuiHelper.GuiColor.YELLOW + "mb");
+        head.add(GuiHelper.GuiColor.YELLOW + "Speed: " + GuiHelper.GuiColor.WHITE + currentSpeed);
         return head;
     }
 }
