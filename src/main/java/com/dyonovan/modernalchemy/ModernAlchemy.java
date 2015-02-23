@@ -9,6 +9,7 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -60,6 +61,7 @@ public class ModernAlchemy {
     public void init(FMLInitializationEvent event) {
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
         PacketHandler.initPackets();
+        FMLInterModComms.sendMessage("Waila", "register", "com.dyonovan.modernalchemy.waila.WailaDataProvider.callbackRegister");
     }
 
     @SuppressWarnings("unused")
