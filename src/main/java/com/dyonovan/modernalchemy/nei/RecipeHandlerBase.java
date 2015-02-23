@@ -1,25 +1,5 @@
 package com.dyonovan.modernalchemy.nei;
 
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidBlock;
-import net.minecraftforge.fluids.IFluidContainerItem;
-
-import org.lwjgl.opengl.GL11;
-
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIClientConfig;
 import codechicken.nei.guihook.GuiContainerManager;
@@ -27,6 +7,19 @@ import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.fluids.*;
+import org.lwjgl.opengl.GL11;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * NEI helper class, thanks to Tinkers Construct
