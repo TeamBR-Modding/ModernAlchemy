@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy.tileentity.teslacoil;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
+import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.tileentity.BaseTile;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,8 +24,16 @@ public class TileTeslaStand extends BaseTile implements IEnergyHandler {
     }
 
     @Override
-    public List<String> returnWailaHead() {
-        return null;
+    public void returnWailaHead(List<String> tip) {
+        int y = yCoord + 1;
+        while(!worldObj.isAirBlock(xCoord, y, zCoord)) {
+            if(worldObj.getBlock(xCoord, y, zCoord) == BlockHandler.blockCoil) {
+                ((TileTeslaCoil) worldObj.getTileEntity(xCoord, y, zCoord)).returnWailaHead(tip);
+                return;
+            }
+            else if(worldObj.getBlock(xCoord, y, zCoord) != BlockHandler.blockTeslaStand)
+                return;
+        }
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.ConfigHandler;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.handlers.PacketHandler;
+import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.network.UpdateServerCoilLists;
 import com.dyonovan.modernalchemy.tileentity.BaseMachine;
 import com.dyonovan.modernalchemy.util.Location;
@@ -210,5 +211,20 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
         if (worldObj.isRemote) return;
         if(doConvert())
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
+
+    /*******************************************************************************************************************
+     ********************************************** Misc Functions *****************************************************
+     *******************************************************************************************************************/
+    @Override
+    public void returnWailaHead(List<String> head) {
+        head.add(GuiHelper.GuiColor.YELLOW + "Tesla Energy: " + GuiHelper.GuiColor.WHITE + energyTank.getEnergyLevel() + "/" + energyTank.getMaxCapacity() + GuiHelper.GuiColor.TURQUISE + "T");
+        head.add(GuiHelper.GuiColor.YELLOW + "RF Energy: " + GuiHelper.GuiColor.WHITE + energyRF.getEnergyStored() + "/" + energyRF.getMaxEnergyStored() + GuiHelper.GuiColor.TURQUISE + "RF");
+        if(linkedMachines.size() > 0) {
+            head.add(GuiHelper.GuiColor.YELLOW + "Link Mode: " + GuiHelper.GuiColor.RED + "Restricted");
+        }
+        else
+            head.add(GuiHelper.GuiColor.YELLOW + "Link Mode: " + GuiHelper.GuiColor.GREEN + "All");
+
     }
 }

@@ -1,7 +1,9 @@
 package com.dyonovan.modernalchemy.tileentity.machines;
 
+import com.dyonovan.modernalchemy.crafting.RecipeArcFurnace;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.ItemHandler;
+import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.items.ItemPattern;
 import com.dyonovan.modernalchemy.tileentity.BaseMachine;
 import com.dyonovan.modernalchemy.tileentity.InventoryTile;
@@ -11,6 +13,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
+import java.util.List;
 
 public class TilePatternRecorder extends BaseMachine implements  IInventory {
 
@@ -231,5 +235,16 @@ public class TilePatternRecorder extends BaseMachine implements  IInventory {
         tag.setFloat("Quality", lastQuality);
         if(itemCopy != null && itemCopy.length() > 0)
             tag.setString("Item", itemCopy);
+    }
+
+    /*******************************************************************************************************************
+     ********************************************** Misc Functions *****************************************************
+     *******************************************************************************************************************/
+    @Override
+    public void returnWailaHead(List<String> head) {
+        head.add(GuiHelper.GuiColor.YELLOW + "Is Writing: " + GuiHelper.GuiColor.WHITE + (isActive() ? "Yes" : "No"));
+        if(isActive())
+            head.add(GuiHelper.GuiColor.YELLOW + "Item Copying: " + GuiHelper.GuiColor.WHITE + ReplicatorUtils.getReturn(itemCopy).getDisplayName());
+        head.add(GuiHelper.GuiColor.YELLOW + "Energy: " + GuiHelper.GuiColor.WHITE + energyTank.getEnergyLevel() + "/" + energyTank.getMaxCapacity() + GuiHelper.GuiColor.TURQUISE + "T");
     }
 }

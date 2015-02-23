@@ -3,6 +3,7 @@ package com.dyonovan.modernalchemy.tileentity.teslacoil;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
+import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.tileentity.BaseTile;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -41,8 +42,8 @@ public class TileTeslaBase extends BaseTile implements IEnergyHandler {
     }
 
     @Override
-    public List<String> returnWailaHead() {
-        return null;
+    public void returnWailaHead(List<String> tip) {
+        tip.add(GuiHelper.GuiColor.YELLOW + "Is Converting: " + GuiHelper.GuiColor.WHITE + (isCoilCharging() ? "Yes" : "No"));
     }
 
     @Override

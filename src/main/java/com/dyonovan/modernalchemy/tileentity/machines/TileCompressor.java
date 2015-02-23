@@ -4,6 +4,7 @@ import com.dyonovan.modernalchemy.audio.MachineSound;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.audio.SoundHelper;
+import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.BaseMachine;
 import net.minecraft.client.Minecraft;
@@ -11,6 +12,8 @@ import net.minecraft.client.audio.ISound;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
+
+import java.util.List;
 
 public class TileCompressor extends BaseMachine implements IFluidHandler {
 
@@ -128,5 +131,15 @@ public class TileCompressor extends BaseMachine implements IFluidHandler {
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tank.writeToNBT(tag);
+    }
+
+    /*******************************************************************************************************************
+     ********************************************** Misc Functions *****************************************************
+     *******************************************************************************************************************/
+    @Override
+    public void returnWailaHead(List<String> head) {
+        head.add(GuiHelper.GuiColor.YELLOW + "Is Compressing: " + GuiHelper.GuiColor.WHITE + (isActive() ? "Yes" : "No"));
+        head.add(GuiHelper.GuiColor.YELLOW + "Energy: " + GuiHelper.GuiColor.WHITE + energyTank.getEnergyLevel() + "/" + energyTank.getMaxCapacity() + GuiHelper.GuiColor.TURQUISE + "T");
+        head.add(GuiHelper.GuiColor.YELLOW + "Compressed Air: " + GuiHelper.GuiColor.WHITE + tank.getFluidAmount() + "/" + tank.getCapacity() + GuiHelper.GuiColor.TURQUISE + "mb");
     }
 }

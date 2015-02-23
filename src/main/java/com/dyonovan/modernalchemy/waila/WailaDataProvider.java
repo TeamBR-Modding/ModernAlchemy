@@ -23,7 +23,7 @@ public class WailaDataProvider implements IWailaDataProvider {
     public List<String> getWailaHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
         if(accessor.getTileEntity() instanceof BaseTile) {
             BaseTile tile = (BaseTile)accessor.getTileEntity();
-            currenttip.addAll(tile.returnWailaHead());
+            tile.returnWailaHead(currenttip);
         }
         return currenttip;
     }

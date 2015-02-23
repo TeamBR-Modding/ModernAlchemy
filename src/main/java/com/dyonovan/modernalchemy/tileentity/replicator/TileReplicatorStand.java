@@ -27,8 +27,8 @@ public class TileReplicatorStand extends BaseTile implements IInventory {
     }
 
     @Override
-    public List<String> returnWailaHead() {
-        return null;
+    public void returnWailaHead(List<String> tip) {
+
     }
 
     @Override

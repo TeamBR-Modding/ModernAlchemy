@@ -419,12 +419,10 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
      ********************************************** Misc Functions *****************************************************
      *******************************************************************************************************************/
     @Override
-    public List<String> returnWailaHead() {
-        List<String> head = new ArrayList<String>();
-        head.add(GuiHelper.GuiColor.YELLOW + "Energy: " + GuiHelper.GuiColor.WHITE + energyTank.getEnergyLevel() + "/" + energyTank.getMaxCapacity() + GuiHelper.GuiColor.YELLOW + "T");
-        head.add(GuiHelper.GuiColor.YELLOW + "Air: " + GuiHelper.GuiColor.WHITE + airTank.getFluidAmount() + "/" + airTank.getCapacity() + GuiHelper.GuiColor.YELLOW + "mb");
-        head.add(GuiHelper.GuiColor.YELLOW + "Actinium: " + GuiHelper.GuiColor.WHITE + outputTank.getFluidAmount() + "/" + outputTank.getCapacity() + GuiHelper.GuiColor.YELLOW + "mb");
+    public void returnWailaHead(List<String> head) {
+        head.add(GuiHelper.GuiColor.YELLOW + "Energy: " + GuiHelper.GuiColor.WHITE + energyTank.getEnergyLevel() + "/" + energyTank.getMaxCapacity() + GuiHelper.GuiColor.TURQUISE + "T");
+        head.add(GuiHelper.GuiColor.YELLOW + "Air: " + GuiHelper.GuiColor.WHITE + airTank.getFluidAmount() + "/" + airTank.getCapacity() + GuiHelper.GuiColor.TURQUISE + "mb");
+        head.add(GuiHelper.GuiColor.YELLOW + "Actinium: " + GuiHelper.GuiColor.WHITE + outputTank.getFluidAmount() + "/" + outputTank.getCapacity() + GuiHelper.GuiColor.TURQUISE + "mb");
         head.add(GuiHelper.GuiColor.YELLOW + "Speed: " + GuiHelper.GuiColor.WHITE + currentSpeed);
-        return head;
     }
 }

@@ -7,6 +7,7 @@ import com.dyonovan.modernalchemy.entities.EntityLaserNode;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.handlers.ConfigHandler;
 import com.dyonovan.modernalchemy.handlers.ItemHandler;
+import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.items.ItemPattern;
 import com.dyonovan.modernalchemy.items.ItemReplicatorMedium;
 import com.dyonovan.modernalchemy.lib.Constants;
@@ -384,5 +385,18 @@ public class TileReplicatorCPU extends BaseMachine implements ISidedInventory {
         tag.setInteger("TimeProcessed", currentProcessTime);
         tag.setInteger("RequiredTime", requiredProcessTime);
         tag.setString("ItemName", item);
+    }
+
+    /*******************************************************************************************************************
+     ********************************************** Misc Functions *****************************************************
+     *******************************************************************************************************************/
+    @Override
+    public void returnWailaHead(List<String> head) {
+        head.add(GuiHelper.GuiColor.YELLOW + "Is Replicating : " + GuiHelper.GuiColor.WHITE + (isActive() ? "Yes" : "No"));
+        if(isActive()) {
+            head.add(GuiHelper.GuiColor.YELLOW + "Item Replicating: " + GuiHelper.GuiColor.WHITE + ReplicatorUtils.getReturn(item).getDisplayName());
+            head.add(GuiHelper.GuiColor.YELLOW + "Success Rate: " + GuiHelper.GuiColor.WHITE + inventory.getStackInSlot(1).getTagCompound().getFloat("Quality") + "%");
+        }
+        head.add(GuiHelper.GuiColor.YELLOW + "Energy: " + GuiHelper.GuiColor.WHITE + energyTank.getEnergyLevel() + "/" + energyTank.getMaxCapacity() + GuiHelper.GuiColor.TURQUISE + "T");
     }
 }

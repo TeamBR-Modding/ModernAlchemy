@@ -3,6 +3,7 @@ package com.dyonovan.modernalchemy.tileentity.machines;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.handlers.ItemHandler;
+import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.BaseMachine;
 import com.dyonovan.modernalchemy.tileentity.InventoryTile;
@@ -12,6 +13,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
+
+import java.util.List;
 
 public class TileSolidifier extends BaseMachine implements IFluidHandler, ISidedInventory {
 
@@ -36,6 +39,7 @@ public class TileSolidifier extends BaseMachine implements IFluidHandler, ISided
     private void doReset() {
         isActive = false;
         timeProcessed = 0;
+        currentSpeed = 0;
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
@@ -236,6 +240,7 @@ public class TileSolidifier extends BaseMachine implements IFluidHandler, ISided
         super.readFromNBT(tag);
         tank.readFromNBT(tag);
         timeProcessed = tag.getInteger("TimeProcessed");
+        currentSpeed = tag.getInteger("CurrentSpeed");
         inventory.readFromNBT(tag, this);
     }
 
@@ -244,6 +249,18 @@ public class TileSolidifier extends BaseMachine implements IFluidHandler, ISided
         super.writeToNBT(tag);
         tank.writeToNBT(tag);
         tag.setInteger("TimeProcessed", timeProcessed);
+        tag.setInteger("CurrentSpeed", currentSpeed);
         inventory.writeToNBT(tag);
+    }
+
+    /*******************************************************************************************************************
+     ********************************************** Misc Functions *****************************************************
+     *******************************************************************************************************************/
+    @Override
+    public void returnWailaHead(List<String> head) {
+        head.add(GuiHelper.GuiColor.YELLOW + "Is Amalgamating: " + GuiHelper.GuiColor.WHITE + (isActive() ? "Yes" : "No"));
+        head.add(GuiHelper.GuiColor.YELLOW + "Energy: " + GuiHelper.GuiColor.WHITE + energyTank.getEnergyLevel() + "/" + energyTank.getMaxCapacity() + GuiHelper.GuiColor.TURQUISE + "T");
+        head.add(GuiHelper.GuiColor.YELLOW + "Actinium: " + GuiHelper.GuiColor.WHITE + tank.getFluidAmount() + "/" + tank.getCapacity() + GuiHelper.GuiColor.TURQUISE + "mb");
+        head.add(GuiHelper.GuiColor.YELLOW + "Current Speed: " + GuiHelper.GuiColor.WHITE + currentSpeed);
     }
 }

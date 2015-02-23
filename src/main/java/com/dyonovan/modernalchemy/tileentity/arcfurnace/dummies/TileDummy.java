@@ -17,11 +17,9 @@ public class TileDummy extends BaseTile {
     }
 
     @Override
-    public List<String> returnWailaHead() {
+    public void returnWailaHead(List<String> head) {
         if(getCore() != null)
-            return getCore().returnWailaHead();
-        else
-            return null;
+            getCore().returnWailaHead(head);
     }
 
     /**

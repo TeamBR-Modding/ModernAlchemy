@@ -32,8 +32,8 @@ public class BaseMachine extends BaseTile implements ITeslaHandler {
     }
 
     @Override
-    public List<String> returnWailaHead() {
-        return null;
+    public void returnWailaHead(List<String> tip) {
+
     }
 
     @Override
