@@ -1,6 +1,6 @@
 package com.dyonovan.modernalchemy.nei;
 
-import java.awt.*;
+import net.minecraft.inventory.Container;
 
 public interface INEICallback
 {

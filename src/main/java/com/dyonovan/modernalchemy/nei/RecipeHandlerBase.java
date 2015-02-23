@@ -5,13 +5,17 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dyonovan.modernalchemy.energy.TeslaBank;
+import com.dyonovan.modernalchemy.lib.Constants;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -40,6 +44,11 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler
         {
             return null;
         }
+
+        public List<TeslaBankElement> getEnergyBanks ()
+        {
+            return null;
+        }
     }
 
     public abstract String getRecipeID ();
@@ -57,6 +66,7 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler
     {
         super.drawForeground(recipe);
         this.drawFluidTanks(recipe);
+        this.drawEnergyBanks(recipe);
     }
 
     @Override
@@ -137,6 +147,17 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler
                     if (tank.position.contains(relMouse))
                     {
                         tank.handleTooltip(currenttip);
+                    }
+                }
+            }
+
+            if (crecipe.getEnergyBanks() != null)
+            {
+                for (TeslaBankElement bank : crecipe.getEnergyBanks())
+                {
+                    if (bank.position.contains(relMouse))
+                    {
+                        bank.handleTooltip(currenttip);
                     }
                 }
             }
@@ -234,6 +255,18 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler
         }
     }
 
+    public void drawEnergyBanks (int recipe)
+    {
+        CachedBaseRecipe crecipe = (CachedBaseRecipe) this.arecipes.get(recipe);
+        if (crecipe.getEnergyBanks() != null)
+        {
+            for (TeslaBankElement teslaBankElement : crecipe.getEnergyBanks())
+            {
+                teslaBankElement.draw();
+            }
+        }
+    }
+
     public static List getSingleList (Object o)
     {
         List list = new ArrayList();
@@ -283,12 +316,14 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler
         public FluidStack fluid;
         public int capacity;
         public boolean flowingTexture = false;
+        public List<String> toolTip;
 
-        public FluidTankElement(Rectangle position, int capacity, FluidStack fluid)
+        public FluidTankElement(Rectangle position, int capacity, FluidStack fluid, List<String> tip)
         {
             this.position = position;
             this.capacity = capacity;
             this.fluid = fluid;
+            this.toolTip = tip;
         }
 
         public List<String> handleTooltip (List<String> currenttip)
@@ -298,7 +333,9 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler
                 return currenttip;
             }
             currenttip.add(this.fluid.getLocalizedName());
-            currenttip.add(EnumChatFormatting.GRAY.toString() + this.fluid.amount + " mB");
+            if(fluid.amount > 1)
+                currenttip.add(EnumChatFormatting.GRAY.toString() + this.fluid.amount + " mB");
+            currenttip.addAll(toolTip);
             return currenttip;
         }
 
@@ -360,4 +397,43 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler
 
     }
 
+    public static class TeslaBankElement
+    {
+        public Rectangle position;
+        public TeslaBank bank;
+        public List<String> toolTip;
+
+        public TeslaBankElement(Rectangle position, TeslaBank input, List<String> tip)
+        {
+            this.position = position;
+            this.bank = input;
+            this.toolTip = tip;
+        }
+
+        public List<String> handleTooltip (List<String> currenttip)
+        {
+            currenttip.add("Tesla Bank");
+            currenttip.addAll(toolTip);
+            return currenttip;
+        }
+
+        public void draw ()
+        {
+            if (this.bank == null || bank.getEnergyLevel() <= 0)
+            {
+                return;
+            }
+            GuiDraw.changeTexture(new ResourceLocation(Constants.MODID + ":textures/gui/energy.png"));
+
+            int height = bank.getEnergyLevel() * 52 / bank.getMaxCapacity();
+
+            Tessellator tess = Tessellator.instance;
+            tess.startDrawingQuads();
+            tess.addVertexWithUV(this.position.x,               this.position.y + 52, 0,     0,                    0);
+            tess.addVertexWithUV(this.position.x + 16,          this.position.y + 52, 0,     1,                    0);
+            tess.addVertexWithUV(this.position.x + 16, this.position.y - height + 52, 0,     1,  (float) height / 52);
+            tess.addVertexWithUV(this.position.x,      this.position.y - height + 52, 0,     0,  (float) height / 52);
+            tess.draw();
+        }
+    }
 }

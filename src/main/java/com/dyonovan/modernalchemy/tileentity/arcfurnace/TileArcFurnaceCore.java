@@ -1,6 +1,7 @@
 package com.dyonovan.modernalchemy.tileentity.arcfurnace;
 
 import com.dyonovan.modernalchemy.blocks.arcfurnace.dummies.BlockDummy;
+import com.dyonovan.modernalchemy.crafting.ArcFurnaceResipeRegistry;
 import com.dyonovan.modernalchemy.crafting.RecipeArcFurnace;
 import com.dyonovan.modernalchemy.energy.ITeslaHandler;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
@@ -146,7 +147,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     public void doSmelting() {
         if(canSmelt() && timeCooked == 0) {
             //Consume Resources
-            fillVariable = RecipeArcFurnace.instance.getRecipeOutput(inventory.getStackInSlot(INPUT_SLOT).getItem());
+            fillVariable = ArcFurnaceResipeRegistry.instance.getReturn(inventory.getStackInSlot(INPUT_SLOT).getItem());
             inventory.getStackInSlot(INPUT_SLOT).stackSize--;
             if(inventory.getStackInSlot(INPUT_SLOT).stackSize == 0)
                 inventory.setStackInSlot(null, 0);
@@ -177,7 +178,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     public boolean canSmelt() {
         if(inventory.getStackInSlot(0) != null && inventory.getStackInSlot(1) != null)
             return airTank.getFluidAmount() > 100 &&
-                    RecipeArcFurnace.instance.getRecipeOutput(inventory.getStackInSlot(0).getItem()) >  0 &&
+                    ArcFurnaceResipeRegistry.instance.getReturn(inventory.getStackInSlot(0).getItem()) >  0 &&
                     inventory.getStackInSlot(1).getItem() == Items.coal &&
                     outputTank.getCapacity() - outputTank.getFluidAmount() >= FluidContainerRegistry.BUCKET_VOLUME &&
                     energyTank.getEnergyLevel() > currentSpeed;
@@ -351,7 +352,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
         switch(slot) {
             case INPUT_SLOT :
-                return RecipeArcFurnace.instance.getRecipeOutput(itemStack.getItem()) > 0;
+                return ArcFurnaceResipeRegistry.instance.getReturn(itemStack.getItem()) > 0;
             case CATALYST_SLOT :
                 return itemStack.getItem() == Items.coal;
 

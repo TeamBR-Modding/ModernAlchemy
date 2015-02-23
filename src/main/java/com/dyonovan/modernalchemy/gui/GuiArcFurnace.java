@@ -22,6 +22,7 @@ public class GuiArcFurnace extends BaseGui {
 
     public GuiArcFurnace(InventoryPlayer inventoryPlayer, TileArcFurnaceCore core) {
         super(new ContainerArcFurnace(inventoryPlayer, core));
+        setArrowLocation(108, 35, 24, 16);
         this.core = core;
         widgets.add(new WidgetLiquidTank(this, core.getAirTank(),     37, 78, 52));
         widgets.add(new WidgetLiquidTank(this, core.getOutputTank(), 147, 78, 52));
