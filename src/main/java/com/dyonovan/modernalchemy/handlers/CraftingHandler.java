@@ -14,5 +14,6 @@ public class CraftingHandler {
 
          //Arc Furnace Recipes
         RecipeArcFurnace.instance.addRecipe(ItemHandler.itemActinium, FluidContainerRegistry.BUCKET_VOLUME);
+        RecipeArcFurnace.instance.addRecipe(ItemHandler.itemSlag,  FluidContainerRegistry.BUCKET_VOLUME / 4);
     }
 }
