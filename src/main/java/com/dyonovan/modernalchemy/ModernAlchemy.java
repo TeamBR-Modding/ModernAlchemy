@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy;
 
 import com.dyonovan.modernalchemy.handlers.*;
 import com.dyonovan.modernalchemy.lib.Constants;
+import com.dyonovan.modernalchemy.nei.INEICallback;
 import com.dyonovan.modernalchemy.proxy.CommonProxy;
 import com.dyonovan.modernalchemy.util.ReplicatorUtils;
 import cpw.mods.fml.common.Mod;
@@ -27,6 +28,8 @@ public class ModernAlchemy {
 
     @Instance(Constants.MODID)
     public static ModernAlchemy instance;
+
+    public static INEICallback nei;
 
     @SidedProxy(clientSide = "com.dyonovan." + Constants.MODID + ".proxy.ClientProxy",
             serverSide = "com.dyonovan." + Constants.MODID + ".proxy.CommonProxy")
