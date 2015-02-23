@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy.handlers;
 
 import com.dyonovan.modernalchemy.items.*;
 import com.dyonovan.modernalchemy.items.buckets.ItemBucketActinium;
+import com.dyonovan.modernalchemy.manual.ItemManual;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -21,6 +22,7 @@ public class ItemHandler {
     public static Item itemBucketActinium, itemReplicationMedium;
     public static Item laserNode, itemSlag, itemWrench, itemActinium;
     public static Item itemCircuit, itemMachineFrame;
+    public static Item manual;
 
     public static void init() {
         itemPattern = new ItemPattern();
@@ -56,6 +58,9 @@ public class ItemHandler {
         GameRegistry.registerItem(faradayChest = new ItemFaradayArmor("faraday_chest", ARMOR, "faraday", 1), "faradayChest");
         GameRegistry.registerItem(faradayLeg = new ItemFaradayArmor("faraday_leg", ARMOR, "faraday", 2), "faradayLeg");
         GameRegistry.registerItem(faradayBoots = new ItemFaradayArmor("faraday_boots", ARMOR, "faraday", 3), "faradayBoots");
+
+        //Manual
+        GameRegistry.registerItem(manual = new ItemManual(), "manual");
 
         //Crafting Items
         itemCircuit = new ItemCrafting("itemCircuit", 64);
