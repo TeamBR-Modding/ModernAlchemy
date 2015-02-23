@@ -3,15 +3,13 @@ package com.dyonovan.modernalchemy.nei;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
-import codechicken.nei.recipe.TemplateRecipeHandler;
-import com.dyonovan.modernalchemy.crafting.ArcFurnaceResipeRegistry;
+import com.dyonovan.modernalchemy.crafting.ArcFurnaceRecipeRegistry;
 import com.dyonovan.modernalchemy.crafting.RecipeArcFurnace;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
@@ -128,7 +126,7 @@ public class RecipeHandlerArcFurnace extends RecipeHandlerBase {
     {
         if (outputId.equals(getRecipeID()))
         {
-            for (RecipeArcFurnace recipe : ArcFurnaceResipeRegistry.instance.recipes)
+            for (RecipeArcFurnace recipe : ArcFurnaceRecipeRegistry.instance.recipes)
             {
                 this.arecipes.add(new CachedArcFurnaceRecipe(recipe));
             }
@@ -144,7 +142,7 @@ public class RecipeHandlerArcFurnace extends RecipeHandlerBase {
     @Override
     public void loadCraftingRecipes (FluidStack result)
     {
-        for (RecipeArcFurnace recipe : ArcFurnaceResipeRegistry.instance.recipes)
+        for (RecipeArcFurnace recipe : ArcFurnaceRecipeRegistry.instance.recipes)
         {
             if (areFluidsEqual(new FluidStack(BlockHandler.fluidActinium, recipe.getOutputValue()), result)) {
                 this.arecipes.add(new CachedArcFurnaceRecipe(recipe));
@@ -157,7 +155,7 @@ public class RecipeHandlerArcFurnace extends RecipeHandlerBase {
     @Override
     public void loadUsageRecipes (ItemStack ingred)
     {
-        for (RecipeArcFurnace recipe : ArcFurnaceResipeRegistry.instance.recipes)
+        for (RecipeArcFurnace recipe : ArcFurnaceRecipeRegistry.instance.recipes)
         {
             if (NEIServerUtils.areStacksSameTypeCrafting(new ItemStack(recipe.getInput(), 1), ingred))
             {

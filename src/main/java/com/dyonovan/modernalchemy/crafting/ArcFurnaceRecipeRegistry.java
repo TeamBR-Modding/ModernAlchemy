@@ -6,12 +6,12 @@ import net.minecraft.item.Item;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArcFurnaceResipeRegistry {
+public class ArcFurnaceRecipeRegistry {
 
     /**
      * The instance of the recipies
      */
-    public static ArcFurnaceResipeRegistry instance = new ArcFurnaceResipeRegistry();
+    public static ArcFurnaceRecipeRegistry instance = new ArcFurnaceRecipeRegistry();
 
     /**
      * The stored recipes

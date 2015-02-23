@@ -1,14 +1,10 @@
 package com.dyonovan.modernalchemy.tileentity.arcfurnace.dummies;
 
-import com.dyonovan.modernalchemy.crafting.ArcFurnaceResipeRegistry;
-import com.dyonovan.modernalchemy.crafting.RecipeArcFurnace;
-import com.dyonovan.modernalchemy.handlers.BlockHandler;
-import com.dyonovan.modernalchemy.handlers.ItemHandler;
+import com.dyonovan.modernalchemy.crafting.ArcFurnaceRecipeRegistry;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.TileArcFurnaceCore;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class TileDummyItemIO extends TileDummy implements ISidedInventory {
@@ -24,7 +20,7 @@ public class TileDummyItemIO extends TileDummy implements ISidedInventory {
         if(core != null) {
             switch (slot) {
             case 0:
-                if (ArcFurnaceResipeRegistry.instance.getReturn(item.getItem()) > 0) {
+                if (ArcFurnaceRecipeRegistry.instance.getReturn(item.getItem()) > 0) {
                     return core.inventory.getStackInSlot(slot) == null || item.stackSize + core.inventory.getStackInSlot(slot).stackSize <= 64;
                 }
                 break;

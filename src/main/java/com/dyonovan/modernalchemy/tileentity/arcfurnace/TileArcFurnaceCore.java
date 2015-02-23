@@ -1,32 +1,24 @@
 package com.dyonovan.modernalchemy.tileentity.arcfurnace;
 
 import com.dyonovan.modernalchemy.blocks.arcfurnace.dummies.BlockDummy;
-import com.dyonovan.modernalchemy.crafting.ArcFurnaceResipeRegistry;
-import com.dyonovan.modernalchemy.crafting.RecipeArcFurnace;
+import com.dyonovan.modernalchemy.crafting.ArcFurnaceRecipeRegistry;
 import com.dyonovan.modernalchemy.energy.ITeslaHandler;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
-import com.dyonovan.modernalchemy.handlers.ConfigHandler;
-import com.dyonovan.modernalchemy.handlers.ItemHandler;
 import com.dyonovan.modernalchemy.helpers.GuiHelper;
-import com.dyonovan.modernalchemy.tileentity.BaseMachine;
 import com.dyonovan.modernalchemy.tileentity.InventoryTile;
-import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.dummies.TileDummy;
 import com.dyonovan.modernalchemy.util.Location;
-import com.dyonovan.modernalchemy.util.RenderUtils;
 import com.dyonovan.modernalchemy.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITeslaHandler, IInventory {
@@ -147,7 +139,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     public void doSmelting() {
         if(canSmelt() && timeCooked == 0) {
             //Consume Resources
-            fillVariable = ArcFurnaceResipeRegistry.instance.getReturn(inventory.getStackInSlot(INPUT_SLOT).getItem());
+            fillVariable = ArcFurnaceRecipeRegistry.instance.getReturn(inventory.getStackInSlot(INPUT_SLOT).getItem());
             inventory.getStackInSlot(INPUT_SLOT).stackSize--;
             if(inventory.getStackInSlot(INPUT_SLOT).stackSize == 0)
                 inventory.setStackInSlot(null, 0);
@@ -178,7 +170,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     public boolean canSmelt() {
         if(inventory.getStackInSlot(0) != null && inventory.getStackInSlot(1) != null)
             return airTank.getFluidAmount() > 100 &&
-                    ArcFurnaceResipeRegistry.instance.getReturn(inventory.getStackInSlot(0).getItem()) >  0 &&
+                    ArcFurnaceRecipeRegistry.instance.getReturn(inventory.getStackInSlot(0).getItem()) >  0 &&
                     inventory.getStackInSlot(1).getItem() == Items.coal &&
                     outputTank.getCapacity() - outputTank.getFluidAmount() >= FluidContainerRegistry.BUCKET_VOLUME &&
                     energyTank.getEnergyLevel() > currentSpeed;
@@ -352,7 +344,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
         switch(slot) {
             case INPUT_SLOT :
-                return ArcFurnaceResipeRegistry.instance.getReturn(itemStack.getItem()) > 0;
+                return ArcFurnaceRecipeRegistry.instance.getReturn(itemStack.getItem()) > 0;
             case CATALYST_SLOT :
                 return itemStack.getItem() == Items.coal;
 
