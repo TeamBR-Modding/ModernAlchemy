@@ -2,15 +2,22 @@ package com.dyonovan.modernalchemy.handlers;
 
 import com.dyonovan.modernalchemy.crafting.RecipeArcFurnace;
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class CraftingHandler {
 
     public static void init() {
-        //Slag to Ore
-        GameRegistry.addRecipe(new ItemStack(BlockHandler.blockOreActinium), "AA", "AA", 'A', ItemHandler.itemSlag);
+        //Temp for Circuit TODO TEMP
+        GameRegistry.addRecipe(new ItemStack(ItemHandler.itemCircuit), "CBC", "BAB", "CBC",
+                'A', Items.diamond, 'B', Items.gold_ingot, 'C', Items.iron_ingot);
+
+        //Machine Frame
+        GameRegistry.addRecipe(new ItemStack(ItemHandler.itemMachineFrame), "CBC", "B B", "CBC",
+                'B', Blocks.iron_bars, 'C', Items.iron_ingot);
 
          //Arc Furnace Recipes
         RecipeArcFurnace.instance.addRecipe(ItemHandler.itemActinium, FluidContainerRegistry.BUCKET_VOLUME);

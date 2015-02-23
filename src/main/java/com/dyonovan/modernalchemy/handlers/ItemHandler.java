@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemHandler {
 
@@ -19,6 +20,7 @@ public class ItemHandler {
     public static ItemPattern itemPattern;
     public static Item itemBucketActinium, itemReplicationMedium;
     public static Item laserNode, itemSlag, itemWrench, itemActinium;
+    public static Item itemCircuit, itemMachineFrame;
 
     public static void init() {
         itemPattern = new ItemPattern();
@@ -54,6 +56,15 @@ public class ItemHandler {
         GameRegistry.registerItem(faradayChest = new ItemFaradayArmor("faraday_chest", ARMOR, "faraday", 1), "faradayChest");
         GameRegistry.registerItem(faradayLeg = new ItemFaradayArmor("faraday_leg", ARMOR, "faraday", 2), "faradayLeg");
         GameRegistry.registerItem(faradayBoots = new ItemFaradayArmor("faraday_boots", ARMOR, "faraday", 3), "faradayBoots");
+
+        //Crafting Items
+        itemCircuit = new ItemCrafting("itemCircuit", 64);
+        GameRegistry.registerItem(itemCircuit, "itemCircuit");
+        OreDictionary.registerOre("circuitBasic", new ItemStack(itemCircuit));
+
+        //Machine Frame
+        itemMachineFrame = new ItemCrafting("itemMachineFrame", 1);
+        GameRegistry.registerItem(itemMachineFrame, "itemMachineFrame");
     }
 
 
