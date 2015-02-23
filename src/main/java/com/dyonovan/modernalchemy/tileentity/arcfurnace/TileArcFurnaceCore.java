@@ -1,6 +1,7 @@
 package com.dyonovan.modernalchemy.tileentity.arcfurnace;
 
 import com.dyonovan.modernalchemy.blocks.arcfurnace.dummies.BlockDummy;
+import com.dyonovan.modernalchemy.crafting.RecipeArcFurnace;
 import com.dyonovan.modernalchemy.energy.ITeslaHandler;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
@@ -44,6 +45,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     //Cook Variables
     private int currentSpeed;
     private int timeCooked;
+    private int fillVariable;
 
     /**
      * Creates the Arc Furnace, Default fluids at 10 * BUCKET_VOLUME and energy to 1000T and an inventory of two slots
@@ -125,11 +127,13 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
         }
         this.inventory.clear();
         timeCooked = 0;
+        fillVariable = 0;
         isActive = false;
     }
 
     public void resetSoft() {
         timeCooked = 0;
+        fillVariable = 0;
         isActive = false;
     }
 
@@ -140,11 +144,12 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     public void doSmelting() {
         if(canSmelt() && timeCooked == 0) {
             //Consume Resources
-            inventory.getStackInSlot(0).stackSize--;
-            if(inventory.getStackInSlot(0).stackSize == 0)
+            fillVariable = RecipeArcFurnace.instance.getRecipeOutput(inventory.getStackInSlot(INPUT_SLOT).getItem());
+            inventory.getStackInSlot(INPUT_SLOT).stackSize--;
+            if(inventory.getStackInSlot(INPUT_SLOT).stackSize == 0)
                 inventory.setStackInSlot(null, 0);
-            inventory.getStackInSlot(1).stackSize--;
-            if(inventory.getStackInSlot(1).stackSize == 0)
+            inventory.getStackInSlot(CATALYST_SLOT).stackSize--;
+            if(inventory.getStackInSlot(CATALYST_SLOT).stackSize == 0)
                 inventory.setStackInSlot(null, 1);
             timeCooked += currentSpeed;
             isActive = true;
@@ -163,14 +168,14 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
 
     public void smelt() {
         timeCooked = 0;
-        outputTank.fill(new FluidStack(BlockHandler.fluidActinium, FluidContainerRegistry.BUCKET_VOLUME), true);
+        outputTank.fill(new FluidStack(BlockHandler.fluidActinium, fillVariable), true);
         isActive = false;
     }
 
     public boolean canSmelt() {
         if(inventory.getStackInSlot(0) != null && inventory.getStackInSlot(1) != null)
             return airTank.getFluidAmount() > 100 &&
-                    inventory.getStackInSlot(0).getItem() == ItemHandler.itemActinium &&
+                    RecipeArcFurnace.instance.getRecipeOutput(inventory.getStackInSlot(0).getItem()) >  0 &&
                     inventory.getStackInSlot(1).getItem() == Items.coal &&
                     outputTank.getCapacity() - outputTank.getFluidAmount() >= FluidContainerRegistry.BUCKET_VOLUME &&
                     energyTank.getEnergyLevel() > currentSpeed;
@@ -344,7 +349,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
         switch(slot) {
             case INPUT_SLOT :
-                return itemStack.getItem() == ItemHandler.itemActinium;
+                return RecipeArcFurnace.instance.getRecipeOutput(itemStack.getItem()) > 0;
             case CATALYST_SLOT :
                 return itemStack.getItem() == Items.coal;
 

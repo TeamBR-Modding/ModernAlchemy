@@ -44,11 +44,11 @@ public class ModernAlchemy {
         ConfigHandler.init(new Configuration(new File(event.getModConfigurationDirectory().getAbsolutePath() + File.separator + Constants.MODID.toLowerCase() + File.separator + "general.properties")));
         BlockHandler.init();
         ItemHandler.init();
+        CraftingHandler.init();
         EntityHandler.init();
         WorldGeneratorHandler.init();
         EventManager.init();
         proxy.registerRenderer();
-        RecipeHandler.init();
 
         BucketHandler.INSTANCE.buckets.put(BlockHandler.blockFluidActinium, ItemHandler.itemBucketActinium);
 
