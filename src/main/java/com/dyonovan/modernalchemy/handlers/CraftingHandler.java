@@ -1,5 +1,6 @@
 package com.dyonovan.modernalchemy.handlers;
 
+import com.dyonovan.modernalchemy.crafting.ArcFurnaceResipeRegistry;
 import com.dyonovan.modernalchemy.crafting.RecipeArcFurnace;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Blocks;
@@ -20,7 +21,7 @@ public class CraftingHandler {
                 'B', Blocks.iron_bars, 'C', Items.iron_ingot);
 
          //Arc Furnace Recipes
-        RecipeArcFurnace.instance.addRecipe(ItemHandler.itemActinium, FluidContainerRegistry.BUCKET_VOLUME);
-        RecipeArcFurnace.instance.addRecipe(ItemHandler.itemSlag,  FluidContainerRegistry.BUCKET_VOLUME / 4);
+        ArcFurnaceResipeRegistry.instance.addRecipe(ItemHandler.itemActinium, FluidContainerRegistry.BUCKET_VOLUME);
+        ArcFurnaceResipeRegistry.instance.addRecipe(ItemHandler.itemSlag,  FluidContainerRegistry.BUCKET_VOLUME / 4);
     }
 }

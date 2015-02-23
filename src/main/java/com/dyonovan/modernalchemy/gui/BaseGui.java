@@ -22,6 +22,7 @@ public abstract class BaseGui extends GuiContainer {
         this.parent = c;
         widgets = new ArrayList<Widget>();
         toolTips = new ArrayList<Zone>();
+        arrowLoc = new Rectangle(0, 0, 0, 0);
     }
 
     public void setArrowLocation(int x, int y, int width, int height) {
