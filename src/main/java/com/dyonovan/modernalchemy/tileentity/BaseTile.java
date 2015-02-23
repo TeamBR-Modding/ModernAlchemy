@@ -56,4 +56,6 @@ public abstract class BaseTile extends TileEntity {
     {
         readFromNBT(pkt.func_148857_g());
     }
+
+    public abstract List<String> returnWailaHead();
 }

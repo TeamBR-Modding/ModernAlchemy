@@ -9,6 +9,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.List;
+
 public class TileTeslaBase extends BaseTile implements IEnergyHandler {
 
     protected EnergyStorage energy = new EnergyStorage(1000, 1000, 1000);
@@ -36,6 +38,11 @@ public class TileTeslaBase extends BaseTile implements IEnergyHandler {
     public void onWrench(EntityPlayer player) {
         if(getTileInDirection(ForgeDirection.UP) instanceof TileTeslaStand)
             ((TileTeslaStand)getTileInDirection(ForgeDirection.UP)).onWrench(player);
+    }
+
+    @Override
+    public List<String> returnWailaHead() {
+        return null;
     }
 
     @Override

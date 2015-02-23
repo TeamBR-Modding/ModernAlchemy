@@ -6,12 +6,22 @@ import com.dyonovan.modernalchemy.tileentity.BaseTile;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
+import java.util.List;
+
 public class TileDummy extends BaseTile {
     private Location coreLocation = new Location(-100, -100, -100);
 
     @Override
     public void onWrench(EntityPlayer player) {
 
+    }
+
+    @Override
+    public List<String> returnWailaHead() {
+        if(getCore() != null)
+            return getCore().returnWailaHead();
+        else
+            return null;
     }
 
     /**

@@ -24,6 +24,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITeslaHandler, IInventory {
@@ -411,5 +412,15 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
             chargeFromCoils();
         }
         doSmelting();
+    }
+
+    /*******************************************************************************************************************
+     ********************************************** Misc Functions *****************************************************
+     *******************************************************************************************************************/
+    @Override
+    public List<String> returnWailaHead() {
+        List<String> head = new ArrayList<String>();
+        head.add("Test");
+        return head;
     }
 }

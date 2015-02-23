@@ -10,6 +10,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import java.util.List;
+
 public class TileReplicatorStand extends BaseTile implements IInventory {
 
     public InventoryTile inventory;
@@ -22,6 +24,11 @@ public class TileReplicatorStand extends BaseTile implements IInventory {
     @Override
     public void onWrench(EntityPlayer player) {
 
+    }
+
+    @Override
+    public List<String> returnWailaHead() {
+        return null;
     }
 
     @Override
