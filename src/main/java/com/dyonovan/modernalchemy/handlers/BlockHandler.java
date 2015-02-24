@@ -35,7 +35,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 public class BlockHandler {
 
     public static Fluid fluidActinium, fluidCompressedAir;
-    public static Block blockArcFurnaceDummy, blockArcFurnaceDummyItemIO, blockArcFurnaceDummyAirValue, blockArcFurnaceDummyOutputValue, blockArcFurnaceDummyEnergy, blockArcFurnaceCore, blockTeslaStand, blockCoil;
+    public static Block blockArcFurnaceDummy, blockArcFurnaceDummyItemIO, blockArcFurnaceDummyAirValve, blockArcFurnaceDummyOutputValve, blockArcFurnaceDummyEnergy, blockArcFurnaceCore, blockTeslaStand, blockCoil;
     public static Block blockOreActinium, blockFluidActinium, blockCompressor, blockFluidAir, blockReplicatorStand;
     public static Block blockPatternRecorder, blockSolidifier, blockTeslaBase, blockReplicatorFrame, blockReplicatorCPU;
 
@@ -92,13 +92,13 @@ public class BlockHandler {
         GameRegistry.registerTileEntity(TileDummyItemIO.class, "tileDummyItemIO");
 
         //ArcFurnaceDummyAirValue
-        blockArcFurnaceDummyAirValue = new BlockDummyAirValve("arcFurnaceDummyAirValue");
-        GameRegistry.registerBlock(blockArcFurnaceDummyAirValue, "arcFurnaceDummyAirValve");
+        blockArcFurnaceDummyAirValve = new BlockDummyAirValve("arcFurnaceDummyAirValve");
+        GameRegistry.registerBlock(blockArcFurnaceDummyAirValve, "arcFurnaceDummyAirValve");
         GameRegistry.registerTileEntity(TileDummyAirValve.class, "tileDummyAirValve");
 
         //ArcFurnaceDummyOutputValue
-        blockArcFurnaceDummyOutputValue = new BlockDummyOutputValve("arcFurnaceDummyOutputValue");
-        GameRegistry.registerBlock(blockArcFurnaceDummyOutputValue, "arcFurnaceDummyOutputValve");
+        blockArcFurnaceDummyOutputValve = new BlockDummyOutputValve("arcFurnaceDummyOutputValve");
+        GameRegistry.registerBlock(blockArcFurnaceDummyOutputValve, "arcFurnaceDummyOutputValve");
         GameRegistry.registerTileEntity(TileDummyOutputValve.class, "tileDummyOutputValve");
 
         //Tesla Base

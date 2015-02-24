@@ -21,7 +21,7 @@ public class ItemHandler {
     public static ItemPattern itemPattern;
     public static Item itemBucketActinium, itemReplicationMedium;
     public static Item laserNode, itemSlag, itemWrench, itemActinium;
-    public static Item itemCircuit, itemMachineFrame;
+    public static Item itemCircuit, itemMachineFrame, itemEnergyAntenna;
     public static Item manual;
 
     public static void init() {
@@ -70,6 +70,10 @@ public class ItemHandler {
         //Machine Frame
         itemMachineFrame = new ItemCrafting("itemMachineFrame", 1);
         GameRegistry.registerItem(itemMachineFrame, "itemMachineFrame");
+
+        //Energy Antenna
+        itemEnergyAntenna = new ItemCrafting("itemEnergyAntenna", 64);
+        GameRegistry.registerItem(itemEnergyAntenna, "itemEnergyAntenna");
     }
 
 

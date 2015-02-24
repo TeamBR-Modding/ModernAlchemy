@@ -6,7 +6,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class CraftingHandler {
 
@@ -24,14 +24,29 @@ public class CraftingHandler {
                 'A', ItemHandler.itemMachineFrame, 'B', Items.iron_ingot, 'C', Items.gold_ingot);
 
         //Arc Furnace DummyOutputValue
-        GameRegistry.addRecipe(new ItemStack(BlockHandler.blockArcFurnaceDummyOutputValue), "BDB", "CAC", "BEB",
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockArcFurnaceDummyOutputValve), "BDB", "CAC", "BEB",
                 'A', BlockHandler.blockArcFurnaceDummy, 'B', Items.iron_ingot, 'C', Items.bucket,
-                'D', "circuitBasic", 'E', ItemHandler.itemActinium);
+                'D', "circuitBasic", 'E', ItemHandler.itemActinium));
 
         //Arc Furnace DummyItemIO
-        GameRegistry.addRecipe(new ItemStack(BlockHandler.blockArcFurnaceDummyItemIO), "BDB", "CAC", "BEB",
-                'A', BlockHandler.blockArcFurnaceDummy, 'B', Items.iron_ingot, 'C', Blocks.sticky_piston,
-                'D', "circuitBasic", 'E', ItemHandler.itemActinium);
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockArcFurnaceDummyItemIO), "BDB", "CAC", "BEB",
+                'A', BlockHandler.blockArcFurnaceDummy, 'B', Items.iron_ingot, 'C', Blocks.hopper,
+                'D', "circuitBasic", 'E', ItemHandler.itemActinium));
+
+        //Arc Furnace DummyEnergyReceiver
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockArcFurnaceDummyEnergy), "BDB", "CAC", "BEB",
+                'A', BlockHandler.blockArcFurnaceDummy, 'B', Items.iron_ingot, 'C', ItemHandler.itemEnergyAntenna,
+                'D', "circuitBasic", 'E', ItemHandler.itemActinium));
+
+        //Arc Furnace DummyEnergyCompressedAirValve
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockArcFurnaceDummyAirValve), "BDB", "CAC", "BEB",
+                'A', BlockHandler.blockArcFurnaceDummy, 'B', Items.iron_ingot, 'C', Blocks.piston,
+                'D', "circuitBasic", 'E', ItemHandler.itemActinium));
+
+        //Arc Furnace Core
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockArcFurnaceCore), "BDB", "CAC", "BDB",
+                'A', BlockHandler.blockArcFurnaceDummy, 'B', Items.iron_ingot, 'C', Items.ender_eye,
+                'D', "circuitBasic"));
 
          //Arc Furnace Recipes
         ArcFurnaceRecipeRegistry.instance.addRecipe(ItemHandler.itemActinium, FluidContainerRegistry.BUCKET_VOLUME);
