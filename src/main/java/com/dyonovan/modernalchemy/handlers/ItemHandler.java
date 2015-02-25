@@ -19,7 +19,7 @@ public class ItemHandler {
 
     public static Item faradayHelm, faradayChest, faradayLeg, faradayBoots;
     public static ItemPattern itemPattern;
-    public static Item itemBucketActinium, itemReplicationMedium;
+    public static Item itemBucketActinium, itemReplicationMedium, itemPumpModule;
     public static Item laserNode, itemSlag, itemWrench, itemActinium;
     public static Item itemCircuit, itemMachineFrame, itemEnergyAntenna;
     public static Item manual;
@@ -65,7 +65,7 @@ public class ItemHandler {
         //Crafting Items
         itemCircuit = new ItemCrafting("itemCircuit", 64);
         GameRegistry.registerItem(itemCircuit, "itemCircuit");
-        OreDictionary.registerOre("circuitBasic", new ItemStack(itemCircuit));
+        OreDictionary.registerOre("circuitAdvanced", new ItemStack(itemCircuit));
 
         //Machine Frame
         itemMachineFrame = new ItemCrafting("itemMachineFrame", 1);
@@ -74,6 +74,10 @@ public class ItemHandler {
         //Energy Antenna
         itemEnergyAntenna = new ItemCrafting("itemEnergyAntenna", 64);
         GameRegistry.registerItem(itemEnergyAntenna, "itemEnergyAntenna");
+
+        //pump
+        itemPumpModule = new ItemCrafting("itemPumpModule", 64);
+        GameRegistry.registerItem(itemPumpModule, "itemPumpModule");
     }
 
 

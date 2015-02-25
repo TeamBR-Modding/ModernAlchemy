@@ -7,13 +7,14 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import sun.org.mozilla.javascript.internal.ast.Block;
 
 public class CraftingHandler {
 
     public static void init() {
         //Temp for Circuit TODO TEMP
         GameRegistry.addRecipe(new ItemStack(ItemHandler.itemCircuit), "CBC", "BAB", "CBC",
-                'A', Items.quartz, 'B', Items.gold_ingot, 'C', Items.iron_ingot);
+                'A', Items.quartz, 'B', Items.glowstone_dust, 'C', Items.iron_ingot);
 
         //Machine Frame
         GameRegistry.addRecipe(new ItemStack(ItemHandler.itemMachineFrame), "CBC", "B B", "CBC",
@@ -26,27 +27,50 @@ public class CraftingHandler {
         //Arc Furnace DummyOutputValue
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockArcFurnaceDummyOutputValve), "BDB", "CAC", "BEB",
                 'A', BlockHandler.blockArcFurnaceDummy, 'B', Items.iron_ingot, 'C', Items.bucket,
-                'D', "circuitBasic", 'E', ItemHandler.itemActinium));
+                'D', "circuitAdvanced", 'E', ItemHandler.itemActinium));
 
         //Arc Furnace DummyItemIO
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockArcFurnaceDummyItemIO), "BDB", "CAC", "BEB",
                 'A', BlockHandler.blockArcFurnaceDummy, 'B', Items.iron_ingot, 'C', Blocks.hopper,
-                'D', "circuitBasic", 'E', ItemHandler.itemActinium));
+                'D', "circuitAdvanced", 'E', ItemHandler.itemActinium));
 
         //Arc Furnace DummyEnergyReceiver
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockArcFurnaceDummyEnergy), "BDB", "CAC", "BEB",
                 'A', BlockHandler.blockArcFurnaceDummy, 'B', Items.iron_ingot, 'C', ItemHandler.itemEnergyAntenna,
-                'D', "circuitBasic", 'E', ItemHandler.itemActinium));
+                'D', "circuitAdvanced", 'E', ItemHandler.itemActinium));
 
         //Arc Furnace DummyEnergyCompressedAirValve
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockArcFurnaceDummyAirValve), "BDB", "CAC", "BEB",
                 'A', BlockHandler.blockArcFurnaceDummy, 'B', Items.iron_ingot, 'C', Blocks.piston,
-                'D', "circuitBasic", 'E', ItemHandler.itemActinium));
+                'D', "circuitAdvanced", 'E', ItemHandler.itemActinium));
 
         //Arc Furnace Core
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockArcFurnaceCore), "BDB", "CAC", "BDB",
                 'A', BlockHandler.blockArcFurnaceDummy, 'B', Items.iron_ingot, 'C', Items.ender_eye,
-                'D', "circuitBasic"));
+                'D', "circuitAdvanced"));
+
+        //ItemPumpModule
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemHandler.itemPumpModule), "ACA", "CBC", "ACA",
+                'A', Items.iron_ingot, 'B', "circuitAdvanced", 'C', Items.redstone));
+
+        //Compressor
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockCompressor), "BEB", "CAC", "BDB",
+                'A', BlockHandler.blockArcFurnaceDummy, 'B', Items.iron_ingot, 'C', ItemHandler.itemPumpModule,
+                'D', "circuitAdvanced", 'E', ItemHandler.itemEnergyAntenna));
+
+        //ItemEnergyAntenna
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemHandler.itemEnergyAntenna), "ACA", "DBD", "ACA",
+                'A', Items.iron_ingot, 'B', "circuitAdvanced", 'C', Items.redstone, 'D', Items.ender_pearl));
+
+        //Solidifier
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockSolidifier), "BEB", "CAC", "BDB",
+                'A', BlockHandler.blockArcFurnaceDummy, 'B', Items.iron_ingot, 'C', Items.cauldron,
+                'D', "circuitAdvanced", 'E', ItemHandler.itemEnergyAntenna));
+
+        //Pattern Recorder
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockPatternRecorder), "BEB", "CAC", "BDB",
+                'A', BlockHandler.blockArcFurnaceDummy, 'B', Items.iron_ingot, 'C', ItemHandler.laserNode,
+                'D', "circuitAdvanced", 'E', ItemHandler.itemEnergyAntenna));
 
          //Arc Furnace Recipes
         ArcFurnaceRecipeRegistry.instance.addRecipe(ItemHandler.itemActinium, FluidContainerRegistry.BUCKET_VOLUME);
