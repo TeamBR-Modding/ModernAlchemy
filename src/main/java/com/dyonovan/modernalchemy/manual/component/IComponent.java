@@ -10,8 +10,11 @@ public interface IComponent {
         RIGHT
     }
 
-    public int xPos = 0;
-    public int yPos = 0;
+    /**
+     * Returns the space this object takes up
+     * @return pixels taken
+     */
+    public int getSpace();
 
     /**
      * Draw the Component

@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy;
 
 import com.dyonovan.modernalchemy.handlers.*;
 import com.dyonovan.modernalchemy.lib.Constants;
+import com.dyonovan.modernalchemy.manual.page.ManualPages;
 import com.dyonovan.modernalchemy.nei.INEICallback;
 import com.dyonovan.modernalchemy.proxy.CommonProxy;
 import com.dyonovan.modernalchemy.util.ReplicatorUtils;
@@ -55,6 +56,7 @@ public class ModernAlchemy {
         proxy.registerRenderer();
 
         BucketHandler.INSTANCE.buckets.put(BlockHandler.blockFluidActinium, ItemHandler.itemBucketActinium);
+        ManualPages.instance.init();
 
         ReplicatorUtils.buildDirectory(event.getModConfigurationDirectory().getAbsolutePath() + File.separator + Constants.MODID.toLowerCase() + File.separator + "replicatorValues");
     }

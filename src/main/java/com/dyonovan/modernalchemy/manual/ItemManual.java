@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 public class ItemManual extends Item {
@@ -36,7 +37,15 @@ public class ItemManual extends Item {
     {
         if (!world.isRemote)
         {
-            entityPlayer.openGui(ModernAlchemy.instance, GuiHandler.MANUAL_GUI_ID, world, (int)entityPlayer.posX, (int)entityPlayer.posY, (int)entityPlayer.posZ);
+            if(itemStack.hasTagCompound())
+                entityPlayer.openGui(ModernAlchemy.instance, GuiHandler.MANUAL_GUI_ID, world, (int)entityPlayer.posX, (int)entityPlayer.posY, (int)entityPlayer.posZ);
+            else {
+                NBTTagCompound tag = new NBTTagCompound();
+                tag.setString("LastPage", "Main Page");
+                itemStack.setTagCompound(tag);
+                if(itemStack.getTagCompound().hasKey("LastPage"))
+                    entityPlayer.openGui(ModernAlchemy.instance, GuiHandler.MANUAL_GUI_ID, world, (int)entityPlayer.posX, (int)entityPlayer.posY, (int)entityPlayer.posZ);
+            }
         }
         return itemStack;
     }

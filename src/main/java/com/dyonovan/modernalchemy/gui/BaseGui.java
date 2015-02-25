@@ -3,8 +3,11 @@ package com.dyonovan.modernalchemy.gui;
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.gui.widget.Widget;
 import cpw.mods.fml.common.Mod;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
+import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -16,6 +19,7 @@ public abstract class BaseGui extends GuiContainer {
     protected List<Zone> toolTips;
     protected Rectangle arrowLoc;
     protected Container parent;
+    Minecraft minecraft = Minecraft.getMinecraft();
 
     public BaseGui(Container c) {
         super(c);
@@ -69,6 +73,32 @@ public abstract class BaseGui extends GuiContainer {
         List<String> list = new ArrayList<String>();
         list.add(string);
         drawHoveringText(list, x, y, fontRendererObj);
+    }
+
+    /**
+     * Sometimes you need to get the gui measurements before minecraft updates them. This will force an update
+     */
+    protected void updateScale()
+    {
+        GL11.glViewport(0, 0, this.minecraft.displayWidth, this.minecraft.displayHeight);
+        GL11.glMatrixMode(GL11.GL_PROJECTION);
+        GL11.glLoadIdentity();
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        GL11.glLoadIdentity();
+        this.width = this.minecraft.displayWidth;
+        this.height = this.minecraft.displayHeight;
+        ScaledResolution scaledresolution = new ScaledResolution(this.minecraft, this.minecraft.displayWidth, this.minecraft.displayHeight);
+        this.width = scaledresolution.getScaledWidth();
+        this.height = scaledresolution.getScaledHeight();
+        guiLeft = (width - xSize) / 2;
+        guiTop = (height - ySize) / 2;
+        GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
+        GL11.glMatrixMode(GL11.GL_PROJECTION);
+        GL11.glLoadIdentity();
+        GL11.glOrtho(0.0D, (double)this.width, (double)this.height, 0.0D, 1000.0D, 3000.0D);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        GL11.glLoadIdentity();
+        GL11.glTranslatef(0.0F, 0.0F, -2000.0F);
     }
 
     protected class Zone {
