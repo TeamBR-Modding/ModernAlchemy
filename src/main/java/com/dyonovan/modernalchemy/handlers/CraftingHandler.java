@@ -7,7 +7,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-import sun.org.mozilla.javascript.internal.ast.Block;
 
 public class CraftingHandler {
 

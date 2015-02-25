@@ -3,10 +3,10 @@ package com.dyonovan.modernalchemy.handlers;
 import com.dyonovan.modernalchemy.container.*;
 import com.dyonovan.modernalchemy.gui.*;
 import com.dyonovan.modernalchemy.manual.page.ContainerPage;
-import com.dyonovan.modernalchemy.manual.page.MainPage;
 import com.dyonovan.modernalchemy.manual.page.ManualPages;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.TileArcFurnaceCore;
 import com.dyonovan.modernalchemy.tileentity.machines.TileCompressor;
+import com.dyonovan.modernalchemy.tileentity.machines.TileMAFurnace;
 import com.dyonovan.modernalchemy.tileentity.machines.TilePatternRecorder;
 import com.dyonovan.modernalchemy.tileentity.machines.TileSolidifier;
 import com.dyonovan.modernalchemy.tileentity.replicator.TileReplicatorCPU;
@@ -24,6 +24,7 @@ public class GuiHandler implements IGuiHandler {
     public static final int REPLICATOR_CPU_GUI_ID = 5;
     public static final int TESLA_COIL_LINKS_GUI_ID = 6;
     public static final int MANUAL_GUI_ID = 7;
+    public static final int FURNACE_GUI_ID = 8;
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
@@ -44,6 +45,8 @@ public class GuiHandler implements IGuiHandler {
                 return new ContainerTeslaCoilLinks((TileTeslaCoil) world.getTileEntity(x, y, z));
             case MANUAL_GUI_ID :
                 return new ContainerPage();
+            case FURNACE_GUI_ID :
+                return new ContainerMAFurnace(player.inventory, (TileMAFurnace) world.getTileEntity(x, y, z));
         }
         return null;
     }
@@ -67,6 +70,8 @@ public class GuiHandler implements IGuiHandler {
                 return new GuiTeslaCoilLinks((TileTeslaCoil) world.getTileEntity(x, y, z));
             case MANUAL_GUI_ID :
                 return ManualPages.instance.getPage(player.getCurrentEquippedItem().getTagCompound().getString("LastPage"));
+            case FURNACE_GUI_ID :
+                return new GuiMAFurnace(player.inventory, (TileMAFurnace) world.getTileEntity(x, y, z));
         }
         return null;
     }

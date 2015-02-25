@@ -5,6 +5,7 @@ import com.dyonovan.modernalchemy.blocks.arcfurnace.dummies.*;
 import com.dyonovan.modernalchemy.blocks.fluids.BlockFluidActinium;
 import com.dyonovan.modernalchemy.blocks.fluids.BlockFluidCompressedAir;
 import com.dyonovan.modernalchemy.blocks.machines.BlockCompressor;
+import com.dyonovan.modernalchemy.blocks.machines.BlockMAFurnace;
 import com.dyonovan.modernalchemy.blocks.machines.BlockPatternRecorder;
 import com.dyonovan.modernalchemy.blocks.machines.BlockSolidifier;
 import com.dyonovan.modernalchemy.blocks.ore.BlockOreActinium;
@@ -19,6 +20,7 @@ import com.dyonovan.modernalchemy.fluids.FluidCompressedAir;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.TileArcFurnaceCore;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.dummies.*;
 import com.dyonovan.modernalchemy.tileentity.machines.TileCompressor;
+import com.dyonovan.modernalchemy.tileentity.machines.TileMAFurnace;
 import com.dyonovan.modernalchemy.tileentity.machines.TilePatternRecorder;
 import com.dyonovan.modernalchemy.tileentity.machines.TileSolidifier;
 import com.dyonovan.modernalchemy.tileentity.replicator.TileReplicatorFrame;
@@ -38,6 +40,7 @@ public class BlockHandler {
     public static Block blockArcFurnaceDummy, blockArcFurnaceDummyItemIO, blockArcFurnaceDummyAirValve, blockArcFurnaceDummyOutputValve, blockArcFurnaceDummyEnergy, blockArcFurnaceCore, blockTeslaStand, blockCoil;
     public static Block blockOreActinium, blockFluidActinium, blockCompressor, blockFluidAir, blockReplicatorStand;
     public static Block blockPatternRecorder, blockSolidifier, blockTeslaBase, blockReplicatorFrame, blockReplicatorCPU;
+    public static Block blockMAFurnace;
 
     public static void init() {
         //Actinium Fluid Registration
@@ -130,5 +133,10 @@ public class BlockHandler {
         blockReplicatorStand = new BlockReplicatorStand();
         GameRegistry.registerBlock(blockReplicatorStand, "blockReplicatorStand");
         GameRegistry.registerTileEntity(TileReplicatorStand.class, "blockReplicatorStand");
+
+        //BlockFurnace
+        blockMAFurnace = new BlockMAFurnace();
+        GameRegistry.registerBlock(blockMAFurnace, "blockMAFurnace");
+        GameRegistry.registerTileEntity(TileMAFurnace.class, "blockMAFurnace");
     }
 }
