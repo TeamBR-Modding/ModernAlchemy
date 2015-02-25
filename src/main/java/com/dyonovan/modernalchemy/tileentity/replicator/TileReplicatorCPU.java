@@ -300,7 +300,7 @@ public class TileReplicatorCPU extends BaseMachine implements ISidedInventory {
             }
             itemstack = itemstack.splitStack(count);
         }
-        super.markDirty();
+        worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
         return itemstack;
     }
 
