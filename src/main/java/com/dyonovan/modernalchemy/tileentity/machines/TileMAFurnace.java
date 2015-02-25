@@ -5,7 +5,7 @@ import cofh.api.energy.IEnergyHandler;
 import com.dyonovan.modernalchemy.crafting.MAFurnaceRecipeRegistry;
 import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
-import com.dyonovan.modernalchemy.tileentity.BaseMachine;
+import com.dyonovan.modernalchemy.tileentity.BaseTile;
 import com.dyonovan.modernalchemy.tileentity.InventoryTile;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -15,7 +15,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
-public class TileMAFurnace extends BaseMachine implements IEnergyHandler, ISidedInventory {
+public class TileMAFurnace extends BaseTile implements IEnergyHandler, ISidedInventory {
 
     private static final int PROCESS_TIME = 500;
     public static final int INPUT_SLOT_1 = 0;
@@ -27,6 +27,7 @@ public class TileMAFurnace extends BaseMachine implements IEnergyHandler, ISided
     protected EnergyStorage energyRF;
     public InventoryTile inventory;
     private int currentProcessTime;
+    private boolean isActive;
 
 
     public TileMAFurnace() {
@@ -182,15 +183,17 @@ public class TileMAFurnace extends BaseMachine implements IEnergyHandler, ISided
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
-        if (slot >= 0 && slot <= 3) {
-            return MAFurnaceRecipeRegistry.instance.checkInput(itemStack.getItem());
-        }
-        return false;
+        return slot >= 0 && slot <= 3 && MAFurnaceRecipeRegistry.instance.checkInput(itemStack.getItem());
     }
 
     /*******************************************************************************************************************
      ********************************************** Tile Functions *****************************************************
      *******************************************************************************************************************/
+
+    @Override
+    public void onWrench(EntityPlayer player) {
+
+    }
 
     @Override
     public void updateEntity() {
@@ -206,6 +209,7 @@ public class TileMAFurnace extends BaseMachine implements IEnergyHandler, ISided
         energyRF.readFromNBT(tag);
         inventory.readFromNBT(tag, this);
         currentProcessTime = tag.getInteger("TimeProcessed");
+        tag.setBoolean("isActive", isActive);
     }
 
     @Override
@@ -214,6 +218,7 @@ public class TileMAFurnace extends BaseMachine implements IEnergyHandler, ISided
         energyRF.writeToNBT(tag);
         inventory.writeToNBT(tag);
         tag.setInteger("TimeProcessed", currentProcessTime);
+        isActive = tag.getBoolean("isActive");
     }
 
     /*******************************************************************************************************************
@@ -221,7 +226,7 @@ public class TileMAFurnace extends BaseMachine implements IEnergyHandler, ISided
      *******************************************************************************************************************/
     @Override
     public void returnWailaHead(List<String> head) {
-        head.add(GuiHelper.GuiColor.YELLOW + "Working: " + GuiHelper.GuiColor.WHITE + (isActive() ? "Yes" : "No"));
+        head.add(GuiHelper.GuiColor.YELLOW + "Working: " + GuiHelper.GuiColor.WHITE + (isActive ? "Yes" : "No"));
         head.add(GuiHelper.GuiColor.YELLOW + "Energy: " + GuiHelper.GuiColor.WHITE + energyRF.getEnergyStored() + "/" +  energyRF.getMaxEnergyStored() + GuiHelper.GuiColor.TURQUISE + "RF");
 
     }
