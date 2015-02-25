@@ -72,6 +72,10 @@ public class CraftingHandler {
                 'A', BlockHandler.blockArcFurnaceDummy, 'B', Items.iron_ingot, 'C', ItemHandler.laserNode,
                 'D', "circuitAdvanced", 'E', ItemHandler.itemEnergyAntenna));
 
+        //Faraday Wire
+        GameRegistry.addRecipe(new ItemStack(ItemHandler.itemFaradayWire), "AB", "BA",
+                'A', Blocks.iron_bars, 'B', ItemHandler.itemSteelIngot);
+
          //Arc Furnace Recipes
         ArcFurnaceRecipeRegistry.instance.addRecipe(ItemHandler.itemActinium, FluidContainerRegistry.BUCKET_VOLUME);
         ArcFurnaceRecipeRegistry.instance.addRecipe(ItemHandler.itemSlag,  FluidContainerRegistry.BUCKET_VOLUME / 4);
