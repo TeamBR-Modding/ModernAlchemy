@@ -11,8 +11,6 @@ import org.lwjgl.opengl.GL11;
 public class RenderTeslaBase extends TileEntitySpecialRenderer {
 
     public static final ResourceLocation textureMain = new ResourceLocation(Constants.MODID + ":textures/models/teslaBase.png");
-    public static final ResourceLocation textureSwitch = new ResourceLocation(Constants.MODID + ":textures/models/teslaBaseHandle.png");
-    public static final ResourceLocation textureRotor = new ResourceLocation(Constants.MODID + ":textures/models/teslaBaseMag.png");
 
     private static float rotMod = 0.0F;
 
@@ -33,14 +31,10 @@ public class RenderTeslaBase extends TileEntitySpecialRenderer {
         this.bindTexture(textureMain);
         this.model.renderMain();
 
-        this.bindTexture(textureSwitch);
-        this.model.renderSwitch();
-
         if(base.isCoilCharging()) {
             rotMod += 24.0F;
             GL11.glRotatef(rotMod, 0.0f, 1.0F, 0.0F);
         }
-        this.bindTexture(textureRotor);
         this.model.renderRotor();
         GL11.glEnable(GL11.GL_CULL_FACE);
 
