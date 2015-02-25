@@ -30,7 +30,7 @@ public class GuiMAFurnace extends BaseGui {
     {
         final String invTitle =  "Advanced Crafter";
 
-        fontRendererObj.drawString(invTitle, 95 + (fontRendererObj.getStringWidth(invTitle) / 2), 6, 4210752);
+        fontRendererObj.drawString(invTitle, (fontRendererObj.getStringWidth(invTitle) / 2), 6, 4210752);
         fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 95, ySize - 96 + 2, 4210752);
     }
 
