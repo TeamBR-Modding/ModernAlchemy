@@ -42,10 +42,8 @@ public class ManualPages {
 
     @SideOnly(Side.CLIENT)
     public void openPage(BasePage page) {
-        if(Minecraft.getMinecraft().currentScreen instanceof BasePage) {
-            Minecraft.getMinecraft().displayGuiScreen(page);
-            ItemManual.addPageToVisitedPages(Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem(), page.getID());
-            PacketHandler.net.sendToServer(new UpdateManualPacket.UpdateManualMessage(Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().getTagCompound()));
-        }
+        Minecraft.getMinecraft().displayGuiScreen(page);
+        ItemManual.addPageToVisitedPages(Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem(), page.getID());
+        PacketHandler.net.sendToServer(new UpdateManualPacket.UpdateManualMessage(Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().getTagCompound()));
     }
 }

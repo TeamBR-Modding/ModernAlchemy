@@ -3,6 +3,7 @@ package com.dyonovan.modernalchemy.manual;
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
+import com.dyonovan.modernalchemy.manual.page.ManualPages;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -42,6 +43,20 @@ public class ItemManual extends Item {
             tag.setString("Page0", "Main Page");
             itemstack.setTagCompound(tag);
         }
+    }
+
+    @Override
+    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+        if(world.isRemote) {
+            if(ManualPages.instance.getPage(world.getBlock(x, y, z).getUnlocalizedName()) != null) {
+                if(stack.hasTagCompound() && ItemManual.getCurrentPage(stack).equalsIgnoreCase(world.getBlock(x, y, z).getUnlocalizedName()))
+                    player.openGui(ModernAlchemy.instance, GuiHandler.MANUAL_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+                else
+                    ManualPages.instance.openPage(ManualPages.instance.getPage(world.getBlock(x, y, z).getUnlocalizedName()));
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

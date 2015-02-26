@@ -1,23 +1,15 @@
 package com.dyonovan.modernalchemy.manual.component;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 public class ComponentItemRender extends ComponentBase {
     protected static ItemRenderer itemRender = new ItemRenderer(Minecraft.getMinecraft());
     protected ItemStack stack;
     protected double scale;
-    protected double roll = 0;
-    protected double yaw = 0;
-    protected double offset = 0.1;
     protected boolean rotate = true;
 
     public ComponentItemRender(double size, boolean doRotate, ItemStack itemStack) {
