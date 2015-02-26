@@ -45,5 +45,6 @@ public class ComponentHeader extends ComponentBase {
         int drawY = y;
         fontRenderer.drawSplitString(title, drawX, drawY, 120, 4210752);
         drawRectangle(x + 15, drawY + 10, x + 120, drawY + 11, new Color(255, 255, 255));
+        super.drawComponent(x, y, mouseX, mouseY);
     }
 }

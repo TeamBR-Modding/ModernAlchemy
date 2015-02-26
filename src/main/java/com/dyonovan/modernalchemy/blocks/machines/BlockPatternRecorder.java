@@ -4,6 +4,7 @@ import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.BlockBase;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
+import com.dyonovan.modernalchemy.manual.component.ComponentBase;
 import com.dyonovan.modernalchemy.tileentity.machines.TilePatternRecorder;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -17,6 +18,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class BlockPatternRecorder extends BlockBase {
 
     @SideOnly(Side.CLIENT)
@@ -27,6 +30,11 @@ public class BlockPatternRecorder extends BlockBase {
         super(Material.iron);
         this.setBlockName(Constants.MODID + ":blockPatternRecorder");
         this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
+    }
+
+    @Override
+    public List<ComponentBase> getManualComponents() {
+        return null;
     }
 
     @Override

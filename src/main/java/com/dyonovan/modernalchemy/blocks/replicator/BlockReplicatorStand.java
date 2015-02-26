@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy.blocks.replicator;
 
 import com.dyonovan.modernalchemy.blocks.BlockBase;
 import com.dyonovan.modernalchemy.lib.Constants;
+import com.dyonovan.modernalchemy.manual.component.ComponentBase;
 import com.dyonovan.modernalchemy.tileentity.replicator.TileReplicatorStand;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -10,6 +11,8 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class BlockReplicatorStand extends BlockBase {
 
@@ -32,6 +35,11 @@ public class BlockReplicatorStand extends BlockBase {
     @Override
     public TileEntity createNewTileEntity(World world, int i) {
         return new TileReplicatorStand();
+    }
+
+    @Override
+    public List<ComponentBase> getManualComponents() {
+        return null;
     }
 
     @Override

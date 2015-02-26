@@ -3,6 +3,7 @@ package com.dyonovan.modernalchemy.blocks.teslacoil;
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.BlockBase;
 import com.dyonovan.modernalchemy.lib.Constants;
+import com.dyonovan.modernalchemy.manual.component.ComponentBase;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaBase;
 import com.dyonovan.modernalchemy.util.Location;
 import net.minecraft.block.Block;
@@ -11,6 +12,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.List;
 
 public class BlockTeslaBase extends BlockBase {
 
@@ -49,6 +52,11 @@ public class BlockTeslaBase extends BlockBase {
     public boolean canPlaceBlockAt(World world, int x, int y, int z) {
         return !(world.getBlock(x, y - 1, z) instanceof BlockTeslaBase ||
                 world.getBlock(x, y - 1, z) instanceof BlockTeslaStand || world.getBlock(x, y - 1, z) instanceof BlockTeslaCoil);
+    }
+
+    @Override
+    public List<ComponentBase> getManualComponents() {
+        return null;
     }
 
     @Override

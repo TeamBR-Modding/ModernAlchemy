@@ -1,10 +1,14 @@
 package com.dyonovan.modernalchemy.manual.page;
 
 import com.dyonovan.modernalchemy.gui.BaseGui;
+import com.dyonovan.modernalchemy.handlers.PacketHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
+import com.dyonovan.modernalchemy.manual.ItemManual;
 import com.dyonovan.modernalchemy.manual.component.ComponentHeader;
 import com.dyonovan.modernalchemy.manual.component.ComponentSet;
 import com.dyonovan.modernalchemy.manual.component.IComponent;
+import com.dyonovan.modernalchemy.network.UpdateManualPacket;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.GuiScreenEvent;
@@ -28,7 +32,7 @@ public class BasePage extends BaseGui {
     public ComponentHeader title = null;
     protected String id;
 
-    public static int currentIndex = 0;
+    public int currentIndex = 0;
 
     public BasePage(String pageId) {
         super(new ContainerPage());
@@ -50,6 +54,9 @@ public class BasePage extends BaseGui {
         updateScale();
         this.buttonList.add(new GuiButton(0, -1000, -1000, 50, 20, "Next"));
         this.buttonList.add(new GuiButton(1, -1000, -1000, 50, 20, "Previous"));
+        this.buttonList.add(new GuiButton(2, -1000, -1000, 50, 20, "Back"));
+        if(!(this instanceof MainPage))
+            this.buttonList.set(2, new GuiButton(2, guiLeft, guiTop, 30, 20, "Back"));
         if(pages.size() <= 0)
             buildPages(guiLeft, guiTop);
         if(currentIndex == 0 && pages.size() > 1)
@@ -168,7 +175,14 @@ public class BasePage extends BaseGui {
             if(pages.get(currentIndex + 1) != null)
                 this.buttonList.set(0, new GuiButton(0, guiLeft + 200, guiTop + 150, 50, 20, "Next"));
         }
+        else if(button.id == 2) {
+            ManualPages.instance.openPage(ManualPages.instance.getPage(ItemManual.getLastPage(Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem())));
+            ItemManual.deleteLastPage(Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem());
+            PacketHandler.net.sendToServer(new UpdateManualPacket.UpdateManualMessage(Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().getTagCompound()));
+            this.buttonList.set(2, new GuiButton(2, -1000, -1000, ""));
+        }
     }
+
     private ResourceLocation background = new ResourceLocation(Constants.MODID + ":textures/gui/manual/manual.png");
 
     @Override

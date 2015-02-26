@@ -6,8 +6,11 @@ import com.dyonovan.modernalchemy.blocks.teslacoil.BlockTeslaBase;
 import com.dyonovan.modernalchemy.blocks.teslacoil.BlockTeslaCoil;
 import com.dyonovan.modernalchemy.blocks.teslacoil.BlockTeslaStand;
 import com.dyonovan.modernalchemy.helpers.WrenchHelper;
+import com.dyonovan.modernalchemy.manual.component.ComponentBase;
 import com.dyonovan.modernalchemy.util.Location;
 import com.dyonovan.modernalchemy.util.WorldUtils;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -16,6 +19,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import java.util.List;
 import java.util.Random;
 
 public abstract class BlockBase extends BlockContainer{
@@ -46,6 +50,8 @@ public abstract class BlockBase extends BlockContainer{
         }
         return true;
     }
+
+    public abstract List<ComponentBase> getManualComponents();
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {

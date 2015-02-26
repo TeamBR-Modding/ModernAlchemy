@@ -6,6 +6,7 @@ import com.dyonovan.modernalchemy.lib.Constants;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -33,20 +34,79 @@ public class ItemManual extends Item {
     }
 
     @Override
+    public void onUpdate(ItemStack itemstack, World world, Entity entity, int par4, boolean isCurrentItem)
+    {
+        if(!world.isRemote && !itemstack.hasTagCompound())
+        {
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setString("Page0", "Main Page");
+            itemstack.setTagCompound(tag);
+        }
+    }
+
+    @Override
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer entityPlayer)
     {
-        if (!world.isRemote)
-        {
-            if(itemStack.hasTagCompound())
-                entityPlayer.openGui(ModernAlchemy.instance, GuiHandler.MANUAL_GUI_ID, world, (int)entityPlayer.posX, (int)entityPlayer.posY, (int)entityPlayer.posZ);
-            else {
-                NBTTagCompound tag = new NBTTagCompound();
-                tag.setString("LastPage", "Main Page");
-                itemStack.setTagCompound(tag);
-                if(itemStack.getTagCompound().hasKey("LastPage"))
-                    entityPlayer.openGui(ModernAlchemy.instance, GuiHandler.MANUAL_GUI_ID, world, (int)entityPlayer.posX, (int)entityPlayer.posY, (int)entityPlayer.posZ);
-            }
+        if(world.isRemote) {
+            if (itemStack.hasTagCompound())
+                entityPlayer.openGui(ModernAlchemy.instance, GuiHandler.MANUAL_GUI_ID, world, (int) entityPlayer.posX, (int) entityPlayer.posY, (int) entityPlayer.posZ);
         }
         return itemStack;
+    }
+
+    public static String getLastPage(ItemStack itemStack) {
+        int i = 0;
+        if(itemStack.hasTagCompound()) {
+            while(itemStack.getTagCompound().hasKey("Page" + i)) {
+                i++;
+            }
+            return "Page" + (i - 1);
+        }
+        return "Main Page";
+    }
+
+    public static String getCurrentPage(ItemStack itemStack) {
+        int i = 0;
+        if(itemStack.hasTagCompound()) {
+            while(itemStack.getTagCompound().hasKey("Page" + i)) {
+                i++;
+            }
+            return itemStack.getTagCompound().getString("Page" + 1);
+        }
+        return "Main Page";
+    }
+
+    public static void addPageToVisitedPages(ItemStack itemstack, String pageId) {
+        int i = 0;
+        if(itemstack.hasTagCompound()) {
+            while(itemstack.getTagCompound().hasKey("Page" + i)) {
+                i++;
+            }
+            itemstack.getTagCompound().setString("Page" + i, pageId);
+        }
+        else {
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setString("Page0", "Main Page");
+            itemstack.setTagCompound(tag);
+        }
+    }
+
+    public static void deleteLastPage(ItemStack itemstack) {
+        int i = 0;
+        if (itemstack.hasTagCompound()) {
+            NBTTagCompound tag = new NBTTagCompound();
+            while(itemstack.getTagCompound().hasKey("Page" + i)) {
+                if(itemstack.getTagCompound().hasKey("Page" + (i + 2)))
+                    break;
+                tag.setString("Page" + i, itemstack.getTagCompound().getString("Page" + i));
+                i++;
+            }
+            itemstack.setTagCompound(tag);
+        }
+        else {
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setString("Page0", "Main Page");
+            itemstack.setTagCompound(tag);
+        }
     }
 }

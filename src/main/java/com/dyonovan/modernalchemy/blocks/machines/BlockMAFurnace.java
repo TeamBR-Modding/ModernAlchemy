@@ -4,6 +4,7 @@ import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.BlockBase;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
+import com.dyonovan.modernalchemy.manual.component.ComponentBase;
 import com.dyonovan.modernalchemy.tileentity.machines.TileMAFurnace;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -16,6 +17,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class BlockMAFurnace extends BlockBase {
 
@@ -69,6 +72,11 @@ public class BlockMAFurnace extends BlockBase {
     @Override
     public TileEntity createNewTileEntity(World world, int i) {
         return new TileMAFurnace();
+    }
+
+    @Override
+    public List<ComponentBase> getManualComponents() {
+        return null;
     }
 
     @Override

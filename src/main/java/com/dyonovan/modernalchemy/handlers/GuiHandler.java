@@ -2,7 +2,9 @@ package com.dyonovan.modernalchemy.handlers;
 
 import com.dyonovan.modernalchemy.container.*;
 import com.dyonovan.modernalchemy.gui.*;
+import com.dyonovan.modernalchemy.manual.ItemManual;
 import com.dyonovan.modernalchemy.manual.page.ContainerPage;
+import com.dyonovan.modernalchemy.manual.page.MainPage;
 import com.dyonovan.modernalchemy.manual.page.ManualPages;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.TileArcFurnaceCore;
 import com.dyonovan.modernalchemy.tileentity.machines.TileCompressor;
@@ -12,6 +14,7 @@ import com.dyonovan.modernalchemy.tileentity.machines.TileSolidifier;
 import com.dyonovan.modernalchemy.tileentity.replicator.TileReplicatorCPU;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
 import cpw.mods.fml.common.network.IGuiHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
@@ -69,7 +72,7 @@ public class GuiHandler implements IGuiHandler {
             case TESLA_COIL_LINKS_GUI_ID :
                 return new GuiTeslaCoilLinks((TileTeslaCoil) world.getTileEntity(x, y, z));
             case MANUAL_GUI_ID :
-                return ManualPages.instance.getPage(player.getCurrentEquippedItem().getTagCompound().getString("LastPage"));
+                return ManualPages.instance.getPage(ItemManual.getCurrentPage(Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem()));
             case FURNACE_GUI_ID :
                 return new GuiMAFurnace(player.inventory, (TileMAFurnace) world.getTileEntity(x, y, z));
         }

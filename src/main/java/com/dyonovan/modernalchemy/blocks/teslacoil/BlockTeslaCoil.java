@@ -2,9 +2,13 @@ package com.dyonovan.modernalchemy.blocks.teslacoil;
 
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.BlockBase;
+import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.items.ItemWrench;
 import com.dyonovan.modernalchemy.lib.Constants;
+import com.dyonovan.modernalchemy.manual.component.ComponentBase;
+import com.dyonovan.modernalchemy.manual.component.ComponentItemRender;
+import com.dyonovan.modernalchemy.manual.component.ComponentTextBox;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -12,10 +16,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BlockTeslaCoil extends BlockBase {
@@ -70,6 +76,15 @@ public class BlockTeslaCoil extends BlockBase {
     @Override
     public boolean canPlaceBlockAt(World world, int x, int y, int z) {
         return world.getBlock(x, y - 1, z) instanceof BlockTeslaStand;
+    }
+
+    @Override
+    public List<ComponentBase> getManualComponents() {
+        List<ComponentBase> parts = new ArrayList<ComponentBase>();
+        parts.add(new ComponentItemRender(10, true, new ItemStack(BlockHandler.blockCoil, 1)));
+        parts.add(new ComponentTextBox("The Tesla coil is the main method of generating power." +
+                "Set this block on top of a Tesla Stand and that on top of a Tesla Base to complete the structure."));
+        return parts;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy.handlers;
 
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.network.RenderLightningBoltPacket;
+import com.dyonovan.modernalchemy.network.UpdateManualPacket;
 import com.dyonovan.modernalchemy.network.UpdateServerCoilLists;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -15,6 +16,7 @@ public class PacketHandler {
         net = NetworkRegistry.INSTANCE.newSimpleChannel(Constants.MODID.toUpperCase());
         registerMessage(RenderLightningBoltPacket.class, RenderLightningBoltPacket.BoltMessage.class);
         registerMessage(UpdateServerCoilLists.class, UpdateServerCoilLists.UpdateMessage.class);
+        registerMessage(UpdateManualPacket.class, UpdateManualPacket.UpdateManualMessage.class);
     }
 
     private static int nextPacketId = 0;
