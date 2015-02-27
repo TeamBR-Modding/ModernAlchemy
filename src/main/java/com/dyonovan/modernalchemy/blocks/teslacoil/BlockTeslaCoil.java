@@ -77,7 +77,7 @@ public class BlockTeslaCoil extends BlockBase {
     @Override
     public List<ComponentBase> getManualComponents() {
         List<ComponentBase> parts = new ArrayList<ComponentBase>();
-        parts.add(new ComponentItemRender(30, true, new ItemStack(this)));
+        parts.add(new ComponentItemRender(30, new ItemStack(this)));
         parts.add(new ComponentTextBox("The Tesla coil is the main method of generating power." +
                 "Set this block on top of a Tesla Stand and that on top of a Tesla Base to complete the structure."));
         parts.add(new ComponentHeader("Crafting"));

@@ -5,6 +5,7 @@ import com.dyonovan.modernalchemy.blocks.BlockBase;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.manual.component.ComponentBase;
+import com.dyonovan.modernalchemy.manual.component.ComponentItemRender;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.TileArcFurnaceCore;
 import com.dyonovan.modernalchemy.tileentity.replicator.TileReplicatorCPU;
 import com.dyonovan.modernalchemy.util.WorldUtils;
@@ -14,9 +15,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BlockReplicatorCPU extends BlockBase {
@@ -43,7 +46,9 @@ public class BlockReplicatorCPU extends BlockBase {
 
     @Override
     public List<ComponentBase> getManualComponents() {
-        return null;
+        List<ComponentBase> parts = new ArrayList<ComponentBase>();
+        parts.add(new ComponentItemRender(30, new ItemStack(this)));
+        return parts;
     }
 
     @Override
