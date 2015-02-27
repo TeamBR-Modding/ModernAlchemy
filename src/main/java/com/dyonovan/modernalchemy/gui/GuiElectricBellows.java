@@ -1,25 +1,25 @@
 package com.dyonovan.modernalchemy.gui;
 
-import com.dyonovan.modernalchemy.container.ContainerCompressor;
+import com.dyonovan.modernalchemy.container.ContainerElectricBellows;
 import com.dyonovan.modernalchemy.gui.widget.WidgetEnergyBank;
 import com.dyonovan.modernalchemy.gui.widget.WidgetLiquidTank;
 import com.dyonovan.modernalchemy.gui.widget.WidgetPulse;
 import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
-import com.dyonovan.modernalchemy.tileentity.machines.TileCompressor;
+import com.dyonovan.modernalchemy.tileentity.machines.TileElectricBellows;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiCompressor extends BaseGui {
+public class GuiElectricBellows extends BaseGui {
 
     private ResourceLocation background = new ResourceLocation(Constants.MODID + ":textures/gui/compressor.png");
-    private TileCompressor tile;
+    private TileElectricBellows tile;
 
-    public GuiCompressor(TileCompressor tile) {
-        super(new ContainerCompressor(tile));
+    public GuiElectricBellows(TileElectricBellows tile) {
+        super(new ContainerElectricBellows(tile));
         this.tile = tile;
         this.xSize = 108;
         this.ySize = 86;

@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class TileMAFurnace extends BaseTile implements IEnergyHandler, ISidedInventory {
+public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISidedInventory {
 
     private static final int PROCESS_TIME = 100;
     private static final int RF_TICK = 100;
@@ -37,7 +37,7 @@ public class TileMAFurnace extends BaseTile implements IEnergyHandler, ISidedInv
     private Item outputItem;
 
 
-    public TileMAFurnace() {
+    public TileAdvancedCrafter() {
         super();
         energyRF = new EnergyStorage(10000, 1000, 0);
         inventory = new InventoryTile(5);
@@ -215,7 +215,7 @@ public class TileMAFurnace extends BaseTile implements IEnergyHandler, ISidedInv
 
     @Override
     public String getInventoryName() {
-        return Constants.MODID + ":blockMAFurnace";
+        return Constants.MODID + ":blockAdvancedFurnace";
     }
 
     @Override

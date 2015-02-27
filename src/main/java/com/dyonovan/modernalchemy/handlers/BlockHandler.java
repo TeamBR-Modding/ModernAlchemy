@@ -4,10 +4,10 @@ import com.dyonovan.modernalchemy.blocks.arcfurnace.BlockArcFurnaceCore;
 import com.dyonovan.modernalchemy.blocks.arcfurnace.dummies.*;
 import com.dyonovan.modernalchemy.blocks.fluids.BlockFluidActinium;
 import com.dyonovan.modernalchemy.blocks.fluids.BlockFluidCompressedAir;
-import com.dyonovan.modernalchemy.blocks.machines.BlockCompressor;
-import com.dyonovan.modernalchemy.blocks.machines.BlockMAFurnace;
+import com.dyonovan.modernalchemy.blocks.machines.BlockAdvancedCrafter;
+import com.dyonovan.modernalchemy.blocks.machines.BlockElectricBellows;
 import com.dyonovan.modernalchemy.blocks.machines.BlockPatternRecorder;
-import com.dyonovan.modernalchemy.blocks.machines.BlockSolidifier;
+import com.dyonovan.modernalchemy.blocks.machines.BlockAmalgamator;
 import com.dyonovan.modernalchemy.blocks.ore.BlockOreActinium;
 import com.dyonovan.modernalchemy.blocks.replicator.BlockReplicatorStand;
 import com.dyonovan.modernalchemy.blocks.replicator.BlockReplicatorFrame;
@@ -19,10 +19,10 @@ import com.dyonovan.modernalchemy.fluids.FluidActinium;
 import com.dyonovan.modernalchemy.fluids.FluidCompressedAir;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.TileArcFurnaceCore;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.dummies.*;
-import com.dyonovan.modernalchemy.tileentity.machines.TileCompressor;
-import com.dyonovan.modernalchemy.tileentity.machines.TileMAFurnace;
+import com.dyonovan.modernalchemy.tileentity.machines.TileElectricBellows;
+import com.dyonovan.modernalchemy.tileentity.machines.TileAdvancedCrafter;
 import com.dyonovan.modernalchemy.tileentity.machines.TilePatternRecorder;
-import com.dyonovan.modernalchemy.tileentity.machines.TileSolidifier;
+import com.dyonovan.modernalchemy.tileentity.machines.TileAmalgamator;
 import com.dyonovan.modernalchemy.tileentity.replicator.TileReplicatorFrame;
 import com.dyonovan.modernalchemy.tileentity.replicator.TileReplicatorCPU;
 import com.dyonovan.modernalchemy.tileentity.replicator.TileReplicatorStand;
@@ -37,10 +37,11 @@ import net.minecraftforge.fluids.FluidRegistry;
 public class BlockHandler {
 
     public static Fluid fluidActinium, fluidCompressedAir;
-    public static Block blockArcFurnaceDummy, blockArcFurnaceDummyItemIO, blockArcFurnaceDummyAirValve, blockArcFurnaceDummyOutputValve, blockArcFurnaceDummyEnergy, blockArcFurnaceCore, blockTeslaStand, blockCoil;
-    public static Block blockOreActinium, blockFluidActinium, blockCompressor, blockFluidAir, blockReplicatorStand;
-    public static Block blockPatternRecorder, blockSolidifier, blockTeslaBase, blockReplicatorFrame, blockReplicatorCPU;
-    public static Block blockMAFurnace;
+    public static Block blockArcFurnaceDummy, blockArcFurnaceDummyItemIO, blockArcFurnaceDummyAirValve;
+    public static Block blockArcFurnaceDummyOutputValve, blockArcFurnaceDummyEnergy, blockArcFurnaceCore, blockTeslaStand, blockCoil;
+    public static Block blockOreActinium, blockFluidActinium, blockElectricBellows, blockFluidAir, blockReplicatorStand;
+    public static Block blockPatternRecorder, blockAmalgamator, blockTeslaBase, blockReplicatorFrame, blockReplicatorCPU;
+    public static Block blockAdvancedFurnace;
 
     public static void init() {
         //Actinium Fluid Registration
@@ -59,15 +60,15 @@ public class BlockHandler {
         blockOreActinium = new BlockOreActinium();
         GameRegistry.registerBlock(blockOreActinium, "oreActinium");
 
-        //Block Compressor
-        blockCompressor = new BlockCompressor();
-        GameRegistry.registerBlock(blockCompressor, "blockCompressor");
-        GameRegistry.registerTileEntity(TileCompressor.class, "teCompressor");
+        //BlockElectricBellows
+        blockElectricBellows = new BlockElectricBellows();
+        GameRegistry.registerBlock(blockElectricBellows, "blockElectricBellows");
+        GameRegistry.registerTileEntity(TileElectricBellows.class, "blockElectricBellows");
 
-        //Solidifier
-        blockSolidifier = new BlockSolidifier();
-        GameRegistry.registerBlock(blockSolidifier, "blockSolidifier");
-        GameRegistry.registerTileEntity(TileSolidifier.class, "blockSolidifier");
+        //blockAmalgamator
+        blockAmalgamator = new BlockAmalgamator();
+        GameRegistry.registerBlock(blockAmalgamator, "blockAmalgamator");
+        GameRegistry.registerTileEntity(TileAmalgamator.class, "blockAmalgamator");
 
         // Block Pattern Recorder
         blockPatternRecorder = new BlockPatternRecorder();
@@ -135,8 +136,8 @@ public class BlockHandler {
         GameRegistry.registerTileEntity(TileReplicatorStand.class, "blockReplicatorStand");
 
         //BlockFurnace
-        blockMAFurnace = new BlockMAFurnace();
-        GameRegistry.registerBlock(blockMAFurnace, "blockMAFurnace");
-        GameRegistry.registerTileEntity(TileMAFurnace.class, "blockMAFurnace");
+        blockAdvancedFurnace = new BlockAdvancedCrafter();
+        GameRegistry.registerBlock(blockAdvancedFurnace, "blockAdvancedFurnace");
+        GameRegistry.registerTileEntity(TileAdvancedCrafter.class, "blockAdvancedFurnace");
     }
 }

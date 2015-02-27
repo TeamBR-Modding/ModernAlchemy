@@ -15,13 +15,13 @@ import net.minecraftforge.fluids.*;
 
 import java.util.List;
 
-public class TileCompressor extends BaseMachine implements IFluidHandler {
+public class TileElectricBellows extends BaseMachine implements IFluidHandler {
 
     public FluidTank tank;
     private int currentSpeed;
     private int soundCoolDown = 0;
 
-    public TileCompressor() {
+    public TileElectricBellows() {
         this.energyTank = new TeslaBank(1000);
         this.tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 10);
         this.isActive = false;

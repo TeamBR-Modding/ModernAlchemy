@@ -1,12 +1,12 @@
 package com.dyonovan.modernalchemy.gui;
 
-import com.dyonovan.modernalchemy.container.ContainerSolidifier;
+import com.dyonovan.modernalchemy.container.ContainerAmalgamator;
 import com.dyonovan.modernalchemy.gui.widget.WidgetEnergyBank;
 import com.dyonovan.modernalchemy.gui.widget.WidgetLiquidTank;
 import com.dyonovan.modernalchemy.gui.widget.WidgetPulse;
 import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
-import com.dyonovan.modernalchemy.tileentity.machines.TileSolidifier;
+import com.dyonovan.modernalchemy.tileentity.machines.TileAmalgamator;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -15,13 +15,13 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiSolidifier extends BaseGui  {
+public class GuiAmalgamator extends BaseGui  {
 
     private ResourceLocation background = new ResourceLocation(Constants.MODID + ":textures/gui/solidifier.png");
-    private TileSolidifier tile;
+    private TileAmalgamator tile;
 
-    public GuiSolidifier(InventoryPlayer inventory, TileSolidifier tile) {
-        super(new ContainerSolidifier(inventory, tile));
+    public GuiAmalgamator(InventoryPlayer inventory, TileAmalgamator tile) {
+        super(new ContainerAmalgamator(inventory, tile));
         this.tile = tile;
 
         widgets.add(new WidgetLiquidTank(this, tile.tank, 37, 78, 52));

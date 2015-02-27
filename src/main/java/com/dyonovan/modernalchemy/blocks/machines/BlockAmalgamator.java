@@ -5,7 +5,7 @@ import com.dyonovan.modernalchemy.blocks.BlockBase;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.manual.component.ComponentBase;
-import com.dyonovan.modernalchemy.tileentity.machines.TileMAFurnace;
+import com.dyonovan.modernalchemy.tileentity.machines.TileAmalgamator;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
@@ -20,22 +20,22 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class BlockMAFurnace extends BlockBase {
+public class BlockAmalgamator extends BlockBase {
 
     @SideOnly(Side.CLIENT)
     private IIcon front;
 
-    public BlockMAFurnace() {
+    public BlockAmalgamator() {
         super(Material.iron);
-        this.setBlockName(Constants.MODID + ":blockFurnace");
+        this.setBlockName(Constants.MODID + ":blockAmalgamator");
         this.setHardness(1.5F);
         this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
     }
 
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconregister) {
-        this.blockIcon = iconregister.registerIcon(Constants.MODID + ":furnace_side");
-        this.front = iconregister.registerIcon(Constants.MODID + ":furnace_front");
+        this.blockIcon = iconregister.registerIcon(Constants.MODID + ":amalgamator_side");
+        this.front = iconregister.registerIcon(Constants.MODID + ":amalgamator_front");
     }
 
     @SideOnly(Side.CLIENT)
@@ -71,7 +71,7 @@ public class BlockMAFurnace extends BlockBase {
 
     @Override
     public TileEntity createNewTileEntity(World world, int i) {
-        return new TileMAFurnace();
+        return new TileAmalgamator();
     }
 
     @Override
@@ -90,9 +90,9 @@ public class BlockMAFurnace extends BlockBase {
         }
         else
         {
-            TileMAFurnace tile = (TileMAFurnace)world.getTileEntity(x, y, z);
+            TileAmalgamator tile = (TileAmalgamator)world.getTileEntity(x, y, z);
             if(tile != null) {
-                player.openGui(ModernAlchemy.instance, GuiHandler.FURNACE_GUI_ID, world, x, y, z);
+                player.openGui(ModernAlchemy.instance, GuiHandler.AMALGAMATOR_GUI_ID, world, x, y, z);
             }
             return true;
         }

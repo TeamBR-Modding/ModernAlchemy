@@ -5,7 +5,7 @@ import com.dyonovan.modernalchemy.blocks.BlockBase;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.manual.component.ComponentBase;
-import com.dyonovan.modernalchemy.tileentity.machines.TileSolidifier;
+import com.dyonovan.modernalchemy.tileentity.machines.TileElectricBellows;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
@@ -20,22 +20,21 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class BlockSolidifier extends BlockBase {
+public class BlockElectricBellows extends BlockBase {
 
     @SideOnly(Side.CLIENT)
     private IIcon front;
 
-    public BlockSolidifier() {
-        super(Material.iron);
-        this.setBlockName(Constants.MODID + ":blockSolidifier");
-        this.setHardness(1.5F);
+    public BlockElectricBellows() {
+        super(Material.anvil);
+        this.setBlockName(Constants.MODID + ":blockElectricBellows");
         this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
     }
 
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconregister) {
-        this.blockIcon = iconregister.registerIcon(Constants.MODID + ":solidifier_side");
-        this.front = iconregister.registerIcon(Constants.MODID + ":solidifier_front");
+        this.blockIcon = iconregister.registerIcon(Constants.MODID + ":bellows_side");
+        this.front = iconregister.registerIcon(Constants.MODID + ":bellows_front");
     }
 
     @SideOnly(Side.CLIENT)
@@ -69,9 +68,10 @@ public class BlockSolidifier extends BlockBase {
         return true;
     }
 
+
     @Override
     public TileEntity createNewTileEntity(World world, int i) {
-        return new TileSolidifier();
+        return new TileElectricBellows();
     }
 
     @Override
@@ -90,11 +90,13 @@ public class BlockSolidifier extends BlockBase {
         }
         else
         {
-            TileSolidifier tile = (TileSolidifier)world.getTileEntity(x, y, z);
+            TileElectricBellows tile = (TileElectricBellows)world.getTileEntity(x, y, z);
             if(tile != null) {
-                player.openGui(ModernAlchemy.instance, GuiHandler.SOLIDIFIER_GUI_ID, world, x, y, z);
+                player.openGui(ModernAlchemy.instance, GuiHandler.ELECTRIC_BELLOWS_GUI_ID, world, x, y, z);
             }
             return true;
         }
     }
 }
+
+

@@ -1,10 +1,9 @@
 package com.dyonovan.modernalchemy.gui;
 
-import com.dyonovan.modernalchemy.container.ContainerMAFurnace;
+import com.dyonovan.modernalchemy.container.ContainerAdvancedCrafter;
 import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
-import com.dyonovan.modernalchemy.tileentity.arcfurnace.TileArcFurnaceCore;
-import com.dyonovan.modernalchemy.tileentity.machines.TileMAFurnace;
+import com.dyonovan.modernalchemy.tileentity.machines.TileAdvancedCrafter;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -14,13 +13,13 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiMAFurnace extends BaseGui {
+public class GuiAdvancedCrafter extends BaseGui {
 
-    private TileMAFurnace tile;
+    private TileAdvancedCrafter tile;
     private ResourceLocation background = new ResourceLocation(Constants.MODID + ":textures/gui/ma_furnace.png");
 
-    public GuiMAFurnace(InventoryPlayer inventoryPlayer, TileMAFurnace tileEntity) {
-        super(new ContainerMAFurnace(inventoryPlayer, tileEntity));
+    public GuiAdvancedCrafter(InventoryPlayer inventoryPlayer, TileAdvancedCrafter tileEntity) {
+        super(new ContainerAdvancedCrafter(inventoryPlayer, tileEntity));
 
         this.tile = tileEntity;
         setArrowLocation(108, 35, 24, 16);

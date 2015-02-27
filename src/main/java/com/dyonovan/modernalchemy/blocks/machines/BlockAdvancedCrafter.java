@@ -5,7 +5,7 @@ import com.dyonovan.modernalchemy.blocks.BlockBase;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.manual.component.ComponentBase;
-import com.dyonovan.modernalchemy.tileentity.machines.TileCompressor;
+import com.dyonovan.modernalchemy.tileentity.machines.TileAdvancedCrafter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
@@ -20,21 +20,22 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class BlockCompressor extends BlockBase {
+public class BlockAdvancedCrafter extends BlockBase {
 
     @SideOnly(Side.CLIENT)
     private IIcon front;
 
-    public BlockCompressor() {
-        super(Material.anvil);
-        this.setBlockName(Constants.MODID + ":blockCompressor");
+    public BlockAdvancedCrafter() {
+        super(Material.iron);
+        this.setBlockName(Constants.MODID + ":blockFurnace");
+        this.setHardness(1.5F);
         this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
     }
 
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconregister) {
-        this.blockIcon = iconregister.registerIcon(Constants.MODID + ":compressor_side");
-        this.front = iconregister.registerIcon(Constants.MODID + ":compressor_front");
+        this.blockIcon = iconregister.registerIcon(Constants.MODID + ":crafter_side");
+        this.front = iconregister.registerIcon(Constants.MODID + ":crafter_front");
     }
 
     @SideOnly(Side.CLIENT)
@@ -68,10 +69,9 @@ public class BlockCompressor extends BlockBase {
         return true;
     }
 
-
     @Override
     public TileEntity createNewTileEntity(World world, int i) {
-        return new TileCompressor();
+        return new TileAdvancedCrafter();
     }
 
     @Override
@@ -90,13 +90,11 @@ public class BlockCompressor extends BlockBase {
         }
         else
         {
-            TileCompressor tile = (TileCompressor)world.getTileEntity(x, y, z);
+            TileAdvancedCrafter tile = (TileAdvancedCrafter)world.getTileEntity(x, y, z);
             if(tile != null) {
-                player.openGui(ModernAlchemy.instance, GuiHandler.COMPRESSOR_GUI_ID, world, x, y, z);
+                player.openGui(ModernAlchemy.instance, GuiHandler.ADVANCED_FURNACE_GUI_ID, world, x, y, z);
             }
             return true;
         }
     }
 }
-
-

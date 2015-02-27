@@ -58,7 +58,7 @@ public class CraftingHandler {
                 'A', Items.iron_ingot, 'B', "circuitAdvanced", 'C', Items.redstone));
 
         //Compressor
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockCompressor), "BEB", "CAC", "BDB",
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockElectricBellows), "BEB", "CAC", "BDB",
                 'A', BlockHandler.blockArcFurnaceDummy, 'B', Items.iron_ingot, 'C', ItemHandler.itemPumpModule,
                 'D', "circuitAdvanced", 'E', ItemHandler.itemEnergyAntenna));
 
@@ -67,7 +67,7 @@ public class CraftingHandler {
                 'A', Items.iron_ingot, 'B', "circuitAdvanced", 'C', Items.redstone, 'D', Items.ender_pearl));
 
         //Solidifier
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockSolidifier), "BEB", "CAC", "BDB",
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockAmalgamator), "BEB", "CAC", "BDB",
                 'A', BlockHandler.blockArcFurnaceDummy, 'B', Items.iron_ingot, 'C', Items.cauldron,
                 'D', "circuitAdvanced", 'E', ItemHandler.itemEnergyAntenna));
 

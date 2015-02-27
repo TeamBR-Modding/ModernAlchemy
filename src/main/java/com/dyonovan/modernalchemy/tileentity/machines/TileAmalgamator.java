@@ -16,7 +16,7 @@ import net.minecraftforge.fluids.*;
 
 import java.util.List;
 
-public class TileSolidifier extends BaseMachine implements IFluidHandler, ISidedInventory {
+public class TileAmalgamator extends BaseMachine implements IFluidHandler, ISidedInventory {
 
     private static final int PROCESS_TIME = 500;
 
@@ -25,7 +25,7 @@ public class TileSolidifier extends BaseMachine implements IFluidHandler, ISided
     private InventoryTile inventory;
     public int timeProcessed;
 
-    public TileSolidifier() {
+    public TileAmalgamator() {
         tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 10);
         tank.setFluid(new FluidStack(BlockHandler.fluidActinium, 0));
         this.energyTank = new TeslaBank(1000);
@@ -168,7 +168,7 @@ public class TileSolidifier extends BaseMachine implements IFluidHandler, ISided
 
     @Override
     public String getInventoryName() {
-        return Constants.MODID + ":blockSolidifier";
+        return Constants.MODID + ":blockAmalgamator";
     }
 
     @Override
