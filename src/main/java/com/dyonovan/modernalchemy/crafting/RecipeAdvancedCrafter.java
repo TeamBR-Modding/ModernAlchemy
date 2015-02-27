@@ -4,19 +4,25 @@ import net.minecraft.item.Item;
 
 import java.util.ArrayList;
 
-public class RecipeMAFurnace {
+public class RecipeAdvancedCrafter {
 
     private Item outputItem;
     private ArrayList<Item> itemArray;
+    private int processTime;
+    private int requiredMode;
 
     /**
-     * An instance of an arc furnace recipe
+     * An instance of an advanced crafter recipe
      * @param itemArray  The array of input items {@link net.minecraft.item.Item}
      * @param itemOutput The output item
+     * @param processTime The total amount of ticks required to process
+     * @param requiredMode COOK = 1, EXTRUDE = 2, BEND = 3
      */
-    public RecipeMAFurnace(ArrayList<Item> itemArray, Item itemOutput) {
+    public RecipeAdvancedCrafter(ArrayList<Item> itemArray, Item itemOutput, int processTime, int requiredMode) {
         this.itemArray = itemArray;
         this.outputItem = itemOutput;
+        this.processTime = processTime;
+        this.requiredMode = requiredMode;
     }
 
     /**
@@ -34,4 +40,8 @@ public class RecipeMAFurnace {
     public Item getOutputItem() {
         return outputItem;
     }
+
+    public int getProcessTime() { return processTime; }
+
+    public int getRequiredMode() { return requiredMode; }
 }

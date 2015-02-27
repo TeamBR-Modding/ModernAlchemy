@@ -1,7 +1,8 @@
 package com.dyonovan.modernalchemy.handlers;
 
 import com.dyonovan.modernalchemy.crafting.ArcFurnaceRecipeRegistry;
-import com.dyonovan.modernalchemy.crafting.MAFurnaceRecipeRegistry;
+import com.dyonovan.modernalchemy.crafting.AdvancedCrafterRecipeRegistry;
+import com.dyonovan.modernalchemy.tileentity.machines.TileAdvancedCrafter;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -85,6 +86,7 @@ public class CraftingHandler {
         ArcFurnaceRecipeRegistry.instance.addRecipe(ItemHandler.itemSlag,  FluidContainerRegistry.BUCKET_VOLUME / 4);
 
         //Advanced Furnace Recipes
-        MAFurnaceRecipeRegistry.instance.addRecipe(new ArrayList<Item>(Arrays.asList(Items.coal, Items.iron_ingot)), ItemHandler.itemSteelIngot);
+        AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<Item>(Arrays.asList(Items.coal, Items.iron_ingot)),
+                ItemHandler.itemSteelIngot, 1000, TileAdvancedCrafter.BEND);
     }
 }

@@ -8,17 +8,17 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class MAFurnaceRecipeRegistry {
+public class AdvancedCrafterRecipeRegistry {
 
     /**
      * The instance of the recipies
      */
-    public static MAFurnaceRecipeRegistry instance = new MAFurnaceRecipeRegistry();
+    public static AdvancedCrafterRecipeRegistry instance = new AdvancedCrafterRecipeRegistry();
 
     /**
      * The stored recipes
      */
-    public List<RecipeMAFurnace> recipes = new ArrayList<RecipeMAFurnace>();
+    public List<RecipeAdvancedCrafter> recipes = new ArrayList<RecipeAdvancedCrafter>();
 
     /**
      * Adds a recipe to the registry if it doesn't already have a value
@@ -26,7 +26,7 @@ public class MAFurnaceRecipeRegistry {
      * @param itemArray  Input item array
      * @param output the Resulting Item
      */
-    public void addRecipe(ArrayList<Item> itemArray, Item output) {
+    public void addRecipe(ArrayList<Item> itemArray, Item output, int processTime, int requiredMode) {
         Collections.sort(itemArray, new Comparator<Item>() {
             @Override
             public int compare(Item o1, Item o2) {
@@ -34,8 +34,8 @@ public class MAFurnaceRecipeRegistry {
             }
         });
 
-        if (!recipes.contains(new RecipeMAFurnace(itemArray, output)))
-            recipes.add(new RecipeMAFurnace(itemArray, output));
+        if (!recipes.contains(new RecipeAdvancedCrafter(itemArray, output, processTime, requiredMode)))
+            recipes.add(new RecipeAdvancedCrafter(itemArray, output, processTime, requiredMode));
         else
             LogHelper.warning("Someone tried to add a recipe for " + output.getUnlocalizedName() + " when it already exists. Aborting.");
     }
@@ -46,7 +46,7 @@ public class MAFurnaceRecipeRegistry {
      * @return True if it is
      */
     public boolean checkInput(Item input) {
-        for(RecipeMAFurnace recipe : recipes) {
+        for(RecipeAdvancedCrafter recipe : recipes) {
             if (recipe.getInput().contains(input)) return true;
         }
         return false;

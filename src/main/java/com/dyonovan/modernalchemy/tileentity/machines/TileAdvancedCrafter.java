@@ -2,8 +2,8 @@ package com.dyonovan.modernalchemy.tileentity.machines;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
-import com.dyonovan.modernalchemy.crafting.MAFurnaceRecipeRegistry;
-import com.dyonovan.modernalchemy.crafting.RecipeMAFurnace;
+import com.dyonovan.modernalchemy.crafting.AdvancedCrafterRecipeRegistry;
+import com.dyonovan.modernalchemy.crafting.RecipeAdvancedCrafter;
 import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.BaseTile;
@@ -29,12 +29,16 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
     public static final int INPUT_SLOT_3 = 2;
     public static final int INPUT_SLOT_4 = 3;
     public static final int OUTPUT_SLOT = 4;
+    public static final int COOK = 1;
+    public static final int EXTRUDE = 2;
+    public static final int BEND = 3;
 
     private EnergyStorage energyRF;
     public InventoryTile inventory;
     private int currentProcessTime;
     private boolean isActive;
     private Item outputItem;
+    public int currentMode;
 
 
     public TileAdvancedCrafter() {
@@ -43,6 +47,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
         inventory = new InventoryTile(5);
         this.isActive = false;
         this.currentProcessTime = 0;
+        currentMode = COOK;
     }
 
     /*******************************************************************************************************************
@@ -67,7 +72,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
             }
         });
 
-        for (RecipeMAFurnace recipe : MAFurnaceRecipeRegistry.instance.recipes) {
+        for (RecipeAdvancedCrafter recipe : AdvancedCrafterRecipeRegistry.instance.recipes) {
             if (recipe.getInput().equals(itemInput)) {
                 if (this.inventory.getStackInSlot(4) == null || recipe.getOutputItem() == this.inventory.getStackInSlot(4).getItem()) {
                     this.outputItem = recipe.getOutputItem();
@@ -245,7 +250,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
-        return slot >= 0 && slot <= 3 && MAFurnaceRecipeRegistry.instance.checkInput(itemStack.getItem());
+        return slot >= 0 && slot <= 3 && AdvancedCrafterRecipeRegistry.instance.checkInput(itemStack.getItem());
     }
 
     /*******************************************************************************************************************
@@ -271,6 +276,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
         inventory.readFromNBT(tag, this);
         currentProcessTime = tag.getInteger("TimeProcessed");
         tag.setBoolean("isActive", isActive);
+        tag.setInteger("CurrentMode", currentMode);
     }
 
     @Override
@@ -280,6 +286,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
         inventory.writeToNBT(tag);
         tag.setInteger("TimeProcessed", currentProcessTime);
         isActive = tag.getBoolean("isActive");
+        currentMode = tag.getInteger("CurrentMode");
     }
 
     /*******************************************************************************************************************
