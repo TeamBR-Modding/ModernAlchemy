@@ -3,6 +3,7 @@ package com.dyonovan.modernalchemy.blocks.arcfurnace.dummies;
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.BlockBase;
 import com.dyonovan.modernalchemy.lib.Constants;
+import com.dyonovan.modernalchemy.manual.component.ComponentBase;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.BaseCore;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.dummies.TileDummy;
 import cpw.mods.fml.relauncher.Side;
@@ -14,6 +15,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class BlockDummy extends BlockBase {
 
@@ -29,6 +32,11 @@ public class BlockDummy extends BlockBase {
     @Override
     public TileEntity createNewTileEntity(World world, int par2) {
         return new TileDummy();
+    }
+
+    @Override
+    public List<ComponentBase> getManualComponents() {
+        return null;
     }
 
     @Override

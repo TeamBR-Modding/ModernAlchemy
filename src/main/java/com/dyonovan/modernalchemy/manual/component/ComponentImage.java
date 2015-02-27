@@ -44,5 +44,6 @@ public class ComponentImage extends ComponentBase {
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         RenderHelper.enableStandardItemLighting();
         GL11.glPopMatrix();
+        super.drawComponent(x, y, mouseX, mouseY);
     }
 }

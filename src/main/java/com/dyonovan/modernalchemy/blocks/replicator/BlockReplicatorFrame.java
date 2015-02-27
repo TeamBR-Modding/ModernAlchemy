@@ -3,6 +3,7 @@ package com.dyonovan.modernalchemy.blocks.replicator;
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.BlockBase;
 import com.dyonovan.modernalchemy.lib.Constants;
+import com.dyonovan.modernalchemy.manual.component.ComponentBase;
 import com.dyonovan.modernalchemy.tileentity.replicator.TileReplicatorFrame;
 import com.dyonovan.modernalchemy.util.Location;
 import com.dyonovan.modernalchemy.util.WorldUtils;
@@ -228,7 +229,12 @@ public class BlockReplicatorFrame extends BlockBase {
         }
     }
 
-static class RaytraceResult {
+    @Override
+    public List<ComponentBase> getManualComponents() {
+        return null;
+    }
+
+    static class RaytraceResult {
     public final MovingObjectPosition movingObjectPosition;
     public final AxisAlignedBB boundingBox;
     public final ForgeDirection sideHit;

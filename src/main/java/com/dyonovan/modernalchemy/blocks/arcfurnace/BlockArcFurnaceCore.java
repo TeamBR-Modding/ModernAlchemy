@@ -3,6 +3,7 @@ package com.dyonovan.modernalchemy.blocks.arcfurnace;
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.BlockBase;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
+import com.dyonovan.modernalchemy.manual.component.ComponentBase;
 import com.dyonovan.modernalchemy.util.WorldUtils;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.TileArcFurnaceCore;
@@ -15,6 +16,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class BlockArcFurnaceCore extends BlockBase {
     @SideOnly(Side.CLIENT)
@@ -41,6 +44,11 @@ public class BlockArcFurnaceCore extends BlockBase {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int i, int j) {
         return i != 1 || i != 0 ? front : blockIcon;
+    }
+
+    @Override
+    public List<ComponentBase> getManualComponents() {
+        return null;
     }
 
     @Override

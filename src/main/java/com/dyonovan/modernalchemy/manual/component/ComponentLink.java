@@ -1,29 +1,33 @@
 package com.dyonovan.modernalchemy.manual.component;
 
+import com.dyonovan.modernalchemy.helpers.GuiHelper;
+import com.dyonovan.modernalchemy.manual.page.ManualPages;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 
 import java.awt.*;
 
-public class ComponentHeader extends ComponentBase {
+public class ComponentLink extends ComponentBase {
     protected String title;
+    protected String destination;
 
-    public ComponentHeader(String label) {
+    public ComponentLink(String label, String dest, ALIGNMENT alignment) {
+        setAlignment(alignment);
         title = label;
-    }
-
-    public void setTitle(String string) {
-        title = string;
-        title.trim();
-    }
-
-    public String getTitle() {
-        return title;
+        destination = dest;
+        addToTip(GuiHelper.GuiColor.YELLOW + "Click To Open Details");
     }
 
     @Override
     public int getSpace() {
-        return 14;
+        return 10;
+    }
+
+    @Override
+    public void onMouseLeftClick() {
+        if(ManualPages.instance.getPage(destination) != null)
+            ManualPages.instance.openPage(ManualPages.instance.getPage(destination));
+        super.onMouseLeftClick();
     }
 
     @Override
@@ -43,8 +47,7 @@ public class ComponentHeader extends ComponentBase {
                 break;
         }
         int drawY = y;
-        fontRenderer.drawSplitString(title, drawX, drawY, 120, 4210752);
-        drawRectangle(x + 15, drawY + 10, x + 120, drawY + 11, new Color(255, 255, 255));
+        fontRenderer.drawSplitString(GuiHelper.GuiColor.BLUE + title, drawX, drawY, 120, 4210752);
         super.drawComponent(x, y, mouseX, mouseY);
     }
 }

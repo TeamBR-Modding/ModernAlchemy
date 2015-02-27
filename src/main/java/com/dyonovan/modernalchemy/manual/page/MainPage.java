@@ -1,5 +1,6 @@
 package com.dyonovan.modernalchemy.manual.page;
 
+import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.manual.component.*;
 import net.minecraft.util.ResourceLocation;
@@ -16,5 +17,8 @@ public class MainPage extends BasePage {
         addComponent(new ComponentSpace(15));
         addComponent(new ComponentHeader("Mod Info"));
         addComponent(new ComponentTextBox("Create items with lighting and radioactive material. A mid to late game mod focusing on replicating items in a fun, yet challenging way. With empasis on realism this mod will make you think not just craft."));
+        addComponent(new ComponentSpace(10));
+        addComponent(new ComponentHeader("Blocks"));
+        addComponent(new ComponentLink("Tesla Coil", BlockHandler.blockCoil.getUnlocalizedName(), IComponent.ALIGNMENT.LEFT));
     }
 }

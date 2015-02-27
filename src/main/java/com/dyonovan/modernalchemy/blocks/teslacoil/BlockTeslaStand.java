@@ -3,6 +3,8 @@ package com.dyonovan.modernalchemy.blocks.teslacoil;
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.BlockBase;
 import com.dyonovan.modernalchemy.lib.Constants;
+import com.dyonovan.modernalchemy.manual.component.ComponentBase;
+import com.dyonovan.modernalchemy.manual.component.ComponentTextBox;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaStand;
 import com.dyonovan.modernalchemy.util.Location;
 import cpw.mods.fml.relauncher.Side;
@@ -14,6 +16,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BlockTeslaStand extends BlockBase {
 
@@ -58,6 +63,11 @@ public class BlockTeslaStand extends BlockBase {
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconregister) {
         this.blockIcon = iconregister.registerIcon("minecraft:iron_block");
+    }
+
+    @Override
+    public List<ComponentBase> getManualComponents() {
+        return null;
     }
 
     @Override
