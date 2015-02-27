@@ -9,6 +9,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.client.C17PacketCustomPayload;
@@ -26,7 +27,12 @@ public class ManualPages {
 
     public void init() {
         pages.put("Main Page", new MainPage());
-        pages.put(BlockHandler.blockCoil.getUnlocalizedName(), new BlockPage(BlockHandler.blockCoil.getUnlocalizedName(), (BlockBase) BlockHandler.blockCoil));
+        for(Block block : BlockHandler.blockRegistry) {
+            if(block instanceof BlockBase) {
+                if(((BlockBase) block).getManualComponents() != null)
+                    pages.put(block.getUnlocalizedName(), new BlockPage(block.getUnlocalizedName(), (BlockBase) block));
+            }
+        }
     }
 
     public void addPage(BasePage page) {
