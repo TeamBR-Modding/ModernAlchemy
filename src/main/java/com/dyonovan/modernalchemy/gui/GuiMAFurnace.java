@@ -73,5 +73,4 @@ public class GuiMAFurnace extends BaseGui {
             renderToolTip(mouseX, mouseY, toolTip);
         }
     }
-
 }

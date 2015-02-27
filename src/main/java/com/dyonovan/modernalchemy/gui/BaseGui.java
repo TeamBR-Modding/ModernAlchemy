@@ -62,6 +62,7 @@ public abstract class BaseGui extends GuiContainer {
                 ModernAlchemy.nei != null) {
             ModernAlchemy.nei.onArrowClicked(parent);
         }
+        super.mouseClicked(mouseX, mouseY, button);
     }
     public void renderToolTip(int x, int y, List<String> strings)
     {

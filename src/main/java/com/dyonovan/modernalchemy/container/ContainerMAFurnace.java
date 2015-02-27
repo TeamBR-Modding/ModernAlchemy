@@ -20,6 +20,5 @@ public class ContainerMAFurnace extends BaseContainer {
 
         //player inv
         bindPlayerInventory(inventory, 8, 84);
-
     }
 }
