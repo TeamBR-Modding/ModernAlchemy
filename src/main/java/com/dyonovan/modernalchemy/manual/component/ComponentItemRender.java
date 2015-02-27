@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy.manual.component;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
@@ -26,11 +27,11 @@ public class ComponentItemRender extends ComponentBase {
     @Override
     public void drawComponent(int x, int y, int mouseX, int mouseY) {
         GL11.glPushMatrix();
+        RenderHelper.enableGUIStandardItemLighting();
+
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glTranslated(x + (115 / 2) - 5, y + 3, 0);
         GL11.glDisable(GL11.GL_CULL_FACE);
-
-        scale = 30F;
 
         GL11.glRotated(150, 1.0, 0.0, 0.0);
         GL11.glRotated(-90, 0.0, 1.0, 0.0);

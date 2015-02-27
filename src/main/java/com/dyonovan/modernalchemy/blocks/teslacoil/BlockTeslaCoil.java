@@ -4,9 +4,7 @@ import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.BlockBase;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
-import com.dyonovan.modernalchemy.manual.component.ComponentBase;
-import com.dyonovan.modernalchemy.manual.component.ComponentItemRender;
-import com.dyonovan.modernalchemy.manual.component.ComponentTextBox;
+import com.dyonovan.modernalchemy.manual.component.*;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -79,9 +77,11 @@ public class BlockTeslaCoil extends BlockBase {
     @Override
     public List<ComponentBase> getManualComponents() {
         List<ComponentBase> parts = new ArrayList<ComponentBase>();
-        parts.add(new ComponentItemRender(10, true, new ItemStack(this)));
+        parts.add(new ComponentItemRender(30, true, new ItemStack(this)));
         parts.add(new ComponentTextBox("The Tesla coil is the main method of generating power." +
                 "Set this block on top of a Tesla Stand and that on top of a Tesla Base to complete the structure."));
+        parts.add(new ComponentHeader("Crafting"));
+        parts.add(new ComponentCraftingRecipe(new ItemStack(this)));
 
         return parts;
     }
