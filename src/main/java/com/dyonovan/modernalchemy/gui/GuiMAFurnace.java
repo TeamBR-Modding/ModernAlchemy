@@ -69,7 +69,7 @@ public class GuiMAFurnace extends BaseGui {
         if (GuiHelper.isInBounds(mouseX, mouseY, x + 8, y + 26, x + 23, y + 77)) {
             List<String> toolTip = new ArrayList<String>();
             toolTip.add(GuiHelper.GuiColor.YELLOW + "Energy");
-            toolTip.add(tile.getEnergyStored(null) + "/" + tile.getMaxEnergyStored(null) + GuiHelper.GuiColor.ORANGE + "T");
+            toolTip.add(tile.getEnergyStored(null) + "/" + tile.getMaxEnergyStored(null) + GuiHelper.GuiColor.RED + "RF");
             renderToolTip(mouseX, mouseY, toolTip);
         }
     }
