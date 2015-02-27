@@ -64,62 +64,61 @@ public class BlockHandler {
         GameRegistry.registerBlock(blockFluidAir, "blockFluidAir");
 
         //Ore Actinium
-        registerBlock(blockOreActinium, new BlockOreActinium(), "oreActinium", null);
+        registerBlock(blockOreActinium = new BlockOreActinium(), "oreActinium", null);
 
         //BlockElectricBellows
-        registerBlock(blockElectricBellows, new BlockElectricBellows(), "blockElectricBellows", TileElectricBellows.class);
+        registerBlock(blockElectricBellows = new BlockElectricBellows(), "blockElectricBellows", TileElectricBellows.class);
 
         //blockAmalgamator
-        registerBlock(blockAmalgamator, new BlockAmalgamator(), "blockAmalgamator", TileAmalgamator.class);
+        registerBlock(blockAmalgamator = new BlockAmalgamator(), "blockAmalgamator", TileAmalgamator.class);
 
         // Block Pattern Recorder
-        registerBlock(blockPatternRecorder, new BlockPatternRecorder(), "patternRecorder", TilePatternRecorder.class);
+        registerBlock(blockPatternRecorder = new BlockPatternRecorder(), "patternRecorder", TilePatternRecorder.class);
 
         //ArcFurnaceCore
-        registerBlock(blockArcFurnaceCore, new BlockArcFurnaceCore(), "arcFurnaceCore", TileArcFurnaceCore.class);
+        registerBlock(blockArcFurnaceCore = new BlockArcFurnaceCore(), "arcFurnaceCore", TileArcFurnaceCore.class);
 
         //ArcFurnaceDummy
-        registerBlock(blockArcFurnaceDummy, new BlockDummy("arcFurnaceDummy"), "arcFurnaceDummy", TileDummy.class);
+        registerBlock(blockArcFurnaceDummy = new BlockDummy("arcFurnaceDummy"), "arcFurnaceDummy", TileDummy.class);
 
         //ArcFurnaceDummy Energy
-        registerBlock(blockArcFurnaceDummyEnergy, new BlockDummyEnergyReciever("arcFurnaceDummyEnergy"), "arcFurnaceDummyEnergy", TileDummyEnergyReciever.class);
+        registerBlock(blockArcFurnaceDummyEnergy = new BlockDummyEnergyReciever("arcFurnaceDummyEnergy"), "arcFurnaceDummyEnergy", TileDummyEnergyReciever.class);
 
         //ArcFurnaceDummyItemIO
-        registerBlock(blockArcFurnaceDummyItemIO, new BlockItemIODummy("arcFurnaceDummyItemIO"), "arcFurnaceDummyItemIO", TileDummyItemIO.class);
+        registerBlock(blockArcFurnaceDummyItemIO = new BlockItemIODummy("arcFurnaceDummyItemIO"), "arcFurnaceDummyItemIO", TileDummyItemIO.class);
 
         //ArcFurnaceDummyAirValue
-        registerBlock(blockArcFurnaceDummyAirValve, new BlockDummyAirValve("arcFurnaceDummyAirValve"), "arcFurnaceDummyAirValve", TileDummyAirValve.class);
+        registerBlock(blockArcFurnaceDummyAirValve = new BlockDummyAirValve("arcFurnaceDummyAirValve"), "arcFurnaceDummyAirValve", TileDummyAirValve.class);
 
         //ArcFurnaceDummyOutputValue
-        registerBlock(blockArcFurnaceDummyOutputValve, new BlockDummyOutputValve("arcFurnaceDummyOutputValve"), "arcFurnaceDummyOutputValve", TileDummyOutputValve.class);
+        registerBlock(blockArcFurnaceDummyOutputValve = new BlockDummyOutputValve("arcFurnaceDummyOutputValve"), "arcFurnaceDummyOutputValve", TileDummyOutputValve.class);
 
         //Tesla Base
-        registerBlock(blockTeslaBase, new BlockTeslaBase(), "blockTeslaBase", TileTeslaBase.class);
+        registerBlock(blockTeslaBase = new BlockTeslaBase(), "blockTeslaBase", TileTeslaBase.class);
 
         //Tesla Stand
-        registerBlock(blockTeslaStand, new BlockTeslaStand(), "blockTeslaStand", TileTeslaStand.class);
+        registerBlock(blockTeslaStand = new BlockTeslaStand(), "blockTeslaStand", TileTeslaStand.class);
 
         //Tesla Coil
-        registerBlock(blockCoil, new BlockTeslaCoil(), "blockCoil", TileTeslaCoil.class);
+        registerBlock(blockCoil = new BlockTeslaCoil(), "blockCoil", TileTeslaCoil.class);
 
         //BlockFrameEnergy
-        registerBlock(blockReplicatorCPU, new BlockReplicatorCPU(), "blockReplicatorCPU", TileReplicatorCPU.class);
+        registerBlock(blockReplicatorCPU = new BlockReplicatorCPU(), "blockReplicatorCPU", TileReplicatorCPU.class);
 
         //BlockFrame
-        registerBlock(blockReplicatorFrame, new BlockReplicatorFrame(), "blockReplicatorFrame", TileReplicatorFrame.class);
+        registerBlock(blockReplicatorFrame = new BlockReplicatorFrame(), "blockReplicatorFrame", TileReplicatorFrame.class);
 
         //BlockCenterStand
-        registerBlock(blockReplicatorStand, new BlockReplicatorStand(), "blockReplicatorStand", TileReplicatorStand.class);
+        registerBlock(blockReplicatorStand = new BlockReplicatorStand(), "blockReplicatorStand", TileReplicatorStand.class);
 
         //BlockFurnace
-        registerBlock(blockAdvancedFurnace, new BlockAdvancedCrafter(), "blockAdvancedFurnace", TileAdvancedCrafter.class);
+        registerBlock(blockAdvancedFurnace = new BlockAdvancedCrafter(), "blockAdvancedFurnace", TileAdvancedCrafter.class);
     }
 
-    public static void registerBlock(Block block, Block registerBlock, String name, Class<? extends TileEntity> tileEntity) {
-        block = registerBlock;
-        GameRegistry.registerBlock(block, name);
+    public static void registerBlock(Block registerBlock, String name, Class<? extends TileEntity> tileEntity) {
+        GameRegistry.registerBlock(registerBlock, name);
         if(tileEntity != null)
             GameRegistry.registerTileEntity(tileEntity, name);
-        blockRegistry.add(block);
+        blockRegistry.add(registerBlock);
     }
 }
