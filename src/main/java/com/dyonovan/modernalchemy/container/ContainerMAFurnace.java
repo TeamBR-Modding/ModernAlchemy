@@ -13,10 +13,10 @@ public class ContainerMAFurnace extends BaseContainer {
         addSlotToContainer(new Slot(tileMAFurnace, 0, 67, 26));
         addSlotToContainer(new Slot(tileMAFurnace, 1, 85, 26));
         addSlotToContainer(new Slot(tileMAFurnace, 2, 67, 44));
-        addSlotToContainer(new SlotFurnace(inventory.player, tileMAFurnace, 3, 85, 44));
+        addSlotToContainer(new Slot(tileMAFurnace, 3, 85, 44));
 
         // Output
-        addSlotToContainer(new Slot(tileMAFurnace, 4, 143, 34));
+        addSlotToContainer(new SlotFurnace(inventory.player, tileMAFurnace, 4, 143, 34));
 
         //player inv
         bindPlayerInventory(inventory, 8, 84);
