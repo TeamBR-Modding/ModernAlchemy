@@ -64,6 +64,7 @@ public abstract class BaseGui extends GuiContainer {
         }
         super.mouseClicked(mouseX, mouseY, button);
     }
+
     public void renderToolTip(int x, int y, List<String> strings)
     {
         drawHoveringText(strings, x, y, fontRendererObj);
