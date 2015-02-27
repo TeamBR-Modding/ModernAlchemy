@@ -31,8 +31,13 @@ import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaStand;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockOre;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BlockHandler {
 
@@ -42,6 +47,8 @@ public class BlockHandler {
     public static Block blockOreActinium, blockFluidActinium, blockElectricBellows, blockFluidAir, blockReplicatorStand;
     public static Block blockPatternRecorder, blockAmalgamator, blockTeslaBase, blockReplicatorFrame, blockReplicatorCPU;
     public static Block blockAdvancedFurnace;
+
+    public static List<Block> blockRegistry = new ArrayList<Block>();
 
     public static void init() {
         //Actinium Fluid Registration
@@ -57,87 +64,62 @@ public class BlockHandler {
         GameRegistry.registerBlock(blockFluidAir, "blockFluidAir");
 
         //Ore Actinium
-        blockOreActinium = new BlockOreActinium();
-        GameRegistry.registerBlock(blockOreActinium, "oreActinium");
+        registerBlock(blockOreActinium, new BlockOreActinium(), "oreActinium", null);
 
         //BlockElectricBellows
-        blockElectricBellows = new BlockElectricBellows();
-        GameRegistry.registerBlock(blockElectricBellows, "blockElectricBellows");
-        GameRegistry.registerTileEntity(TileElectricBellows.class, "blockElectricBellows");
+        registerBlock(blockElectricBellows, new BlockElectricBellows(), "blockElectricBellows", TileElectricBellows.class);
 
         //blockAmalgamator
-        blockAmalgamator = new BlockAmalgamator();
-        GameRegistry.registerBlock(blockAmalgamator, "blockAmalgamator");
-        GameRegistry.registerTileEntity(TileAmalgamator.class, "blockAmalgamator");
+        registerBlock(blockAmalgamator, new BlockAmalgamator(), "blockAmalgamator", TileAmalgamator.class);
 
         // Block Pattern Recorder
-        blockPatternRecorder = new BlockPatternRecorder();
-        GameRegistry.registerBlock(blockPatternRecorder, "patternRecorder");
-        GameRegistry.registerTileEntity(TilePatternRecorder.class, "patternRecorder");
+        registerBlock(blockPatternRecorder, new BlockPatternRecorder(), "patternRecorder", TilePatternRecorder.class);
 
         //ArcFurnaceCore
-        blockArcFurnaceCore = new BlockArcFurnaceCore();
-        GameRegistry.registerBlock(blockArcFurnaceCore, "arcFurnaceCore");
-        GameRegistry.registerTileEntity(TileArcFurnaceCore.class, "arcFurnaceCore");
+        registerBlock(blockArcFurnaceCore, new BlockArcFurnaceCore(), "arcFurnaceCore", TileArcFurnaceCore.class);
 
         //ArcFurnaceDummy
-        blockArcFurnaceDummy = new BlockDummy("arcFurnaceDummy");
-        GameRegistry.registerBlock(blockArcFurnaceDummy, "arcFurnaceDummy");
-        GameRegistry.registerTileEntity(TileDummy.class, "tileDummy");
+        registerBlock(blockArcFurnaceDummy, new BlockDummy("arcFurnaceDummy"), "arcFurnaceDummy", TileDummy.class);
 
         //ArcFurnaceDummy Energy
-        blockArcFurnaceDummyEnergy = new BlockDummyEnergyReciever("arcFurnaceDummyEnergy");
-        GameRegistry.registerBlock(blockArcFurnaceDummyEnergy, "arcFurnaceDummyEnergy");
-        GameRegistry.registerTileEntity(TileDummyEnergyReciever.class, "tileDummyEnergy");
+        registerBlock(blockArcFurnaceDummyEnergy, new BlockDummyEnergyReciever("arcFurnaceDummyEnergy"), "arcFurnaceDummyEnergy", TileDummyEnergyReciever.class);
 
         //ArcFurnaceDummyItemIO
-        blockArcFurnaceDummyItemIO = new BlockItemIODummy("arcFurnaceDummyItemIO");
-        GameRegistry.registerBlock(blockArcFurnaceDummyItemIO, "arcFurnaceDummyItemIO");
-        GameRegistry.registerTileEntity(TileDummyItemIO.class, "tileDummyItemIO");
+        registerBlock(blockArcFurnaceDummyItemIO, new BlockItemIODummy("arcFurnaceDummyItemIO"), "arcFurnaceDummyItemIO", TileDummyItemIO.class);
 
         //ArcFurnaceDummyAirValue
-        blockArcFurnaceDummyAirValve = new BlockDummyAirValve("arcFurnaceDummyAirValve");
-        GameRegistry.registerBlock(blockArcFurnaceDummyAirValve, "arcFurnaceDummyAirValve");
-        GameRegistry.registerTileEntity(TileDummyAirValve.class, "tileDummyAirValve");
+        registerBlock(blockArcFurnaceDummyAirValve, new BlockDummyAirValve("arcFurnaceDummyAirValve"), "arcFurnaceDummyAirValve", TileDummyAirValve.class);
 
         //ArcFurnaceDummyOutputValue
-        blockArcFurnaceDummyOutputValve = new BlockDummyOutputValve("arcFurnaceDummyOutputValve");
-        GameRegistry.registerBlock(blockArcFurnaceDummyOutputValve, "arcFurnaceDummyOutputValve");
-        GameRegistry.registerTileEntity(TileDummyOutputValve.class, "tileDummyOutputValve");
+        registerBlock(blockArcFurnaceDummyOutputValve, new BlockDummyOutputValve("arcFurnaceDummyOutputValve"), "arcFurnaceDummyOutputValve", TileDummyOutputValve.class);
 
         //Tesla Base
-        blockTeslaBase = new BlockTeslaBase();
-        GameRegistry.registerBlock(blockTeslaBase, "blockTeslaBase");
-        GameRegistry.registerTileEntity(TileTeslaBase.class, "blockTeslaBase");
+        registerBlock(blockTeslaBase, new BlockTeslaBase(), "blockTeslaBase", TileTeslaBase.class);
 
         //Tesla Stand
-        blockTeslaStand = new BlockTeslaStand();
-        GameRegistry.registerBlock(blockTeslaStand, "blockTeslaStand");
-        GameRegistry.registerTileEntity(TileTeslaStand.class, "blockTeslaStand");
+        registerBlock(blockTeslaStand, new BlockTeslaStand(), "blockTeslaStand", TileTeslaStand.class);
 
         //Tesla Coil
-        blockCoil = new BlockTeslaCoil();
-        GameRegistry.registerBlock(blockCoil, "blockCoil");
-        GameRegistry.registerTileEntity(TileTeslaCoil.class, "blockCoil");
+        registerBlock(blockCoil, new BlockTeslaCoil(), "blockCoil", TileTeslaCoil.class);
 
         //BlockFrameEnergy
-        blockReplicatorCPU = new BlockReplicatorCPU();
-        GameRegistry.registerBlock(blockReplicatorCPU, "blockReplicatorCPU");
-        GameRegistry.registerTileEntity(TileReplicatorCPU.class, "blockReplicatorCPU");
+        registerBlock(blockReplicatorCPU, new BlockReplicatorCPU(), "blockReplicatorCPU", TileReplicatorCPU.class);
 
         //BlockFrame
-        blockReplicatorFrame = new BlockReplicatorFrame();
-        GameRegistry.registerBlock(blockReplicatorFrame, "blockReplicatorFrame");
-        GameRegistry.registerTileEntity(TileReplicatorFrame.class, "blockReplicatorFrame");
+        registerBlock(blockReplicatorFrame, new BlockReplicatorFrame(), "blockReplicatorFrame", TileReplicatorFrame.class);
 
         //BlockCenterStand
-        blockReplicatorStand = new BlockReplicatorStand();
-        GameRegistry.registerBlock(blockReplicatorStand, "blockReplicatorStand");
-        GameRegistry.registerTileEntity(TileReplicatorStand.class, "blockReplicatorStand");
+        registerBlock(blockReplicatorStand, new BlockReplicatorStand(), "blockReplicatorStand", TileReplicatorStand.class);
 
         //BlockFurnace
-        blockAdvancedFurnace = new BlockAdvancedCrafter();
-        GameRegistry.registerBlock(blockAdvancedFurnace, "blockAdvancedFurnace");
-        GameRegistry.registerTileEntity(TileAdvancedCrafter.class, "blockAdvancedFurnace");
+        registerBlock(blockAdvancedFurnace, new BlockAdvancedCrafter(), "blockAdvancedFurnace", TileAdvancedCrafter.class);
+    }
+
+    public static void registerBlock(Block block, Block registerBlock, String name, Class<? extends TileEntity> tileEntity) {
+        block = registerBlock;
+        GameRegistry.registerBlock(block, name);
+        if(tileEntity != null)
+            GameRegistry.registerTileEntity(tileEntity, name);
+        blockRegistry.add(block);
     }
 }

@@ -87,6 +87,4 @@ public class ItemHandler {
         itemSteelIngot = new ItemCrafting("itemSteelIngot", 64);
         GameRegistry.registerItem(itemSteelIngot, "itemSteelIngot");
     }
-
-
 }
