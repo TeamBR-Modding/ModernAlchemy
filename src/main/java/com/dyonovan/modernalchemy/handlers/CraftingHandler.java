@@ -1,12 +1,17 @@
 package com.dyonovan.modernalchemy.handlers;
 
 import com.dyonovan.modernalchemy.crafting.ArcFurnaceRecipeRegistry;
+import com.dyonovan.modernalchemy.crafting.MAFurnaceRecipeRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CraftingHandler {
 
@@ -78,5 +83,8 @@ public class CraftingHandler {
          //Arc Furnace Recipes
         ArcFurnaceRecipeRegistry.instance.addRecipe(ItemHandler.itemActinium, FluidContainerRegistry.BUCKET_VOLUME);
         ArcFurnaceRecipeRegistry.instance.addRecipe(ItemHandler.itemSlag,  FluidContainerRegistry.BUCKET_VOLUME / 4);
+
+        //Advanced Furnace Recipes
+        MAFurnaceRecipeRegistry.instance.addRecipe(new ArrayList<Item>(Arrays.asList(Items.coal, Items.iron_ingot)), ItemHandler.itemSteelIngot);
     }
 }

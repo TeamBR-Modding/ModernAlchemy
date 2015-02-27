@@ -4,6 +4,8 @@ import com.dyonovan.modernalchemy.helpers.LogHelper;
 import net.minecraft.item.Item;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MAFurnaceRecipeRegistry {
@@ -25,6 +27,13 @@ public class MAFurnaceRecipeRegistry {
      * @param output the Resulting Item
      */
     public void addRecipe(ArrayList<Item> itemArray, Item output) {
+        Collections.sort(itemArray, new Comparator<Item>() {
+            @Override
+            public int compare(Item o1, Item o2) {
+                return o1.getUnlocalizedName().compareTo(o2.getUnlocalizedName());
+            }
+        });
+
         if (!recipes.contains(new RecipeMAFurnace(itemArray, output)))
             recipes.add(new RecipeMAFurnace(itemArray, output));
         else

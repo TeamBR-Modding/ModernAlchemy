@@ -3,21 +3,27 @@ package com.dyonovan.modernalchemy.tileentity.machines;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import com.dyonovan.modernalchemy.crafting.MAFurnaceRecipeRegistry;
+import com.dyonovan.modernalchemy.crafting.RecipeMAFurnace;
 import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.BaseTile;
 import com.dyonovan.modernalchemy.tileentity.InventoryTile;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class TileMAFurnace extends BaseTile implements IEnergyHandler, ISidedInventory {
 
     private static final int PROCESS_TIME = 500;
+    private static final int RF_TICK = 100;
     public static final int INPUT_SLOT_1 = 0;
     public static final int INPUT_SLOT_2 = 1;
     public static final int INPUT_SLOT_3 = 2;
@@ -28,6 +34,7 @@ public class TileMAFurnace extends BaseTile implements IEnergyHandler, ISidedInv
     public InventoryTile inventory;
     private int currentProcessTime;
     private boolean isActive;
+    private Item outputItem;
 
 
     public TileMAFurnace() {
@@ -43,10 +50,63 @@ public class TileMAFurnace extends BaseTile implements IEnergyHandler, ISidedInv
      *******************************************************************************************************************/
 
     private boolean canSmelt() {
+
+        ArrayList<Item> itemInput = new ArrayList<Item>();
+
+        for (int i = 0; i < 3; i++) {
+            if (this.inventory.getStackInSlot(i) != null) {
+                itemInput.add(this.inventory.getStackInSlot(i).getItem());
+            }
+        }
+        if (itemInput.size() <= 0) return false;
+
+        Collections.sort(itemInput, new Comparator<Item>() {
+            @Override
+            public int compare(Item o1, Item o2) {
+                return o1.getUnlocalizedName().compareTo(o2.getUnlocalizedName());
+            }
+        });
+
+        for (RecipeMAFurnace recipe : MAFurnaceRecipeRegistry.instance.recipes) {
+            if (recipe.getInput().equals(itemInput)) {
+                if (this.inventory.getStackInSlot(4) == null || recipe.getOutputItem() == this.inventory.getStackInSlot(4).getItem()) {
+                    this.outputItem = recipe.getOutputItem();
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
     private void doSmelt() {
+        if (currentProcessTime == 0) {
+            currentProcessTime = 1;
+            for (int i = 0; i < 4; i++) {
+                if (this.inventory.getStackInSlot(i) != null)
+                    this.decrStackSize(i, 1);
+            }
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        }
+        if (currentProcessTime > 0 && currentProcessTime < PROCESS_TIME) {
+
+            int actualRF = this.energyRF.extractEnergy(RF_TICK, false);
+            if (actualRF != RF_TICK) {
+                currentProcessTime = 0;
+                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                return;
+            }
+            currentProcessTime += 1;
+            this.energyRF.extractEnergy(RF_TICK, true);
+        }
+        if (currentProcessTime >= PROCESS_TIME) {
+            currentProcessTime = 0;
+            if (this.inventory.getStackInSlot(4) == null) {
+                this.setInventorySlotContents(4, new ItemStack(outputItem));
+            } else {
+                this.inventory.getStackInSlot(4).stackSize++;
+            }
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        }
     }
 
     public int getProgressScaled(int scale) { return this.currentProcessTime * scale / PROCESS_TIME; }
@@ -86,7 +146,7 @@ public class TileMAFurnace extends BaseTile implements IEnergyHandler, ISidedInv
 
     @Override //TODO verify sides
     public int[] getAccessibleSlotsFromSide(int side) {
-        switch(side) {
+        /*switch(side) {
             case 1:
                 return new int[] {OUTPUT_SLOT};
             case 2:
@@ -99,17 +159,18 @@ public class TileMAFurnace extends BaseTile implements IEnergyHandler, ISidedInv
                 return new int[] {INPUT_SLOT_4};
             default:
                 return new int[0];
-        }
+        }*/
+        return new int[] {0, 1, 2, 3, 4};
     }
 
     @Override
     public boolean canInsertItem(int slot, ItemStack itemstack, int side) {
-        return isItemValidForSlot(slot, itemstack);
+        return slot == INPUT_SLOT_1 || slot == INPUT_SLOT_2 || slot == INPUT_SLOT_3 || slot == INPUT_SLOT_4;
     }
 
     @Override
     public boolean canExtractItem(int slot, ItemStack itemstack, int side) {
-        return slot == OUTPUT_SLOT && side == 1;
+        return slot == OUTPUT_SLOT;
     }
 
     @Override
@@ -199,8 +260,10 @@ public class TileMAFurnace extends BaseTile implements IEnergyHandler, ISidedInv
     public void updateEntity() {
         super.updateEntity();
         if (worldObj.isRemote) return;
+
         if (canSmelt()) doSmelt();
-        markDirty();
+        worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+
     }
 
     @Override

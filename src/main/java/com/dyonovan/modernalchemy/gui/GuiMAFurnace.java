@@ -5,6 +5,7 @@ import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.TileArcFurnaceCore;
 import com.dyonovan.modernalchemy.tileentity.machines.TileMAFurnace;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -41,6 +42,17 @@ public class GuiMAFurnace extends BaseGui {
         int x = (width - xSize) / 2;
         int y = (height - ySize) / 2;
         drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
+
+        //Render RF energy
+        int heightRF = tile.getEnergyStored(null) * 52 / tile.getMaxEnergyStored(null);
+
+        Tessellator tessRF = Tessellator.instance;
+        tessRF.startDrawingQuads();
+        tessRF.addVertexWithUV(x + 8, y + 78, 0, 0.6875F, 0.35546875F);
+        tessRF.addVertexWithUV(x + 24, y + 78, 0, 0.75F, 0.35546875F);
+        tessRF.addVertexWithUV(x + 24, y + 78 - heightRF, 0, 0.75F, (float) (91 - heightRF) / 256); //256);
+        tessRF.addVertexWithUV(x + 8, y + 78 - heightRF, 0, 0.6875F, (float) (91 - heightRF) / 256);
+        tessRF.draw();
 
         //Draw Arrow
         int arrow = tile.getProgressScaled(24);
