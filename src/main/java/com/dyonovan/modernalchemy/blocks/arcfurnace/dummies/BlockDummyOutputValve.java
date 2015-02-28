@@ -1,12 +1,18 @@
 package com.dyonovan.modernalchemy.blocks.arcfurnace.dummies;
 
 import com.dyonovan.modernalchemy.lib.Constants;
+import com.dyonovan.modernalchemy.manual.component.ComponentBase;
+import com.dyonovan.modernalchemy.manual.component.ComponentItemRender;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.dummies.TileDummyOutputValve;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BlockDummyOutputValve extends BlockDummy {
     public BlockDummyOutputValve(String name) {
@@ -16,6 +22,13 @@ public class BlockDummyOutputValve extends BlockDummy {
     @Override
     public TileEntity createNewTileEntity(World world, int par2) {
         return new TileDummyOutputValve();
+    }
+
+    @Override
+    public List<ComponentBase> getManualComponents() {
+        List<ComponentBase> parts = new ArrayList<ComponentBase>();
+        parts.add(new ComponentItemRender(30, new ItemStack(this)));
+        return parts;
     }
 
     @SideOnly(Side.CLIENT)

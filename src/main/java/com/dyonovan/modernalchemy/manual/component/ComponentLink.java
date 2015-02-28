@@ -20,7 +20,7 @@ public class ComponentLink extends ComponentBase {
 
     @Override
     public int getSpace() {
-        return 10;
+        return (((Minecraft.getMinecraft().fontRenderer.getStringWidth(title) / 110) + 1) * 11);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class ComponentLink extends ComponentBase {
                 break;
         }
         int drawY = y;
-        fontRenderer.drawSplitString(GuiHelper.GuiColor.BLUE + title, drawX, drawY, 120, 4210752);
+        fontRenderer.drawSplitString(GuiHelper.GuiColor.BLUE + title, drawX, drawY, 110, 4210752);
         super.drawComponent(x, y, mouseX, mouseY);
     }
 }
