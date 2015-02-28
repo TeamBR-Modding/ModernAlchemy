@@ -71,7 +71,7 @@ public class ModernAlchemy {
         ArrayList<String> tools = new ArrayList<String>();
         tools.add("Test");
         ResourceLocation rl = new ResourceLocation(Constants.MODID + ":textures/gui/ma_furnace.png");
-        comp.add(new ManualComponents("",1, 2, 3, 4, 1, "Test", "", new ItemStack(Items.diamond), rl, tools));
+        comp.add(new ManualComponents("HEADER", 1, 2, 3, 4, 1, "Test", "", "minecraft:diamond", rl, tools));
         ArrayList<ManualJson> test = new ArrayList<ManualJson>();
         test.add(new ManualJson("Test1", 1, comp));
 
