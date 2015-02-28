@@ -35,25 +35,20 @@ public class ComponentBase extends GuiScreen implements IComponent {
         height = h;
     }
 
-    @Override
-    public int getSpace() {
-        return 0;
-    }
-
     public void addToTip(String tip) {
         toolTip.add(tip);
     }
 
     @Override
     public void drawComponent(int x, int y, int mouseX, int mouseY) {
-        if(mouseX > x + 15 && mouseX < x + 100 && mouseY > y && mouseY <= y + getSpace() && toolTip.size() > 0) {
+        if(mouseX > x && mouseX < x + width && mouseY > y && mouseY <= y + height && toolTip.size() > 0) {
             if(++delay > 20)
             drawHoveringText(toolTip, mouseX, mouseY, Minecraft.getMinecraft().fontRenderer);
         }
         else
             delay = 0;
 
-        if(mouseX > x + 15 && mouseX < x + 100 && mouseY > y && mouseY <= y + getSpace()) {
+        if(mouseX > x + 15 && mouseX < x + 100 && mouseY > y && mouseY <= y + height) {
             if(Mouse.isButtonDown(0) && inputDelay < 0)
                 onMouseLeftClick();
         }

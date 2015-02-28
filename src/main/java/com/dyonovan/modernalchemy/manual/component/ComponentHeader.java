@@ -22,11 +22,6 @@ public class ComponentHeader extends ComponentBase {
     }
 
     @Override
-    public int getSpace() {
-        return 14;
-    }
-
-    @Override
     public void drawComponent(int x, int y, int mouseX, int mouseY) {
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
         fontRenderer.drawSplitString(title, x + xPos, y + yPos, 120, 4210752);

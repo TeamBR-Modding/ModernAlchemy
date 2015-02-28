@@ -20,7 +20,6 @@ public class GuiManual extends BaseGui implements Comparable<GuiManual> {
     /**
      * The list of components on the pages
      */
-    public List<IComponent> components;
     public List<ComponentSet> pages;
 
     /**
@@ -34,9 +33,9 @@ public class GuiManual extends BaseGui implements Comparable<GuiManual> {
     public GuiManual(String pageId) {
         super(new ContainerPage());
         title = new ComponentHeader("");
-        components = new ArrayList<IComponent>();
         pages = new ArrayList<ComponentSet>();
-        components.add(title);
+        pages.add(new ComponentSet());
+        pages.get(0).add(title);
         this.xSize = 256;
         this.ySize = 170;
         id = pageId;
@@ -67,8 +66,8 @@ public class GuiManual extends BaseGui implements Comparable<GuiManual> {
      * Add a new section to the pages
      * @param component The component to add
      */
-    public void addComponent(IComponent component) {
-        components.add(component);
+    public void addComponent(IComponent component, int page) {
+        pages.get(page).add(component);
     }
 
     /**
@@ -100,7 +99,6 @@ public class GuiManual extends BaseGui implements Comparable<GuiManual> {
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-
     }
 
     @Override

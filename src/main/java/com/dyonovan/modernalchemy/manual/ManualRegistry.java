@@ -49,8 +49,8 @@ public class ManualRegistry {
     public void init() {
         File[] files = getFilesForPages();
         for(File f : files) {
-            if(buildManualFromFile(f.getName()) != null)
-                pages.put(f.getName().split(".")[0], buildManualFromFile(f.getName()));
+            if(buildManualFromFile(f) != null)
+                pages.put(f.getName().split(".json")[0], buildManualFromFile(f));
         }
     }
 
@@ -76,7 +76,14 @@ public class ManualRegistry {
      * @return The top {@link com.dyonovan.modernalchemy.manual.pages.GuiManual} in the stack
      */
     public GuiManual getOpenPage() {
-        return !visitedPages.isEmpty() ? visitedPages.get(visitedPages.size() - 1) : new GuiManual(ManualLib.MAINPAGE);
+        if(visitedPages.isEmpty()) {
+            try {
+                return buildManualFromFile(new File(URLDecoder.decode(ModernAlchemy.class.getResource("/manualPages").getFile(), "UTF-8") + File.separator + ManualLib.MAINPAGE));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        return visitedPages.get(visitedPages.size() - 1);
     }
 
     /**
@@ -118,22 +125,27 @@ public class ManualRegistry {
     @SideOnly(Side.CLIENT)
     public void openManual() {
         visitedPages.clear();
-        if(visitedPages.empty())
-            visitedPages.push(buildManualFromFile(ManualLib.MAINPAGE + ".json"));
+        if(visitedPages.empty()) {
+            try {
+                visitedPages.push(buildManualFromFile(new File(URLDecoder.decode(ModernAlchemy.class.getResource("/manualPages").getFile(), "UTF-8") + File.separator + ManualLib.MAINPAGE)));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
         Minecraft.getMinecraft().thePlayer.openGui(ModernAlchemy.instance, GuiHandler.MANUAL_GUI_ID, Minecraft.getMinecraft().theWorld, (int)Minecraft.getMinecraft().thePlayer.posX, (int)Minecraft.getMinecraft().thePlayer.posY, (int)Minecraft.getMinecraft().thePlayer.posZ);
     }
 
     /**
      * Builds the page from the file provided
-     * @param fileName The name of the file with the context
+     * @param input The file with the context
      * @return A built {@link com.dyonovan.modernalchemy.manual.pages.GuiManual}
      */
-    public GuiManual buildManualFromFile(String fileName) {
-        GuiManual page = new GuiManual(fileName);
+    public GuiManual buildManualFromFile(File input) {
+        GuiManual page = new GuiManual(input.getName().split(".json")[0]);
         try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(ModernAlchemy.class.getResource("/manualPages").getFile() + File.separator + fileName));
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(input.getAbsoluteFile() + ".json"));
         } catch (FileNotFoundException e) {
-            LogHelper.severe("Could not find file: " + fileName + " at " + ModernAlchemy.class.getResource("/manualPages").getFile() + File.separator + fileName);
+            LogHelper.severe("Could not find file: " + input.getName() + " at " + input.getAbsoluteFile() + ".json");
             return null;
         }
         Gson file = new Gson();
@@ -157,7 +169,7 @@ public class ManualRegistry {
         }
         return directory.listFiles();
     }
-
+    
     public void writeManJson(ArrayList<ManualJson> values) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(values);

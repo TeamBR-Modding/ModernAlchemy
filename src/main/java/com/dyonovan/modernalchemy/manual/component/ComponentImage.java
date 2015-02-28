@@ -8,20 +8,12 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 public class ComponentImage extends ComponentBase {
-    protected int xSize;
-    protected int ySize;
     protected ResourceLocation image;
 
     public ComponentImage(int width, int height, ResourceLocation resource) {
-        xSize = width;
-        ySize = height;
         image = resource;
     }
 
-    @Override
-    public int getSpace() {
-        return ySize + 4;
-    }
 
     @Override
     public void drawComponent(int x, int y, int mouseX, int mouseY) {
@@ -36,9 +28,9 @@ public class ComponentImage extends ComponentBase {
         Tessellator tess = Tessellator.instance;
         tess.startDrawingQuads();
         tess.addVertexWithUV(drawX, y, 0, 0.0, 0.0);
-        tess.addVertexWithUV(drawX, y + ySize, 0, 0.0, 1.0);
-        tess.addVertexWithUV(drawX + xSize, y + ySize, 0, 1.0, 1.0);
-        tess.addVertexWithUV(drawX + xSize, y, 0, 1.0, 0.0);
+        tess.addVertexWithUV(drawX, y + height, 0, 0.0, 1.0);
+        tess.addVertexWithUV(drawX + width, y + height, 0, 1.0, 1.0);
+        tess.addVertexWithUV(drawX + width, y, 0, 1.0, 0.0);
         tess.draw();
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_DEPTH_TEST);

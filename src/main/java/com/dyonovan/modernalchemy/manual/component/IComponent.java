@@ -11,12 +11,6 @@ public interface IComponent {
     }
 
     /**
-     * Returns the space this object takes up
-     * @return pixels taken
-     */
-    public int getSpace();
-
-    /**
      * Draw the Component
      * @param x guiLeft
      * @param y guiTop
