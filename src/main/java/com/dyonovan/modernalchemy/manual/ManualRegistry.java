@@ -4,13 +4,17 @@ import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.helpers.LogHelper;
 import com.dyonovan.modernalchemy.manual.pages.GuiManual;
+import com.dyonovan.modernalchemy.util.ManualJson;
+import com.dyonovan.modernalchemy.util.ReplicatorUtils;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 
 import java.io.*;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.Stack;
@@ -155,4 +159,16 @@ public class ManualRegistry {
         return directory.listFiles();
     }
 
+    public void writeManJson(ArrayList<ManualJson> values) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String json = gson.toJson(values);
+
+        try {
+            FileWriter fw = new FileWriter(ReplicatorUtils.fileDirectory + "test.json");
+            fw.write(json);
+            fw.close();
+        } catch (IOException e) {
+
+        }
+    }
 }
