@@ -1,12 +1,26 @@
-{
-  "title" : "Modern Alchemy",
-  "pages" : 2,
-  "components" : [
-    {
-      "type" : "header",
-      "xPos" : 15,
-      "yPos" : 10,
-      "pageNumber" : 1
-    }
-  ]
-}
+[
+  {
+    "title": "Test1",
+    "numPages": 1,
+    "component": [
+      {
+        "xPos": 1,
+        "yPos": 2,
+        "width": 3,
+        "height": 4,
+        "pageNum": 1,
+        "text": "Test",
+        "destination": "",
+        "type": "HEADER",
+        "item": "minecraft:diamond",
+        "resource": {
+          "resourceDomain": "modernalchemy",
+          "resourcePath": "textures/gui/ma_furnace.png"
+        },
+        "tooltips": [
+          "Test"
+        ]
+      }
+    ]
+  }
+]

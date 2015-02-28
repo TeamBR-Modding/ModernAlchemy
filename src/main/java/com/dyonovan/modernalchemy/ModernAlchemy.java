@@ -66,7 +66,7 @@ public class ModernAlchemy {
 
         ReplicatorUtils.buildDirectory(event.getModConfigurationDirectory().getAbsolutePath() + File.separator + Constants.MODID.toLowerCase() + File.separator + "replicatorValues");
 
-        //TESTING
+        /*//TESTING
         ArrayList<ManualComponents> comp = new  ArrayList<ManualComponents>();
         ArrayList<String> tools = new ArrayList<String>();
         tools.add("Test");
@@ -75,7 +75,7 @@ public class ModernAlchemy {
         ArrayList<ManualJson> test = new ArrayList<ManualJson>();
         test.add(new ManualJson("Test1", 1, comp));
 
-        ManualRegistry.instance.writeManJson(test);
+        ManualRegistry.instance.writeManJson(test);*/
     }
 
     @SuppressWarnings("unused")

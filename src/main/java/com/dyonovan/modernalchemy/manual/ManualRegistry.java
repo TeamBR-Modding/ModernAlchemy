@@ -7,6 +7,8 @@ import com.dyonovan.modernalchemy.manual.pages.GuiManual;
 import com.dyonovan.modernalchemy.util.ReplicatorUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
@@ -142,17 +144,16 @@ public class ManualRegistry {
      */
     public GuiManual buildManualFromFile(File input) {
         GuiManual page = new GuiManual(input.getName().split(".json")[0]);
+        ManualJson json;
         try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(input.getAbsoluteFile() + ".json"));
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(input.getAbsoluteFile()));
+            json = readJson(bufferedReader);
         } catch (FileNotFoundException e) {
             LogHelper.severe("Could not find file: " + input.getName() + " at " + input.getAbsoluteFile() + ".json");
             return null;
         }
-        Gson file = new Gson();
 
-        String title = file.fromJson("title", String.class);
-        page.setTitle(title);
-
+        page.setTitle(json.title);
         return page;
     }
 
@@ -169,7 +170,18 @@ public class ManualRegistry {
         }
         return directory.listFiles();
     }
-    
+
+    public  ManualJson readJson(BufferedReader br) {
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(ManualJson.class, new MJDeserializer());
+        Gson gson = gsonBuilder.create();
+
+        ManualJson json = gson.fromJson(br, ManualJson.class);
+
+        return json;
+    }
+
     public void writeManJson(ArrayList<ManualJson> values) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(values);
