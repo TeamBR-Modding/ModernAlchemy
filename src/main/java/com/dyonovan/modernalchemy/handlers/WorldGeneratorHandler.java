@@ -8,9 +8,6 @@ import net.minecraft.world.gen.feature.WorldGenMinable;
 
 import java.util.Random;
 
-/**
- * Created by Tim on 2/4/2015.
- */
 public class WorldGeneratorHandler implements IWorldGenerator {
 
     public WorldGeneratorHandler() {}
@@ -25,6 +22,27 @@ public class WorldGeneratorHandler implements IWorldGenerator {
 
         if(world.provider.dimensionId == 0) // Overworld only
             generateActinium(world, random, chunkX * 16, chunkZ * 16);
+        if (world.provider.dimensionId == 0 && ConfigHandler.genCopper)
+            generateCopper(world, random, chunkX * 16, chunkZ * 16);
+    }
+
+    private void generateCopper(World world, Random random, int i, int j) {
+
+        if (ConfigHandler.copperMinLevel < 0) ConfigHandler.copperMinLevel = 0;
+        if (ConfigHandler.copperMaxLevel < 0) ConfigHandler.copperMaxLevel = 0;
+        if (ConfigHandler.copperMinLevel > ConfigHandler.copperMaxLevel)
+            ConfigHandler.copperMinLevel = ConfigHandler.copperMaxLevel;
+        if (ConfigHandler.copperVeinsPerChunk < 0) ConfigHandler.copperVeinsPerChunk = 0;
+        if (ConfigHandler.copperVeinSize < 0) ConfigHandler.copperVeinSize = 0;
+
+        for (int k = 0; k < ConfigHandler.copperVeinsPerChunk; k++) {
+            int x = i + random.nextInt(16);
+            int y = random.nextInt(ConfigHandler.copperMaxLevel - ConfigHandler.copperMinLevel) + ConfigHandler.copperMinLevel;
+            int z = j + random.nextInt(16);
+
+            (new WorldGenMinable(BlockHandler.blockOreCopper, ConfigHandler.copperVeinSize)).
+                    generate(world, random, x, y, z);
+        }
     }
 
     private void generateActinium(World world, Random random, int i, int j) {

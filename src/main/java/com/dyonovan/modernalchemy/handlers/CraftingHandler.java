@@ -60,7 +60,7 @@ public class CraftingHandler {
 
         //Compressor
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockElectricBellows), "BEB", "CAC", "BDB",
-                'A', BlockHandler.blockArcFurnaceDummy, 'B', Items.iron_ingot, 'C', ItemHandler.itemPumpModule,
+                'A', BlockHandler.blockArcFurnaceDummy, 'B', "ingotSteel", 'C', ItemHandler.itemPumpModule,
                 'D', "circuitAdvanced", 'E', ItemHandler.itemEnergyAntenna));
 
         //ItemEnergyAntenna
@@ -81,12 +81,21 @@ public class CraftingHandler {
         GameRegistry.addRecipe(new ItemStack(ItemHandler.itemFaradayWire), "AB", "BA",
                 'A', Blocks.iron_bars, 'B', ItemHandler.itemSteelIngot);
 
+        //Electric Bellows
+        GameRegistry.addRecipe(new ItemStack(ItemHandler.itemFaradayWire), "AB", "BA",
+                'A', Blocks.iron_bars, 'B', ItemHandler.itemSteelIngot);
+
          //Arc Furnace Recipes
         ArcFurnaceRecipeRegistry.instance.addRecipe(ItemHandler.itemActinium, FluidContainerRegistry.BUCKET_VOLUME);
         ArcFurnaceRecipeRegistry.instance.addRecipe(ItemHandler.itemSlag,  FluidContainerRegistry.BUCKET_VOLUME / 4);
 
-        //Advanced Furnace Recipes
+        //Advanced Crafting Recipes
         AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<Item>(Arrays.asList(Items.coal, Items.iron_ingot)),
                 ItemHandler.itemSteelIngot, 1000, TileAdvancedCrafter.COOK);
+        AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<Item>(Arrays.asList(Item.getItemFromBlock(BlockHandler.blockOreCopper))),
+                ItemHandler.itemCopperIngot, 200, TileAdvancedCrafter.COOK);
+
+        //Furnace Recipes
+        GameRegistry.addSmelting(BlockHandler.blockOreCopper, new ItemStack(ItemHandler.itemCopperIngot), 0.1f);
     }
 }

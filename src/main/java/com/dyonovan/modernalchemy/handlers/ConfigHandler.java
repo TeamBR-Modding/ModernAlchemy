@@ -7,8 +7,9 @@ public class ConfigHandler {
 
     public static String folderLocation;
 
-    public static boolean generateActinium, machineExplodes, machineSounds, poisonDust;
+    public static boolean generateActinium, machineExplodes, machineSounds, poisonDust, genCopper;
     public static int actiniumMaxLevel, actiniumVeinSize, actiniumVeinsPerChunk, actiniumMinLevel;
+    public static int copperMaxLevel, copperVeinSize, copperVeinsPerChunk, copperMinLevel;
     public static int searchRange;
     public static int rfPerTesla, maxCoilGenerate, maxCoilTransfer;
 
@@ -32,6 +33,12 @@ public class ConfigHandler {
         machineExplodes         = config.get(Constants.CONFIG_GENERAL, "Do Machines Explode?", true).getBoolean();
         poisonDust              = config.get(Constants.CONFIG_GENERAL, "Disable Poison from Actinium Dust?", false).getBoolean();
         machineSounds           = config.get(Constants.CONFIG_GENERAL, "Do Machine Sounds?", true).getBoolean();
+
+        genCopper               = config.get(Constants.CONFIG_ORE_GENERATION, "Enable Copper Ore Gen", true).getBoolean();
+        copperVeinSize        = config.get(Constants.CONFIG_ORE_GENERATION, "Actinium Vein Size", 12).getInt();
+        copperVeinsPerChunk   = config.get(Constants.CONFIG_ORE_GENERATION, "Actinium Veins Per Chunk", 6).getInt();
+        copperMinLevel        = config.get(Constants.CONFIG_ORE_GENERATION, "Actinium Min Level", 40).getInt();
+        copperMaxLevel        = config.get(Constants.CONFIG_ORE_GENERATION, "Actinium Max Level", 75).getInt();
 
         config.save();
     }

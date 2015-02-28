@@ -9,6 +9,7 @@ import com.dyonovan.modernalchemy.blocks.machines.BlockElectricBellows;
 import com.dyonovan.modernalchemy.blocks.machines.BlockPatternRecorder;
 import com.dyonovan.modernalchemy.blocks.machines.BlockAmalgamator;
 import com.dyonovan.modernalchemy.blocks.ore.BlockOreActinium;
+import com.dyonovan.modernalchemy.blocks.ore.BlockOreCopper;
 import com.dyonovan.modernalchemy.blocks.replicator.BlockReplicatorStand;
 import com.dyonovan.modernalchemy.blocks.replicator.BlockReplicatorFrame;
 import com.dyonovan.modernalchemy.blocks.replicator.BlockReplicatorCPU;
@@ -32,9 +33,11 @@ import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaStand;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockOre;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +49,7 @@ public class BlockHandler {
     public static Block blockArcFurnaceDummyOutputValve, blockArcFurnaceDummyEnergy, blockArcFurnaceCore, blockTeslaStand, blockCoil;
     public static Block blockOreActinium, blockFluidActinium, blockElectricBellows, blockFluidAir, blockReplicatorStand;
     public static Block blockPatternRecorder, blockAmalgamator, blockTeslaBase, blockReplicatorFrame, blockReplicatorCPU;
-    public static Block blockAdvancedFurnace;
+    public static Block blockAdvancedFurnace, blockOreCopper;
 
     public static List<Block> blockRegistry = new ArrayList<Block>();
 
@@ -65,6 +68,10 @@ public class BlockHandler {
 
         //Ore Actinium
         registerBlock(blockOreActinium = new BlockOreActinium(), "oreActinium", null);
+
+        //Ore Copper
+        registerBlock(blockOreCopper = new BlockOreCopper(), "oreCopper", null);
+        OreDictionary.registerOre("oreCopper", new ItemStack(blockOreCopper));
 
         //BlockElectricBellows
         registerBlock(blockElectricBellows = new BlockElectricBellows(), "blockElectricBellows", TileElectricBellows.class);

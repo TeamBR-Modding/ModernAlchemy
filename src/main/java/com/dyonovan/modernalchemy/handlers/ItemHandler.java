@@ -22,9 +22,24 @@ public class ItemHandler {
     public static Item itemBucketActinium, itemReplicationMedium, itemPumpModule;
     public static Item laserNode, itemSlag, itemWrench, itemActinium;
     public static Item itemCircuit, itemMachineFrame, itemEnergyAntenna;
-    public static Item manual, itemFaradayWire, itemSteelIngot;
+    public static Item manual, itemFaradayWire, itemSteelIngot, itemCopperIngot;
 
     public static void init() {
+
+        //itemSteelIngot
+        itemSteelIngot = new ItemCrafting("itemSteelIngot", 64);
+        GameRegistry.registerItem(itemSteelIngot, "itemSteelIngot");
+        OreDictionary.registerOre("ingotSteel", new ItemStack(itemSteelIngot));
+
+        //itemCopperIngot
+        itemCopperIngot = new ItemCrafting("itemCopperIngot", 64);
+        GameRegistry.registerItem(itemCopperIngot, "itemCopperIngot");
+        OreDictionary.registerOre("ingotCopper", new ItemStack(itemCopperIngot));
+
+        //itemActinium
+        itemActinium = new ItemOreActinium();
+        GameRegistry.registerItem(itemActinium, "itemActinium");
+
         itemPattern = new ItemPattern();
         GameRegistry.registerItem(itemPattern, "pattern");
 
@@ -48,10 +63,6 @@ public class ItemHandler {
         //itemWrench
         itemWrench = new ItemWrench();
         GameRegistry.registerItem(itemWrench, "wrench");
-
-        //itemActinium
-        itemActinium = new ItemOreActinium();
-        GameRegistry.registerItem(itemActinium, "itemActinium");
 
         //Faraday Armor
         GameRegistry.registerItem(faradayHelm = new ItemFaradayArmor("faraday_helm", ARMOR, "faraday", 0), "faradayHelm");
@@ -82,10 +93,5 @@ public class ItemHandler {
         //itemFaradayWire
         itemFaradayWire = new ItemCrafting("itemFaradayWire", 64);
         GameRegistry.registerItem(itemFaradayWire, "itemFaradayWire");
-
-        //itemSteelIngot
-        itemSteelIngot = new ItemCrafting("itemSteelIngot", 64);
-        GameRegistry.registerItem(itemSteelIngot, "itemSteelIngot");
-        OreDictionary.registerOre("ingotSteel", new ItemStack(itemCircuit));
     }
 }
