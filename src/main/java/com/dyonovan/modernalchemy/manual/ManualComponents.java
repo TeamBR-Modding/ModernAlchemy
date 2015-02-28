@@ -1,4 +1,4 @@
-package com.dyonovan.modernalchemy.util;
+package com.dyonovan.modernalchemy.manual;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;

@@ -4,7 +4,6 @@ import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.helpers.LogHelper;
 import com.dyonovan.modernalchemy.manual.pages.GuiManual;
-import com.dyonovan.modernalchemy.util.ManualJson;
 import com.dyonovan.modernalchemy.util.ReplicatorUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

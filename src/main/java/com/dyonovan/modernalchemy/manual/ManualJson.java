@@ -1,4 +1,4 @@
-package com.dyonovan.modernalchemy.util;
+package com.dyonovan.modernalchemy.manual;
 
 import java.util.ArrayList;
 
