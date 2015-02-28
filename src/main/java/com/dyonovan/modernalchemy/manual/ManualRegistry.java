@@ -7,8 +7,6 @@ import com.dyonovan.modernalchemy.manual.pages.GuiManual;
 import com.dyonovan.modernalchemy.util.ReplicatorUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
@@ -177,21 +175,6 @@ public class ManualRegistry {
         gsonBuilder.registerTypeAdapter(ManualJson.class, new MJDeserializer());
         Gson gson = gsonBuilder.create();
 
-        ManualJson json = gson.fromJson(br, ManualJson.class);
-
-        return json;
-    }
-
-    public void writeManJson(ArrayList<ManualJson> values) {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String json = gson.toJson(values);
-
-        try {
-            FileWriter fw = new FileWriter(ReplicatorUtils.fileDirectory + "test.json");
-            fw.write(json);
-            fw.close();
-        } catch (IOException e) {
-
-        }
+        return gson.fromJson(br, ManualJson.class);
     }
 }
