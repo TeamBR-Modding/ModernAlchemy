@@ -26,12 +26,10 @@ public class ComponentCraftingRecipe extends ComponentBase {
     }
 
     @Override
-    public int getSpace() {
-        return 60;
-    }
-
-    @Override
     public void drawComponent(int x, int y, int mouseX, int mouseY) {
+
+        x += xPos;
+        y += yPos;
 
         Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(Constants.MODID + ":textures/gui/manual/arrow.png"));
         int drawX = x + 68;

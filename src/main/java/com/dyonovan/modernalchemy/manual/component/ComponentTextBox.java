@@ -13,11 +13,6 @@ public class ComponentTextBox extends ComponentBase {
     }
 
     @Override
-    public int getSpace() {
-        return ((Minecraft.getMinecraft().fontRenderer.getStringWidth(textField) / 110) * 11);
-    }
-
-    @Override
     public void drawComponent(int x, int y, int mouseX, int mouseY) {
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
         int drawX = x + 15;

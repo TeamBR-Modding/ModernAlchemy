@@ -20,11 +20,6 @@ public class ComponentItemRender extends ComponentBase {
     }
 
     @Override
-    public int getSpace() {
-        return (int) (scale + 20);
-    }
-
-    @Override
     public void drawComponent(int x, int y, int mouseX, int mouseY) {
         GL11.glPushMatrix();
         RenderHelper.enableGUIStandardItemLighting();

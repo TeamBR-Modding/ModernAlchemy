@@ -17,11 +17,6 @@ public class ComponentLink extends ComponentBase {
     }
 
     @Override
-    public int getSpace() {
-        return (((Minecraft.getMinecraft().fontRenderer.getStringWidth(title) / 110) + 1) * 11);
-    }
-
-    @Override
     public void onMouseLeftClick() {
         if(ManualRegistry.instance.getPage(destination) != null) {
             ManualRegistry.instance.visitNewPage(ManualRegistry.instance.getPage(destination));
