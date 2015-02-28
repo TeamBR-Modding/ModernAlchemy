@@ -3,8 +3,8 @@ package com.dyonovan.modernalchemy.handlers;
 import com.dyonovan.modernalchemy.container.*;
 import com.dyonovan.modernalchemy.gui.*;
 import com.dyonovan.modernalchemy.manual.ItemManual;
-import com.dyonovan.modernalchemy.manual.page.ContainerPage;
-import com.dyonovan.modernalchemy.manual.page.ManualPages;
+import com.dyonovan.modernalchemy.manual.pages.ContainerPage;
+import com.dyonovan.modernalchemy.manual.ManualRegistry;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.TileArcFurnaceCore;
 import com.dyonovan.modernalchemy.tileentity.machines.TileAdvancedCrafter;
 import com.dyonovan.modernalchemy.tileentity.machines.TileElectricBellows;
@@ -71,7 +71,7 @@ public class GuiHandler implements IGuiHandler {
             case TESLA_COIL_LINKS_GUI_ID :
                 return new GuiTeslaCoilLinks((TileTeslaCoil) world.getTileEntity(x, y, z));
             case MANUAL_GUI_ID :
-                return ManualPages.instance.getPage(ItemManual.getCurrentPage(Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem()));
+                return ManualRegistry.instance.getOpenPage();
             case ADVANCED_FURNACE_GUI_ID:
                 return new GuiAdvancedCrafter(player.inventory, (TileAdvancedCrafter) world.getTileEntity(x, y, z));
         }

@@ -1,11 +1,9 @@
 package com.dyonovan.modernalchemy.manual.component;
 
 import com.dyonovan.modernalchemy.helpers.GuiHelper;
-import com.dyonovan.modernalchemy.manual.page.ManualPages;
+import com.dyonovan.modernalchemy.manual.ManualRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-
-import java.awt.*;
 
 public class ComponentLink extends ComponentBase {
     protected String title;
@@ -25,8 +23,9 @@ public class ComponentLink extends ComponentBase {
 
     @Override
     public void onMouseLeftClick() {
-        if(ManualPages.instance.getPage(destination) != null)
-            ManualPages.instance.openPage(ManualPages.instance.getPage(destination));
+        if(ManualRegistry.instance.getPage(destination) != null) {
+            ManualRegistry.instance.visitNewPage(ManualRegistry.instance.getPage(destination));
+        }
         super.onMouseLeftClick();
     }
 

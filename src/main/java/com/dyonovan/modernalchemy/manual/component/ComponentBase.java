@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy.manual.component;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -13,15 +14,25 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public class ComponentBase implements IComponent {
+public class ComponentBase extends GuiScreen implements IComponent {
     protected ALIGNMENT alignment = ALIGNMENT.CENTER;
     protected List<String> toolTip = new ArrayList<String>();
-    private float zLevel = 0;
     private int delay = 0;
     private int inputDelay = 0;
+    public int xPos = 0;
+    public int yPos = 0;
+    public int width = 0;
+    public int height = 0;
 
     public void setAlignment(ALIGNMENT al) {
         alignment = al;
+    }
+
+    public void setPositionAndSize(int x, int y, int w, int h) {
+        xPos = x;
+        yPos = y;
+        width = w;
+        height = h;
     }
 
     @Override
@@ -91,11 +102,12 @@ public class ComponentBase implements IComponent {
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
         tessellator.setColorRGBA_F(f1, f2, f3, f);
-        tessellator.addVertex((double)x2, (double)y1, (double)this.zLevel);
-        tessellator.addVertex((double)x1, (double)y1, (double)this.zLevel);
+        float zLevel = 0;
+        tessellator.addVertex((double)x2, (double)y1, (double) zLevel);
+        tessellator.addVertex((double)x1, (double)y1, (double) zLevel);
         tessellator.setColorRGBA_F(f5, f6, f7, f4);
-        tessellator.addVertex((double)x1, (double)y2, (double)this.zLevel);
-        tessellator.addVertex((double)x2, (double)y2, (double)this.zLevel);
+        tessellator.addVertex((double)x1, (double)y2, (double) zLevel);
+        tessellator.addVertex((double)x2, (double)y2, (double) zLevel);
         tessellator.draw();
         GL11.glShadeModel(GL11.GL_FLAT);
         GL11.glDisable(GL11.GL_BLEND);
@@ -103,7 +115,7 @@ public class ComponentBase implements IComponent {
         GL11.glEnable(GL11.GL_TEXTURE_2D);
     }
 
-    protected void drawHoveringText(java.util.List toolTip, int x, int y, FontRenderer font)
+    /*protected void drawHoveringText(java.util.List toolTip, int x, int y, FontRenderer font)
     {
         if (!toolTip.isEmpty())
         {
@@ -167,5 +179,5 @@ public class ComponentBase implements IComponent {
             RenderHelper.enableStandardItemLighting();
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         }
-    }
+    }*/
 }

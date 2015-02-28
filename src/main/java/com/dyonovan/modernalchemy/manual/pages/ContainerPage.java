@@ -1,4 +1,4 @@
-package com.dyonovan.modernalchemy.manual.page;
+package com.dyonovan.modernalchemy.manual.pages;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;

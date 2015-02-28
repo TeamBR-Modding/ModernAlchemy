@@ -2,7 +2,7 @@ package com.dyonovan.modernalchemy.manual.component;
 
 public interface IComponent {
     /**
-     * Enum for alignment on page
+     * Enum for alignment on pages
      */
     enum ALIGNMENT {
         LEFT,

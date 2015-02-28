@@ -1,14 +1,11 @@
-package com.dyonovan.modernalchemy.manual.page;
+package com.dyonovan.modernalchemy.manual.pages;
 
 import com.dyonovan.modernalchemy.gui.BaseGui;
-import com.dyonovan.modernalchemy.handlers.PacketHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
-import com.dyonovan.modernalchemy.manual.ItemManual;
+import com.dyonovan.modernalchemy.manual.ManualRegistry;
 import com.dyonovan.modernalchemy.manual.component.ComponentHeader;
 import com.dyonovan.modernalchemy.manual.component.ComponentSet;
 import com.dyonovan.modernalchemy.manual.component.IComponent;
-import com.dyonovan.modernalchemy.network.UpdateManualPacket;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.GuiScreenEvent;
@@ -18,23 +15,23 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BasePage extends BaseGui {
+public class GuiManual extends BaseGui implements Comparable<GuiManual> {
 
     /**
-     * The list of components on the page
+     * The list of components on the pages
      */
     public List<IComponent> components;
     public List<ComponentSet> pages;
 
     /**
-     * The Title of the page
+     * The Title of the pages
      */
     public ComponentHeader title = null;
     protected String id;
 
     public int currentIndex = 0;
 
-    public BasePage(String pageId) {
+    public GuiManual(String pageId) {
         super(new ContainerPage());
         title = new ComponentHeader("");
         components = new ArrayList<IComponent>();
@@ -55,10 +52,7 @@ public class BasePage extends BaseGui {
         this.buttonList.add(new GuiButton(0, -1000, -1000, 50, 20, "Next"));
         this.buttonList.add(new GuiButton(1, -1000, -1000, 50, 20, "Previous"));
         this.buttonList.add(new GuiButton(2, -1000, -1000, 50, 20, "Back"));
-        if(!(this instanceof MainPage))
-            this.buttonList.set(2, new GuiButton(2, guiLeft, guiTop, 30, 20, "Back"));
-        if(pages.size() <= 0)
-            buildPages(guiLeft, guiTop);
+
         if(currentIndex == 0 && pages.size() > 1)
             this.buttonList.set(0, new GuiButton(0, guiLeft + 200, guiTop + 150, 50, 20, "Next"));
         else if(currentIndex > 0 && pages.size() > currentIndex + 1) {
@@ -69,32 +63,8 @@ public class BasePage extends BaseGui {
             this.buttonList.set(1, new GuiButton(1, guiLeft + 6, guiTop + 150, 50, 20, "Previous"));
     }
 
-    public void buildPages(int x, int y) {
-        updateScale();
-        int xMod = guiLeft;
-        int yMod = guiTop + 15;
-        int pageMod = 0;
-        pages.add(new ComponentSet());
-        for(int i = 0; i < components.size(); i++) {
-            if(components.get(i).getSpace() + yMod <= guiTop + 150) {
-                pages.get(pageMod).add(components.get(i));
-            }
-            else if(xMod == guiLeft) {
-                xMod = guiLeft + 120;
-                yMod = guiTop + 15;
-                pages.get(pageMod).add(components.get(i));
-            }
-            else {
-                pages.add(new ComponentSet());
-                xMod = guiLeft;
-                yMod = guiTop + 15;
-                pages.get(++pageMod).add(components.get(i));
-            }
-            yMod += components.get(i).getSpace();
-        }
-    }
     /**
-     * Add a new section to the page
+     * Add a new section to the pages
      * @param component The component to add
      */
     public void addComponent(IComponent component) {
@@ -102,7 +72,7 @@ public class BasePage extends BaseGui {
     }
 
     /**
-     * Sets the title for this page
+     * Sets the title for this pages
      * @param string Title string
      */
     public void setTitle(String string) {
@@ -110,7 +80,7 @@ public class BasePage extends BaseGui {
     }
 
     /**
-     * Retrieve the title for the page
+     * Retrieve the title for the pages
      * @return Page Title
      */
     public String getTitle() {
@@ -121,15 +91,8 @@ public class BasePage extends BaseGui {
     public void drawScreen(int mouseX, int mouseY, float par3) {
         super.drawScreen(mouseX, mouseY, par3);
         updateScale();
-        int xMod = guiLeft;
-        int yMod = guiTop + 15;
         for(int i = 0; i < pages.get(currentIndex).size(); i++) {
-            if(pages.get(currentIndex).get(i).getSpace() + yMod >= guiTop + 150) {
-                xMod = guiLeft + 120;
-                yMod = guiTop + 15;
-            }
-            pages.get(currentIndex).get(i).drawComponent(xMod, yMod, mouseX, mouseY);
-            yMod += pages.get(currentIndex).get(i).getSpace();
+            pages.get(currentIndex).get(i).drawComponent(guiLeft, guiTop, mouseX, mouseY);
         }
     }
 
@@ -176,9 +139,8 @@ public class BasePage extends BaseGui {
                 this.buttonList.set(0, new GuiButton(0, guiLeft + 200, guiTop + 150, 50, 20, "Next"));
         }
         else if(button.id == 2) {
-            ManualPages.instance.openPage(ManualPages.instance.getPage(ItemManual.getLastPage(Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem())));
-            ItemManual.deleteLastPage(Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem());
-            PacketHandler.net.sendToServer(new UpdateManualPacket.UpdateManualMessage(Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().getTagCompound()));
+            ManualRegistry.instance.deleteLastPage();
+            ManualRegistry.instance.openManual();
             this.buttonList.set(2, new GuiButton(2, -1000, -1000, ""));
         }
     }
@@ -192,5 +154,10 @@ public class BasePage extends BaseGui {
         int x = (width - xSize) / 2;
         int y = (height - ySize) / 2;
         drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
+    }
+
+    @Override
+    public int compareTo(GuiManual o) {
+        return this.id.equalsIgnoreCase(o.id) ? 0 : 1;
     }
 }
