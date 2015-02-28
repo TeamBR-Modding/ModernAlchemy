@@ -18,7 +18,7 @@ public class BlockOreCopper extends Block {
         super(Material.rock);
         this.setBlockName(Constants.MODID + ":blockOreCopper");
         this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
-        this.setHardness(2.0F);
+        this.setHardness(1.5F);
         this.setHarvestLevel("pickaxe", 1);
     }
 

@@ -78,7 +78,7 @@ public class CraftingHandler {
                 'D', "circuitAdvanced", 'E', ItemHandler.itemEnergyAntenna));
 
         //Faraday Wire
-        GameRegistry.addRecipe(new ItemStack(ItemHandler.itemFaradayWire), "AB", "BA",
+        GameRegistry.addRecipe(new ItemStack(ItemHandler.itemFaradayWire), "BA", "AB",
                 'A', Blocks.iron_bars, 'B', ItemHandler.itemSteelIngot);
 
         //Electric Bellows
