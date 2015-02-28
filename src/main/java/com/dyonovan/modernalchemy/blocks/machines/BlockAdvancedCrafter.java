@@ -27,7 +27,7 @@ public class BlockAdvancedCrafter extends BlockBase {
 
     public BlockAdvancedCrafter() {
         super(Material.iron);
-        this.setBlockName(Constants.MODID + ":blockFurnace");
+        this.setBlockName(Constants.MODID + ":blockAdvancedCrafter");
         this.setHardness(1.5F);
         this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
     }

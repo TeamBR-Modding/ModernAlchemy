@@ -22,7 +22,6 @@ import java.util.List;
 
 public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISidedInventory {
 
-    private static final int PROCESS_TIME = 100;
     private static final int RF_TICK = 100;
     public static final int INPUT_SLOT_1 = 0;
     public static final int INPUT_SLOT_2 = 1;
@@ -39,6 +38,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
     private boolean isActive;
     private Item outputItem;
     public int currentMode;
+    public int requiredProcessTime;
 
 
     public TileAdvancedCrafter() {
@@ -48,6 +48,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
         this.isActive = false;
         this.currentProcessTime = 0;
         currentMode = COOK;
+        requiredProcessTime = 0;
     }
 
     /*******************************************************************************************************************
@@ -74,8 +75,9 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
 
         for (RecipeAdvancedCrafter recipe : AdvancedCrafterRecipeRegistry.instance.recipes) {
             if (recipe.getInput().equals(itemInput)) {
-                if (this.inventory.getStackInSlot(4) == null || recipe.getOutputItem() == this.inventory.getStackInSlot(4).getItem()) {
+                if (this.currentMode == recipe.getRequiredMode() && (this.inventory.getStackInSlot(4) == null || recipe.getOutputItem() == this.inventory.getStackInSlot(4).getItem())) {
                     this.outputItem = recipe.getOutputItem();
+                    this.requiredProcessTime = recipe.getProcessTime();
                     return true;
                 }
             }
@@ -93,29 +95,33 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
             }
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
-        if (currentProcessTime > 0 && currentProcessTime < PROCESS_TIME) {
+        if (currentProcessTime > 0 && currentProcessTime < requiredProcessTime) {
 
             if (this.energyRF.getEnergyStored() < RF_TICK) {
-                currentProcessTime = 0;
-                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                doReset();
                 return;
             }
             this.energyRF.modifyEnergyStored(-RF_TICK);
             currentProcessTime += 1;
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
-        if (currentProcessTime >= PROCESS_TIME) {
-            currentProcessTime = 0;
+        if (currentProcessTime > 0 && currentProcessTime >= requiredProcessTime) {
             if (this.inventory.getStackInSlot(4) == null) {
                 this.setInventorySlotContents(4, new ItemStack(outputItem));
             } else {
                 this.inventory.getStackInSlot(4).stackSize++;
             }
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            doReset();
         }
     }
 
-    public int getProgressScaled(int scale) { return this.currentProcessTime * scale / PROCESS_TIME; }
+    private void doReset() {
+        currentProcessTime = 0;
+        requiredProcessTime = 0;
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
+
+    public int getProgressScaled(int scale) { return requiredProcessTime == 0 ? 0 : this.currentProcessTime * scale / requiredProcessTime; }
 
     /*******************************************************************************************************************
      ******************************************** Energy Functions *****************************************************
@@ -123,6 +129,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
 
     @Override
     public int receiveEnergy(ForgeDirection forgeDirection, int maxReceive, boolean simulate) {
+        if (!simulate) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         return energyRF.receiveEnergy(maxReceive, simulate);
     }
 
@@ -275,8 +282,9 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
         energyRF.readFromNBT(tag);
         inventory.readFromNBT(tag, this);
         currentProcessTime = tag.getInteger("TimeProcessed");
-        tag.setBoolean("isActive", isActive);
-        tag.setInteger("CurrentMode", currentMode);
+        requiredProcessTime = tag.getInteger("RequiredTime");
+        isActive = tag.getBoolean("isActive");
+        currentMode = tag.getInteger("CurrentMode");
     }
 
     @Override
@@ -285,8 +293,9 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
         energyRF.writeToNBT(tag);
         inventory.writeToNBT(tag);
         tag.setInteger("TimeProcessed", currentProcessTime);
-        isActive = tag.getBoolean("isActive");
-        currentMode = tag.getInteger("CurrentMode");
+        tag.setInteger("RequiredTime", requiredProcessTime);
+        tag.setBoolean("isActive", isActive);
+        tag.setInteger("CurrentMode", currentMode);
     }
 
     /*******************************************************************************************************************

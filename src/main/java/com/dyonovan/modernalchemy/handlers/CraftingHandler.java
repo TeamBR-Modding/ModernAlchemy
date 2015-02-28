@@ -87,6 +87,6 @@ public class CraftingHandler {
 
         //Advanced Furnace Recipes
         AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<Item>(Arrays.asList(Items.coal, Items.iron_ingot)),
-                ItemHandler.itemSteelIngot, 1000, TileAdvancedCrafter.BEND);
+                ItemHandler.itemSteelIngot, 1000, TileAdvancedCrafter.COOK);
     }
 }

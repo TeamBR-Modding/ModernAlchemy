@@ -86,5 +86,6 @@ public class ItemHandler {
         //itemSteelIngot
         itemSteelIngot = new ItemCrafting("itemSteelIngot", 64);
         GameRegistry.registerItem(itemSteelIngot, "itemSteelIngot");
+        OreDictionary.registerOre("ingotSteel", new ItemStack(itemCircuit));
     }
 }
