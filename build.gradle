@@ -24,6 +24,10 @@ repositories {
         name 'CB Repo'
         url "http://chickenbones.net/maven/"
     }
+    maven { // the repo from which to get NEI and stuff
+        name 'TeamBR-Core'
+        url "http://beyondrealitycore.com/maven2"
+    }
 }
 
 apply plugin: 'forge'
@@ -37,6 +41,7 @@ configFile.withReader {
 }
 
 dependencies {
+    compile "com.dyonovan.teambrcore:TeamBRCore:1.7.10-0.1-ALPHA-1-B28"
     compile "codechicken:CodeChickenCore:${config.minecraft_version}-${config.ccc_version}:dev"
     compile "codechicken:CodeChickenLib:${config.minecraft_version}-${config.CCLIB_version}:dev"
     compile "codechicken:NotEnoughItems:${config.minecraft_version}-${config.NEI_version}:dev"
