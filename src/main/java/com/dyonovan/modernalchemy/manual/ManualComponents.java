@@ -8,14 +8,15 @@ import java.util.ArrayList;
 public class ManualComponents {
 
     public int xPos, yPos, width, height, pageNum;
-    public String text, destination;
+    public String text, destination, type;
     public ItemStack itemstack;
     public ResourceLocation resource;
     public ArrayList<String> tooltips;
 
-    public ManualComponents(int xPos, int yPos, int width, int height, int pageNum, String text, String destination,
+    public ManualComponents(String type, int xPos, int yPos, int width, int height, int pageNum, String text, String destination,
                             ItemStack itemstack, ResourceLocation resource, ArrayList<String> tooltips) {
 
+        this.type = type;
         this.xPos = xPos;
         this.yPos = yPos;
         this.width = width;
