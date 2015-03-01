@@ -1,4 +1,5 @@
 package com.dyonovan.modernalchemy.manual;
+
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.helpers.LogHelper;
@@ -11,11 +12,14 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.StatCollector;
+
 import java.io.*;
-import java.net.URLDecoder;
-import java.util.EmptyStackException;
-import java.util.HashMap;
-import java.util.Stack;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.*;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+
 @SideOnly(Side.CLIENT)
 public class ManualRegistry {
     /**
@@ -42,8 +46,8 @@ public class ManualRegistry {
      * Fills the pages registry with all {@link com.dyonovan.modernalchemy.manual.pages.GuiManual} from files
      */
     public void init() {
-        File[] files = getFilesForPages();
-        for(File f : files) {
+        ArrayList<String> files = getFilesForPages();
+        for(String f : files) {
             if(buildManualFromFile(f) != null)
                 addPage(buildManualFromFile(f));
         }
@@ -129,20 +133,18 @@ public class ManualRegistry {
      * @param input The file with the context
      * @return A built {@link com.dyonovan.modernalchemy.manual.pages.GuiManual}
      */
-    public GuiManual buildManualFromFile(File input) {
-        GuiManual page = new GuiManual(input.getName().split(".json")[0]);
+    public GuiManual buildManualFromFile(String input) {
+        //GuiManual page = new GuiManual(input.getName().split(".json")[0]);
+        GuiManual page = new GuiManual(input.split(".json")[0]);
         ManualJson json;
-        try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(input.getAbsoluteFile()));
-            json = readJson(bufferedReader);
-        } catch (FileNotFoundException e) {
-            LogHelper.severe("Could not find file: " + input.getName() + " at " + input.getAbsoluteFile());
-            return null;
-        }
+        InputStream is = ModernAlchemy.class.getResourceAsStream("/manualPages/" + input);
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
+        json = readJson(bufferedReader);
+
         page.setTitle(StatCollector.translateToLocal(json.title)); //Set the title
-        for(int i = 1; i < json.numPages; i++) //Build the pages
+        for (int i = 1; i < json.numPages; i++) //Build the pages
             page.pages.add(new ComponentSet());
-        for(ManualComponents component : json.component) { //Add the components to their page
+        for (ManualComponents component : json.component) { //Add the components to their page
             page.pages.get(component.pageNum - 1).add(buildFromComponent(component));
         }
         return page;
@@ -151,7 +153,7 @@ public class ManualRegistry {
      * Gets all the files in the manual pages directory ("resources/manualPages")
      * @return An array of {@link java.io.File}s containing our info
      */
-    public File[] getFilesForPages() {
+    /*public File[] getFilesForPages() {
         File directory = null;
         try {
             directory = new File(URLDecoder.decode(ModernAlchemy.class.getResource("/manualPages").getFile(), "UTF-8"));
@@ -159,6 +161,40 @@ public class ManualRegistry {
             LogHelper.severe("Could not find Manual Pages");
         }
         return directory.listFiles();
+    }*/
+
+    public ArrayList<String> getFilesForPages() {
+        ArrayList<String> files = new ArrayList<String>();
+        String path = "manualPages";
+        File jarFile = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+
+        if (jarFile.isFile()) {
+            try {
+                JarFile jar = new JarFile(jarFile);
+                Enumeration<JarEntry> entries = jar.entries();
+                while (entries.hasMoreElements()) {
+                    String name = entries.nextElement().getName();
+                    if (name.startsWith(path + "/")) files.add(name);
+
+                }
+                jar.close();
+            } catch (IOException e) {
+                LogHelper.severe("Could not find Manual Pages");
+            }
+        } else {
+            URL url = ModernAlchemy.class.getResource("/" + path);
+            if (url != null) {
+                try {
+                    File apps = new File(url.toURI());
+                    for (File app : apps.listFiles()) {
+                        files.add(app.getName());
+                    }
+                } catch (URISyntaxException e) {
+                    LogHelper.severe("Could not find Manual Pages");
+                }
+            }
+        }
+        return files;
     }
     /**
      * Reads the Json into usable information
