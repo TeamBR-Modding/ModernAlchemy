@@ -12,8 +12,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.StatCollector;
+import org.apache.commons.io.FileUtils;
 
 import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.util.EmptyStackException;
 import java.util.HashMap;
@@ -174,9 +177,15 @@ public class ManualRegistry {
      */
     public File[] getFilesForPages() {
         File directory = null;
-        try {
+        /*try {
             directory = new File(URLDecoder.decode(ModernAlchemy.class.getResource("/manualPages").getFile(), "UTF-8"));
         } catch (UnsupportedEncodingException e) {
+            LogHelper.severe("Could not find Manual Pages");
+        }*/
+        URL jar = ModernAlchemy.class.getResource("/manualPages");
+        try {
+            directory = new File(jar.toURI());
+        } catch (URISyntaxException e) {
             LogHelper.severe("Could not find Manual Pages");
         }
         return directory.listFiles();
