@@ -71,7 +71,6 @@ public class ItemHandler {
         registerItem(itemEnergyAntenna = new ItemCrafting("itemEnergyAntenna", 64), "itemEnergyAntenna", null);
         registerItem(itemFaradayWire = new ItemCrafting("itemFaradayWire", 64), "itemFaradayWire", null);
         registerItem(itemReplicationMedium = new ItemReplicatorMedium(), "itemReplicationMedium", null);
-
     }
 
     public static void registerItem(Item registerItem, String name, String oreDict) {
