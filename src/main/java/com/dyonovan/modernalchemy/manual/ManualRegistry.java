@@ -12,16 +12,19 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.StatCollector;
-import org.apache.commons.io.FileUtils;
 
-import java.io.*;
-import java.net.URISyntaxException;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
-import java.net.URLDecoder;
+import java.security.CodeSource;
+import java.util.ArrayList;
 import java.util.EmptyStackException;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Stack;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 @SideOnly(Side.CLIENT)
 public class ManualRegistry {
@@ -53,8 +56,10 @@ public class ManualRegistry {
      * Fills the pages registry with all {@link com.dyonovan.modernalchemy.manual.pages.GuiManual} from files
      */
     public void init() {
-        File[] files = getFilesForPages();
-        for(File f : files) {
+        //File[] files = getFilesForPages();
+        ArrayList<String> files = getFilesForPages();
+        //for(File f : files) {
+        for(String f : files) {
             if(buildManualFromFile(f) != null)
                 addPage(buildManualFromFile(f));
         }
@@ -149,16 +154,14 @@ public class ManualRegistry {
      * @param input The file with the context
      * @return A built {@link com.dyonovan.modernalchemy.manual.pages.GuiManual}
      */
-    public GuiManual buildManualFromFile(File input) {
-        GuiManual page = new GuiManual(input.getName().split(".json")[0]);
+    public GuiManual buildManualFromFile(String input) {
+        //GuiManual page = new GuiManual(input.getName().split(".json")[0]);
+        GuiManual page = new GuiManual(input.split(".json")[0]);
         ManualJson json;
-        try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(input.getAbsoluteFile()));
-            json = readJson(bufferedReader);
-        } catch (FileNotFoundException e) {
-            LogHelper.severe("Could not find file: " + input.getName() + " at " + input.getAbsoluteFile());
-            return null;
-        }
+        //BufferedReader bufferedReader = new BufferedReader(new FileReader(input.getAbsoluteFile()));
+        InputStream stream = ModernAlchemy.class.getResourceAsStream("/manualPages/" + input);
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream));
+        json = readJson(bufferedReader);
 
         page.setTitle(StatCollector.translateToLocal(json.title)); //Set the title
 
@@ -176,28 +179,35 @@ public class ManualRegistry {
      * Gets all the files in the manual pages directory ("resources/manualPages")
      * @return An array of {@link java.io.File}s containing our info
      */
-    public File[] getFilesForPages() {
-        File directory = null;
-        /*try {
+    //public File[] getFilesForPages() {
+    public ArrayList<String> getFilesForPages() {
+        /*File directory = null;
+        try {
             directory = new File(URLDecoder.decode(ModernAlchemy.class.getResource("/manualPages").getFile(), "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             LogHelper.severe("Could not find Manual Pages");
         }*/
-        Enumeration<URL> jar = null;
+        ArrayList<String> directory = new ArrayList<String>();
+        URL jar = ModernAlchemy.class.getResource("/");
+        ZipInputStream zip;
         try {
-            jar = getClass().getClassLoader().getResources("manualPages");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (jar.hasMoreElements()) {
-            URL json=jar.nextElement();
-            try {
-                directory = new File(json.toURI());
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
+            zip = new ZipInputStream(jar.openStream());
+            while (true) {
+                ZipEntry e = zip.getNextEntry();
+                if (e == null) break;
+                String name = e.getName();
+                if (name.startsWith("/manualPages/")) {
+                    directory.add(e.getName());
+                    System.out.println(e.getName());
+                }
             }
+        } catch (IOException e) {
+            LogHelper.severe("Could not find Manual Pages");
         }
-        return directory.listFiles();
+
+        return directory;
+
+        //return directory.listFiles();
     }
 
     /**
