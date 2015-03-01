@@ -30,16 +30,16 @@ public class ItemHandler {
         registerItem(laserNode = new ItemLaserNode(), "laserNodeItem", null);
 
         //Manual
-        GameRegistry.registerItem(manual = new ItemManual(), "manual");
+        registerItem(manual = new ItemManual(), "manual", null);
 
         //Tools
         registerItem(itemWrench = new ItemWrench(), "wrench", null);
 
         //Faraday Armor
-        GameRegistry.registerItem(faradayHelm = new ItemFaradayArmor("faraday_helm", ARMOR, "faraday", 0), "faradayHelm");
-        GameRegistry.registerItem(faradayChest = new ItemFaradayArmor("faraday_chest", ARMOR, "faraday", 1), "faradayChest");
-        GameRegistry.registerItem(faradayLeg = new ItemFaradayArmor("faraday_leg", ARMOR, "faraday", 2), "faradayLeg");
-        GameRegistry.registerItem(faradayBoots = new ItemFaradayArmor("faraday_boots", ARMOR, "faraday", 3), "faradayBoots");
+        registerItem(faradayHelm = new ItemFaradayArmor("faraday_helm", ARMOR, "faraday", 0), "faradayHelm", null);
+        registerItem(faradayChest = new ItemFaradayArmor("faraday_chest", ARMOR, "faraday", 1), "faradayChest", null);
+        registerItem(faradayLeg = new ItemFaradayArmor("faraday_leg", ARMOR, "faraday", 2), "faradayLeg", null);
+        registerItem(faradayBoots = new ItemFaradayArmor("faraday_boots", ARMOR, "faraday", 3), "faradayBoots", null);
 
         //Ingots and Dusts
         registerItem(itemSteelIngot = new ItemCrafting("itemSteelIngot", 64), "itemSteelIngot", "ingotSteel");
