@@ -19,6 +19,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.EmptyStackException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -182,11 +183,19 @@ public class ManualRegistry {
         } catch (UnsupportedEncodingException e) {
             LogHelper.severe("Could not find Manual Pages");
         }*/
-        URL jar = ModernAlchemy.class.getResource("/manualPages");
+        Enumeration<URL> jar = null;
         try {
-            directory = new File(jar.toURI());
-        } catch (URISyntaxException e) {
-            LogHelper.severe("Could not find Manual Pages");
+            jar = getClass().getClassLoader().getResources("manualPages");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (jar.hasMoreElements()) {
+            URL json=jar.nextElement();
+            try {
+                directory = new File(json.toURI());
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
         }
         return directory.listFiles();
     }
