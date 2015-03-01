@@ -52,6 +52,9 @@ version = "${config.minecraft_version}-${config.mod_version}-B" + System.getenv(
 group= "com.dyonovan.modernalchemy" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "modernalchemy"
 
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
 minecraft {
     version = config.minecraft_version + "-" + config.forge_version
 
