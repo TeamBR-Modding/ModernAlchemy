@@ -130,16 +130,14 @@ public class ManualRegistry {
     }
     /**
      * Builds the page from the file provided
-     * @param input The file with the context
+     * @param input The filename as a {@link java.lang.String}
      * @return A built {@link com.dyonovan.modernalchemy.manual.pages.GuiManual}
      */
     public GuiManual buildManualFromFile(String input) {
-        //GuiManual page = new GuiManual(input.getName().split(".json")[0]);
         GuiManual page = new GuiManual(input.split(".json")[0]);
-        ManualJson json;
         InputStream is = ModernAlchemy.class.getResourceAsStream("/manualPages/" + input);
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
-        json = readJson(bufferedReader);
+        ManualJson json = readJson(bufferedReader);
 
         page.setTitle(StatCollector.translateToLocal(json.title)); //Set the title
         for (int i = 1; i < json.numPages; i++) //Build the pages
@@ -151,39 +149,29 @@ public class ManualRegistry {
     }
     /**
      * Gets all the files in the manual pages directory ("resources/manualPages")
-     * @return An array of {@link java.io.File}s containing our info
+     * @return An array of {@link java.lang.String}s containing our info
      */
-    /*public File[] getFilesForPages() {
-        File directory = null;
-        try {
-            directory = new File(URLDecoder.decode(ModernAlchemy.class.getResource("/manualPages").getFile(), "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            LogHelper.severe("Could not find Manual Pages");
-        }
-        return directory.listFiles();
-    }*/
-
-    public ArrayList<String> getFilesForPages() {
+        public ArrayList<String> getFilesForPages() {
         ArrayList<String> files = new ArrayList<String>();
         String path = "manualPages";
-        File jarFile = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+        URL url = ModernAlchemy.class.getResource("/" + path);
+        String[] parts = url.toString().replaceAll("jar:file:/", "").split(".jar");
 
-        if (jarFile.isFile()) {
+        if (url.toString().substring(0,3).equalsIgnoreCase("jar")) {
             try {
-                JarFile jar = new JarFile(jarFile);
-                Enumeration<JarEntry> entries = jar.entries();
+                Enumeration<JarEntry> entries = new JarFile(parts[0] + ".jar").entries();//jarFile.entries();
                 while (entries.hasMoreElements()) {
-                    String name = entries.nextElement().getName();
-                    if (name.startsWith(path + "/")) files.add(name);
-
+                    JarEntry entry = entries.nextElement();
+                    String entryName = entry.getName();
+                    if (entryName.startsWith(path)) {
+                        if (!(entryName.replaceAll("manualPages/", "").equals("")))
+                            files.add(entryName.replaceAll("manualPages/", ""));
+                    }
                 }
-                jar.close();
             } catch (IOException e) {
                 LogHelper.severe("Could not find Manual Pages");
             }
         } else {
-            URL url = ModernAlchemy.class.getResource("/" + path);
-            if (url != null) {
                 try {
                     File apps = new File(url.toURI());
                     for (File app : apps.listFiles()) {
@@ -192,7 +180,7 @@ public class ManualRegistry {
                 } catch (URISyntaxException e) {
                     LogHelper.severe("Could not find Manual Pages");
                 }
-            }
+
         }
         return files;
     }
