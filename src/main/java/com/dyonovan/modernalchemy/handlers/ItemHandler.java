@@ -18,51 +18,22 @@ public class ItemHandler {
     public static ItemArmor.ArmorMaterial ARMOR = EnumHelper.addArmorMaterial("FARADAY", 15, new int[]{2, 5, 4, 1}, 12);
 
     public static Item faradayHelm, faradayChest, faradayLeg, faradayBoots;
-    public static ItemPattern itemPattern;
-    public static Item itemBucketActinium, itemReplicationMedium, itemPumpModule;
-    public static Item laserNode, itemSlag, itemWrench, itemActinium;
-    public static Item itemCircuit, itemMachineFrame, itemEnergyAntenna;
-    public static Item manual, itemFaradayWire, itemSteelIngot, itemCopperIngot;
+    public static ItemPattern itemReplicatorPattern;
+    public static Item itemBucketActinium, itemReplicationMedium, itemPumpModule, itemRealClock, itemMemory;
+    public static Item laserNode, itemSlag, itemWrench, itemActiniumDust, itemCopperWire, itemBlankPCB;
+    public static Item itemCircuit, itemMachineFrame, itemEnergyAntenna, itemGraphene, itemSteelGear;
+    public static Item manual, itemFaradayWire, itemSteelIngot, itemCopperIngot, itemSteelPlate, itemCapacator;
+    public static Item itemCopperCoil, itemDenseCopperCoil, itemSteelTube;
 
     public static void init() {
-
-        //itemSteelIngot
-        itemSteelIngot = new ItemCrafting("itemSteelIngot", 64);
-        GameRegistry.registerItem(itemSteelIngot, "itemSteelIngot");
-        OreDictionary.registerOre("ingotSteel", new ItemStack(itemSteelIngot));
-
-        //itemCopperIngot
-        itemCopperIngot = new ItemCrafting("itemCopperIngot", 64);
-        GameRegistry.registerItem(itemCopperIngot, "itemCopperIngot");
-        OreDictionary.registerOre("ingotCopper", new ItemStack(itemCopperIngot));
-
-        //itemActinium
-        itemActinium = new ItemOreActinium();
-        GameRegistry.registerItem(itemActinium, "itemActinium");
-
-        itemPattern = new ItemPattern();
-        GameRegistry.registerItem(itemPattern, "pattern");
-
-        //Actinium Bucket
-        itemBucketActinium = new ItemBucketActinium(BlockHandler.blockFluidActinium);
-        GameRegistry.registerItem(itemBucketActinium, "bucketActinium");
-        FluidContainerRegistry.registerFluidContainer(new FluidStack(BlockHandler.fluidActinium, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(itemBucketActinium), new ItemStack(Items.bucket));
-
-        //Item Cube
-        itemReplicationMedium = new ItemReplicatorMedium();
-        GameRegistry.registerItem(itemReplicationMedium, "itemReplicationMedium");
-
-        //Item Slag
-        itemSlag = new ItemSlag();
-        GameRegistry.registerItem(itemSlag, "itemSlag");
-
         //Laser Node
-        laserNode = new ItemLaserNode();
-        GameRegistry.registerItem(laserNode, "laserNodeItem");
+        registerItem(laserNode = new ItemLaserNode(), "laserNodeItem", null);
 
-        //itemWrench
-        itemWrench = new ItemWrench();
-        GameRegistry.registerItem(itemWrench, "wrench");
+        //Manual
+        GameRegistry.registerItem(manual = new ItemManual(), "manual");
+
+        //Tools
+        registerItem(itemWrench = new ItemWrench(), "wrench", null);
 
         //Faraday Armor
         GameRegistry.registerItem(faradayHelm = new ItemFaradayArmor("faraday_helm", ARMOR, "faraday", 0), "faradayHelm");
@@ -70,28 +41,42 @@ public class ItemHandler {
         GameRegistry.registerItem(faradayLeg = new ItemFaradayArmor("faraday_leg", ARMOR, "faraday", 2), "faradayLeg");
         GameRegistry.registerItem(faradayBoots = new ItemFaradayArmor("faraday_boots", ARMOR, "faraday", 3), "faradayBoots");
 
-        //Manual
-        GameRegistry.registerItem(manual = new ItemManual(), "manual");
+        //Ingots and Dusts
+        registerItem(itemSteelIngot = new ItemCrafting("itemSteelIngot", 64), "itemSteelIngot", "ingotSteel");
+        registerItem(itemCopperIngot = new ItemCrafting("itemCopperIngot", 64), "itemCopperIngot", "ingotCopper");
+        registerItem(itemActiniumDust = new ItemOreActinium(), "itemActiniumDust", null);
 
-        //Crafting Items
-        itemCircuit = new ItemCrafting("itemCircuit", 64);
-        GameRegistry.registerItem(itemCircuit, "itemCircuit");
-        OreDictionary.registerOre("circuitAdvanced", new ItemStack(itemCircuit));
+        //Fluid Buckets
+        registerItem(itemBucketActinium = new ItemBucketActinium(BlockHandler.blockFluidActinium), "bucketActinium", null);
+        FluidContainerRegistry.registerFluidContainer(new FluidStack(BlockHandler.fluidActinium,
+                FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(itemBucketActinium), new ItemStack(Items.bucket));
 
-        //Machine Frame
-        itemMachineFrame = new ItemCrafting("itemMachineFrame", 1);
-        GameRegistry.registerItem(itemMachineFrame, "itemMachineFrame");
+        //Items
+        registerItem(itemReplicatorPattern = new ItemPattern(), "itemReplicatorPattern", null);
+        registerItem(itemSlag = new ItemSlag(), "itemSlag", null);
+        registerItem(itemGraphene = new ItemCrafting("itemGraphene", 64), "itemGraphene", null);
+        registerItem(itemCopperWire = new ItemCrafting("itemCopperWire", 64), "itemCopperWire", "wireCopper");
+        registerItem(itemSteelPlate = new ItemCrafting("itemSteelPlate", 64), "itemSteelPlate", "plateSteel");
+        registerItem(itemSteelGear = new ItemCrafting("itemSteelGear", 64), "itemSteelGear", "gearSteel");
+        registerItem(itemSteelTube = new ItemCrafting("itemSteelTube", 16), "itemSteelTube", null);
+        registerItem(itemRealClock = new ItemCrafting("itemRealClock", 64), "itemRealClock", null);
+        registerItem(itemBlankPCB = new ItemCrafting("itemBlankPCB", 64), "itemBlankPCB", null);
+        registerItem(itemCircuit = new ItemCrafting("itemCircuit", 64), "itemCircuit", "circuitAdvanced");
+        registerItem(itemCapacator = new ItemCrafting("itemCapacator", 64), "itemCapacator", null);
+        registerItem(itemMemory = new ItemCrafting("itemMemory", 64), "itemMemory", null);
+        registerItem(itemCopperCoil = new ItemCrafting("itemCopperCoil", 64), "itemCopperCoil", null);
+        registerItem(itemDenseCopperCoil = new ItemCrafting("itemDenseCopperCoil", 64), "itemDenseCopperCoil", null);
+        registerItem(itemMachineFrame = new ItemCrafting("itemMachineFrame", 1), "itemMachineFrame", null);
+        registerItem(itemPumpModule = new ItemCrafting("itemPumpModule", 64), "itemPumpModule", null);
+        registerItem(itemEnergyAntenna = new ItemCrafting("itemEnergyAntenna", 64), "itemEnergyAntenna", null);
+        registerItem(itemFaradayWire = new ItemCrafting("itemFaradayWire", 64), "itemFaradayWire", null);
+        registerItem(itemReplicationMedium = new ItemReplicatorMedium(), "itemReplicationMedium", null);
 
-        //Energy Antenna
-        itemEnergyAntenna = new ItemCrafting("itemEnergyAntenna", 64);
-        GameRegistry.registerItem(itemEnergyAntenna, "itemEnergyAntenna");
+    }
 
-        //itemPumpModule
-        itemPumpModule = new ItemCrafting("itemPumpModule", 64);
-        GameRegistry.registerItem(itemPumpModule, "itemPumpModule");
-
-        //itemFaradayWire
-        itemFaradayWire = new ItemCrafting("itemFaradayWire", 64);
-        GameRegistry.registerItem(itemFaradayWire, "itemFaradayWire");
+    public static void registerItem(Item registerItem, String name, String oreDict) {
+        GameRegistry.registerItem(registerItem, name);
+        if(oreDict != null)
+            OreDictionary.registerOre(oreDict, registerItem);
     }
 }

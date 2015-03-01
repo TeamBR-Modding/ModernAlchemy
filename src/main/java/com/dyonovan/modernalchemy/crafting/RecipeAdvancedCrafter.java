@@ -10,19 +10,22 @@ public class RecipeAdvancedCrafter {
     private ArrayList<Item> itemArray;
     private int processTime;
     private int requiredMode;
+    private int qty;
 
     /**
      * An instance of an advanced crafter recipe
      * @param itemArray  The array of input items {@link net.minecraft.item.Item}
      * @param itemOutput The output item
+     * @param qty Qty of Output Item
      * @param processTime The total amount of ticks required to process
      * @param requiredMode COOK = 1, EXTRUDE = 2, BEND = 3
      */
-    public RecipeAdvancedCrafter(ArrayList<Item> itemArray, Item itemOutput, int processTime, int requiredMode) {
+    public RecipeAdvancedCrafter(ArrayList<Item> itemArray, Item itemOutput, int qty, int processTime, int requiredMode) {
         this.itemArray = itemArray;
         this.outputItem = itemOutput;
         this.processTime = processTime;
         this.requiredMode = requiredMode;
+        this.qty = qty;
     }
 
     /**
@@ -44,4 +47,6 @@ public class RecipeAdvancedCrafter {
     public int getProcessTime() { return processTime; }
 
     public int getRequiredMode() { return requiredMode; }
+
+    public int getQtyOutput() { return qty; }
 }

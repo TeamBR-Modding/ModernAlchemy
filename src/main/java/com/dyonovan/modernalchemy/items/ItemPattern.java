@@ -49,7 +49,7 @@ public class ItemPattern extends Item {
             if(itemstack.hasTagCompound()) {
 
                 if (itemstack.getTagCompound().hasKey("Item")) {
-                    itemstack = new ItemStack(ItemHandler.itemPattern, 1);
+                    itemstack = new ItemStack(ItemHandler.itemReplicatorPattern, 1);
                 }
             }
         }

@@ -26,7 +26,7 @@ public class AdvancedCrafterRecipeRegistry {
      * @param itemArray  Input item array
      * @param output the Resulting Item
      */
-    public void addRecipe(ArrayList<Item> itemArray, Item output, int processTime, int requiredMode) {
+    public void addRecipe(ArrayList<Item> itemArray, Item output, int qty, int processTime, int requiredMode) {
         Collections.sort(itemArray, new Comparator<Item>() {
             @Override
             public int compare(Item o1, Item o2) {
@@ -34,8 +34,8 @@ public class AdvancedCrafterRecipeRegistry {
             }
         });
 
-        if (!recipes.contains(new RecipeAdvancedCrafter(itemArray, output, processTime, requiredMode)))
-            recipes.add(new RecipeAdvancedCrafter(itemArray, output, processTime, requiredMode));
+        if (!recipes.contains(new RecipeAdvancedCrafter(itemArray, output, qty, processTime, requiredMode)))
+            recipes.add(new RecipeAdvancedCrafter(itemArray, output, qty, processTime, requiredMode));
         else
             LogHelper.warning("Someone tried to add a recipe for " + output.getUnlocalizedName() + " when it already exists. Aborting.");
     }

@@ -39,6 +39,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
     private Item outputItem;
     public int currentMode;
     public int requiredProcessTime;
+    private int qtyOutput;
 
 
     public TileAdvancedCrafter() {
@@ -49,6 +50,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
         this.currentProcessTime = 0;
         currentMode = COOK;
         requiredProcessTime = 0;
+        qtyOutput = 0;
     }
 
     /*******************************************************************************************************************
@@ -75,9 +77,12 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
 
         for (RecipeAdvancedCrafter recipe : AdvancedCrafterRecipeRegistry.instance.recipes) {
             if (recipe.getInput().equals(itemInput)) {
-                if (this.currentMode == recipe.getRequiredMode() && (this.inventory.getStackInSlot(4) == null || recipe.getOutputItem() == this.inventory.getStackInSlot(4).getItem())) {
+                if (this.currentMode == recipe.getRequiredMode() && (this.inventory.getStackInSlot(4) == null ||
+                        (recipe.getOutputItem() == this.inventory.getStackInSlot(4).getItem() &&
+                        this.inventory.getStackInSlot(4).stackSize + recipe.getQtyOutput() <= this.inventory.getStackInSlot(4).getMaxStackSize()))) {
                     this.outputItem = recipe.getOutputItem();
                     this.requiredProcessTime = recipe.getProcessTime();
+                    this.qtyOutput = recipe.getQtyOutput();
                     return true;
                 }
             }
@@ -107,9 +112,9 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
         }
         if (currentProcessTime > 0 && currentProcessTime >= requiredProcessTime) {
             if (this.inventory.getStackInSlot(4) == null) {
-                this.setInventorySlotContents(4, new ItemStack(outputItem));
+                this.setInventorySlotContents(4, new ItemStack(outputItem, qtyOutput));
             } else {
-                this.inventory.getStackInSlot(4).stackSize++;
+                this.inventory.getStackInSlot(4).stackSize = this.inventory.getStackInSlot(4).stackSize + qtyOutput;
             }
             doReset();
         }
@@ -118,6 +123,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
     private void doReset() {
         currentProcessTime = 0;
         requiredProcessTime = 0;
+        qtyOutput = 0;
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
@@ -285,6 +291,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
         requiredProcessTime = tag.getInteger("RequiredTime");
         isActive = tag.getBoolean("isActive");
         currentMode = tag.getInteger("CurrentMode");
+        qtyOutput = tag.getInteger("Qty");
     }
 
     @Override
@@ -296,6 +303,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
         tag.setInteger("RequiredTime", requiredProcessTime);
         tag.setBoolean("isActive", isActive);
         tag.setInteger("CurrentMode", currentMode);
+        tag.setInteger("Qty", qtyOutput);
     }
 
     /*******************************************************************************************************************

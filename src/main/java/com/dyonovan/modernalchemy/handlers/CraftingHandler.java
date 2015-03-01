@@ -32,22 +32,22 @@ public class CraftingHandler {
         //Arc Furnace DummyOutputValue
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockArcFurnaceDummyOutputValve), "BDB", "CAC", "BEB",
                 'A', BlockHandler.blockArcFurnaceDummy, 'B', Items.iron_ingot, 'C', Items.bucket,
-                'D', "circuitAdvanced", 'E', ItemHandler.itemActinium));
+                'D', "circuitAdvanced", 'E', ItemHandler.itemActiniumDust));
 
         //Arc Furnace DummyItemIO
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockArcFurnaceDummyItemIO), "BDB", "CAC", "BEB",
                 'A', BlockHandler.blockArcFurnaceDummy, 'B', Items.iron_ingot, 'C', Blocks.hopper,
-                'D', "circuitAdvanced", 'E', ItemHandler.itemActinium));
+                'D', "circuitAdvanced", 'E', ItemHandler.itemActiniumDust));
 
         //Arc Furnace DummyEnergyReceiver
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockArcFurnaceDummyEnergy), "BDB", "CAC", "BEB",
                 'A', BlockHandler.blockArcFurnaceDummy, 'B', Items.iron_ingot, 'C', ItemHandler.itemEnergyAntenna,
-                'D', "circuitAdvanced", 'E', ItemHandler.itemActinium));
+                'D', "circuitAdvanced", 'E', ItemHandler.itemActiniumDust));
 
         //Arc Furnace DummyEnergyCompressedAirValve
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockArcFurnaceDummyAirValve), "BDB", "CAC", "BEB",
                 'A', BlockHandler.blockArcFurnaceDummy, 'B', Items.iron_ingot, 'C', Blocks.piston,
-                'D', "circuitAdvanced", 'E', ItemHandler.itemActinium));
+                'D', "circuitAdvanced", 'E', ItemHandler.itemActiniumDust));
 
         //Arc Furnace Core
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockArcFurnaceCore), "BDB", "CAC", "BDB",
@@ -86,14 +86,16 @@ public class CraftingHandler {
                 'A', Blocks.iron_bars, 'B', ItemHandler.itemSteelIngot);
 
          //Arc Furnace Recipes
-        ArcFurnaceRecipeRegistry.instance.addRecipe(ItemHandler.itemActinium, FluidContainerRegistry.BUCKET_VOLUME);
+        ArcFurnaceRecipeRegistry.instance.addRecipe(ItemHandler.itemActiniumDust, FluidContainerRegistry.BUCKET_VOLUME);
         ArcFurnaceRecipeRegistry.instance.addRecipe(ItemHandler.itemSlag,  FluidContainerRegistry.BUCKET_VOLUME / 4);
 
         //Advanced Crafting Recipes
         AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<Item>(Arrays.asList(Items.coal, Items.iron_ingot)),
-                ItemHandler.itemSteelIngot, 1000, TileAdvancedCrafter.COOK);
+                ItemHandler.itemSteelIngot, 1, 1000, TileAdvancedCrafter.COOK);
         AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<Item>(Arrays.asList(Item.getItemFromBlock(BlockHandler.blockOreCopper))),
-                ItemHandler.itemCopperIngot, 200, TileAdvancedCrafter.COOK);
+                ItemHandler.itemCopperIngot, 1, 200, TileAdvancedCrafter.COOK);
+        AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<Item>(Arrays.asList(ItemHandler.itemCopperIngot)),
+                ItemHandler.itemCopperWire, 3, 600, TileAdvancedCrafter.EXTRUDE);
 
         //Furnace Recipes
         GameRegistry.addSmelting(BlockHandler.blockOreCopper, new ItemStack(ItemHandler.itemCopperIngot), 0.1f);

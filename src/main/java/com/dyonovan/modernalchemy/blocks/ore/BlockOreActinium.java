@@ -36,7 +36,7 @@ public class BlockOreActinium extends Block {
 
     @Override
     public Item getItemDropped(int meta, Random random, int fortune) {
-        return ItemHandler.itemActinium;
+        return ItemHandler.itemActiniumDust;
     }
 
     @Override

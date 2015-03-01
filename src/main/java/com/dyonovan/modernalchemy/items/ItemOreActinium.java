@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 public class ItemOreActinium extends Item {
 
     public ItemOreActinium() {
-        this.setUnlocalizedName(Constants.MODID + ":itemActinium");
+        this.setUnlocalizedName(Constants.MODID + ":itemActiniumDust");
         this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
     }
 

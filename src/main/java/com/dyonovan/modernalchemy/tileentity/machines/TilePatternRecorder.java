@@ -1,6 +1,5 @@
 package com.dyonovan.modernalchemy.tileentity.machines;
 
-import com.dyonovan.modernalchemy.crafting.RecipeArcFurnace;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.ItemHandler;
 import com.dyonovan.modernalchemy.helpers.GuiHelper;
@@ -93,7 +92,7 @@ public class TilePatternRecorder extends BaseMachine implements  IInventory {
     }
 
     private ItemStack recordPattern(String item) {
-        ItemStack pattern = new ItemStack(ItemHandler.itemPattern, 1);
+        ItemStack pattern = new ItemStack(ItemHandler.itemReplicatorPattern, 1);
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("Item", item);
         tag.setInteger("Value", ReplicatorUtils.getValueForItem(ReplicatorUtils.getReturn(item)));
