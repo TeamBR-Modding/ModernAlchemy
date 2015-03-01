@@ -3,6 +3,7 @@ package com.dyonovan.modernalchemy.manual;
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.helpers.LogHelper;
+import com.dyonovan.modernalchemy.manual.component.*;
 import com.dyonovan.modernalchemy.manual.pages.GuiManual;
 import com.dyonovan.modernalchemy.util.ReplicatorUtils;
 import com.google.gson.Gson;
@@ -10,17 +11,18 @@ import com.google.gson.GsonBuilder;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.StatCollector;
 
 import java.io.*;
 import java.net.URLDecoder;
-import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.Stack;
 
+@SideOnly(Side.CLIENT)
 public class ManualRegistry {
     /**
-     * Out Manual instance
+     * Our Manual instance
      */
     public static ManualRegistry instance = new ManualRegistry();
 
@@ -50,8 +52,10 @@ public class ManualRegistry {
         File[] files = getFilesForPages();
         for(File f : files) {
             if(buildManualFromFile(f) != null)
-                pages.put(f.getName().split(".json")[0], buildManualFromFile(f));
+                addPage(buildManualFromFile(f));
         }
+        visitedPages.clear();
+        visitedPages.push(pages.get(ManualLib.MAINPAGE));
     }
 
     /**
@@ -72,16 +76,20 @@ public class ManualRegistry {
     }
 
     /**
+     * Returns if the manual is on the base page
+     * @return True if at base
+     */
+    public boolean isAtRoot() {
+        return visitedPages.size() < 2;
+    }
+
+    /**
      * Gets the page that was open on top of the visited stack
      * @return The top {@link com.dyonovan.modernalchemy.manual.pages.GuiManual} in the stack
      */
     public GuiManual getOpenPage() {
-        if(visitedPages.isEmpty()) {
-            try {
-                return buildManualFromFile(new File(URLDecoder.decode(ModernAlchemy.class.getResource("/manualPages").getFile(), "UTF-8") + File.separator + ManualLib.MAINPAGE));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+        if(visitedPages.empty()) {
+            return pages.get(ManualLib.MAINPAGE);
         }
         return visitedPages.get(visitedPages.size() - 1);
     }
@@ -100,11 +108,14 @@ public class ManualRegistry {
     }
 
     /**
-     * Get the page below the current one
-     * @return The last {@link com.dyonovan.modernalchemy.manual.pages.GuiManual}, landing page if not found
+     * Pushes a new page to the visited stack and opens it
+     * @param name Block/Item name from {@link cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier}
      */
-    public GuiManual getLastPage() {
-        return visitedPages.size() > 2 ? visitedPages.get(visitedPages.size() - 2) : new GuiManual(ManualLib.MAINPAGE);
+    public void visitNewPage(String name) {
+        if(pages.containsKey(name)) {
+            visitedPages.push(pages.get(name));
+            openManual();
+        }
     }
 
     /**
@@ -114,7 +125,7 @@ public class ManualRegistry {
         try {
             visitedPages.pop();
         } catch(EmptyStackException e) {
-            visitedPages.push(new GuiManual(ManualLib.MAINPAGE));
+            visitedPages.push(pages.get(ManualLib.MAINPAGE));
             LogHelper.warning("Tried to delete last page with no stack");
         }
     }
@@ -122,15 +133,9 @@ public class ManualRegistry {
     /**
      * Opens the manual gui with the current page
      */
-    @SideOnly(Side.CLIENT)
     public void openManual() {
-        visitedPages.clear();
         if(visitedPages.empty()) {
-            try {
-                visitedPages.push(buildManualFromFile(new File(URLDecoder.decode(ModernAlchemy.class.getResource("/manualPages").getFile(), "UTF-8") + File.separator + ManualLib.MAINPAGE)));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+            visitedPages.push(pages.get(ManualLib.MAINPAGE));
         }
         Minecraft.getMinecraft().thePlayer.openGui(ModernAlchemy.instance, GuiHandler.MANUAL_GUI_ID, Minecraft.getMinecraft().theWorld, (int)Minecraft.getMinecraft().thePlayer.posX, (int)Minecraft.getMinecraft().thePlayer.posY, (int)Minecraft.getMinecraft().thePlayer.posZ);
     }
@@ -147,11 +152,19 @@ public class ManualRegistry {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(input.getAbsoluteFile()));
             json = readJson(bufferedReader);
         } catch (FileNotFoundException e) {
-            LogHelper.severe("Could not find file: " + input.getName() + " at " + input.getAbsoluteFile() + ".json");
+            LogHelper.severe("Could not find file: " + input.getName() + " at " + input.getAbsoluteFile());
             return null;
         }
 
-        page.setTitle(json.title);
+        page.setTitle(StatCollector.translateToLocal(json.title)); //Set the title
+
+        for(int i = 1; i < json.numPages; i++) //Build the pages
+            page.pages.add(new ComponentSet());
+
+        for(ManualComponents component : json.component) { //Add the components to their page
+            page.pages.get(component.pageNum - 1).add(buildFromComponent(component));
+        }
+
         return page;
     }
 
@@ -169,12 +182,59 @@ public class ManualRegistry {
         return directory.listFiles();
     }
 
+    /**
+     * Reads the Json into usable information
+     * @param br {@link java.io.BufferedReader} that contains the json file
+     * @return A {@link com.dyonovan.modernalchemy.manual.ManualJson} object with all the information in the file
+     */
     public  ManualJson readJson(BufferedReader br) {
-
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(ManualJson.class, new MJDeserializer());
         Gson gson = gsonBuilder.create();
-
         return gson.fromJson(br, ManualJson.class);
+    }
+
+    /**
+     * Converts the {@link com.dyonovan.modernalchemy.manual.ManualComponents} to {@link com.dyonovan.modernalchemy.manual.component.IComponent}
+     * @param component The {@link com.dyonovan.modernalchemy.manual.ManualComponents} to convert (from Json)
+     * @return The {@link com.dyonovan.modernalchemy.manual.component.IComponent} of the type definded in the {@link com.dyonovan.modernalchemy.manual.ManualComponents}
+     */
+    public IComponent buildFromComponent(ManualComponents component) {
+        ComponentBase goodComponent;
+
+        //Component Types:
+        //ComponentTextBox        - "TEXT_BOX"
+        //ComponentCraftingRecipe - "CRAFTING"
+        //ComponentHeader         - "HEADER"
+        //ComponentImage          - "IMAGE"
+        //ComponentItemRender     - "ITEM_RENDER"
+        //ComponentLineBreak      - "BREAK"
+        //ComponentLink           - "LINK"
+
+        if(component.type.equalsIgnoreCase("TEXT_BOX"))
+            goodComponent = new ComponentTextBox(StatCollector.translateToLocal(component.text));
+        else if(component.type.equalsIgnoreCase("CRAFTING"))
+            goodComponent = new ComponentCraftingRecipe(ReplicatorUtils.getReturn(component.item));
+        else if(component.type.equalsIgnoreCase("HEADER"))
+            goodComponent = new ComponentHeader(StatCollector.translateToLocal(component.text));
+        else if(component.type.equalsIgnoreCase("IMAGE"))
+            goodComponent = new ComponentImage(component.resource);
+        else if(component.type.equalsIgnoreCase("ITEM_RENDER"))
+            goodComponent = new ComponentItemRender(ReplicatorUtils.getReturn(component.item));
+        else if(component.type.equalsIgnoreCase("BREAK"))
+            goodComponent = new ComponentLineBreak();
+        else if(component.type.equalsIgnoreCase("LINK"))
+            goodComponent = new ComponentLink(StatCollector.translateToLocal(component.text), component.destination);
+        else
+            goodComponent = new ComponentBase();
+
+        goodComponent.setPositionAndSize(component.xPos, component.yPos, component.width, component.height);
+        goodComponent.setAlignment(component.alignment);
+
+        if(!component.tooltips.isEmpty())
+            for(String tip : component.tooltips)
+                goodComponent.addToTip(StatCollector.translateToLocal(tip));
+
+        return goodComponent;
     }
 }

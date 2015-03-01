@@ -41,14 +41,14 @@ public class ComponentBase extends GuiScreen implements IComponent {
 
     @Override
     public void drawComponent(int x, int y, int mouseX, int mouseY) {
-        if(mouseX > x && mouseX < x + width && mouseY > y && mouseY <= y + height && toolTip.size() > 0) {
+        if(mouseX > x + xPos && mouseX < x + xPos + width && mouseY > y + yPos && mouseY <= y + yPos + height && !toolTip.isEmpty()) {
             if(++delay > 20)
             drawHoveringText(toolTip, mouseX, mouseY, Minecraft.getMinecraft().fontRenderer);
         }
         else
             delay = 0;
 
-        if(mouseX > x + 15 && mouseX < x + 100 && mouseY > y && mouseY <= y + height) {
+        if(mouseX > x + xPos && mouseX < x + xPos + width && mouseY > y + yPos && mouseY <= y + yPos + height) {
             if(Mouse.isButtonDown(0) && inputDelay < 0)
                 onMouseLeftClick();
         }
@@ -110,7 +110,7 @@ public class ComponentBase extends GuiScreen implements IComponent {
         GL11.glEnable(GL11.GL_TEXTURE_2D);
     }
 
-    /*protected void drawHoveringText(java.util.List toolTip, int x, int y, FontRenderer font)
+    protected void drawHoveringText(java.util.List toolTip, int x, int y, FontRenderer font)
     {
         if (!toolTip.isEmpty())
         {
@@ -174,5 +174,5 @@ public class ComponentBase extends GuiScreen implements IComponent {
             RenderHelper.enableStandardItemLighting();
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         }
-    }*/
+    }
 }

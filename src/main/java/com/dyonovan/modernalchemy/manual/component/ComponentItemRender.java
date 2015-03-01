@@ -12,11 +12,9 @@ import org.lwjgl.opengl.GL11;
 public class ComponentItemRender extends ComponentBase {
     protected static ItemRenderer itemRender = new ItemRenderer(Minecraft.getMinecraft());
     protected ItemStack stack;
-    protected double scale;
 
-    public ComponentItemRender(double size, ItemStack itemStack) {
+    public ComponentItemRender(ItemStack itemStack) {
         stack = itemStack;
-        scale = size;
     }
 
     @Override
@@ -26,14 +24,14 @@ public class ComponentItemRender extends ComponentBase {
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         if(!stack.getDisplayName().contains("Tesla Coil"))
-            GL11.glTranslated(x + (115 / 2) + 12, y + scale, 0);
+            GL11.glTranslated(x + (115 / 2) + 12, y + width, 0);
         else
             GL11.glTranslated(x + (115 / 2) - 10, y + 10, 0);
         GL11.glDisable(GL11.GL_CULL_FACE);
 
         GL11.glRotated(150, 1.0, 0.0, 0.0);
         GL11.glRotated(-135, 0.0, 1.0, 0.0);
-        GL11.glScaled(scale, scale, scale);
+        GL11.glScaled(width, width, width);
 
         itemRender.renderItem(Minecraft.getMinecraft().thePlayer, stack, stack.getItemDamage(), IItemRenderer.ItemRenderType.INVENTORY);
 

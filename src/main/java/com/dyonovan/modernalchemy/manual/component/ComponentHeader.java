@@ -24,8 +24,22 @@ public class ComponentHeader extends ComponentBase {
     @Override
     public void drawComponent(int x, int y, int mouseX, int mouseY) {
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-        fontRenderer.drawSplitString(title, x + xPos, y + yPos, 120, 4210752);
-        drawRectangle(x + xPos, y + yPos, x + 120, y + 11, new Color(255, 255, 255));
+        int drawX = xPos;
+        switch(alignment) {
+            case RIGHT :
+                drawX += 85 - fontRenderer.getStringWidth(title);
+                break;
+            case CENTER :
+                drawX += 53 - (fontRenderer.getStringWidth(title) / 2);
+                break;
+            case LEFT :
+            default :
+                drawX += 0;
+                break;
+        }
+        int drawY = yPos;
+        fontRenderer.drawSplitString(title, x + drawX, y + drawY, 120, 4210752);
+        drawRectangle(x + xPos, y + yPos + 10, x + xPos + 105, y + yPos + 11, new Color(255, 255, 255));
         super.drawComponent(x, y, mouseX, mouseY);
     }
 }

@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy.proxy;
 
 import com.dyonovan.modernalchemy.entities.EntityLaserNode;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
+import com.dyonovan.modernalchemy.manual.ManualRegistry;
 import com.dyonovan.modernalchemy.renderer.replicator.ItemRenderFrame;
 import com.dyonovan.modernalchemy.renderer.replicator.RenderFrame;
 import com.dyonovan.modernalchemy.renderer.replicator.RenderLaserNode;
@@ -54,5 +55,11 @@ public class ClientProxy extends  CommonProxy{
         ClientRegistry.bindTileEntitySpecialRenderer(TileReplicatorStand.class, renderReplicatorStand);
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockHandler.blockReplicatorStand),
                 new ItemRenderFrame(renderReplicatorStand, new TileReplicatorStand()));
+    }
+
+    @Override
+    public void init() {
+        super.init();
+        ManualRegistry.instance.init();
     }
 }

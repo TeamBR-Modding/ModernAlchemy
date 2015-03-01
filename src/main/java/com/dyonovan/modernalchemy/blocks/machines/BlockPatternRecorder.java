@@ -35,13 +35,6 @@ public class BlockPatternRecorder extends BlockBase {
     }
 
     @Override
-    public List<ComponentBase> getManualComponents() {
-        List<ComponentBase> parts = new ArrayList<ComponentBase>();
-        parts.add(new ComponentItemRender(30, new ItemStack(this)));
-        return parts;
-    }
-
-    @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9)
     {
         super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);

@@ -37,3 +37,10 @@ modernalchemy.nei.name=Modern Alchemy NEI
 modernalchemy.nei.arcfurnace=Arc Furnace Recipes
 
 itemGroup.tabModernAlchemy=Modern Alchemy
+
+mainPage.info=Create items with lighting and radioactive material. A mid to late game mod focusing on replicating items in a fun, yet challenging way. With empasis on realism this mod will make you think not just craft.
+mainPage.info.header=Mod Information
+mainPage.authors=Authors
+mainPage.authors.list=Dyonovan, pauljoda, Dominance, beef
+mainPage.categories.header=Categories
+mainPage.categories.teslaCoil=Tesla Coil

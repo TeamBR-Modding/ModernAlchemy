@@ -15,8 +15,8 @@ public class ComponentTextBox extends ComponentBase {
     @Override
     public void drawComponent(int x, int y, int mouseX, int mouseY) {
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-        int drawX = x + 15;
-        int drawY = y;
+        int drawX = x + xPos;
+        int drawY = y + yPos;
         fontRenderer.drawSplitString(textField, drawX, drawY, 110, 4210752);
     }
 }

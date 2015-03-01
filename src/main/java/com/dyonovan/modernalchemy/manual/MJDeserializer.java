@@ -1,5 +1,6 @@
 package com.dyonovan.modernalchemy.manual;
 
+import com.dyonovan.modernalchemy.manual.component.IComponent;
 import com.google.gson.*;
 import net.minecraft.util.ResourceLocation;
 
@@ -35,6 +36,7 @@ public class MJDeserializer implements JsonDeserializer<ManualJson> {
                 String destination = je.get("destination").getAsString();
                 String type = je.get("type").getAsString();
                 String item = je.get("item").getAsString();
+                IComponent.ALIGNMENT alignment = IComponent.ALIGNMENT.values()[je.get("alignment").getAsInt()];
 
                 JsonObject jo =  je.get("resource").getAsJsonObject();
                 String resourceDomain = jo.get("resourceDomain").getAsString();
@@ -47,7 +49,7 @@ public class MJDeserializer implements JsonDeserializer<ManualJson> {
                     JsonElement jsonTT = jaTooltips.get(j);
                     tooltips.add(jsonTT.getAsString());
                 }
-                mc.add(new ManualComponents(type, xPos, yPos, width, height, pageNum, text, destination, item, rl, tooltips));
+                mc.add(new ManualComponents(type, xPos, yPos, width, height, alignment, pageNum, text, destination, item, rl, tooltips));
             }
             manualJson = new ManualJson(title, pages, mc);
         }
