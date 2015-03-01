@@ -21,12 +21,12 @@ repositories {
         url "http://mobiusstrip.eu/maven"
     }
     maven { // the repo from which to get NEI and stuff
-        name 'CB Repo'
+        name "CB Repo"
         url "http://chickenbones.net/maven/"
     }
     maven { // the repo from which to get NEI and stuff
-        name 'TeamBR-Core'
-        url "http://beyondrealitycore.com/maven2"
+        name "BR Repo"
+        url "http://beyondrealitypack.com/maven2"
     }
 }
 
@@ -41,7 +41,7 @@ configFile.withReader {
 }
 
 dependencies {
-    compile "com.dyonovan.teambrcore:TeamBRCore:1.7.10-0.1-ALPHA-1-B28"
+    compile "com.dyonovan.teambrcore:TeamBRCore:${config.minecraft_version}-${config.teambrcore_version}:dev"
     compile "codechicken:CodeChickenCore:${config.minecraft_version}-${config.ccc_version}:dev"
     compile "codechicken:CodeChickenLib:${config.minecraft_version}-${config.CCLIB_version}:dev"
     compile "codechicken:NotEnoughItems:${config.minecraft_version}-${config.NEI_version}:dev"
