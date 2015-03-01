@@ -196,6 +196,7 @@ public class ManualRegistry {
         }
         return files;
     }
+
     /**
      * Reads the Json into usable information
      * @param br {@link java.io.BufferedReader} that contains the json file
