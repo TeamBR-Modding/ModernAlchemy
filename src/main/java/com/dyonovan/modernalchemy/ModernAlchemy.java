@@ -59,23 +59,11 @@ public class ModernAlchemy {
         EntityHandler.init();
         WorldGeneratorHandler.init();
         EventManager.init();
-        proxy.registerRenderer();
+        proxy.init();
 
         BucketHandler.INSTANCE.buckets.put(BlockHandler.blockFluidActinium, ItemHandler.itemBucketActinium);
-        ManualRegistry.instance.init();
 
         ReplicatorUtils.buildDirectory(event.getModConfigurationDirectory().getAbsolutePath() + File.separator + Constants.MODID.toLowerCase() + File.separator + "replicatorValues");
-
-        /*//TESTING
-        ArrayList<ManualComponents> comp = new  ArrayList<ManualComponents>();
-        ArrayList<String> tools = new ArrayList<String>();
-        tools.add("Test");
-        ResourceLocation rl = new ResourceLocation(Constants.MODID + ":textures/gui/ma_furnace.png");
-        comp.add(new ManualComponents("HEADER", 1, 2, 3, 4, 1, "Test", "", "minecraft:diamond", rl, tools));
-        ArrayList<ManualJson> test = new ArrayList<ManualJson>();
-        test.add(new ManualJson("Test1", 1, comp));
-
-        ManualRegistry.instance.writeManJson(test);*/
     }
 
     @SuppressWarnings("unused")

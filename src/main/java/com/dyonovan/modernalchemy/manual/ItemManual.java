@@ -3,6 +3,7 @@ package com.dyonovan.modernalchemy.manual;
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -47,11 +48,12 @@ public class ItemManual extends Item {
     @Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
         if(world.isRemote) {
-            if(ManualRegistry.instance.getPage(world.getBlock(x, y, z).getUnlocalizedName()) != null) {
-                if(stack.hasTagCompound())
-                    player.openGui(ModernAlchemy.instance, GuiHandler.MANUAL_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
-                else
+            GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(world.getBlock(x, y, z));
+            if(ManualRegistry.instance.getPage(id.name) != null) {
+                if(ManualRegistry.instance.getOpenPage().getID() == ManualRegistry.instance.getPage(id.name).getID())
                     ManualRegistry.instance.openManual();
+                else
+                    ManualRegistry.instance.visitNewPage(id.name);
                 return true;
             }
         }
@@ -63,7 +65,6 @@ public class ItemManual extends Item {
     {
         if(world.isRemote) {
             ManualRegistry.instance.openManual();
-            //entityPlayer.openGui(ModernAlchemy.instance, GuiHandler.MANUAL_GUI_ID, world, (int) entityPlayer.posX, (int) entityPlayer.posY, (int) entityPlayer.posZ);
         }
         return itemStack;
     }

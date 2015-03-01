@@ -1,25 +1,126 @@
 [
   {
-    "title": "Test1",
-    "numPages": 1,
+    "title": "itemGroup.tabModernAlchemy",
+    "numPages": 2,
     "component": [
       {
-        "xPos": 1,
-        "yPos": 2,
-        "width": 3,
-        "height": 4,
+        "xPos": 15,
+        "yPos": 30,
+        "width": 107,
+        "height": 65,
         "pageNum": 1,
-        "text": "Test",
+        "text": "",
         "destination": "",
-        "type": "HEADER",
-        "item": "minecraft:diamond",
+        "type": "IMAGE",
+        "item": "",
+        "alignment" : 0,
         "resource": {
           "resourceDomain": "modernalchemy",
-          "resourcePath": "textures/gui/ma_furnace.png"
+          "resourcePath": "textures/gui/manual/mainImage.png"
         },
-        "tooltips": [
-          "Test"
-        ]
+        "tooltips": []
+      },
+      {
+        "xPos": 15,
+        "yPos": 100,
+        "width": 100,
+        "height": 15,
+        "pageNum": 1,
+        "text": "mainPage.authors",
+        "destination": "",
+        "type": "HEADER",
+        "item": "",
+        "alignment" : 1,
+        "resource": {
+          "resourceDomain": "",
+          "resourcePath": ""
+        },
+        "tooltips": []
+      },
+      {
+        "xPos": 15,
+        "yPos": 115,
+        "width": 100,
+        "height": 20,
+        "pageNum": 1,
+        "text": "mainPage.authors.list",
+        "destination": "",
+        "type": "TEXT_BOX",
+        "item": "",
+        "alignment" : 0,
+        "resource": {
+          "resourceDomain": "",
+          "resourcePath": ""
+        },
+        "tooltips": []
+      },
+      {
+        "xPos": 135,
+        "yPos": 15,
+        "width": 100,
+        "height": 10,
+        "pageNum": 1,
+        "text": "mainPage.info.header",
+        "destination": "",
+        "type": "HEADER",
+        "item": "",
+        "alignment" : 1,
+        "resource": {
+          "resourceDomain": "",
+          "resourcePath": ""
+        },
+        "tooltips": []
+      },
+      {
+        "xPos": 135,
+        "yPos": 30,
+        "width": 100,
+        "height": 100,
+        "pageNum": 1,
+        "text": "mainPage.info",
+        "destination": "",
+        "type": "TEXT_BOX",
+        "item": "",
+        "alignment" : 0,
+        "resource": {
+          "resourceDomain": "",
+          "resourcePath": ""
+        },
+        "tooltips": []
+      },
+      {
+        "xPos": 15,
+        "yPos": 15,
+        "width": 100,
+        "height": 10,
+        "pageNum": 2,
+        "text": "mainPage.categories.header",
+        "destination": "",
+        "type": "HEADER",
+        "item": "",
+        "alignment" : 1,
+        "resource": {
+          "resourceDomain": "",
+          "resourcePath": ""
+        },
+        "tooltips": []
+      },
+      {
+        "xPos": 15,
+        "yPos": 30,
+        "width": 100,
+        "height": 10,
+        "pageNum": 2,
+        "text": "mainPage.categories.teslaCoil",
+        "destination": "blockCoil",
+        "type": "LINK",
+        "item": "",
+        "alignment" : 0,
+        "resource": {
+          "resourceDomain": "",
+          "resourcePath": ""
+        },
+        "tooltips": ["Click here for more details"]
       }
     ]
   }

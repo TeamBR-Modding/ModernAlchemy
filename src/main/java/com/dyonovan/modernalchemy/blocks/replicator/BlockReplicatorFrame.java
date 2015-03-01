@@ -232,13 +232,6 @@ public class BlockReplicatorFrame extends BlockBase {
         }
     }
 
-    @Override
-    public List<ComponentBase> getManualComponents() {
-        List<ComponentBase> parts = new ArrayList<ComponentBase>();
-        parts.add(new ComponentItemRender(30, new ItemStack(this)));
-        return parts;
-    }
-
     static class RaytraceResult {
     public final MovingObjectPosition movingObjectPosition;
     public final AxisAlignedBB boundingBox;

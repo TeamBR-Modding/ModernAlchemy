@@ -24,13 +24,6 @@ public class BlockDummyAirValve extends BlockDummy {
         return new TileDummyAirValve();
     }
 
-    @Override
-    public List<ComponentBase> getManualComponents() {
-        List<ComponentBase> parts = new ArrayList<ComponentBase>();
-        parts.add(new ComponentItemRender(30, new ItemStack(this)));
-        return parts;
-    }
-
     @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(IIconRegister register) {

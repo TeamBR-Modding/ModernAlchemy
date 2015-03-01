@@ -51,8 +51,6 @@ public abstract class BlockBase extends BlockContainer{
         return true;
     }
 
-    public abstract List<ComponentBase> getManualComponents();
-
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
         if (player.isSneaking() && player.getCurrentEquippedItem() != null && WrenchHelper.isWrench(player.getCurrentEquippedItem().getItem())) {

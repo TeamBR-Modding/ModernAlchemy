@@ -4,16 +4,16 @@ import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.manual.ManualRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
 
 public class ComponentLink extends ComponentBase {
     protected String title;
     protected String destination;
 
-    public ComponentLink(String label, String dest, ALIGNMENT alignment) {
-        setAlignment(alignment);
+    public ComponentLink(String label, String dest) {
+        setAlignment(ALIGNMENT.LEFT);
         title = label;
         destination = dest;
-        addToTip(GuiHelper.GuiColor.YELLOW + "Click To Open Details");
     }
 
     @Override
@@ -27,20 +27,20 @@ public class ComponentLink extends ComponentBase {
     @Override
     public void drawComponent(int x, int y, int mouseX, int mouseY) {
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-        int drawX = x;
+        int drawX = x + xPos;
         switch(alignment) {
             case RIGHT :
-                drawX += 100 - fontRenderer.getStringWidth(title);
+                drawX += 85 - fontRenderer.getStringWidth(title);
                 break;
             case CENTER :
-                drawX += 67 - (fontRenderer.getStringWidth(title) / 2);
+                drawX += 53 - (fontRenderer.getStringWidth(title) / 2);
                 break;
             case LEFT :
             default :
-                drawX += 15;
+                drawX += 0;
                 break;
         }
-        int drawY = y;
+        int drawY = y + yPos;
         fontRenderer.drawSplitString(GuiHelper.GuiColor.BLUE + title, drawX, drawY, 110, 4210752);
         super.drawComponent(x, y, mouseX, mouseY);
     }

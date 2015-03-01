@@ -10,15 +10,15 @@ import org.lwjgl.opengl.GL11;
 public class ComponentImage extends ComponentBase {
     protected ResourceLocation image;
 
-    public ComponentImage(int width, int height, ResourceLocation resource) {
+    public ComponentImage(ResourceLocation resource) {
         image = resource;
     }
-
 
     @Override
     public void drawComponent(int x, int y, int mouseX, int mouseY) {
         Minecraft.getMinecraft().renderEngine.bindTexture(image);
-        int drawX = x + 15;
+        int drawX = x + xPos;
+        int drawY = y + yPos;
         GL11.glPushMatrix();
         RenderHelper.disableStandardItemLighting();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -27,10 +27,10 @@ public class ComponentImage extends ComponentBase {
         RenderHelper.enableGUIStandardItemLighting();
         Tessellator tess = Tessellator.instance;
         tess.startDrawingQuads();
-        tess.addVertexWithUV(drawX, y, 0, 0.0, 0.0);
-        tess.addVertexWithUV(drawX, y + height, 0, 0.0, 1.0);
-        tess.addVertexWithUV(drawX + width, y + height, 0, 1.0, 1.0);
-        tess.addVertexWithUV(drawX + width, y, 0, 1.0, 0.0);
+        tess.addVertexWithUV(drawX, drawY, 0, 0.0, 0.0);
+        tess.addVertexWithUV(drawX, drawY + height, 0, 0.0, 1.0);
+        tess.addVertexWithUV(drawX + width, drawY + height, 0, 1.0, 1.0);
+        tess.addVertexWithUV(drawX + width, drawY, 0, 1.0, 0.0);
         tess.draw();
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_DEPTH_TEST);

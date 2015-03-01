@@ -33,6 +33,8 @@ public class GuiManual extends BaseGui implements Comparable<GuiManual> {
     public GuiManual(String pageId) {
         super(new ContainerPage());
         title = new ComponentHeader("");
+        title.setPositionAndSize(15, 15, 100, 15);
+        title.setAlignment(IComponent.ALIGNMENT.CENTER);
         pages = new ArrayList<ComponentSet>();
         pages.add(new ComponentSet());
         pages.get(0).add(title);
@@ -51,6 +53,8 @@ public class GuiManual extends BaseGui implements Comparable<GuiManual> {
         this.buttonList.add(new GuiButton(0, -1000, -1000, 50, 20, "Next"));
         this.buttonList.add(new GuiButton(1, -1000, -1000, 50, 20, "Previous"));
         this.buttonList.add(new GuiButton(2, -1000, -1000, 50, 20, "Back"));
+        if(!ManualRegistry.instance.isAtRoot())
+            this.buttonList.set(2, new GuiButton(2, guiLeft - 10, guiTop, 50, 20, "Back"));
 
         if(currentIndex == 0 && pages.size() > 1)
             this.buttonList.set(0, new GuiButton(0, guiLeft + 200, guiTop + 150, 50, 20, "Next"));
@@ -139,7 +143,8 @@ public class GuiManual extends BaseGui implements Comparable<GuiManual> {
         else if(button.id == 2) {
             ManualRegistry.instance.deleteLastPage();
             ManualRegistry.instance.openManual();
-            this.buttonList.set(2, new GuiButton(2, -1000, -1000, ""));
+            if(ManualRegistry.instance.isAtRoot())
+                this.buttonList.set(2, new GuiButton(2, -1000, -1000, ""));
         }
     }
 
