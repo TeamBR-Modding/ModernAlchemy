@@ -38,9 +38,16 @@ modernalchemy.nei.arcfurnace=Arc Furnace Recipes
 
 itemGroup.tabModernAlchemy=Modern Alchemy
 
+pageHeaders.description=Description
+pageHeaders.moreInfo=More Information
+
 mainPage.info=Create items with lighting and radioactive material. A mid to late game mod focusing on replicating items in a fun, yet challenging way. With empasis on realism this mod will make you think not just craft.
 mainPage.info.header=Mod Information
 mainPage.authors=Authors
 mainPage.authors.list=Dyonovan, pauljoda, Dominance, beef
 mainPage.categories.header=Categories
-mainPage.categories.teslaCoil=Tesla Coil
+
+blocksPage.title=Blocks
+
+pageTeslaCoil.description=The Tesla Coil is a monument of engineering, it will accept RF in through the bottom and convert to Tesla energy and transmit it via its head piece to nearby machines and devices.
+pageTeslaCoil.moreInfo=The Tesla Coil has a side effect called death, it will hurt and ignite you if you come in contact with a bolt of energy. To prevent accidental death or personal injury wear a pair of Faraday Armor, bolts also can kill mobs and charge creepers.

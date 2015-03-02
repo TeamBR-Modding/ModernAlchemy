@@ -1,0 +1,25 @@
+[
+  {
+    "title" : "blocksPage.title",
+    "numPages" : 1,
+    "component" : [
+      {
+        "xPos": 15,
+        "yPos": 30,
+        "width": 110,
+        "height": 15,
+        "pageNum": 1,
+        "text": "tile.modernalchemy:blockTeslaCoil.name",
+        "destination": "blockCoil",
+        "type": "LINK",
+        "item": "",
+        "alignment" : 0,
+        "resource": {
+          "resourceDomain": "",
+          "resourcePath": ""
+        },
+        "tooltips": [ "Click for details" ]
+      }
+    ]
+  }
+]

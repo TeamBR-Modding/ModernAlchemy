@@ -1,9 +1,144 @@
 [
   {
     "title" : "tile.modernalchemy:blockTeslaCoil.name",
-    "numPages" : 1,
+    "numPages" : 2,
     "component" : [
-
+      {
+        "xPos": 60,
+        "yPos": 35,
+        "width": 30,
+        "height": 30,
+        "pageNum": 1,
+        "text": "",
+        "destination": "",
+        "type": "ITEM_RENDER",
+        "item": "modernalchemy:blockCoil:0",
+        "alignment" : 0,
+        "resource": {
+          "resourceDomain": "",
+          "resourcePath": ""
+        },
+        "tooltips": []
+      },
+      {
+        "xPos": 15,
+        "yPos": 100,
+        "width": 110,
+        "height": 15,
+        "pageNum": 1,
+        "text": "See Also",
+        "destination": "",
+        "type": "HEADER",
+        "item": "",
+        "alignment" : 1,
+        "resource": {
+          "resourceDomain": "",
+          "resourcePath": ""
+        },
+        "tooltips": []
+      },
+      {
+        "xPos": 15,
+        "yPos": 115,
+        "width": 110,
+        "height": 15,
+        "pageNum": 1,
+        "text": "Tesla Coil Stand",
+        "destination": "blockTeslaStand",
+        "type": "LINK",
+        "item": "",
+        "alignment" : 0,
+        "resource": {
+          "resourceDomain": "",
+          "resourcePath": ""
+        },
+        "tooltips": ["Click for more details"]
+      },
+      {
+        "xPos": 15,
+        "yPos": 130,
+        "width": 110,
+        "height": 15,
+        "pageNum": 1,
+        "text": "Tesla Coil Base",
+        "destination": "blockTeslaBase",
+        "type": "LINK",
+        "item": "",
+        "alignment" : 0,
+        "resource": {
+          "resourceDomain": "",
+          "resourcePath": ""
+        },
+        "tooltips": ["Click for more details"]
+      },
+      {
+        "xPos": 135,
+        "yPos": 15,
+        "width": 110,
+        "height": 15,
+        "pageNum": 1,
+        "text": "pageHeaders.description",
+        "destination": "",
+        "type": "Header",
+        "item": "",
+        "alignment" : 1,
+        "resource": {
+          "resourceDomain": "",
+          "resourcePath": ""
+        },
+        "tooltips": []
+      },
+      {
+        "xPos": 135,
+        "yPos": 30,
+        "width": 110,
+        "height": 100,
+        "pageNum": 1,
+        "text": "pageTeslaCoil.description",
+        "destination": "",
+        "type": "TEXT_BOX",
+        "item": "",
+        "alignment" : 0,
+        "resource": {
+          "resourceDomain": "",
+          "resourcePath": ""
+        },
+        "tooltips": []
+      },
+      {
+        "xPos": 15,
+        "yPos": 15,
+        "width": 110,
+        "height": 15,
+        "pageNum": 2,
+        "text": "pageHeaders.moreInfo",
+        "destination": "",
+        "type": "Header",
+        "item": "",
+        "alignment" : 1,
+        "resource": {
+          "resourceDomain": "",
+          "resourcePath": ""
+        },
+        "tooltips": []
+      },
+      {
+        "xPos": 15,
+        "yPos": 30,
+        "width": 110,
+        "height": 100,
+        "pageNum": 2,
+        "text": "pageTeslaCoil.moreInfo",
+        "destination": "",
+        "type": "TEXT_BOX",
+        "item": "",
+        "alignment" : 0,
+        "resource": {
+          "resourceDomain": "",
+          "resourcePath": ""
+        },
+        "tooltips": []
+      }
     ]
   }
 ]

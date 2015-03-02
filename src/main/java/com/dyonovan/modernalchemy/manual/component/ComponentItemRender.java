@@ -4,6 +4,7 @@ import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
@@ -21,12 +22,8 @@ public class ComponentItemRender extends ComponentBase {
     public void drawComponent(int x, int y, int mouseX, int mouseY) {
         GL11.glPushMatrix();
         RenderHelper.enableGUIStandardItemLighting();
-
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        if(!stack.getDisplayName().contains("Tesla Coil"))
-            GL11.glTranslated(x + (115 / 2) + 12, y + width, 0);
-        else
-            GL11.glTranslated(x + (115 / 2) - 10, y + 10, 0);
+        GL11.glTranslated(x + xPos - (width / 2), y + yPos + (width / 2), 0);
         GL11.glDisable(GL11.GL_CULL_FACE);
 
         GL11.glRotated(150, 1.0, 0.0, 0.0);
