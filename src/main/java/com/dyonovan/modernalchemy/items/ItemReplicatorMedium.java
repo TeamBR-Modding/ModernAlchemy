@@ -9,7 +9,7 @@ public class ItemReplicatorMedium extends Item {
     public ItemReplicatorMedium() {
         this.setUnlocalizedName(Constants.MODID + ":itemReplicationMedium");
         this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
-        this.setTextureName(Constants.MODID + ":cube");
+        this.setTextureName(Constants.MODID + ":replication_medium");
         this.setMaxStackSize(64);
     }
 }
