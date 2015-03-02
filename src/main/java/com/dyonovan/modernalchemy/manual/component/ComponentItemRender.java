@@ -1,11 +1,8 @@
 package com.dyonovan.modernalchemy.manual.component;
 
-import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;

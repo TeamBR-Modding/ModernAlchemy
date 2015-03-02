@@ -12,7 +12,7 @@
         "text": "",
         "destination": "",
         "type": "ITEM_RENDER",
-        "item": "modernalchemy:blockCoil:0",
+        "item": "modernalchemy:blockTeslaCoil:0",
         "alignment" : 0,
         "resource": {
           "resourceDomain": "",

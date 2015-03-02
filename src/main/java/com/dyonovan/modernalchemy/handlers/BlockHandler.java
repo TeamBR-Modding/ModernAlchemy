@@ -67,10 +67,10 @@ public class BlockHandler {
         GameRegistry.registerBlock(blockFluidAir, "blockFluidAir");
 
         //Ore Actinium
-        registerBlock(blockOreActinium = new BlockOreActinium(), "oreActinium", null);
+        registerBlock(blockOreActinium = new BlockOreActinium(), "blockOreActinium", null);
 
         //Ore Copper
-        registerBlock(blockOreCopper = new BlockOreCopper(), "oreCopper", null);
+        registerBlock(blockOreCopper = new BlockOreCopper(), "blockOreCopper", null);
         OreDictionary.registerOre("oreCopper", new ItemStack(blockOreCopper));
 
         //BlockElectricBellows
@@ -80,25 +80,25 @@ public class BlockHandler {
         registerBlock(blockAmalgamator = new BlockAmalgamator(), "blockAmalgamator", TileAmalgamator.class);
 
         // Block Pattern Recorder
-        registerBlock(blockPatternRecorder = new BlockPatternRecorder(), "patternRecorder", TilePatternRecorder.class);
+        registerBlock(blockPatternRecorder = new BlockPatternRecorder(), "blockPatternRecorder", TilePatternRecorder.class);
 
         //ArcFurnaceCore
-        registerBlock(blockArcFurnaceCore = new BlockArcFurnaceCore(), "arcFurnaceCore", TileArcFurnaceCore.class);
+        registerBlock(blockArcFurnaceCore = new BlockArcFurnaceCore(), "blockArcFurnaceCore", TileArcFurnaceCore.class);
 
         //ArcFurnaceDummy
-        registerBlock(blockArcFurnaceDummy = new BlockDummy("arcFurnaceDummy"), "arcFurnaceDummy", TileDummy.class);
+        registerBlock(blockArcFurnaceDummy = new BlockDummy("blockArcFurnaceDummy"), "blockArcFurnaceDummy", TileDummy.class);
 
         //ArcFurnaceDummy Energy
-        registerBlock(blockArcFurnaceDummyEnergy = new BlockDummyEnergyReciever("arcFurnaceDummyEnergy"), "arcFurnaceDummyEnergy", TileDummyEnergyReciever.class);
+        registerBlock(blockArcFurnaceDummyEnergy = new BlockDummyEnergyReciever("blockArcFurnaceDummyEnergy"), "blockArcFurnaceDummyEnergy", TileDummyEnergyReciever.class);
 
         //ArcFurnaceDummyItemIO
-        registerBlock(blockArcFurnaceDummyItemIO = new BlockItemIODummy("arcFurnaceDummyItemIO"), "arcFurnaceDummyItemIO", TileDummyItemIO.class);
+        registerBlock(blockArcFurnaceDummyItemIO = new BlockItemIODummy("blockArcFurnaceDummyItemIO"), "blockArcFurnaceDummyItemIO", TileDummyItemIO.class);
 
         //ArcFurnaceDummyAirValue
-        registerBlock(blockArcFurnaceDummyAirValve = new BlockDummyAirValve("arcFurnaceDummyAirValve"), "arcFurnaceDummyAirValve", TileDummyAirValve.class);
+        registerBlock(blockArcFurnaceDummyAirValve = new BlockDummyAirValve("blockArcFurnaceDummyAirValve"), "blockArcFurnaceDummyAirValve", TileDummyAirValve.class);
 
         //ArcFurnaceDummyOutputValue
-        registerBlock(blockArcFurnaceDummyOutputValve = new BlockDummyOutputValve("arcFurnaceDummyOutputValve"), "arcFurnaceDummyOutputValve", TileDummyOutputValve.class);
+        registerBlock(blockArcFurnaceDummyOutputValve = new BlockDummyOutputValve("blockArcFurnaceDummyOutputValve"), "blockArcFurnaceDummyOutputValve", TileDummyOutputValve.class);
 
         //Tesla Base
         registerBlock(blockTeslaBase = new BlockTeslaBase(), "blockTeslaBase", TileTeslaBase.class);
@@ -107,7 +107,7 @@ public class BlockHandler {
         registerBlock(blockTeslaStand = new BlockTeslaStand(), "blockTeslaStand", TileTeslaStand.class);
 
         //Tesla Coil
-        registerBlock(blockCoil = new BlockTeslaCoil(), "blockCoil", TileTeslaCoil.class);
+        registerBlock(blockCoil = new BlockTeslaCoil(), "blockTeslaCoil", TileTeslaCoil.class);
 
         //BlockFrameEnergy
         registerBlock(blockReplicatorCPU = new BlockReplicatorCPU(), "blockReplicatorCPU", TileReplicatorCPU.class);
@@ -119,7 +119,7 @@ public class BlockHandler {
         registerBlock(blockReplicatorStand = new BlockReplicatorStand(), "blockReplicatorStand", TileReplicatorStand.class);
 
         //BlockFurnace
-        registerBlock(blockAdvancedFurnace = new BlockAdvancedCrafter(), "blockAdvancedFurnace", TileAdvancedCrafter.class);
+        registerBlock(blockAdvancedFurnace = new BlockAdvancedCrafter(), "blockAdvancedCrafter", TileAdvancedCrafter.class);
     }
 
     public static void registerBlock(Block registerBlock, String name, Class<? extends TileEntity> tileEntity) {
