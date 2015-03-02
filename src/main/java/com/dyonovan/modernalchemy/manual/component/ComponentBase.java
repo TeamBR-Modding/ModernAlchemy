@@ -1,5 +1,6 @@
 package com.dyonovan.modernalchemy.manual.component;
 
+import com.dyonovan.modernalchemy.manual.pages.GuiManual;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
@@ -18,7 +19,6 @@ public class ComponentBase extends GuiScreen implements IComponent {
     protected ALIGNMENT alignment = ALIGNMENT.CENTER;
     protected List<String> toolTip = new ArrayList<String>();
     private int delay = 0;
-    private int inputDelay = 0;
     public int xPos = 0;
     public int yPos = 0;
     public int width = 0;
@@ -43,20 +43,20 @@ public class ComponentBase extends GuiScreen implements IComponent {
     public void drawComponent(int x, int y, int mouseX, int mouseY) {
         if(mouseX > x + xPos && mouseX < x + xPos + width && mouseY > y + yPos && mouseY <= y + yPos + height && !toolTip.isEmpty()) {
             if(++delay > 20)
-            drawHoveringText(toolTip, mouseX, mouseY, Minecraft.getMinecraft().fontRenderer);
+                drawHoveringText(toolTip, mouseX, mouseY, Minecraft.getMinecraft().fontRenderer);
         }
         else
             delay = 0;
 
         if(mouseX > x + xPos && mouseX < x + xPos + width && mouseY > y + yPos && mouseY <= y + yPos + height) {
-            if(Mouse.isButtonDown(0) && inputDelay < 0)
+            if(Mouse.isButtonDown(0) && GuiManual.inputDelay < 0)
                 onMouseLeftClick();
         }
-        inputDelay--;
     }
 
     public void onMouseLeftClick() {
-        inputDelay = 20;
+        GuiManual.inputDelay = 20;
+        GuiManual.playClickSound();
     }
 
     public void drawRectangle(int x1, int y1, int x2, int y2, Color color) {

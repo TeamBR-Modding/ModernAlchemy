@@ -1,11 +1,11 @@
-package com.dyonovan.modernalchemy.manual;
+package com.dyonovan.modernalchemy.manual.util;
 
 import com.dyonovan.modernalchemy.manual.component.IComponent;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
 
-public class ManualComponents {
+public class AbstractComponent {
 
     public int xPos, yPos, width, height, pageNum;
     public String text, destination, type, item;
@@ -13,8 +13,8 @@ public class ManualComponents {
     public ResourceLocation resource;
     public ArrayList<String> tooltips;
 
-    public ManualComponents(String type, int xPos, int yPos, int width, int height, IComponent.ALIGNMENT align, int pageNum, String text, String destination,
-                            String item, ResourceLocation resource, ArrayList<String> tooltips) {
+    public AbstractComponent(String type, int xPos, int yPos, int width, int height, IComponent.ALIGNMENT align, int pageNum, String text, String destination,
+                             String item, ResourceLocation resource, ArrayList<String> tooltips) {
 
         this.type = type;
         this.xPos = xPos;

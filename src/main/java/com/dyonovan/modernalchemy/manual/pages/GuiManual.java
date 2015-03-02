@@ -6,6 +6,11 @@ import com.dyonovan.modernalchemy.manual.ManualRegistry;
 import com.dyonovan.modernalchemy.manual.component.ComponentHeader;
 import com.dyonovan.modernalchemy.manual.component.ComponentSet;
 import com.dyonovan.modernalchemy.manual.component.IComponent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.GuiScreenEvent;
@@ -15,8 +20,10 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
+@SideOnly(Side.CLIENT)
 public class GuiManual extends BaseGui implements Comparable<GuiManual> {
 
+    public static int inputDelay = 0;
     /**
      * The list of components on the pages
      */
@@ -97,6 +104,7 @@ public class GuiManual extends BaseGui implements Comparable<GuiManual> {
         for(int i = 0; i < pages.get(currentIndex).size(); i++) {
             pages.get(currentIndex).get(i).drawComponent(guiLeft, guiTop, mouseX, mouseY);
         }
+        inputDelay--;
     }
 
     @Override
@@ -159,6 +167,10 @@ public class GuiManual extends BaseGui implements Comparable<GuiManual> {
         drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
     }
 
+    public static void playClickSound()
+    {
+        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+    }
     @Override
     public int compareTo(GuiManual o) {
         return this.id.equalsIgnoreCase(o.id) ? 0 : 1;

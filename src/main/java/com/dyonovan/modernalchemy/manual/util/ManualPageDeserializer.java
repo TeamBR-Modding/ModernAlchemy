@@ -1,4 +1,4 @@
-package com.dyonovan.modernalchemy.manual;
+package com.dyonovan.modernalchemy.manual.util;
 
 import com.dyonovan.modernalchemy.manual.component.IComponent;
 import com.google.gson.*;
@@ -7,12 +7,12 @@ import net.minecraft.util.ResourceLocation;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class MJDeserializer implements JsonDeserializer<ManualJson> {
+public class ManualPageDeserializer implements JsonDeserializer<AbstractManualPage> {
 
     @Override
-    public ManualJson deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public AbstractManualPage deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 
-        ManualJson manualJson = null;
+        AbstractManualPage abstractManualPage = null;
 
         //JsonObject jsonObject = json.getAsJsonObject();
         JsonArray jsonArray = json.getAsJsonArray();
@@ -23,7 +23,7 @@ public class MJDeserializer implements JsonDeserializer<ManualJson> {
             int pages = jsonObject.get("numPages").getAsInt();
 
             JsonArray ja = jsonObject.getAsJsonArray("component");
-            ArrayList<ManualComponents> mc = new ArrayList<ManualComponents>();
+            ArrayList<AbstractComponent> mc = new ArrayList<AbstractComponent>();
 
             for (int i = 0; i < ja.size(); i++) {
                 JsonObject je = ja.get(i).getAsJsonObject();
@@ -49,10 +49,10 @@ public class MJDeserializer implements JsonDeserializer<ManualJson> {
                     JsonElement jsonTT = jaTooltips.get(j);
                     tooltips.add(jsonTT.getAsString());
                 }
-                mc.add(new ManualComponents(type, xPos, yPos, width, height, alignment, pageNum, text, destination, item, rl, tooltips));
+                mc.add(new AbstractComponent(type, xPos, yPos, width, height, alignment, pageNum, text, destination, item, rl, tooltips));
             }
-            manualJson = new ManualJson(title, pages, mc);
+            abstractManualPage = new AbstractManualPage(title, pages, mc);
         }
-        return manualJson;
+        return abstractManualPage;
     }
 }

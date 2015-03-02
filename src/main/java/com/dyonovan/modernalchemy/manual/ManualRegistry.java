@@ -5,6 +5,9 @@ import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.helpers.LogHelper;
 import com.dyonovan.modernalchemy.manual.component.*;
 import com.dyonovan.modernalchemy.manual.pages.GuiManual;
+import com.dyonovan.modernalchemy.manual.util.ManualPageDeserializer;
+import com.dyonovan.modernalchemy.manual.util.AbstractComponent;
+import com.dyonovan.modernalchemy.manual.util.AbstractManualPage;
 import com.dyonovan.modernalchemy.util.ReplicatorUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -46,6 +49,7 @@ public class ManualRegistry {
      * Fills the pages registry with all {@link com.dyonovan.modernalchemy.manual.pages.GuiManual} from files
      */
     public void init() {
+        pages.clear();
         ArrayList<String> files = getFilesForPages();
         for(String f : files) {
             if(buildManualFromFile(f) != null)
@@ -137,21 +141,22 @@ public class ManualRegistry {
         GuiManual page = new GuiManual(input.split(".json")[0]);
         InputStream is = ModernAlchemy.class.getResourceAsStream("/manualPages/" + input);
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
-        ManualJson json = readJson(bufferedReader);
+        AbstractManualPage json = readJson(bufferedReader);
 
         page.setTitle(StatCollector.translateToLocal(json.title)); //Set the title
         for (int i = 1; i < json.numPages; i++) //Build the pages
             page.pages.add(new ComponentSet());
-        for (ManualComponents component : json.component) { //Add the components to their page
+        for (AbstractComponent component : json.component) { //Add the components to their page
             page.pages.get(component.pageNum - 1).add(buildFromComponent(component));
         }
         return page;
     }
+
     /**
      * Gets all the files in the manual pages directory ("resources/manualPages")
      * @return An array of {@link java.lang.String}s containing our info
      */
-        public ArrayList<String> getFilesForPages() {
+    public ArrayList<String> getFilesForPages() {
         ArrayList<String> files = new ArrayList<String>();
         String path = "manualPages";
         URL url = ModernAlchemy.class.getResource("/" + path);
@@ -172,14 +177,14 @@ public class ManualRegistry {
                 LogHelper.severe("Could not find Manual Pages");
             }
         } else {
-                try {
-                    File apps = new File(url.toURI());
-                    for (File app : apps.listFiles()) {
-                        files.add(app.getName());
-                    }
-                } catch (URISyntaxException e) {
-                    LogHelper.severe("Could not find Manual Pages");
+            try {
+                File apps = new File(url.toURI());
+                for (File app : apps.listFiles()) {
+                    files.add(app.getName());
                 }
+            } catch (URISyntaxException e) {
+                LogHelper.severe("Could not find Manual Pages");
+            }
 
         }
         return files;
@@ -188,33 +193,32 @@ public class ManualRegistry {
     /**
      * Reads the Json into usable information
      * @param br {@link java.io.BufferedReader} that contains the json file
-     * @return A {@link com.dyonovan.modernalchemy.manual.ManualJson} object with all the information in the file
+     * @return A {@link com.dyonovan.modernalchemy.manual.util.AbstractManualPage} object with all the information in the file
      */
-    public ManualJson readJson(BufferedReader br) {
+    public AbstractManualPage readJson(BufferedReader br) {
         GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(ManualJson.class, new MJDeserializer());
+        gsonBuilder.registerTypeAdapter(AbstractManualPage.class, new ManualPageDeserializer());
         Gson gson = gsonBuilder.create();
-        return gson.fromJson(br, ManualJson.class);
+        return gson.fromJson(br, AbstractManualPage.class);
     }
     /**
-     * Converts the {@link com.dyonovan.modernalchemy.manual.ManualComponents} to {@link com.dyonovan.modernalchemy.manual.component.IComponent}
-     * @param component The {@link com.dyonovan.modernalchemy.manual.ManualComponents} to convert (from Json)
-     * @return The {@link com.dyonovan.modernalchemy.manual.component.IComponent} of the type definded in the {@link com.dyonovan.modernalchemy.manual.ManualComponents}
+     * Converts the {@link com.dyonovan.modernalchemy.manual.util.AbstractComponent} to {@link com.dyonovan.modernalchemy.manual.component.IComponent}
+     * @param component The {@link com.dyonovan.modernalchemy.manual.util.AbstractComponent} to convert (from Json)
+     * @return The {@link com.dyonovan.modernalchemy.manual.component.IComponent} of the type definded in the {@link com.dyonovan.modernalchemy.manual.util.AbstractComponent}
      */
-    public IComponent buildFromComponent(ManualComponents component) {
+    public IComponent buildFromComponent(AbstractComponent component) {
         ComponentBase goodComponent;
-//Component Types:
-//ComponentTextBox - "TEXT_BOX"
-//ComponentCraftingRecipe - "CRAFTING"
-//ComponentHeader - "HEADER"
-//ComponentImage - "IMAGE"
-//ComponentItemRender - "ITEM_RENDER"
-//ComponentLineBreak - "BREAK"
-//ComponentLink - "LINK"
+
+        //Component Types:
+        //ComponentTextBox        - "TEXT_BOX"
+        //ComponentHeader         - "HEADER"
+        //ComponentImage          - "IMAGE"
+        //ComponentItemRender     - "ITEM_RENDER"
+        //ComponentLineBreak      - "BREAK"
+        //ComponentLink           - "LINK"
+
         if(component.type.equalsIgnoreCase("TEXT_BOX"))
             goodComponent = new ComponentTextBox(StatCollector.translateToLocal(component.text));
-        else if(component.type.equalsIgnoreCase("CRAFTING"))
-            goodComponent = new ComponentCraftingRecipe(ReplicatorUtils.getReturn(component.item));
         else if(component.type.equalsIgnoreCase("HEADER"))
             goodComponent = new ComponentHeader(StatCollector.translateToLocal(component.text));
         else if(component.type.equalsIgnoreCase("IMAGE"))
