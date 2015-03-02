@@ -28,9 +28,9 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
     public static final int INPUT_SLOT_3 = 2;
     public static final int INPUT_SLOT_4 = 3;
     public static final int OUTPUT_SLOT = 4;
-    public static final int COOK = 1;
-    public static final int EXTRUDE = 2;
-    public static final int BEND = 3;
+    public static final int COOK = 0;
+    public static final int EXTRUDE = 1;
+    public static final int BEND = 2;
 
     private EnergyStorage energyRF;
     public InventoryTile inventory;
