@@ -10,7 +10,7 @@ pauljoda  - Developer
 
 Dominance - Artist
 
-Beef      - NPE finder
+Beef      - Wiki Admin / Artist / Tester
 
 
 License
