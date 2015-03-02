@@ -57,20 +57,20 @@ public class GuiManual extends BaseGui implements Comparable<GuiManual> {
     @Override
     public void initGui() {
         updateScale();
-        this.buttonList.add(new GuiButton(0, -1000, -1000, 50, 20, "Next"));
-        this.buttonList.add(new GuiButton(1, -1000, -1000, 50, 20, "Previous"));
-        this.buttonList.add(new GuiButton(2, -1000, -1000, 50, 20, "Back"));
+        this.buttonList.add(new GuiButtonManual(0, -1000, -1000, 0));
+        this.buttonList.add(new GuiButtonManual(1, -1000, -1000, 1));
+        this.buttonList.add(new GuiButtonManual(2, -1000, -1000, 2));
         if(!ManualRegistry.instance.isAtRoot())
-            this.buttonList.set(2, new GuiButton(2, guiLeft - 10, guiTop, 50, 20, "Back"));
+            this.buttonList.set(2, new GuiButtonManual(2, guiLeft + 6, guiTop + 5, 2));
 
         if(currentIndex == 0 && pages.size() > 1)
-            this.buttonList.set(0, new GuiButton(0, guiLeft + 200, guiTop + 150, 50, 20, "Next"));
+            this.buttonList.set(0, new GuiButtonManual(0, guiLeft + 232, guiTop + 150, 0));
         else if(currentIndex > 0 && pages.size() > currentIndex + 1) {
-            this.buttonList.set(0, new GuiButton(0, guiLeft + 200, guiTop + 150, 50, 20, "Next"));
-            this.buttonList.set(1, new GuiButton(1, guiLeft + 6, guiTop + 150, 50, 20, "Previous"));
+            this.buttonList.set(0, new GuiButtonManual(0, guiLeft + 232, guiTop + 150, 0));
+            this.buttonList.set(1, new GuiButtonManual(1, guiLeft + 6, guiTop + 150, 1));
         }
         else if(currentIndex > 0)
-            this.buttonList.set(1, new GuiButton(1, guiLeft + 6, guiTop + 150, 50, 20, "Previous"));
+            this.buttonList.set(1, new GuiButtonManual(1, guiLeft + 6, guiTop + 150, 1));
     }
 
     /**
@@ -135,24 +135,24 @@ public class GuiManual extends BaseGui implements Comparable<GuiManual> {
     protected void actionPerformed(GuiButton button) {
         if(button.id == 0) {
             currentIndex++;
-            this.buttonList.set(1, new GuiButton(1, guiLeft + 6, guiTop + 150, 50, 20, "Previous"));
+            this.buttonList.set(1, new GuiButtonManual(1, guiLeft + 6, guiTop + 150, 1));
             if(pages.size() > currentIndex + 1)
-                this.buttonList.set(0, new GuiButton(0, guiLeft + 200, guiTop + 150, 50, 20, "Next"));
+                this.buttonList.set(0, new GuiButtonManual(0, guiLeft + 232, guiTop + 150, 0));
             else
-                this.buttonList.set(0, new GuiButton(1, -1000, -1000, 50, 20, "Next"));
+                this.buttonList.set(0, new GuiButtonManual(1, -1000, -1000, 1));
         }
         else if(button.id == 1) {
             currentIndex--;
             if(currentIndex == 0)
-                this.buttonList.set(1, new GuiButton(1, -1000, -1000, 50, 20, "Previous"));
+                this.buttonList.set(1, new GuiButtonManual(1, -1000, -1000, 1));
             if(pages.get(currentIndex + 1) != null)
-                this.buttonList.set(0, new GuiButton(0, guiLeft + 200, guiTop + 150, 50, 20, "Next"));
+                this.buttonList.set(0, new GuiButtonManual(0, guiLeft + 232, guiTop + 150, 0));
         }
         else if(button.id == 2) {
             ManualRegistry.instance.deleteLastPage();
             ManualRegistry.instance.openManual();
             if(ManualRegistry.instance.isAtRoot())
-                this.buttonList.set(2, new GuiButton(2, -1000, -1000, ""));
+                this.buttonList.set(2, new GuiButtonManual(2, -1000, -1000, 2));
         }
     }
 
@@ -171,6 +171,7 @@ public class GuiManual extends BaseGui implements Comparable<GuiManual> {
     {
         Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
     }
+
     @Override
     public int compareTo(GuiManual o) {
         return this.id.equalsIgnoreCase(o.id) ? 0 : 1;
