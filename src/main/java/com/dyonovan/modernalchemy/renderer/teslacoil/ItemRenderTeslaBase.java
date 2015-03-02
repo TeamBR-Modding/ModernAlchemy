@@ -36,9 +36,7 @@ public class ItemRenderTeslaBase implements IItemRenderer {
             }
             case EQUIPPED: {
                 GL11.glScalef(2.0F, 2.0F, 2.0F);
-                GL11.glRotatef(-45, 1.0F, 0.0F, 0.0F);
-                GL11.glRotatef(45, 0.0F, 0.0F, 1.0F);
-                renderBase(0.2F, 0.2F, 0.5F, item.getItemDamage());
+                renderBase(0.2F, 0.4F, 0.0F, item.getItemDamage());
                 break;
             }
             case EQUIPPED_FIRST_PERSON: {
