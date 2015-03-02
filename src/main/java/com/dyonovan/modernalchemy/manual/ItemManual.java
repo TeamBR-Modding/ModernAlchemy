@@ -1,6 +1,7 @@
 package com.dyonovan.modernalchemy.manual;
 
 import com.dyonovan.modernalchemy.ModernAlchemy;
+import com.dyonovan.modernalchemy.handlers.ConfigHandler;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -50,6 +51,8 @@ public class ItemManual extends Item {
         if(world.isRemote) {
             GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(world.getBlock(x, y, z));
             if(ManualRegistry.instance.getPage(id.name) != null) {
+                if(ConfigHandler.debugMode)
+                    ManualRegistry.instance.init();
                 if(ManualRegistry.instance.getOpenPage().getID() == ManualRegistry.instance.getPage(id.name).getID())
                     ManualRegistry.instance.openManual();
                 else

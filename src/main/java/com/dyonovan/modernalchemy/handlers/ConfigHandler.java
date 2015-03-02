@@ -7,7 +7,7 @@ public class ConfigHandler {
 
     public static String folderLocation;
 
-    public static boolean generateActinium, machineExplodes, machineSounds, poisonDust, genCopper;
+    public static boolean generateActinium, machineExplodes, machineSounds, poisonDust, genCopper, debugMode;
     public static int actiniumMaxLevel, actiniumVeinSize, actiniumVeinsPerChunk, actiniumMinLevel;
     public static int copperMaxLevel, copperVeinSize, copperVeinsPerChunk, copperMinLevel;
     public static int searchRange;
@@ -35,10 +35,12 @@ public class ConfigHandler {
         machineSounds           = config.get(Constants.CONFIG_GENERAL, "Do Machine Sounds?", true).getBoolean();
 
         genCopper               = config.get(Constants.CONFIG_ORE_GENERATION, "Enable Copper Ore Gen", true).getBoolean();
-        copperVeinSize        = config.get(Constants.CONFIG_ORE_GENERATION, "Actinium Vein Size", 12).getInt();
-        copperVeinsPerChunk   = config.get(Constants.CONFIG_ORE_GENERATION, "Actinium Veins Per Chunk", 6).getInt();
-        copperMinLevel        = config.get(Constants.CONFIG_ORE_GENERATION, "Actinium Min Level", 40).getInt();
-        copperMaxLevel        = config.get(Constants.CONFIG_ORE_GENERATION, "Actinium Max Level", 75).getInt();
+        copperVeinSize          = config.get(Constants.CONFIG_ORE_GENERATION, "Actinium Vein Size", 12).getInt();
+        copperVeinsPerChunk     = config.get(Constants.CONFIG_ORE_GENERATION, "Actinium Veins Per Chunk", 6).getInt();
+        copperMinLevel          = config.get(Constants.CONFIG_ORE_GENERATION, "Actinium Min Level", 40).getInt();
+        copperMaxLevel          = config.get(Constants.CONFIG_ORE_GENERATION, "Actinium Max Level", 75).getInt();
+
+        debugMode               = config.get("DEBUG" , "Enable Debug Mode?", false).getBoolean();
 
         config.save();
     }

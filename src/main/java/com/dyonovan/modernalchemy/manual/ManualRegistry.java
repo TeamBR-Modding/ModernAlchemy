@@ -49,6 +49,7 @@ public class ManualRegistry {
      * Fills the pages registry with all {@link com.dyonovan.modernalchemy.manual.pages.GuiManual} from files
      */
     public void init() {
+        pages.clear();
         ArrayList<String> files = getFilesForPages();
         for(String f : files) {
             if(buildManualFromFile(f) != null)
