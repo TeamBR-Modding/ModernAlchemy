@@ -78,24 +78,22 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
         });
 
         for (RecipeAdvancedCrafter recipe : AdvancedCrafterRecipeRegistry.instance.recipes) {
-            ArrayList<Item> tempInput = recipe.getInput();
+            ArrayList<Item> tempInput = (ArrayList<Item>) recipe.getInput().clone();
 
             //Deal with oredict recipes.
             if (recipe.getInput().contains(ItemHandler.itemCopperIngot)) {
-                for (ItemStack itemstack : OreDictionary.getOres("ingotCopper")) {
+                for (ItemStack orestack : OreDictionary.getOres("ingotCopper")) {
                     for (int i = 0; i < 4; i++) {
-                        if (inventory.getStackInSlot(i) == null) continue;
-                        if (itemstack.getItem() == inventory.getStackInSlot(i).getItem())
-                            Collections.replaceAll(tempInput, ItemHandler.itemCopperIngot, itemstack.getItem());
+                        if (inventory.getStackInSlot(i) != null && orestack.isItemEqual(inventory.getStackInSlot(i)))
+                            Collections.replaceAll(tempInput, ItemHandler.itemCopperIngot, orestack.getItem());
                     }
                 }
             }
             if (recipe.getInput().contains(ItemHandler.itemSteelIngot)) {
-                for (ItemStack itemstack : OreDictionary.getOres("ingotCopper")) {
+                for (ItemStack orestack : OreDictionary.getOres("ingotSteel")) {
                     for (int i = 0; i < 4; i++) {
-                        if (inventory.getStackInSlot(i) == null) continue;
-                        if (itemstack.getItem() == inventory.getStackInSlot(i).getItem())
-                            Collections.replaceAll(tempInput, ItemHandler.itemCopperIngot, itemstack.getItem());
+                        if (inventory.getStackInSlot(i) != null && orestack.isItemEqual(inventory.getStackInSlot(i)))
+                            Collections.replaceAll(tempInput, ItemHandler.itemSteelIngot, orestack.getItem());
                     }
                 }
             }
