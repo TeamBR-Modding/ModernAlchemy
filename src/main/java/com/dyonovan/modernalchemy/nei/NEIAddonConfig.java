@@ -12,6 +12,8 @@ public class NEIAddonConfig implements IConfigureNEI {
     @Override
     public void loadConfig() {
         registerHandler(new RecipeHandlerArcFurnace());
+        registerHandler(new RecipeHandlerAdvancedCrafter());
+        registerHandler(new RecipeHandlerSolidifier());
         ModernAlchemy.nei = new NEICallback();
     }
 

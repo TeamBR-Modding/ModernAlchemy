@@ -37,6 +37,11 @@ fluid.modernalchemy:fluidActinium=Actinium
 
 modernalchemy.nei.name=Modern Alchemy NEI
 modernalchemy.nei.arcfurnace=Arc Furnace Recipes
+modernalchemy.nei.advancedCrafter=Advanced Crafter
+modernalchemy.nei.solidifier=Amalgamator
+modernalchemy.advancedCrafter.enriching=Enriching
+modernalchemy.advancedCrafter.extruding=Extruding
+modernalchemy.advancedCrafter.bending=Bending
 
 itemGroup.tabModernAlchemy=Modern Alchemy
 

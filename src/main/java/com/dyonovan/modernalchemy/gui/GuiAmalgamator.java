@@ -23,7 +23,7 @@ public class GuiAmalgamator extends BaseGui  {
     public GuiAmalgamator(InventoryPlayer inventory, TileAmalgamator tile) {
         super(new ContainerAmalgamator(inventory, tile));
         this.tile = tile;
-
+        setArrowLocation(108, 35, 24, 16);
         widgets.add(new WidgetLiquidTank(this, tile.tank, 37, 78, 52));
         widgets.add(new WidgetEnergyBank(this, tile.getEnergyBank(), 8, 78));
         widgets.add(new WidgetPulse(this, tile, 79, 42));
