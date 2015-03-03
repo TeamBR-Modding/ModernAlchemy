@@ -1,10 +1,9 @@
 package com.dyonovan.modernalchemy.handlers;
 
-import com.dyonovan.modernalchemy.crafting.ArcFurnaceRecipeRegistry;
 import com.dyonovan.modernalchemy.crafting.AdvancedCrafterRecipeRegistry;
+import com.dyonovan.modernalchemy.crafting.ArcFurnaceRecipeRegistry;
 import com.dyonovan.modernalchemy.tileentity.machines.TileAdvancedCrafter;
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -103,6 +102,14 @@ public class CraftingHandler {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemHandler.itemWrench), "A A", " A ", " A ",
                 'A', "plateSteel"));
 
+        //Blank Pattern
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemHandler.itemReplicatorPattern), "AAA", "ABA", "AAA",
+                'A', ItemHandler.itemMemory, 'B', "circuitAdvanced"));
+
+        //Graphene //TODO
+
+
+
 
         //Arc Furnace Recipes
         ArcFurnaceRecipeRegistry.instance.addRecipe(ItemHandler.itemActiniumDust, FluidContainerRegistry.BUCKET_VOLUME);
@@ -116,6 +123,8 @@ public class CraftingHandler {
                 ItemHandler.itemCopperIngot, 1, 200, TileAdvancedCrafter.COOK);
         AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<Item>(Arrays.asList(ItemHandler.itemCopperIngot)),
                 ItemHandler.itemCopperWire, 3, 600, TileAdvancedCrafter.EXTRUDE);
+        AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<Item>(Arrays.asList(ItemHandler.itemSteelIngot)),
+                ItemHandler.itemSteelPlate, 1, 800, TileAdvancedCrafter.BEND);
 
         //Furnace Recipes
         GameRegistry.addSmelting(BlockHandler.blockOreCopper, new ItemStack(ItemHandler.itemCopperIngot), 0.1f);

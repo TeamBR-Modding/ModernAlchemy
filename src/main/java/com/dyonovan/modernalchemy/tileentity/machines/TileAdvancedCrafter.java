@@ -4,6 +4,7 @@ import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import com.dyonovan.modernalchemy.crafting.AdvancedCrafterRecipeRegistry;
 import com.dyonovan.modernalchemy.crafting.RecipeAdvancedCrafter;
+import com.dyonovan.modernalchemy.handlers.ItemHandler;
 import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.BaseTile;
@@ -14,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,7 +78,30 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
         });
 
         for (RecipeAdvancedCrafter recipe : AdvancedCrafterRecipeRegistry.instance.recipes) {
-            if (recipe.getInput().equals(itemInput)) {
+            ArrayList<Item> tempInput = recipe.getInput();
+
+            //Deal with oredict recipes.
+            if (recipe.getInput().contains(ItemHandler.itemCopperIngot)) {
+                for (ItemStack itemstack : OreDictionary.getOres("ingotCopper")) {
+                    for (int i = 0; i < 4; i++) {
+                        if (inventory.getStackInSlot(i) == null) continue;
+                        if (itemstack.getItem() == inventory.getStackInSlot(i).getItem())
+                            Collections.replaceAll(tempInput, ItemHandler.itemCopperIngot, itemstack.getItem());
+                    }
+                }
+            }
+            if (recipe.getInput().contains(ItemHandler.itemSteelIngot)) {
+                for (ItemStack itemstack : OreDictionary.getOres("ingotCopper")) {
+                    for (int i = 0; i < 4; i++) {
+                        if (inventory.getStackInSlot(i) == null) continue;
+                        if (itemstack.getItem() == inventory.getStackInSlot(i).getItem())
+                            Collections.replaceAll(tempInput, ItemHandler.itemCopperIngot, itemstack.getItem());
+                    }
+                }
+            }
+
+            //if (recipe.getInput().equals(itemInput)) {
+            if (tempInput.equals(itemInput)) {
                 if (this.currentMode == recipe.getRequiredMode() && (this.inventory.getStackInSlot(4) == null ||
                         (recipe.getOutputItem() == this.inventory.getStackInSlot(4).getItem() &&
                         this.inventory.getStackInSlot(4).stackSize + recipe.getQtyOutput() <= this.inventory.getStackInSlot(4).getMaxStackSize()))) {
@@ -94,6 +119,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
 
         if (currentProcessTime == 0 && canSmelt()) {
             currentProcessTime = 1;
+            this.isActive = true;
             for (int i = 0; i < 4; i++) {
                 if (this.inventory.getStackInSlot(i) != null)
                     this.decrStackSize(i, 1);
@@ -123,6 +149,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
     private void doReset() {
         currentProcessTime = 0;
         requiredProcessTime = 0;
+        this.isActive = false;
         qtyOutput = 0;
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
