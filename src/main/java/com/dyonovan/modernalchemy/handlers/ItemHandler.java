@@ -23,7 +23,7 @@ public class ItemHandler {
     public static Item laserNode, itemSlag, itemWrench, itemActiniumDust, itemCopperWire, itemBlankPCB;
     public static Item itemCircuit, itemMachineFrame, itemEnergyAntenna, itemGraphene, itemSteelGear;
     public static Item manual, itemFaradayWire, itemSteelIngot, itemCopperIngot, itemSteelPlate, itemCapacator;
-    public static Item itemCopperCoil, itemDenseCopperCoil, itemSteelTube;
+    public static Item itemCopperCoil, itemDenseCopperCoil, itemSteelTube, itemFaradayIngot, itemTransformer;
 
     public static void init() {
         //Laser Node
@@ -45,6 +45,7 @@ public class ItemHandler {
         registerItem(itemSteelIngot = new ItemCrafting("itemSteelIngot", 64), "itemSteelIngot", "ingotSteel");
         registerItem(itemCopperIngot = new ItemCrafting("itemCopperIngot", 64), "itemCopperIngot", "ingotCopper");
         registerItem(itemActiniumDust = new ItemOreActinium(), "itemActiniumDust", null);
+        registerItem(itemFaradayIngot = new ItemCrafting("itemFaradayIngot", 64), "itemFaradayIngot", null);
 
         //Fluid Buckets
         registerItem(itemBucketActinium = new ItemBucketActinium(BlockHandler.blockFluidActinium), "bucketActinium", null);
@@ -71,6 +72,7 @@ public class ItemHandler {
         registerItem(itemEnergyAntenna = new ItemCrafting("itemEnergyAntenna", 64), "itemEnergyAntenna", null);
         registerItem(itemFaradayWire = new ItemCrafting("itemFaradayWire", 64), "itemFaradayWire", null);
         registerItem(itemReplicationMedium = new ItemReplicatorMedium(), "itemReplicationMedium", null);
+        registerItem(itemTransformer = new ItemCrafting("itemTransformer", 16), "itemTransformer", null);
     }
 
     public static void registerItem(Item registerItem, String name, String oreDict) {
