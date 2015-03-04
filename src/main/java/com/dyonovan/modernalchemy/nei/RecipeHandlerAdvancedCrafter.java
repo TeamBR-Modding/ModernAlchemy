@@ -29,7 +29,7 @@ public class RecipeHandlerAdvancedCrafter extends RecipeHandlerBase {
             inputArray = new ArrayList<PositionedStack>();
             for(int i = 0; i < recipe.getInput().size(); i++) {
                 if(recipe.getInput().get(i) != null)
-                    inputArray.add(new PositionedStack(recipe.getInput().get(i), 53 + (18 * i), (i < 2 ? 11 : 29)));
+                    inputArray.add(new PositionedStack(recipe.getInput().get(i), 53 + (i < 2 ? (18 * i) : (18 * (i - 2))), (i < 2 ? 11 : 29)));
             }
             output = new PositionedStack(recipe.getOutputItem(), 129, 19);
             mode = recipe.getRequiredMode();
