@@ -33,7 +33,7 @@ public class CraftingHandler {
         //Amagamator
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockAmalgamator), "ABA", "CDE", "AFA",
                 'A', "plateSteel", 'B', ItemHandler.itemEnergyAntenna, 'C', Blocks.crafting_table,
-                'D', ItemHandler.itemMachineFrame, 'E', Blocks.cauldron, 'F', "circuitAdvanced"));
+                'D', ItemHandler.itemMachineFrame, 'E', Items.cauldron, 'F', "circuitAdvanced"));
 
         //Pattern Recorder
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockPatternRecorder), "ABA", "CDC", "AEA",
