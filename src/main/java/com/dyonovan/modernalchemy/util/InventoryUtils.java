@@ -22,6 +22,9 @@ public class InventoryUtils {
      * @return true if equal
      */
     public static boolean areStacksEqual(ItemStack o1, ItemStack o2) {
-        return (o1 == null || o2 == null) || (o1.getItem().getUnlocalizedName().equalsIgnoreCase(o2.getItem().getUnlocalizedName()));
+        if(o1 != null && o2 != null)
+            return(o1.getItem().getUnlocalizedName().equalsIgnoreCase(o2.getItem().getUnlocalizedName()));
+        else
+            return (o1 == null && o2 == null);
     }
 }

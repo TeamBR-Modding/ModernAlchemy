@@ -22,7 +22,6 @@ public class AdvancedCrafterRecipeRegistry {
 
     /**
      * Adds a recipe to the registry if it doesn't already have a value
-     *
      * @param itemArray  Input item array
      * @param output the Resulting Item
      */
