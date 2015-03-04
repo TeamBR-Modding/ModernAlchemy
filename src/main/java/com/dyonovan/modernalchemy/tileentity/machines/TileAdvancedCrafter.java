@@ -9,7 +9,9 @@ import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.BaseTile;
 import com.dyonovan.modernalchemy.tileentity.InventoryTile;
+import com.dyonovan.modernalchemy.util.InventoryUtils;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -33,12 +35,13 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
     public static final int COOK = 0;
     public static final int EXTRUDE = 1;
     public static final int BEND = 2;
+    public static final int FURNACE = 3;
 
     private EnergyStorage energyRF;
     public InventoryTile inventory;
     private int currentProcessTime;
     private boolean isActive;
-    private Item outputItem;
+    private ItemStack outputItem;
     public int currentMode;
     public int requiredProcessTime;
     private int qtyOutput;
@@ -60,61 +63,48 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
      *******************************************************************************************************************/
 
     private boolean canSmelt() {
+        ArrayList<ItemStack> itemInput = new ArrayList<ItemStack>(4); //Build our current input array
+        for (int i = 0; i < 4; i++)
+            itemInput.add(this.inventory.getStackInSlot(i));
 
-        ArrayList<Item> itemInput = new ArrayList<Item>();
+        Collections.sort(itemInput, InventoryUtils.itemStackComparator);
 
-        for (int i = 0; i < 4; i++) {
-            if (this.inventory.getStackInSlot(i) != null) {
-                itemInput.add(this.inventory.getStackInSlot(i).getItem());
+        for (RecipeAdvancedCrafter recipe : AdvancedCrafterRecipeRegistry.instance.recipes) { //See if a recipe matches our current setup
+            ArrayList<ItemStack> tempInput = new ArrayList<ItemStack>();
+            for(int i = 0; i < 4; i++) {
+                if(i < recipe.getInput().size())
+                    tempInput.add(recipe.getInput().get(i));
+                else
+                    tempInput.add(null);
             }
-        }
-        if (itemInput.size() <= 0) return false;
 
-        Collections.sort(itemInput, new Comparator<Item>() {
-            @Override
-            public int compare(Item o1, Item o2) {
-                return o1.getUnlocalizedName().compareTo(o2.getUnlocalizedName());
-            }
-        });
+            if(currentMode != recipe.getRequiredMode())
+                continue;
 
-        for (RecipeAdvancedCrafter recipe : AdvancedCrafterRecipeRegistry.instance.recipes) {
-            ArrayList<Item> tempInput = (ArrayList<Item>) recipe.getInput().clone();
-
-            //Deal with oredict recipes.
-            if (recipe.getInput().contains(ItemHandler.itemCopperIngot)) {
-                for (ItemStack orestack : OreDictionary.getOres("ingotCopper")) {
-                    for (int i = 0; i < 4; i++) {
-                        if (inventory.getStackInSlot(i) != null && orestack.isItemEqual(inventory.getStackInSlot(i)))
-                            Collections.replaceAll(tempInput, ItemHandler.itemCopperIngot, orestack.getItem());
-                    }
+            boolean valid = true;
+            for(int i = 0; i < tempInput.size(); i++) { //Compare stacks, must be the same order
+                if (!InventoryUtils.areStacksEqual(itemInput.get(i), tempInput.get(i))) {
+                    valid = false;
                 }
             }
-            if (recipe.getInput().contains(ItemHandler.itemSteelIngot)) {
-                for (ItemStack orestack : OreDictionary.getOres("ingotSteel")) {
-                    for (int i = 0; i < 4; i++) {
-                        if (inventory.getStackInSlot(i) != null && orestack.isItemEqual(inventory.getStackInSlot(i)))
-                            Collections.replaceAll(tempInput, ItemHandler.itemSteelIngot, orestack.getItem());
-                    }
-                }
-            }
+            if(!valid)
+                continue;
 
-            //if (recipe.getInput().equals(itemInput)) {
-            if (tempInput.equals(itemInput)) {
-                if (this.currentMode == recipe.getRequiredMode() && (this.inventory.getStackInSlot(4) == null ||
-                        (recipe.getOutputItem() == this.inventory.getStackInSlot(4).getItem() &&
-                        this.inventory.getStackInSlot(4).stackSize + recipe.getQtyOutput() <= this.inventory.getStackInSlot(4).getMaxStackSize()))) {
-                    this.outputItem = recipe.getOutputItem();
-                    this.requiredProcessTime = recipe.getProcessTime();
-                    this.qtyOutput = recipe.getQtyOutput();
-                    return true;
-                }
+            if ((this.inventory.getStackInSlot(4) == null ||
+                    (InventoryUtils.areStacksEqual(recipe.getOutputItem(), this.inventory.getStackInSlot(4)) &&
+                            this.inventory.getStackInSlot(4).stackSize + recipe.getQtyOutput() <= this.inventory.getStackInSlot(4).getMaxStackSize()))) {
+                this.outputItem = recipe.getOutputItem();
+                this.requiredProcessTime = recipe.getProcessTime();
+                this.qtyOutput = recipe.getQtyOutput();
+                return true;
             }
         }
         return false;
     }
 
     private void doSmelt() {
-
+        if(outputItem == null) //In case we loose our output item, remake it
+            doReset();
         if (currentProcessTime == 0 && canSmelt()) {
             currentProcessTime = 1;
             this.isActive = true;
@@ -136,9 +126,9 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
         }
         if (currentProcessTime > 0 && currentProcessTime >= requiredProcessTime) {
             if (this.inventory.getStackInSlot(4) == null) {
-                this.setInventorySlotContents(4, new ItemStack(outputItem, qtyOutput));
+                this.setInventorySlotContents(4, outputItem);
             } else {
-                this.inventory.getStackInSlot(4).stackSize = this.inventory.getStackInSlot(4).stackSize + qtyOutput;
+                this.inventory.getStackInSlot(4).stackSize += outputItem.stackSize;
             }
             doReset();
         }

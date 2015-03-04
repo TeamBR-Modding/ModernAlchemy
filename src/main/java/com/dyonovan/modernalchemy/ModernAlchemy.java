@@ -18,6 +18,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
@@ -48,7 +49,7 @@ public class ModernAlchemy {
         ConfigHandler.init(new Configuration(new File(event.getModConfigurationDirectory().getAbsolutePath() + File.separator + Constants.MODID.toLowerCase() + File.separator + "general.properties")));
         BlockHandler.init();
         ItemHandler.init();
-        CraftingHandler.init();
+        CraftingHandler.preInit();
         EntityHandler.init();
         WorldGeneratorHandler.init();
         EventManager.init();
@@ -62,6 +63,7 @@ public class ModernAlchemy {
     @SuppressWarnings("unused")
     @EventHandler
     public void init(FMLInitializationEvent event) {
+        CraftingHandler.init();
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
         PacketHandler.initPackets();
         FMLInterModComms.sendMessage("Waila", "register", "com.dyonovan.modernalchemy.waila.WailaDataProvider.callbackRegister");

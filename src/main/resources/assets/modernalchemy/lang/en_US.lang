@@ -26,6 +26,7 @@ item.modernalchemy:wrench.name=Wrench
 item.modernalchemy:itemSlag.name=Slag
 item.modernalchemy:itemActinium.name=Actinium Dust
 item.modernalchemy:laserNodeItem.name=Replicator Laser
+item.modernalchemy:itemManual.name=Tesla's Notebook
 
 item.modernalchemy:faraday_boots.name=Faraday Armor Boots
 item.modernalchemy:faraday_leg.name=Faraday Armor Leggings
@@ -42,11 +43,13 @@ modernalchemy.nei.solidifier=Amalgamator
 modernalchemy.advancedCrafter.enriching=Enriching
 modernalchemy.advancedCrafter.extruding=Extruding
 modernalchemy.advancedCrafter.bending=Bending
+modernalchemy.advancedCrafter.furnace=Furnace
 
 itemGroup.tabModernAlchemy=Modern Alchemy
 
 pageHeaders.description=Description
 pageHeaders.moreInfo=More Information
+pageHeaders.seeAlso=See Also
 
 mainPage.info=Create items with lighting and radioactive material. A mid to late game mod focusing on replicating items in a fun, yet challenging way. With empasis on realism this mod will make you think not just craft.
 mainPage.info.header=Mod Information
@@ -62,3 +65,12 @@ blockPage.teslaCoil=Tesla Coil
 
 pageTeslaCoil.description=The Tesla Coil is a monument of engineering, it will accept RF in through the bottom and convert to Tesla energy and transmit it via its head piece to nearby machines and devices.
 pageTeslaCoil.moreInfo=The Tesla Coil has a side effect called death, it will hurt and ignite you if you come in contact with a bolt of energy. To prevent accidental death or personal injury wear a pair of Faraday Armor, bolts also can kill mobs and charge creepers.
+
+pageAdvancedCrafter.description=The Advanced Crafter is the start machine you will need to begin Modern Alchemy, it will it will consume 100 RF/t and acts like a furnace and crafter of Steel Ingots, Actinium Ore to Dust and Wires.
+pageAdvancedCrafter.moreInfo=The Advanced Crafter has four modes: Enriching, Extruding, Bending, and Furnace. Toggle each mode by pressing the button to the left of the input field.
+
+pageBellows.description=The Electric Bellows is used to produce compressed air for the Arc Furnace Multiblock.
+
+pageAmalgamator.description=The Amalgamator is used to produce the Replication Medium that is used in the Replicator Multiblock for the replication process.
+
+pagePatternRecorder.description=The Pattern Recorder is used to produce the patterns that are used in the Replicator Multiblock to replicate items.

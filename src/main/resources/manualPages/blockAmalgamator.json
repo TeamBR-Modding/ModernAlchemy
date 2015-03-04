@@ -1,0 +1,110 @@
+[
+  {
+    "title" : "tile.modernalchemy:blockAmalgamator.name",
+    "numPages" : 1,
+    "component" : [
+      {
+        "xPos": 95,
+        "yPos": 60,
+        "width": 50,
+        "height": 50,
+        "pageNum": 1,
+        "text": "",
+        "destination": "",
+        "type": "ITEM_RENDER",
+        "item": "modernalchemy:blockAmalgamator:0",
+        "alignment" : 0,
+        "resource": {
+          "resourceDomain": "",
+          "resourcePath": ""
+        },
+        "tooltips": []
+      },
+      {
+        "xPos": 135,
+        "yPos": 15,
+        "width": 110,
+        "height": 15,
+        "pageNum": 1,
+        "text": "pageHeaders.description",
+        "destination": "",
+        "type": "Header",
+        "item": "",
+        "alignment" : 1,
+        "resource": {
+          "resourceDomain": "",
+          "resourcePath": ""
+        },
+        "tooltips": []
+      },
+      {
+        "xPos": 135,
+        "yPos": 30,
+        "width": 110,
+        "height": 100,
+        "pageNum": 1,
+        "text": "pageAmalgamator.description",
+        "destination": "",
+        "type": "TEXT_BOX",
+        "item": "",
+        "alignment" : 0,
+        "resource": {
+          "resourceDomain": "",
+          "resourcePath": ""
+        },
+        "tooltips": []
+      },
+      {
+        "xPos": 135,
+        "yPos": 105,
+        "width": 110,
+        "height": 15,
+        "pageNum": 1,
+        "text": "pageHeaders.seeAlso",
+        "destination": "",
+        "type": "HEADER",
+        "item": "",
+        "alignment" : 1,
+        "resource": {
+          "resourceDomain": "",
+          "resourcePath": ""
+        },
+        "tooltips": []
+      },
+      {
+        "xPos": 135,
+        "yPos": 120,
+        "width": 110,
+        "height": 15,
+        "pageNum": 1,
+        "text": "item.modernalchemy:itemReplicationMedium.name",
+        "destination": "itemReplicationMedium",
+        "type": "LINK",
+        "item": "",
+        "alignment" : 0,
+        "resource": {
+          "resourceDomain": "",
+          "resourcePath": ""
+        },
+        "tooltips": [ "Click for details" ]
+      },
+      {
+        "xPos": 135,
+        "yPos": 135,
+        "width": 110,
+        "height": 15,
+        "pageNum": 1,
+        "text": "tile.modernalchemy:blockReplicatorCPU.name",
+        "destination": "blockReplicatorCPU",
+        "type": "LINK",
+        "item": "",
+        "alignment" : 0,
+        "resource": {
+          "resourceDomain": "",
+          "resourcePath": ""
+        },
+        "tooltips": [ "Click for details" ]
+      }
+    ]
+  }
+]

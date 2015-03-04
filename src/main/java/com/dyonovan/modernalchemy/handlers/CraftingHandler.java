@@ -8,15 +8,18 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Map;
 
 public class CraftingHandler {
 
-    public static void init() {
+    public static void preInit() {
         //Advanced Crafter
         GameRegistry.addRecipe(new ItemStack(BlockHandler.blockAdvancedFurnace), "ABA", "CDC", "AEA",
                 'A', Items.iron_ingot, 'B', Blocks.hopper, 'C', Blocks.piston,
@@ -117,16 +120,28 @@ public class CraftingHandler {
         ArcFurnaceRecipeRegistry.instance.addRecipe(Item.getItemFromBlock(BlockHandler.blockOreActinium), FluidContainerRegistry.BUCKET_VOLUME * 2);
 
         //Advanced Crafting Recipes
-        AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<Item>(Arrays.asList(Items.coal, Items.iron_ingot)),
-                ItemHandler.itemSteelIngot, 1, 1000, TileAdvancedCrafter.COOK);
-        AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<Item>(Arrays.asList(Item.getItemFromBlock(BlockHandler.blockOreCopper))),
-                ItemHandler.itemCopperIngot, 1, 200, TileAdvancedCrafter.COOK);
-        AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<Item>(Arrays.asList(ItemHandler.itemCopperIngot)),
-                ItemHandler.itemCopperWire, 3, 600, TileAdvancedCrafter.EXTRUDE);
-        AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<Item>(Arrays.asList(ItemHandler.itemSteelIngot)),
-                ItemHandler.itemSteelPlate, 1, 800, TileAdvancedCrafter.BEND);
+        AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<ItemStack>(Arrays.asList(new ItemStack(Items.coal), new ItemStack(Items.iron_ingot))),
+                new ItemStack(ItemHandler.itemSteelIngot, 1), 1000, TileAdvancedCrafter.COOK);
 
         //Furnace Recipes
         GameRegistry.addSmelting(BlockHandler.blockOreCopper, new ItemStack(ItemHandler.itemCopperIngot), 0.1f);
+    }
+
+    public static void init() {
+        AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList("oreCopper")),
+                new ItemStack(ItemHandler.itemCopperIngot, 1), 200, TileAdvancedCrafter.COOK);
+        AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList("ingotCopper")),
+                new ItemStack(ItemHandler.itemCopperWire, 3), 600, TileAdvancedCrafter.EXTRUDE);
+        AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList("ingotSteel")),
+                new ItemStack(ItemHandler.itemSteelPlate, 1), 800, TileAdvancedCrafter.BEND);
+
+        Map recipes = FurnaceRecipes.smelting().getSmeltingList();
+        Iterator i = recipes.entrySet().iterator();
+        while(i.hasNext()) {
+            Map.Entry<ItemStack, ItemStack> recipe = (Map.Entry<ItemStack, ItemStack>)i.next();
+            AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<ItemStack>(Arrays.asList(recipe.getKey())),
+                    recipe.getValue().getItemDamage() >= 32767 ? new ItemStack(recipe.getValue().getItem(), recipe.getValue().stackSize, 0) : recipe.getValue(), 100, TileAdvancedCrafter.FURNACE);
+            i.remove();
+        }
     }
 }

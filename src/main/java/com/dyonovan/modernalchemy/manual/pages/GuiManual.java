@@ -15,6 +15,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -101,10 +102,17 @@ public class GuiManual extends BaseGui implements Comparable<GuiManual> {
     public void drawScreen(int mouseX, int mouseY, float par3) {
         super.drawScreen(mouseX, mouseY, par3);
         updateScale();
+        GL11.glPushMatrix();
         for(int i = 0; i < pages.get(currentIndex).size(); i++) {
             pages.get(currentIndex).get(i).drawComponent(guiLeft, guiTop, mouseX, mouseY);
         }
         inputDelay--;
+        GL11.glPopMatrix();
+        if(Mouse.isButtonDown(3) && inputDelay < 0) {
+            actionPerformed((GuiButton) buttonList.get(2));
+            playClickSound();
+            inputDelay = 50;
+        }
     }
 
     @Override
@@ -129,6 +137,7 @@ public class GuiManual extends BaseGui implements Comparable<GuiManual> {
                 return;
             }
         }
+        super.mouseClicked(x, y, button);
     }
 
     @Override
@@ -154,6 +163,7 @@ public class GuiManual extends BaseGui implements Comparable<GuiManual> {
             if(ManualRegistry.instance.isAtRoot())
                 this.buttonList.set(2, new GuiButtonManual(2, -1000, -1000, 2));
         }
+        inputDelay = 50;
     }
 
     private ResourceLocation background = new ResourceLocation(Constants.MODID + ":textures/gui/manual/manual.png");

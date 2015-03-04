@@ -27,9 +27,11 @@ public class RecipeHandlerAdvancedCrafter extends RecipeHandlerBase {
 
         public CachedAdvancedCraftingRecipe(RecipeAdvancedCrafter recipe) {
             inputArray = new ArrayList<PositionedStack>();
-            for(int i = 0; i < recipe.getInput().size(); i++)
-                inputArray.add(new PositionedStack(new ItemStack(recipe.getInput().get(i)), 53 + (18 * i), (i < 2 ? 11 : 29)));
-            output = new PositionedStack(new ItemStack(recipe.getOutputItem(), recipe.getQtyOutput()), 129, 19);
+            for(int i = 0; i < recipe.getInput().size(); i++) {
+                if(recipe.getInput().get(i) != null)
+                    inputArray.add(new PositionedStack(recipe.getInput().get(i), 53 + (18 * i), (i < 2 ? 11 : 29)));
+            }
+            output = new PositionedStack(recipe.getOutputItem(), 129, 19);
             mode = recipe.getRequiredMode();
             tickTime = recipe.getProcessTime();
         }
@@ -88,6 +90,11 @@ public class RecipeHandlerAdvancedCrafter extends RecipeHandlerBase {
                 GuiDraw.drawTexturedModalRect(17, 20, 176, 17, 16, 16);
                 GuiDraw.drawString(StatCollector.translateToLocal("modernalchemy.advancedCrafter.enriching"), 25 - (fontRenderer.getStringWidth(StatCollector.translateToLocal("modernalchemy.advancedCrafter.enriching")) / 2), 10, 0, false);
                 break;
+            case TileAdvancedCrafter.FURNACE :
+                GuiDraw.drawTexturedModalRect(17, 20, 224, 17, 16, 16);
+                GuiDraw.drawString(StatCollector.translateToLocal("modernalchemy.advancedCrafter.furnace"), 25 - (fontRenderer.getStringWidth(StatCollector.translateToLocal("modernalchemy.advancedCrafter.enriching")) / 2), 10, 0, false);
+                break;
+
         }
         int time = ((CachedAdvancedCraftingRecipe)this.arecipes.get(recipe)).tickTime;
         GuiDraw.drawString("" + time + "t", 94, 12, 0, false);
@@ -122,7 +129,7 @@ public class RecipeHandlerAdvancedCrafter extends RecipeHandlerBase {
     {
         for (RecipeAdvancedCrafter recipe : AdvancedCrafterRecipeRegistry.instance.recipes) {
             for (int i = 0; i < recipe.getInput().size(); i++) {
-                if (NEIServerUtils.areStacksSameTypeCrafting(new ItemStack(recipe.getInput().get(i), 1), ingred)) {
+                if (NEIServerUtils.areStacksSameTypeCrafting(recipe.getInput().get(i), ingred)) {
                     this.arecipes.add(new CachedAdvancedCraftingRecipe(recipe));
                 }
             }
@@ -133,7 +140,7 @@ public class RecipeHandlerAdvancedCrafter extends RecipeHandlerBase {
     public void loadCraftingRecipes (ItemStack result)
     {
         for (RecipeAdvancedCrafter recipe : AdvancedCrafterRecipeRegistry.instance.recipes) {
-            if(NEIServerUtils.areStacksSameType(new ItemStack(recipe.getOutputItem()), result)) {
+            if(NEIServerUtils.areStacksSameType(recipe.getOutputItem(), result)) {
                 this.arecipes.add(new CachedAdvancedCraftingRecipe(recipe));
             }
         }

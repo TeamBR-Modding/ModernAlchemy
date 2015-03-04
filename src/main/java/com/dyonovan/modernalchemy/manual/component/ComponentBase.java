@@ -55,7 +55,7 @@ public class ComponentBase extends GuiScreen implements IComponent {
     }
 
     public void onMouseLeftClick() {
-        GuiManual.inputDelay = 20;
+        GuiManual.inputDelay = 50;
         GuiManual.playClickSound();
     }
 

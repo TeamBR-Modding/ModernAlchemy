@@ -40,7 +40,7 @@ public class GuiAdvancedCrafter extends BaseGui {
         this.buttonList.clear();
         this.x = (width - xSize) / 2;
         this.y = (height - ySize) / 2;
-        modeButton = new MultiStateButton(0, x + 38, y + 35, 16, 16, 3, "textures/gui/AC_states.png");
+        modeButton = new MultiStateButton(0, x + 38, y + 35, 16, 16, 4, "textures/gui/AC_states.png");
         modeButton.setCurrentState(tile.currentMode);
         this.buttonList.add(modeButton);
     }
@@ -104,14 +104,17 @@ public class GuiAdvancedCrafter extends BaseGui {
         if (GuiHelper.isInBounds(mouseX, mouseY, x + 38, y + 35, x + 54, y + 93)) {
             List<String> toolTip = new ArrayList<String>();
             switch (modeButton.getState()) {
-                case 0:
+                case 0 :
                     toolTip.add("Enriching");
                     break;
-                case 1:
+                case 1 :
                     toolTip.add("Extruding");
                     break;
-                case 2:
+                case 2 :
                     toolTip.add("Bending");
+                    break;
+                case 3 :
+                    toolTip.add("Furnace Mode");
                     break;
                 default:
                     toolTip.add("Something is broken!");
