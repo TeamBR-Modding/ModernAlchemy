@@ -141,7 +141,6 @@ public class CraftingHandler {
             Map.Entry<ItemStack, ItemStack> recipe = (Map.Entry<ItemStack, ItemStack>)i.next();
             AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<ItemStack>(Arrays.asList(recipe.getKey())),
                     recipe.getValue().getItemDamage() >= 32767 ? new ItemStack(recipe.getValue().getItem(), recipe.getValue().stackSize, 0) : recipe.getValue(), 100, TileAdvancedCrafter.FURNACE);
-            i.remove();
         }
     }
 }

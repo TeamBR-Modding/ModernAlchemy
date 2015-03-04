@@ -26,12 +26,23 @@ import java.util.List;
 
 public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISidedInventory {
 
+    /**
+     * Energy used per tick
+     */
     private static final int RF_TICK = 100;
+
+    /**
+     * Inventory Slots
+     */
     public static final int INPUT_SLOT_1 = 0;
     public static final int INPUT_SLOT_2 = 1;
     public static final int INPUT_SLOT_3 = 2;
     public static final int INPUT_SLOT_4 = 3;
     public static final int OUTPUT_SLOT = 4;
+
+    /**
+     * Crafting Modes
+     */
     public static final int COOK = 0;
     public static final int EXTRUDE = 1;
     public static final int BEND = 2;
@@ -62,6 +73,10 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
      ************************************* Furnace Functions ***********************************************************
      *******************************************************************************************************************/
 
+    /**
+     * Checks to see if the current inventory setup matches anything in the {@link com.dyonovan.modernalchemy.crafting.AdvancedCrafterRecipeRegistry}
+     * @return true if we are capable of smelting
+     */
     private boolean canSmelt() {
         ArrayList<ItemStack> itemInput = new ArrayList<ItemStack>(4); //Build our current input array
         for (int i = 0; i < 4; i++)
@@ -70,16 +85,16 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
         Collections.sort(itemInput, InventoryUtils.itemStackComparator);
 
         for (RecipeAdvancedCrafter recipe : AdvancedCrafterRecipeRegistry.instance.recipes) { //See if a recipe matches our current setup
-            ArrayList<ItemStack> tempInput = new ArrayList<ItemStack>();
+            if(currentMode != recipe.getRequiredMode()) //Must be the correct mode. No sense otherwise
+                continue;
+
+            ArrayList<ItemStack> tempInput = new ArrayList<ItemStack>(); //Build a new list
             for(int i = 0; i < 4; i++) {
-                if(i < recipe.getInput().size())
+                if(i < recipe.getInput().size()) //If something exists in the recipe
                     tempInput.add(recipe.getInput().get(i));
-                else
+                else //Fill the rest with nulls
                     tempInput.add(null);
             }
-
-            if(currentMode != recipe.getRequiredMode())
-                continue;
 
             boolean valid = true;
             for(int i = 0; i < tempInput.size(); i++) { //Compare stacks, must be the same order
@@ -87,7 +102,8 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
                     valid = false;
                 }
             }
-            if(!valid)
+
+            if(!valid) //Recipe didn't match, move on
                 continue;
 
             if ((this.inventory.getStackInSlot(4) == null ||
@@ -102,10 +118,13 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
         return false;
     }
 
+    /**
+     * Checks if can smelt, if it can processes the resources and then outputs
+     */
     private void doSmelt() {
         if(outputItem == null) //In case we loose our output item, remake it
             doReset();
-        if (currentProcessTime == 0 && canSmelt()) {
+        if (currentProcessTime == 0 && canSmelt()) { //Begin
             currentProcessTime = 1;
             this.isActive = true;
             for (int i = 0; i < 4; i++) {
@@ -114,8 +133,8 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
             }
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
-        if (currentProcessTime > 0 && currentProcessTime < requiredProcessTime) {
 
+        if (currentProcessTime > 0 && currentProcessTime < requiredProcessTime) { //Process
             if (this.energyRF.getEnergyStored() < RF_TICK) {
                 doReset();
                 return;
@@ -124,7 +143,8 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
             currentProcessTime += 1;
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
-        if (currentProcessTime > 0 && currentProcessTime >= requiredProcessTime) {
+
+        if (currentProcessTime > 0 && currentProcessTime >= requiredProcessTime) { //Output
             if (this.inventory.getStackInSlot(4) == null) {
                 this.setInventorySlotContents(4, outputItem);
             } else {
@@ -134,6 +154,9 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
         }
     }
 
+    /**
+     * Reset values (usually if something fails or process complete)
+     */
     private void doReset() {
         currentProcessTime = 0;
         requiredProcessTime = 0;
@@ -142,6 +165,11 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
+    /**
+     * Get the scaled progress (usually used to scale to gui's)
+     * @param scale Max number to scale down to
+     * @return A number ranging from 0 - scale equivalent to the current process time
+     */
     public int getProgressScaled(int scale) { return requiredProcessTime == 0 ? 0 : this.currentProcessTime * scale / requiredProcessTime; }
 
     /*******************************************************************************************************************
