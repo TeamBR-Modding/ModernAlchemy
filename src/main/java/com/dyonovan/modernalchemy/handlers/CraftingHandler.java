@@ -109,10 +109,68 @@ public class CraftingHandler {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemHandler.itemReplicatorPattern), "AAA", "ABA", "AAA",
                 'A', ItemHandler.itemMemory, 'B', "circuitAdvanced"));
 
-        //Graphene //TODO
+        //Graphene
+        ItemStack flintStack = new ItemStack(Items.flint);
+        GameRegistry.addShapelessRecipe(new ItemStack(ItemHandler.itemGraphene),
+                flintStack, flintStack, flintStack, flintStack);
 
+        //Realtime Clock
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemHandler.itemRealClock), "ABA", "BCB", "ADA",
+                'A', "wireCopper", 'B', Items.quartz, 'C', Items.clock, 'D', "circuitAdvanced"));
 
+        //Blank PCB
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemHandler.itemBlankPCB), "ABA", "BCB", "ABA",
+                'A', "dyeGreen", 'B', "blockGlass", 'C', Blocks.wool));
 
+        //Circuit
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemHandler.itemCircuit), "ABA", "BCB", "ADA",
+                'A', ItemHandler.itemBlankPCB, 'B', "wireCopper", 'C', ItemHandler.itemRealClock, 'D', Items.gold_ingot));
+
+        //Capacitor
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemHandler.itemCapacator), "ABA", "ABA", "C C",
+                'A', ItemHandler.itemBlankPCB, 'B', "plateSteel", 'C', "wireCopper"));
+
+        //Memory
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemHandler.itemMemory), "ABA", "BBB", "CCC",
+                'A', "wireCopper", 'B', "plateSteel", 'C', "circuitAdvanced"));
+
+        //Copper Coil
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemHandler.itemCopperCoil), "AAA", "A A", "AAA",
+                'A', "wireCopper"));
+
+        //Dense Copper Coil
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemHandler.itemDenseCopperCoil), "AAA", "ABA", "AAA",
+                'A', "wireCopper", 'B', "ingotCopper"));
+
+        //Machine Frame
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemHandler.itemMachineFrame), "ABA", "B B", "ABA",
+                'A', "plateSteel", 'B', Blocks.iron_bars));
+
+        //Transformer
+        GameRegistry.addRecipe(new ItemStack(ItemHandler.itemTransformer), "ABA", "ACA", "ABA",
+                'A', ItemHandler.itemCopperCoil, 'B', ItemHandler.itemSteelTube, 'C', ItemHandler.itemCapacator);
+
+        //Pump Module
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemHandler.itemPumpModule), "ABA", "ACA", "ABA",
+                'A', "plateSteel", 'B', Items.leather, 'C', ItemHandler.itemSteelTube));
+
+        //Energy Antenna
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemHandler.itemEnergyAntenna), " A ", " B ", "CCC",
+                'A', ItemHandler.itemCopperCoil, 'B', ItemHandler.itemSteelTube, 'C', "plateSteel"));
+
+        //Steel Tube
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemHandler.itemSteelTube), "A A", "A A", "A A",
+                'A', "plateSteel"));
+
+        //Faraday Armor
+        GameRegistry.addRecipe(new ItemStack(ItemHandler.faradayHelm), "AAA", "ABA",
+                'A', ItemHandler.itemFaradayWire, 'B', ItemHandler.itemCapacator);
+        GameRegistry.addRecipe(new ItemStack(ItemHandler.faradayChest), "ABA", "AAA", "AAA",
+                'A', ItemHandler.itemFaradayWire, 'B', ItemHandler.itemCapacator);
+        GameRegistry.addRecipe(new ItemStack(ItemHandler.faradayLeg), "AAA", "ABA", "A A",
+                'A', ItemHandler.itemFaradayWire, 'B', ItemHandler.itemCapacator);
+        GameRegistry.addRecipe(new ItemStack(ItemHandler.faradayBoots), "A A", "ABA",
+                'A', ItemHandler.itemFaradayWire, 'B', ItemHandler.itemCapacator);
 
         //Arc Furnace Recipes
         ArcFurnaceRecipeRegistry.instance.addRecipe(ItemHandler.itemActiniumDust, FluidContainerRegistry.BUCKET_VOLUME);
@@ -122,11 +180,14 @@ public class CraftingHandler {
         //Advanced Crafting Recipes
         AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<ItemStack>(Arrays.asList(new ItemStack(Items.coal), new ItemStack(Items.iron_ingot))),
                 new ItemStack(ItemHandler.itemSteelIngot, 1), 1000, TileAdvancedCrafter.COOK);
+        AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<ItemStack>(Arrays.asList(new ItemStack(ItemHandler.itemFaradayIngot))),
+                new ItemStack(ItemHandler.itemFaradayWire, 3), 600, TileAdvancedCrafter.EXTRUDE);
 
         //Furnace Recipes
         GameRegistry.addSmelting(BlockHandler.blockOreCopper, new ItemStack(ItemHandler.itemCopperIngot), 0.1f);
     }
 
+    @SuppressWarnings("unchecked")
     public static void init() {
         AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList("oreCopper")),
                 new ItemStack(ItemHandler.itemCopperIngot, 1), 200, TileAdvancedCrafter.COOK);
@@ -134,6 +195,10 @@ public class CraftingHandler {
                 new ItemStack(ItemHandler.itemCopperWire, 3), 600, TileAdvancedCrafter.EXTRUDE);
         AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList("ingotSteel")),
                 new ItemStack(ItemHandler.itemSteelPlate, 1), 800, TileAdvancedCrafter.BEND);
+        AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList("ingotSteel", "ingotSteel", "ingotSteel", "ingotSteel")),
+                new ItemStack(ItemHandler.itemSteelGear, 1), 800, TileAdvancedCrafter.BEND);
+        AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList("ingotCopper", "ingotSteel")),
+                new ItemStack(ItemHandler.itemFaradayIngot, 1), 500, TileAdvancedCrafter.COOK);
 
         Map recipes = FurnaceRecipes.smelting().getSmeltingList();
         Iterator i = recipes.entrySet().iterator();
