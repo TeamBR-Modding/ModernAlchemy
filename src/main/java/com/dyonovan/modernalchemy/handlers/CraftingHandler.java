@@ -14,7 +14,6 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Map;
 
 public class CraftingHandler {
@@ -196,14 +195,13 @@ public class CraftingHandler {
         AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList("ingotSteel")),
                 new ItemStack(ItemHandler.itemSteelPlate, 1), 800, TileAdvancedCrafter.BEND);
         AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList("ingotSteel", "ingotSteel", "ingotSteel", "ingotSteel")),
-                new ItemStack(ItemHandler.itemSteelGear, 1), 800, TileAdvancedCrafter.BEND);
+                new ItemStack(ItemHandler.itemSteelGear, 1), 800, TileAdvancedCrafter.EXTRUDE);
         AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList("ingotCopper", "ingotSteel")),
                 new ItemStack(ItemHandler.itemFaradayIngot, 1), 500, TileAdvancedCrafter.COOK);
 
         Map recipes = FurnaceRecipes.smelting().getSmeltingList();
-        Iterator i = recipes.entrySet().iterator();
-        while(i.hasNext()) {
-            Map.Entry<ItemStack, ItemStack> recipe = (Map.Entry<ItemStack, ItemStack>)i.next();
+        for (Object o : recipes.entrySet()) {
+            Map.Entry<ItemStack, ItemStack> recipe = (Map.Entry<ItemStack, ItemStack>) o;
             AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<ItemStack>(Arrays.asList(recipe.getKey())),
                     recipe.getValue().getItemDamage() >= 32767 ? new ItemStack(recipe.getValue().getItem(), recipe.getValue().stackSize, 0) : recipe.getValue(), 100, TileAdvancedCrafter.FURNACE);
         }
