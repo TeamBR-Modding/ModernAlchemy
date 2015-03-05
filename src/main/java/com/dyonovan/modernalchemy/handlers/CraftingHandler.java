@@ -79,7 +79,7 @@ public class CraftingHandler {
                 'A', ItemHandler.itemSteelTube, 'B', ItemHandler.itemMachineFrame, 'C', Blocks.iron_bars);
 
         //Replicator Stand
-        GameRegistry.addRecipe(new ItemStack(BlockHandler.blockReplicatorStand, 8), "ABA", "ACA",
+        GameRegistry.addRecipe(new ItemStack(BlockHandler.blockReplicatorStand), "ABA", "ACA",
                 'A', ItemHandler.itemMachineFrame, 'B', ItemHandler.itemReplicatorPattern, 'C', Blocks.anvil);
 
         //Replicator Controller
@@ -116,7 +116,7 @@ public class CraftingHandler {
 
         //Realtime Clock
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemHandler.itemRealClock), "ABA", "BCB", "ADA",
-                'A', "wireCopper", 'B', Items.quartz, 'C', Items.clock, 'D', "circuitAdvanced"));
+                'A', "wireCopper", 'B', Items.quartz, 'C', Items.clock, 'D', ItemHandler.itemBlankPCB));
 
         //Blank PCB
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemHandler.itemBlankPCB), "ABA", "BCB", "ABA",
@@ -162,6 +162,10 @@ public class CraftingHandler {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemHandler.itemSteelTube), "A A", "A A", "A A",
                 'A', "plateSteel"));
 
+        //Book
+        GameRegistry.addShapelessRecipe(new ItemStack(ItemHandler.manual),
+                new ItemStack(ItemHandler.itemActiniumDust), new ItemStack(Items.book));
+
         //Faraday Armor
         GameRegistry.addRecipe(new ItemStack(ItemHandler.faradayHelm), "AAA", "ABA",
                 'A', ItemHandler.itemFaradayWire, 'B', ItemHandler.itemCapacator);
@@ -189,8 +193,6 @@ public class CraftingHandler {
 
     @SuppressWarnings("unchecked")
     public static void init() {
-        AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList(new OreDictStack("oreCopper"))),
-                new ItemStack(ItemHandler.itemCopperIngot, 1), 200, TileAdvancedCrafter.COOK);
         AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList(new OreDictStack("ingotCopper"))),
                 new ItemStack(ItemHandler.itemCopperWire, 3), 600, TileAdvancedCrafter.EXTRUDE);
         AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList(new OreDictStack("ingotSteel"))),
