@@ -53,7 +53,7 @@ dependencies {
     compile "codechicken:CodeChickenLib:${config.minecraft_version}-${config.CCLIB_version}:dev"
     compile "codechicken:NotEnoughItems:${config.minecraft_version}-${config.NEI_version}:dev"
     compile "mcp.mobius.waila:Waila:1.5.9_dev1_1.7.10"
-    providedCompile files("/usr/java/jdk1.7.0_51/lib/jfxrt.jar")
+    providedCompile files("/usr/java/jdk1.7.0_51/lib/jfxrt.jar") //Required for JavaFX
 }
 
 version = "${config.minecraft_version}-${config.mod_version}-B" + System.getenv("BUILD_NUMBER")
@@ -70,22 +70,6 @@ minecraft {
     replace "@VERSION@", "${config.mod_version}"
 
     runDir = "eclipse"
-}
-
-dependencies {
-    // you may put jars on which you depend on in ./libs
-    // or you may define them like so..
-    //compile "some.group:artifact:version:classifier"
-    //compile "some.group:artifact:version"
-      
-    // real examples
-    //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
-    //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
-
-    // for more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
 }
 
 compileJava {
