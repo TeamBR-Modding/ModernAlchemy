@@ -3,6 +3,7 @@ package com.dyonovan.modernalchemy.util;
 import com.dyonovan.modernalchemy.crafting.OreDictStack;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Comparator;
 
@@ -40,6 +41,20 @@ public class InventoryUtils {
             return(((ItemStack)o1).getItem().getUnlocalizedName().equalsIgnoreCase(((ItemStack)o2).getItem().getUnlocalizedName()));
         else if(o1 instanceof OreDictStack && o2 instanceof OreDictStack) //Two orestacks
             return ((OreDictStack)o1).oreId.equalsIgnoreCase(((OreDictStack)o2).oreId) && ((((OreDictStack) o1).stackSize == 0 || ((OreDictStack) o2).stackSize == 0) || ((OreDictStack) o1).stackSize == ((OreDictStack) o2).stackSize);
+        else if(o1 instanceof OreDictStack && o2 instanceof ItemStack) { //One Each
+            if(OreDictionary.getOreIDs((ItemStack)o2).length > 0) {
+                OreDictStack copy = new OreDictStack(OreDictionary.getOreName(OreDictionary.getOreIDs((ItemStack)o2)[0]));
+                return ((OreDictStack)o1).oreId.equalsIgnoreCase(copy.oreId);
+            } else
+                return false;
+        }
+        else if(o2 instanceof OreDictStack && o1 instanceof ItemStack) { //One Each
+            if(OreDictionary.getOreIDs((ItemStack)o1).length > 0) {
+                OreDictStack copy = new OreDictStack(OreDictionary.getOreName(OreDictionary.getOreIDs((ItemStack)o1)[0]));
+                return ((OreDictStack)o2).oreId.equalsIgnoreCase(copy.oreId);
+            } else
+                return false;
+        }
         else
             return false; //Otherwise false
     }

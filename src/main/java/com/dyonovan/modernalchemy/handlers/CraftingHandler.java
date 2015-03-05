@@ -183,7 +183,7 @@ public class CraftingHandler {
 
         //Advanced Crafting Recipes
         AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<Object>(Arrays.asList(new ItemStack(Items.coal), new ItemStack(Items.iron_ingot))),
-                new ItemStack(ItemHandler.itemSteelIngot, 1), 1000, TileAdvancedCrafter.COOK);
+                new OreDictStack("ingotSteel", 1), 1000, TileAdvancedCrafter.COOK);
         AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<Object>(Arrays.asList(new ItemStack(ItemHandler.itemFaradayIngot))),
                 new ItemStack(ItemHandler.itemFaradayWire, 3), 600, TileAdvancedCrafter.EXTRUDE);
 

@@ -26,13 +26,13 @@ public class AdvancedCrafterRecipeRegistry {
      * @param itemArray  Input item array
      * @param output the Resulting Item
      */
-    public void addRecipe(List<Object> itemArray, ItemStack output, int processTime, int requiredMode) {
+    public void addRecipe(List<Object> itemArray, Object output, int processTime, int requiredMode) {
         Collections.sort(itemArray,InventoryUtils.itemStackComparator);
 
         if (!recipes.contains(new RecipeAdvancedCrafter(itemArray, output,  processTime, requiredMode)))
             recipes.add(new RecipeAdvancedCrafter(itemArray, output, processTime, requiredMode));
         else
-            LogHelper.warning("Someone tried to add a recipe for " + output.getUnlocalizedName() + " when it already exists. Aborting.");
+            LogHelper.warning("Someone tried to add a recipe for " + output + " when it already exists. Aborting.");
     }
 
     /**
@@ -42,7 +42,7 @@ public class AdvancedCrafterRecipeRegistry {
      * @param processTime How long in ticks
      * @param requiredMode Which mode is needed
      */
-    public void addOreDictRecipe(List<Object> itemArray, ItemStack output, int processTime, int requiredMode) {
+    public void addOreDictRecipe(List<Object> itemArray, Object output, int processTime, int requiredMode) {
         List<Object> newInput = new ArrayList<Object>();
 
         for(Object obj : itemArray) {

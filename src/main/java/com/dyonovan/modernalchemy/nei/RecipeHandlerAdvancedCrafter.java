@@ -16,6 +16,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -30,6 +31,7 @@ public class RecipeHandlerAdvancedCrafter extends RecipeHandlerBase {
 
         public CachedAdvancedCraftingRecipe(RecipeAdvancedCrafter recipe) {
             inputArray = new ArrayList<PositionedStack>();
+            output = new ArrayList<PositionedStack>();
             for(int i = 0; i < recipe.getInput().size(); i++) {
                 if(recipe.getInput().get(i) != null)
                     if(recipe.getInput().get(i) instanceof ItemStack)
@@ -40,14 +42,19 @@ public class RecipeHandlerAdvancedCrafter extends RecipeHandlerBase {
                             inputArray.add(new PositionedStack(stack, 53 + (i < 2 ? (18 * i) : (18 * (i - 2))), (i < 2 ? 11 : 29)));
                     }
             }
-            output.add(new PositionedStack(recipe.getOutputItem(), 129, 19));
+            if(!recipe.isOutputOreDict())
+                output.add(new PositionedStack(recipe.getOutputItem(), 129, 19));
+            else {
+                for(ItemStack stack : recipe.getOreDictStacks())
+                    output.add(new PositionedStack(stack, 129, 19));
+            }
             mode = recipe.getRequiredMode();
             tickTime = recipe.getProcessTime();
         }
 
         @Override
         public PositionedStack getResult() {
-            return output.get(0);
+            return output.get((cycleticks / 48) % output.size());
         }
 
         @Override
@@ -197,7 +204,7 @@ public class RecipeHandlerAdvancedCrafter extends RecipeHandlerBase {
     public void loadCraftingRecipes (ItemStack result)
     {
         for (RecipeAdvancedCrafter recipe : AdvancedCrafterRecipeRegistry.instance.recipes) {
-            if(NEIServerUtils.areStacksSameType(recipe.getOutputItem(), result)) {
+            if (NEIServerUtils.areStacksSameType(recipe.getOutputItem(), result)) {
                 this.arecipes.add(new CachedAdvancedCraftingRecipe(recipe));
             }
         }

@@ -1,13 +1,15 @@
 package com.dyonovan.modernalchemy.crafting;
 
 import com.dyonovan.modernalchemy.util.InventoryUtils;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeAdvancedCrafter {
 
-    private ItemStack outputItem;
+    private Object outputItem;
     private List<Object> itemArray;
     private int processTime;
     private int requiredMode;
@@ -19,9 +21,9 @@ public class RecipeAdvancedCrafter {
      * @param processTime The total amount of ticks required to process
      * @param requiredMode COOK = 1, EXTRUDE = 2, BEND = 3
      */
-    public RecipeAdvancedCrafter(List<Object> itemArray, ItemStack itemOutput, int processTime, int requiredMode) {
+    public RecipeAdvancedCrafter(List<Object> itemArray, Object itemOutput, int processTime, int requiredMode) {
         this.itemArray = itemArray;
-        this.outputItem = itemOutput.copy();
+        this.outputItem = itemOutput;
         this.processTime = processTime;
         this.requiredMode = requiredMode;
     }
@@ -44,11 +46,38 @@ public class RecipeAdvancedCrafter {
     }
 
     /**
-     * Get the fluid output
-     * @return Output in mb
+     * Get the output item
+     * @return ItemStack or List of ItemStacks
      */
     public ItemStack getOutputItem() {
-        return outputItem.copy();
+        if(outputItem instanceof ItemStack)
+            return ((ItemStack)outputItem).copy();
+        else if(outputItem instanceof OreDictStack)
+            return ((OreDictStack)outputItem).getItemList().get(0);
+        else
+            return null;
+    }
+
+    /**
+     * Check if our output is an oredictstack
+     * @return true if it is
+     */
+    public boolean isOutputOreDict() {
+        return outputItem instanceof OreDictStack;
+    }
+
+    /**
+     * Get the stack of items associated with the ore dict
+     * @return List of itemstacks with oredict tag
+     */
+    public List<ItemStack> getOreDictStacks() {
+        if(isOutputOreDict()) {
+            List<ItemStack> stack = new ArrayList<ItemStack>();
+            for(ItemStack s : ((OreDictStack)outputItem).getItemList())
+                stack.add(s);
+            return stack;
+        }
+        return null;
     }
 
     /**
@@ -67,7 +96,14 @@ public class RecipeAdvancedCrafter {
      * Get the size of the output stack
      * @return The size of the output
      */
-    public int getQtyOutput() { return outputItem.stackSize; }
+    public int getQtyOutput() {
+        if(outputItem instanceof ItemStack)
+            return ((ItemStack)outputItem).stackSize;
+        else if(outputItem instanceof OreDictStack)
+            return ((OreDictStack)outputItem).stackSize;
+        else
+            return 0;
+    }
 
     public boolean doesInputMatch(List<ItemStack> input) {
         for(int i = 0; i < itemArray.size(); i++) {
