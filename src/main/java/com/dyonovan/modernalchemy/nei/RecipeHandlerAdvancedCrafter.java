@@ -8,7 +8,6 @@ import com.dyonovan.modernalchemy.crafting.OreDictStack;
 import com.dyonovan.modernalchemy.crafting.RecipeAdvancedCrafter;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.machines.TileAdvancedCrafter;
-import javafx.geometry.Pos;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
@@ -17,7 +16,6 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -25,7 +23,7 @@ public class RecipeHandlerAdvancedCrafter extends RecipeHandlerBase {
     public static Random rand = new Random();
     public class CachedAdvancedCraftingRecipe extends CachedBaseRecipe {
         private List<PositionedStack> inputArray;
-        private PositionedStack output;
+        private List<PositionedStack> output;
         public int mode;
         public int tickTime;
         List<Integer> oreSpots = new ArrayList<Integer>();
@@ -42,14 +40,14 @@ public class RecipeHandlerAdvancedCrafter extends RecipeHandlerBase {
                             inputArray.add(new PositionedStack(stack, 53 + (i < 2 ? (18 * i) : (18 * (i - 2))), (i < 2 ? 11 : 29)));
                     }
             }
-            output = new PositionedStack(recipe.getOutputItem(), 129, 19);
+            output.add(new PositionedStack(recipe.getOutputItem(), 129, 19));
             mode = recipe.getRequiredMode();
             tickTime = recipe.getProcessTime();
         }
 
         @Override
         public PositionedStack getResult() {
-            return output;
+            return output.get(0);
         }
 
         @Override
