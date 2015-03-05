@@ -31,6 +31,7 @@ repositories {
 }
 
 apply plugin: 'forge'
+apply plugin: 'java'
 
 ext.configFile = file "build.properties"
 
@@ -46,6 +47,7 @@ dependencies {
     compile "codechicken:CodeChickenLib:${config.minecraft_version}-${config.CCLIB_version}:dev"
     compile "codechicken:NotEnoughItems:${config.minecraft_version}-${config.NEI_version}:dev"
     compile "mcp.mobius.waila:Waila:1.5.9_dev1_1.7.10"
+    providedCompile files("/usr/java/jdk1.7.0_51/lib")
 }
 
 version = "${config.minecraft_version}-${config.mod_version}-B" + System.getenv("BUILD_NUMBER")
@@ -78,6 +80,17 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
+}
+
+configurations {
+    //we do not want to have jfxrt.jar in the classpath when creating the jar,
+    //therefore a seperate configuration is required
+    providedCompile
+}
+
+compileJava {
+    //add required JavaFX libs to compile classpath
+    sourceSets.main.compileClasspath += configurations.providedCompile
 }
 
 processResources
