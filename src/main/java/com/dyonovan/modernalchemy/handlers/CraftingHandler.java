@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy.handlers;
 
 import com.dyonovan.modernalchemy.crafting.AdvancedCrafterRecipeRegistry;
 import com.dyonovan.modernalchemy.crafting.ArcFurnaceRecipeRegistry;
+import com.dyonovan.modernalchemy.crafting.OreDictStack;
 import com.dyonovan.modernalchemy.tileentity.machines.TileAdvancedCrafter;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Blocks;
@@ -177,9 +178,9 @@ public class CraftingHandler {
         ArcFurnaceRecipeRegistry.instance.addRecipe(Item.getItemFromBlock(BlockHandler.blockOreActinium), FluidContainerRegistry.BUCKET_VOLUME * 2);
 
         //Advanced Crafting Recipes
-        AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<ItemStack>(Arrays.asList(new ItemStack(Items.coal), new ItemStack(Items.iron_ingot))),
+        AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<Object>(Arrays.asList(new ItemStack(Items.coal), new ItemStack(Items.iron_ingot))),
                 new ItemStack(ItemHandler.itemSteelIngot, 1), 1000, TileAdvancedCrafter.COOK);
-        AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<ItemStack>(Arrays.asList(new ItemStack(ItemHandler.itemFaradayIngot))),
+        AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<Object>(Arrays.asList(new ItemStack(ItemHandler.itemFaradayIngot))),
                 new ItemStack(ItemHandler.itemFaradayWire, 3), 600, TileAdvancedCrafter.EXTRUDE);
 
         //Furnace Recipes
@@ -188,11 +189,11 @@ public class CraftingHandler {
 
     @SuppressWarnings("unchecked")
     public static void init() {
-        AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList("oreCopper")),
+        AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList(new OreDictStack("oreCopper"))),
                 new ItemStack(ItemHandler.itemCopperIngot, 1), 200, TileAdvancedCrafter.COOK);
-        AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList("ingotCopper")),
+        AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList(new OreDictStack("ingotCopper"))),
                 new ItemStack(ItemHandler.itemCopperWire, 3), 600, TileAdvancedCrafter.EXTRUDE);
-        AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList("ingotSteel")),
+        AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList(new OreDictStack("ingotSteel"))),
                 new ItemStack(ItemHandler.itemSteelPlate, 1), 800, TileAdvancedCrafter.BEND);
         AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList("ingotSteel", "ingotSteel", "ingotSteel", "ingotSteel")),
                 new ItemStack(ItemHandler.itemSteelGear, 1), 800, TileAdvancedCrafter.EXTRUDE);
@@ -202,7 +203,7 @@ public class CraftingHandler {
         Map recipes = FurnaceRecipes.smelting().getSmeltingList();
         for (Object o : recipes.entrySet()) {
             Map.Entry<ItemStack, ItemStack> recipe = (Map.Entry<ItemStack, ItemStack>) o;
-            AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<ItemStack>(Arrays.asList(recipe.getKey())),
+            AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<Object>(Arrays.asList(recipe.getKey())),
                     recipe.getValue().getItemDamage() >= 32767 ? new ItemStack(recipe.getValue().getItem(), recipe.getValue().stackSize, 0) : recipe.getValue(), 100, TileAdvancedCrafter.FURNACE);
         }
     }

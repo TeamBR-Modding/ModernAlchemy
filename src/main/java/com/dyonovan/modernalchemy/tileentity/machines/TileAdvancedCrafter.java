@@ -3,6 +3,7 @@ package com.dyonovan.modernalchemy.tileentity.machines;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import com.dyonovan.modernalchemy.crafting.AdvancedCrafterRecipeRegistry;
+import com.dyonovan.modernalchemy.crafting.OreDictStack;
 import com.dyonovan.modernalchemy.crafting.RecipeAdvancedCrafter;
 import com.dyonovan.modernalchemy.handlers.ItemHandler;
 import com.dyonovan.modernalchemy.helpers.GuiHelper;
@@ -19,10 +20,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISidedInventory {
 
@@ -78,9 +76,13 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
      * @return true if we are capable of smelting
      */
     private boolean canSmelt() {
-        ArrayList<ItemStack> itemInput = new ArrayList<ItemStack>(4); //Build our current input array
-        for (int i = 0; i < 4; i++)
-            itemInput.add(this.inventory.getStackInSlot(i));
+        List<Object> itemInput = new ArrayList<Object>(4); //Build our current input array
+        for (int i = 0; i < 4; i++) {
+            if(inventory.getStackInSlot(i) != null && OreDictionary.getOreIDs(inventory.getStackInSlot(i)).length > 0) {
+                itemInput.add(new OreDictStack(OreDictionary.getOreName(OreDictionary.getOreIDs(inventory.getStackInSlot(i))[0]), inventory.getStackInSlot(i).stackSize));
+            }else
+                itemInput.add(this.inventory.getStackInSlot(i));
+        }
 
         Collections.sort(itemInput, InventoryUtils.itemStackComparator);
 
@@ -88,19 +90,20 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
             if(currentMode != recipe.getRequiredMode()) //Must be the correct mode. No sense otherwise
                 continue;
 
-            ArrayList<ItemStack> tempInput = new ArrayList<ItemStack>(); //Build a new list
+            List<Object> tempInput = new ArrayList<Object>(); //Build a new list
             for(int i = 0; i < 4; i++) {
-                if(i < recipe.getInput().size()) //If something exists in the recipe
+                if(i < recipe.getInput().size()) { //If something exists in the recipe
                     tempInput.add(recipe.getInput().get(i));
+                }
                 else //Fill the rest with nulls
                     tempInput.add(null);
             }
 
             boolean valid = true;
+
             for(int i = 0; i < tempInput.size(); i++) { //Compare stacks, must be the same order
-                if (!InventoryUtils.areStacksEqual(itemInput.get(i), tempInput.get(i))) {
+                if(!InventoryUtils.areStacksEqual(tempInput.get(i), itemInput.get(i)))
                     valid = false;
-                }
             }
 
             if(!valid) //Recipe didn't match, move on

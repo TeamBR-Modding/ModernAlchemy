@@ -4,9 +4,11 @@ import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import com.dyonovan.modernalchemy.crafting.AdvancedCrafterRecipeRegistry;
+import com.dyonovan.modernalchemy.crafting.OreDictStack;
 import com.dyonovan.modernalchemy.crafting.RecipeAdvancedCrafter;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.machines.TileAdvancedCrafter;
+import javafx.geometry.Pos;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
@@ -15,21 +17,30 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 public class RecipeHandlerAdvancedCrafter extends RecipeHandlerBase {
-
+    public static Random rand = new Random();
     public class CachedAdvancedCraftingRecipe extends CachedBaseRecipe {
         private List<PositionedStack> inputArray;
         private PositionedStack output;
         public int mode;
         public int tickTime;
+        List<Integer> oreSpots = new ArrayList<Integer>();
 
         public CachedAdvancedCraftingRecipe(RecipeAdvancedCrafter recipe) {
             inputArray = new ArrayList<PositionedStack>();
             for(int i = 0; i < recipe.getInput().size(); i++) {
                 if(recipe.getInput().get(i) != null)
-                    inputArray.add(new PositionedStack(recipe.getInput().get(i), 53 + (i < 2 ? (18 * i) : (18 * (i - 2))), (i < 2 ? 11 : 29)));
+                    if(recipe.getInput().get(i) instanceof ItemStack)
+                        inputArray.add(new PositionedStack(recipe.getConvertedStack(i), 53 + (i < 2 ? (18 * i) : (18 * (i - 2))), (i < 2 ? 11 : 29)));
+                    else if(recipe.getInput().get(i) instanceof OreDictStack) {
+                        oreSpots.add(i);
+                        for(ItemStack stack : ((OreDictStack) recipe.getInput().get(i)).getItemList())
+                            inputArray.add(new PositionedStack(stack, 53 + (i < 2 ? (18 * i) : (18 * (i - 2))), (i < 2 ? 11 : 29)));
+                    }
             }
             output = new PositionedStack(recipe.getOutputItem(), 129, 19);
             mode = recipe.getRequiredMode();
@@ -43,7 +54,49 @@ public class RecipeHandlerAdvancedCrafter extends RecipeHandlerBase {
 
         @Override
         public java.util.List<PositionedStack> getIngredients() {
-            return inputArray;
+            List<PositionedStack> out = new ArrayList<PositionedStack>();
+            List<PositionedStack> slot1 = new ArrayList<PositionedStack>();
+            List<PositionedStack> slot2 = new ArrayList<PositionedStack>();
+            List<PositionedStack> slot3 = new ArrayList<PositionedStack>();
+            List<PositionedStack> slot4 = new ArrayList<PositionedStack>();
+
+            for(PositionedStack stack : inputArray) {
+                switch(getPositionFromPoint(stack.relx, stack.rely)) {
+                    case 1 :
+                        slot1.add(stack);
+                        break;
+                    case 2 :
+                        slot2.add(stack);
+                        break;
+                    case 3 :
+                        slot3.add(stack);
+                        break;
+                    case 4 :
+                        slot4.add(stack);
+                }
+            }
+
+            if(!slot1.isEmpty())
+                out.add(slot1.get((cycleticks / 48) % slot1.size()));
+            if(!slot2.isEmpty())
+                out.add(slot2.get((cycleticks / 48) % slot2.size()));
+            if(!slot3.isEmpty())
+                out.add(slot3.get((cycleticks / 48) % slot3.size()));
+            if(!slot4.isEmpty())
+                out.add(slot4.get((cycleticks / 48) % slot4.size()));
+
+            return out;
+        }
+
+        public int getPositionFromPoint(int x, int y) {
+            if(x == 53 && y == 11)
+                return 1;
+            else if(x == (53 + 18) && y == 11)
+                return 2;
+            else if(x == 53 && y == 29)
+                return 3;
+            else
+                return 4;
         }
     }
 
@@ -129,9 +182,15 @@ public class RecipeHandlerAdvancedCrafter extends RecipeHandlerBase {
     {
         for (RecipeAdvancedCrafter recipe : AdvancedCrafterRecipeRegistry.instance.recipes) {
             for (int i = 0; i < recipe.getInput().size(); i++) {
-                if (NEIServerUtils.areStacksSameTypeCrafting(recipe.getInput().get(i), ingred)) {
-                    this.arecipes.add(new CachedAdvancedCraftingRecipe(recipe));
+                if(recipe.getInput().get(i) instanceof ItemStack) {
+                    if (NEIServerUtils.areStacksSameTypeCrafting((ItemStack) recipe.getInput().get(i), ingred)) {
+                        this.arecipes.add(new CachedAdvancedCraftingRecipe(recipe));
+                    }
+                } else if(recipe.getInput().get(i) instanceof OreDictStack) {
+                    if(((OreDictStack) recipe.getInput().get(i)).isEqual(ingred))
+                        this.arecipes.add(new CachedAdvancedCraftingRecipe(recipe));
                 }
+
             }
         }
     }
