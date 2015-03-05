@@ -22,6 +22,10 @@ public class InventoryUtils {
                 return -((OreDictStack)o2).compareTo((ItemStack)o1);
             else if(o1 instanceof ItemStack && o2 instanceof ItemStack)
                 return o1 == null && o2 == null ? 0 : o1 == null  ? 1 : o2 == null ? -1 : ((ItemStack)o1).getItem().getUnlocalizedName().compareTo(((ItemStack)o2).getItem().getUnlocalizedName());
+            else if(o1 == null && o2 != null)
+                return 1;
+            else if(o1 != null && o2 == null)
+                return -1;
             return 0;
         }
     };
