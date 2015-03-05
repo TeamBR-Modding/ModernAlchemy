@@ -1,10 +1,8 @@
 package com.dyonovan.modernalchemy.crafting;
 
 import com.dyonovan.modernalchemy.util.InventoryUtils;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeAdvancedCrafter {
