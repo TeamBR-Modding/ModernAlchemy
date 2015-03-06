@@ -94,3 +94,16 @@ pageBellows.description=The Electric Bellows is used to produce compressed air f
 pageAmalgamator.description=The Amalgamator is used to produce the Replication Medium that is used in the Replicator Multiblock for the replication process.
 
 pagePatternRecorder.description=The Pattern Recorder is used to produce the patterns that are used in the Replicator Multiblock to replicate items.
+
+pageArcFurnace.description=The Arc Furnace Processor is the center block of the Arc Furnace Multiblock. All functions of the multiblock are controlled from this block.
+
+pageArcFurnaceDummy.description=The Arc Furnace casing is the main block for creating the Arc Furnace Multiblock structure. This is also used for creating all other Arc Furnace Blocks.
+
+pageArcFurnaceDummyEnergy.description=The Arc Furnace Energy Receiver is used to power the Arc Furnace Multiblock from a Tesla Coil. It must have clear line of site to the Tesla Coil for it to receive energy.
+
+pageArcFurnaceDummyItemIO.description=The Arc Furnace Item I/O is used for moving Actinium Dust, Coal, and Charcoal into the Arc Furnace Multiblock for processing into Molten Actinium. Pipes can be attached to automate this process.
+
+pageArcFurnaceDummyAirValve.description=The Arc Furnace Air Valve is used to input Compressed Air into the Arc Furnace Multiblock.
+
+pageArcFurnaceDummyOutputValve.description=The Arc Furnace Output Valve is used for pumping Molten Actinium out of the Arc Furnace Multiblock into the Amalgamator to be made into Replication Medium.
+
