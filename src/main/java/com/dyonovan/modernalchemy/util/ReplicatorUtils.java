@@ -1,6 +1,7 @@
 package com.dyonovan.modernalchemy.util;
 
 import com.dyonovan.modernalchemy.ModernAlchemy;
+import com.dyonovan.modernalchemy.crafting.CraftingRecipeHelper;
 import com.dyonovan.modernalchemy.helpers.LogHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
@@ -79,7 +80,7 @@ public class ReplicatorUtils {
         HashMap<String, Integer> map = JsonUtils.readJson(id.modId);
 
         //Check from files
-       if(map != null && map.size() > 0) {
+        if(map != null && map.size() > 0) {
             values.putAll(map);
 
             if(map.containsKey(id.name + ":" + stack.getItemDamage())) {
@@ -90,6 +91,49 @@ public class ReplicatorUtils {
             else
                 return 0;
         }
+
+        //Check crafting recipe
+        ItemStack[] recipe = CraftingRecipeHelper.getRecipe(stack);
+        int sum = -1;
+        if(recipe != null) {
+            for (ItemStack s : recipe) {
+                if (s != null) {
+                    int v = getValueFromRecipePart(s);
+                    if (v != -1)
+                        sum += v;
+                }
+            }
+        }
+        return sum;
+    }
+
+    public static int getValueFromRecipePart(ItemStack stack) {
+        ItemStack[] recipe = CraftingRecipeHelper.getRecipe(stack);
+        int sum = -1;
+        if(recipe != null) {
+            for (ItemStack s : recipe) {
+                if (s != null) {
+                    int v = getValueFromRecipePart(s);
+                    if (v != -1)
+                        sum += v;
+                }
+            }
+        }
+        else if(getShallowValue(stack) != -1)
+            return getShallowValue(stack);
+        return sum;
+    }
+
+    public static int getShallowValue(ItemStack stack) {
+        GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(stack.getItem());
+
+        if(values != null) {
+            if(values.containsKey(id.name + ":" + stack.getItemDamage())) {
+                return values.get(id.name + ":" + stack.getItemDamage());
+            }
+            else if(values.containsKey(id.name))
+                return values.get(id.name);
+        }
         return -1;
     }
 
@@ -98,10 +142,10 @@ public class ReplicatorUtils {
         String itemReturn[] = item.split(":");
         if (GameRegistry.findItem(itemReturn[0], itemReturn[1]) != null) {
             Item objReturn = GameRegistry.findItem(itemReturn[0], itemReturn[1]);
-                stack = new ItemStack(objReturn, 1, Integer.valueOf(itemReturn[2]));
+            stack = new ItemStack(objReturn, 1, Integer.valueOf(itemReturn[2]));
         } else {
             Block objReturn = GameRegistry.findBlock(itemReturn[0], itemReturn[1]);
-                stack = new ItemStack(Item.getItemFromBlock(objReturn), 1, Integer.valueOf(itemReturn[2]));
+            stack = new ItemStack(Item.getItemFromBlock(objReturn), 1, Integer.valueOf(itemReturn[2]));
         }
         return stack;
     }
