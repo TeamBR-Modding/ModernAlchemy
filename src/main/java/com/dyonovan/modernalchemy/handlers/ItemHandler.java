@@ -70,7 +70,7 @@ public class ItemHandler {
         registerItem(itemEnergyAntenna = new ItemCrafting("itemEnergyAntenna", 64), "itemEnergyAntenna", null);
         registerItem(itemFaradayWire = new ItemCrafting("itemFaradayWire", 64), "itemFaradayWire", null);
         registerItem(itemReplicationMedium = new ItemReplicatorMedium(), "itemReplicationMedium", null);
-        registerItem(itemTransformer = new ItemCrafting("itemTransformer", 16), "itemTransformer", null);
+        //registerItem(itemTransformer = new ItemCrafting("itemTransformer", 16), "itemTransformer", null);
     }
 
     public static void initCopper() {
