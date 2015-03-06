@@ -80,7 +80,7 @@ public class TileTeslaBase extends BaseTile implements IEnergyHandler {
 
     @Override
     public boolean canConnectEnergy(ForgeDirection side) {
-        return side == ForgeDirection.DOWN;
+        return side != ForgeDirection.UP;
     }
 
     @Override
