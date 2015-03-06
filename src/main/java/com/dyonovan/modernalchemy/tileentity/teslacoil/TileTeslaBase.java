@@ -14,7 +14,7 @@ import java.util.List;
 
 public class TileTeslaBase extends BaseTile implements IEnergyHandler {
 
-    protected EnergyStorage energy = new EnergyStorage(1000, 1000, 1000);
+    protected EnergyStorage energyRF = new EnergyStorage(1000, 1000, 1000);
 
     public TileTeslaBase() {
 
@@ -23,14 +23,10 @@ public class TileTeslaBase extends BaseTile implements IEnergyHandler {
     public boolean isCoilCharging() {
         int y = yCoord + 1;
         while(!worldObj.isAirBlock(xCoord, y, zCoord)) {
-            if(worldObj.getBlock(xCoord, y, zCoord) == BlockHandler.blockTeslaStand) {
+            if (worldObj.getBlock(xCoord, y, zCoord) == BlockHandler.blockTeslaStand) {
                 y++;
-                continue;
-            }
-            else if(worldObj.getBlock(xCoord, y, zCoord) == BlockHandler.blockCoil)
-                return ((TileTeslaCoil)worldObj.getTileEntity(xCoord, y, zCoord)).isActive();
-            else
-                return false;
+            } else
+                return worldObj.getBlock(xCoord, y, zCoord) == BlockHandler.blockCoil && ((TileTeslaCoil) worldObj.getTileEntity(xCoord, y, zCoord)).isActive();
         }
         return false;
     }
@@ -49,33 +45,33 @@ public class TileTeslaBase extends BaseTile implements IEnergyHandler {
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        energy.readFromNBT(tag);
+        energyRF.readFromNBT(tag);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        energy.writeToNBT(tag);
+        energyRF.writeToNBT(tag);
     }
 
     @Override
     public int receiveEnergy(ForgeDirection side, int maxReceive, boolean simulate) {
-        return energy.receiveEnergy(maxReceive, simulate);
+        return energyRF.receiveEnergy(maxReceive, simulate);
     }
 
     @Override
     public int extractEnergy(ForgeDirection side, int maxReceive, boolean simulate) {
-        return energy.extractEnergy(maxReceive, simulate);
+        return energyRF.extractEnergy(maxReceive, simulate);
     }
 
     @Override
     public int getEnergyStored(ForgeDirection forgeDirection) {
-        return energy.getEnergyStored();
+        return energyRF.getEnergyStored();
     }
 
     @Override
     public int getMaxEnergyStored(ForgeDirection forgeDirection) {
-        return energy.getMaxEnergyStored();
+        return energyRF.getMaxEnergyStored();
     }
 
     @Override
@@ -85,11 +81,11 @@ public class TileTeslaBase extends BaseTile implements IEnergyHandler {
 
     @Override
     public void updateEntity() {
-        if ((energy.getEnergyStored() > 0)) {
+        if ((energyRF.getEnergyStored() > 0)) {
 
             TileEntity tile = worldObj.getTileEntity(xCoord, yCoord + 1, zCoord);
             if (tile instanceof TileTeslaStand) {
-                energy.extractEnergy(((IEnergyHandler) tile).receiveEnergy(ForgeDirection.DOWN, energy.extractEnergy(energy.getMaxExtract(), true), false), false);
+                energyRF.extractEnergy(((IEnergyHandler) tile).receiveEnergy(ForgeDirection.DOWN, energyRF.extractEnergy(energyRF.getMaxExtract(), true), false), false);
             }
         }
     }

@@ -110,7 +110,8 @@ public class TilePatternRecorder extends BaseMachine implements  IInventory {
         return inventory.getStackInSlot(INPUT_SLOT) != null && inventory.getStackInSlot(ITEM_SLOT) != null &&
                 inventory.getStackInSlot(INPUT_SLOT).getItem() instanceof ItemPattern &&
                 inventory.getStackInSlot(OUTPUT_SLOT) == null &&
-                ReplicatorUtils.getValueForItem(inventory.getStackInSlot(ITEM_SLOT)) > 0;
+                ReplicatorUtils.getValueForItem(inventory.getStackInSlot(ITEM_SLOT)) > 0 &&
+                getEnergyLevel() >= 1;
     }
 
     public int getProgressScaled(int scale) { return this.currentProcessTime * scale / PROCESS_TIME; }
