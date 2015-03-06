@@ -34,7 +34,7 @@ public class ManualRegistry {
      */
     public static Stack<GuiManual> visitedPages;
     /**
-     * All registered {@link com.dyonovan.modernalchemy.manual.pages.GuiManual}, built from files on preInit
+     * All registered {@link com.dyonovan.modernalchemy.manual.pages.GuiManual}, built from files on init
      */
     public static HashMap<String, GuiManual> pages;
     /**

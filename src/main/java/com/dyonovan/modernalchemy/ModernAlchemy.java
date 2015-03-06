@@ -74,6 +74,7 @@ public class ModernAlchemy {
         CraftingHandler.init();
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
         PacketHandler.initPackets();
+        proxy.init();
         FMLInterModComms.sendMessage("Waila", "register", "com.dyonovan.modernalchemy.waila.WailaDataProvider.callbackRegister");
     }
 

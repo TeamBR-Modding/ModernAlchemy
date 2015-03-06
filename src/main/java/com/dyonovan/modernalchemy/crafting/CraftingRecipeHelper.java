@@ -60,9 +60,13 @@ public class CraftingRecipeHelper {
                     }
 
                 }
-                else
-                    return null;
             }
+        }
+        for(int i = 0; i < 9; i++) {
+            if(output[i] == null)
+                continue;
+            else
+                return output;
         }
         return output;
     }

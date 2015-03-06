@@ -66,7 +66,7 @@ public class BaseMachine extends BaseTile implements ITeslaHandler {
             for (int y = -ConfigHandler.searchRange; y <= ConfigHandler.searchRange; y++) {
                 for (int z = -ConfigHandler.searchRange; z <= ConfigHandler.searchRange; z++) {
                     if (world.getTileEntity(tileX + x, tileY + y, tileZ + z) instanceof TileTeslaCoil) {
-                        if(hasClearPath(tileX, tileY, tileZ, tileX + x + 0.5, tileY + y + 0.5, tileZ + z + 0.5))
+                        if(hasClearPath(tileX + 0.5, tileY + 0.5, tileZ + 0.5, tileX + x + 0.5, tileY + y + 0.5, tileZ + z + 0.5))
                             list.add((TileTeslaCoil) world.getTileEntity(tileX + x, tileY + y, tileZ + z));
                     }
                 }
