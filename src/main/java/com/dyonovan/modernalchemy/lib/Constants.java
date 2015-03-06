@@ -12,5 +12,6 @@ public class Constants {
     public static final String CONFIG_ORE_GENERATION = "Ore Generation";
     public static final String CONFIG_TESLA = "Tesla Power Config";
     public static final String CONFIG_GENERAL = "General Config";
+    public static final String CONFIG_DEFAULT_VALUE = "Replication Value";
 
 }

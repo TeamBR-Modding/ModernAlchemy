@@ -5,6 +5,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Random;
 
@@ -22,8 +23,10 @@ public class WorldGeneratorHandler implements IWorldGenerator {
 
         if(world.provider.dimensionId == 0) // Overworld only
             generateActinium(world, random, chunkX * 16, chunkZ * 16);
-        if (world.provider.dimensionId == 0 && ConfigHandler.genCopper)
-            generateCopper(world, random, chunkX * 16, chunkZ * 16);
+        if (OreDictionary.getOres("oreCopper").isEmpty()) {
+            if (world.provider.dimensionId == 0 && ConfigHandler.genCopper)
+                generateCopper(world, random, chunkX * 16, chunkZ * 16);
+        }
     }
 
     private void generateCopper(World world, Random random, int i, int j) {

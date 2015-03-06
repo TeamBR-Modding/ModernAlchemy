@@ -25,7 +25,7 @@ public class ItemHandler {
     public static Item manual, itemFaradayWire, itemSteelIngot, itemCopperIngot, itemSteelPlate, itemCapacator;
     public static Item itemCopperCoil, itemDenseCopperCoil, itemSteelTube, itemFaradayIngot, itemTransformer;
 
-    public static void init() {
+    public static void preInit() {
         //Laser Node
         registerItem(laserNode = new ItemLaserNode(), "laserNodeItem", null);
 
@@ -42,8 +42,6 @@ public class ItemHandler {
         registerItem(faradayBoots = new ItemFaradayArmor("faraday_boots", ARMOR, "faraday", 3), "faradayBoots", null);
 
         //Ingots and Dusts
-        registerItem(itemSteelIngot = new ItemCrafting("itemSteelIngot", 64), "itemSteelIngot", "ingotSteel");
-        registerItem(itemCopperIngot = new ItemCrafting("itemCopperIngot", 64), "itemCopperIngot", "ingotCopper");
         registerItem(itemActiniumDust = new ItemOreActinium(), "itemActiniumDust", null);
         registerItem(itemFaradayIngot = new ItemCrafting("itemFaradayIngot", 64), "itemFaradayIngot", null);
 
@@ -75,9 +73,17 @@ public class ItemHandler {
         registerItem(itemTransformer = new ItemCrafting("itemTransformer", 16), "itemTransformer", null);
     }
 
+    public static void initCopper() {
+        registerItem(itemCopperIngot = new ItemCrafting("itemCopperIngot", 64), "itemCopperIngot", "ingotCopper");
+    }
+
     public static void registerItem(Item registerItem, String name, String oreDict) {
         GameRegistry.registerItem(registerItem, name);
         if(oreDict != null)
             OreDictionary.registerOre(oreDict, registerItem);
+    }
+
+    public static void initSteel() {
+        registerItem(itemSteelIngot = new ItemCrafting("itemSteelIngot", 64), "itemSteelIngot", "ingotSteel");
     }
 }

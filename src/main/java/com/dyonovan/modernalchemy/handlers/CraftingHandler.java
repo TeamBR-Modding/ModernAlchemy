@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.ArrayList;
@@ -187,12 +188,13 @@ public class CraftingHandler {
         AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<Object>(Arrays.asList(new ItemStack(ItemHandler.itemFaradayIngot))),
                 new ItemStack(ItemHandler.itemFaradayWire, 3), 600, TileAdvancedCrafter.EXTRUDE);
 
-        //Furnace Recipes
-        GameRegistry.addSmelting(BlockHandler.blockOreCopper, new ItemStack(ItemHandler.itemCopperIngot), 0.1f);
     }
 
     @SuppressWarnings("unchecked")
     public static void init() {
+        if (OreDictionary.getOres("oreCopper").isEmpty())
+            GameRegistry.addSmelting(BlockHandler.blockOreCopper, new ItemStack(ItemHandler.itemCopperIngot), 0.1f);
+
         AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList(new OreDictStack("ingotCopper"))),
                 new ItemStack(ItemHandler.itemCopperWire, 3), 600, TileAdvancedCrafter.EXTRUDE);
         AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList(new OreDictStack("ingotSteel"))),

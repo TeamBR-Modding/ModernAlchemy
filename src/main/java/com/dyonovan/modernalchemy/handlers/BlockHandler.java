@@ -53,7 +53,7 @@ public class BlockHandler {
 
     public static List<Block> blockRegistry = new ArrayList<Block>();
 
-    public static void init() {
+    public static void preInit() {
         //Actinium Fluid Registration
         fluidActinium = new FluidActinium();
         FluidRegistry.registerFluid(fluidActinium);
@@ -68,10 +68,6 @@ public class BlockHandler {
 
         //Ore Actinium
         registerBlock(blockOreActinium = new BlockOreActinium(), "blockOreActinium", null);
-
-        //Ore Copper
-        registerBlock(blockOreCopper = new BlockOreCopper(), "blockOreCopper", null);
-        OreDictionary.registerOre("oreCopper", new ItemStack(blockOreCopper));
 
         //BlockElectricBellows
         registerBlock(blockElectricBellows = new BlockElectricBellows(), "blockElectricBellows", TileElectricBellows.class);
@@ -120,6 +116,12 @@ public class BlockHandler {
 
         //BlockFurnace
         registerBlock(blockAdvancedFurnace = new BlockAdvancedCrafter(), "blockAdvancedCrafter", TileAdvancedCrafter.class);
+    }
+
+    public static void initCopper() {
+        //Ore Copper
+        registerBlock(blockOreCopper = new BlockOreCopper(), "blockOreCopper", null);
+        OreDictionary.registerOre("oreCopper", new ItemStack(blockOreCopper));
     }
 
     public static void registerBlock(Block registerBlock, String name, Class<? extends TileEntity> tileEntity) {

@@ -18,8 +18,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.io.File;
 
@@ -47,11 +47,10 @@ public class ModernAlchemy {
     @EventHandler
     public void preInit(FMLPreInitializationEvent event){
         ConfigHandler.init(new Configuration(new File(event.getModConfigurationDirectory().getAbsolutePath() + File.separator + Constants.MODID.toLowerCase() + File.separator + "general.properties")));
-        BlockHandler.init();
-        ItemHandler.init();
+        BlockHandler.preInit();
+        ItemHandler.preInit();
         CraftingHandler.preInit();
         EntityHandler.init();
-        WorldGeneratorHandler.init();
         EventManager.init();
         proxy.init();
 
@@ -63,6 +62,14 @@ public class ModernAlchemy {
     @SuppressWarnings("unused")
     @EventHandler
     public void init(FMLInitializationEvent event) {
+        WorldGeneratorHandler.init();
+        if (OreDictionary.getOres("oreCopper").isEmpty()) {
+            BlockHandler.initCopper();
+            ItemHandler.initCopper();
+        }
+        if (OreDictionary.getOres("ingotSteel").isEmpty()) {
+            ItemHandler.initSteel();
+        }
         CraftingHandler.init();
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
         PacketHandler.initPackets();
