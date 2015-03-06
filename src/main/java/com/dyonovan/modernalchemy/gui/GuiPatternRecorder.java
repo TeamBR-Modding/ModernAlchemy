@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy.gui;
 
 import com.dyonovan.modernalchemy.container.ContainerPatternRecorder;
 import com.dyonovan.modernalchemy.gui.widget.WidgetEnergyBank;
+import com.dyonovan.modernalchemy.gui.widget.WidgetPulse;
 import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.machines.TilePatternRecorder;
@@ -24,6 +25,7 @@ public class GuiPatternRecorder extends BaseGui {
         tile = tileEntity;
 
         widgets.add(new WidgetEnergyBank(this, tile.getEnergyBank(), 8, 78));
+        widgets.add(new WidgetPulse(this, tile, 77, 80));
     }
 
     @Override
