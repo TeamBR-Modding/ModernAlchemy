@@ -151,9 +151,9 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
 
         if (currentProcessTime > 0 && currentProcessTime >= requiredProcessTime) { //Output
             if (this.inventory.getStackInSlot(4) == null) {
-                this.setInventorySlotContents(4, outputItem);
+                this.setInventorySlotContents(4, new ItemStack(outputItem.getItem(), this.qtyOutput, outputItem.getItemDamage()));
             } else {
-                this.inventory.getStackInSlot(4).stackSize += outputItem.stackSize;
+                this.inventory.getStackInSlot(4).stackSize += this.qtyOutput;
             }
             doReset();
         }

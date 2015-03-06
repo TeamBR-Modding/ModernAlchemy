@@ -3,6 +3,7 @@ package com.dyonovan.modernalchemy.handlers;
 import com.dyonovan.modernalchemy.crafting.AdvancedCrafterRecipeRegistry;
 import com.dyonovan.modernalchemy.crafting.ArcFurnaceRecipeRegistry;
 import com.dyonovan.modernalchemy.crafting.OreDictStack;
+import com.dyonovan.modernalchemy.helpers.OreDictHelper;
 import com.dyonovan.modernalchemy.tileentity.machines.TileAdvancedCrafter;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Blocks;
@@ -203,6 +204,11 @@ public class CraftingHandler {
                 new ItemStack(ItemHandler.itemSteelGear, 1), 800, TileAdvancedCrafter.EXTRUDE);
         AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList(new OreDictStack("ingotCopper"), new OreDictStack("ingotSteel"))),
                 new ItemStack(ItemHandler.itemFaradayIngot, 1), 500, TileAdvancedCrafter.COOK);
+
+        if(OreDictHelper.hasOreDict("ingotTin") && OreDictHelper.hasOreDict("ingotBronze")) {
+            AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList(new OreDictStack("ingotCopper"), new OreDictStack("ingotCopper"), new OreDictStack("ingotCopper"), new OreDictStack("ingotTin"))),
+                    new OreDictStack("ingotBronze", 4), 500, TileAdvancedCrafter.COOK);
+        }
 
         Map recipes = FurnaceRecipes.smelting().getSmeltingList();
         for (Object o : recipes.entrySet()) {

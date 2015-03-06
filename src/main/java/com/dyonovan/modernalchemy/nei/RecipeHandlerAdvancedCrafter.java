@@ -46,7 +46,7 @@ public class RecipeHandlerAdvancedCrafter extends RecipeHandlerBase {
                 output.add(new PositionedStack(recipe.getOutputItem(), 129, 19));
             else {
                 for(ItemStack stack : recipe.getOreDictStacks())
-                    output.add(new PositionedStack(stack, 129, 19));
+                    output.add(new PositionedStack(new ItemStack(stack.getItem(), recipe.getQtyOutput(), stack.getItemDamage()), 129, 19));
             }
             mode = recipe.getRequiredMode();
             tickTime = recipe.getProcessTime();
