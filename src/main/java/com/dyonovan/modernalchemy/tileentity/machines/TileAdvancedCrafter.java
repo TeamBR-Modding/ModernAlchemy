@@ -311,7 +311,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
-        return slot >= 0 && slot <= 3 && AdvancedCrafterRecipeRegistry.instance.checkInput(itemStack.getItem());
+        return true;
     }
 
     /*******************************************************************************************************************
