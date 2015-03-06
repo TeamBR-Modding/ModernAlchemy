@@ -11,7 +11,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CraftingRecipeHandler {
+public class CraftingRecipeHelper {
 
     public static ItemStack[] getRecipe(ItemStack item) {
         List<IRecipe> registeredRecipes = CraftingManager.getInstance().getRecipeList();
@@ -60,6 +60,8 @@ public class CraftingRecipeHandler {
                     }
 
                 }
+                else
+                    return null;
             }
         }
         return output;
