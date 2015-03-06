@@ -90,6 +90,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
             if(currentMode != recipe.getRequiredMode()) //Must be the correct mode. No sense otherwise
                 continue;
 
+
             List<Object> tempInput = new ArrayList<Object>(); //Build a new list
             for(int i = 0; i < 4; i++) {
                 if(i < recipe.getInput().size()) { //If something exists in the recipe
@@ -101,6 +102,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
 
             boolean valid = true;
 
+            Collections.sort(tempInput, InventoryUtils.itemStackComparator);
             for(int i = 0; i < tempInput.size(); i++) { //Compare stacks, must be the same order
                 if(!InventoryUtils.areStacksEqual(tempInput.get(i), itemInput.get(i)))
                     valid = false;

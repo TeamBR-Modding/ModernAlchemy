@@ -205,8 +205,10 @@ public class CraftingHandler {
         Map recipes = FurnaceRecipes.smelting().getSmeltingList();
         for (Object o : recipes.entrySet()) {
             Map.Entry<ItemStack, ItemStack> recipe = (Map.Entry<ItemStack, ItemStack>) o;
-            AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<Object>(Arrays.asList(recipe.getKey())),
-                    recipe.getValue().getItemDamage() >= 32767 ? new ItemStack(recipe.getValue().getItem(), recipe.getValue().stackSize, 0) : recipe.getValue(), 100, TileAdvancedCrafter.FURNACE);
+            if (o != null) {
+                AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<Object>(Arrays.asList(recipe.getKey().getItemDamage() >= 32767 ? new ItemStack(recipe.getKey().getItem(), recipe.getKey().stackSize, 0) : recipe.getKey())),
+                        recipe.getValue().getItemDamage() >= 32767 ? new ItemStack(recipe.getValue().getItem(), 0) : recipe.getValue(), 100, TileAdvancedCrafter.FURNACE);
+            }
         }
     }
 }
