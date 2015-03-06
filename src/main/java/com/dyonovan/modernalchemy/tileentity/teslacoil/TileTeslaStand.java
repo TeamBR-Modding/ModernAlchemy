@@ -33,8 +33,10 @@ public class TileTeslaStand extends BaseTile implements IEnergyHandler {
             }
             else if(worldObj.getBlock(xCoord, y, zCoord) != BlockHandler.blockTeslaStand)
                 return;
+            y++;
         }
     }
+
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
@@ -76,11 +78,10 @@ public class TileTeslaStand extends BaseTile implements IEnergyHandler {
     @Override
     public void updateEntity() {
         if ((energy.getEnergyStored() > 0)) {
-
-                TileEntity tile = worldObj.getTileEntity(xCoord, yCoord + 1, zCoord);
-                if (tile instanceof TileTeslaStand || tile instanceof TileTeslaCoil) {
-                    energy.extractEnergy(((IEnergyHandler) tile).receiveEnergy(ForgeDirection.DOWN, energy.extractEnergy(energy.getMaxExtract(), true), false), false);
-                }
+            TileEntity tile = worldObj.getTileEntity(xCoord, yCoord + 1, zCoord);
+            if (tile instanceof TileTeslaStand || tile instanceof TileTeslaCoil) {
+                energy.extractEnergy(((IEnergyHandler) tile).receiveEnergy(ForgeDirection.DOWN, energy.extractEnergy(energy.getMaxExtract(), true), false), false);
+            }
         }
     }
 }

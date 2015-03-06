@@ -27,7 +27,7 @@ public class TileTeslaBase extends BaseTile implements IEnergyHandler {
                 y++;
                 continue;
             }
-              else if(worldObj.getBlock(xCoord, y, zCoord) == BlockHandler.blockCoil)
+            else if(worldObj.getBlock(xCoord, y, zCoord) == BlockHandler.blockCoil)
                 return ((TileTeslaCoil)worldObj.getTileEntity(xCoord, y, zCoord)).isActive();
             else
                 return false;
