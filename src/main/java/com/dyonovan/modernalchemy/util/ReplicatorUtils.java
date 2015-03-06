@@ -1,6 +1,7 @@
 package com.dyonovan.modernalchemy.util;
 
 import com.dyonovan.modernalchemy.ModernAlchemy;
+import com.dyonovan.modernalchemy.collections.Couple;
 import com.dyonovan.modernalchemy.crafting.CraftingRecipeHelper;
 import com.dyonovan.modernalchemy.handlers.ConfigHandler;
 import com.dyonovan.modernalchemy.helpers.LogHelper;
@@ -8,6 +9,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -89,6 +91,52 @@ public class ReplicatorUtils {
                 return map.get(id.name + ":" + stack.getItemDamage());
             } else if (map.containsKey(id.name))
                 return map.get(id.name);
+        }
+
+        //Check crafting
+        int value = getValueFromRecipe(stack, 0);
+        if(value > -1)
+            return value;
+
+        return -1;
+    }
+
+    public static int getValueFromRecipe(ItemStack inputStack, int depth) {
+        if(depth > 10) //Too deep
+            return -1;
+        if(inputStack == null) //Nothing
+            return 0;
+        int shallowValue = getShallowValue(inputStack);
+        if(shallowValue > -1) { //If its registered (Our end point hopefully)
+            return shallowValue;
+        }
+        else if(CraftingRecipeHelper.getRecipe(inputStack) != null) {
+            Couple<ItemStack[], IRecipe> recipe = CraftingRecipeHelper.getRecipe(inputStack);
+            GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(inputStack.getItem());
+            int sum = 0;
+
+            for (ItemStack stack : recipe.getA()) {
+                int value = getValueFromRecipe(stack, ++depth);
+                if (value > -1)
+                    sum += value;
+                else return -1;
+            }
+
+            if(ConfigHandler.debugMode)
+                LogHelper.info("Adding value for: " + inputStack.getDisplayName() + " - " + (sum / recipe.getB().getRecipeOutput().stackSize));
+            values.put(id.name + ":" + inputStack.getItemDamage(), (sum / recipe.getB().getRecipeOutput().stackSize));
+            return sum / recipe.getB().getRecipeOutput().stackSize;
+        }
+        return -1;
+    }
+
+    public static int getShallowValue(ItemStack stack) {
+        GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(stack.getItem());
+        if (values != null) {
+            if (values.containsKey(id.name + ":" + stack.getItemDamage())) {
+                return values.get(id.name + ":" + stack.getItemDamage());
+            } else if (values.containsKey(id.name))
+                return values.get(id.name);
         }
         return -1;
     }
