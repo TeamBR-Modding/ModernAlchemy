@@ -19,10 +19,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ReplicatorUtils {
-    public static HashMap<String, Integer> values = new HashMap<String, Integer>();
+    public static HashMap<String, Integer> values = new HashMap<>();
 
     public static String fileDirectory;
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void buildDirectory(String folderLocation) {
         File dir = new File(folderLocation);
         dir.mkdirs();
@@ -54,6 +55,7 @@ public class ReplicatorUtils {
                     int num = 0;
                     LogHelper.info("Adding values for: " + modid);
                     for(Map.Entry<String, Integer> entry : map.entrySet()) {
+                        if (modid.equals("zzzDynamic") && values.containsKey(entry.getKey())) continue;
                         values.put(entry.getKey(), entry.getValue());
                         num++;
                     }

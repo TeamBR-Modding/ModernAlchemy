@@ -16,7 +16,7 @@ public class JsonUtils {
         String json = gson.toJson(values);
 
         try {
-            FileWriter fw = new FileWriter(ReplicatorUtils.fileDirectory + modID + ".json");
+            FileWriter fw = new FileWriter(ReplicatorUtils.fileDirectory + File.separator + modID + ".json");
             fw.write(json);
             fw.close();
             return true;
@@ -25,6 +25,7 @@ public class JsonUtils {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public static HashMap<String, Integer> readJson(String modID) {
         try {
             BufferedReader br = new BufferedReader(new FileReader(ReplicatorUtils.fileDirectory + File.separator + modID + ".json"));
@@ -32,13 +33,13 @@ public class JsonUtils {
             Gson gson = new Gson();
             Map<String, Integer> map = gson.fromJson(br, new TypeToken<Map<String, Integer>>(){}.getType());
             if (map != null) {
-                HashMap<String, Integer> hashMap = (map instanceof HashMap) ? (HashMap) map : new HashMap<String, Integer>(map);
+                HashMap<String, Integer> hashMap = (map instanceof HashMap) ? (HashMap) map : new HashMap<>(map);
                 return hashMap.size() == 0 ? null : hashMap;
             } else {
-                return new HashMap<String, Integer>();
+                return new HashMap<>();
             }
         } catch (FileNotFoundException e) {
-            return new HashMap<String, Integer>();
+            return new HashMap<>();
         }
     }
 }

@@ -8,6 +8,7 @@ import net.minecraftforge.event.world.BlockEvent;
 
 public class OnBreakEvent {
 
+    @SuppressWarnings("unused")
     @SubscribeEvent
     public void onBreakEvent(BlockEvent.BreakEvent event) {
 

@@ -1,6 +1,7 @@
 package com.dyonovan.modernalchemy.handlers;
 
 import com.dyonovan.modernalchemy.events.OnBreakEvent;
+import com.dyonovan.modernalchemy.events.OnWorldSaveEvent;
 import com.dyonovan.modernalchemy.events.ToolTipEvent;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -10,6 +11,7 @@ public class EventManager {
         registerEvent(new ToolTipEvent());
         registerEvent(BucketHandler.INSTANCE);
         registerEvent(new OnBreakEvent());
+        registerEvent(new OnWorldSaveEvent());
     }
 
     private static void registerEvent(Object event) {
