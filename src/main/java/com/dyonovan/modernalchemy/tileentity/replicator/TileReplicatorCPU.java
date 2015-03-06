@@ -206,7 +206,7 @@ public class TileReplicatorCPU extends BaseMachine implements ISidedInventory {
                     isActive = true;
                 }
 
-                if (currentProcessTime < requiredProcessTime) {
+                if (currentProcessTime != 0 && currentProcessTime < requiredProcessTime) {
                     if (getEnergyLevel() >= 2 * listLaser.size()) {
                         energyTank.drainEnergy(2 * listLaser.size());
                         currentProcessTime += listLaser.size();
