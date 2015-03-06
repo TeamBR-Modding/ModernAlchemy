@@ -62,7 +62,7 @@ public class ModernAlchemy {
     @SuppressWarnings("unused")
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        WorldGeneratorHandler.init();
+
         if (OreDictionary.getOres("oreCopper").isEmpty()) {
             BlockHandler.initCopper();
             ItemHandler.initCopper();
@@ -70,6 +70,7 @@ public class ModernAlchemy {
         if (OreDictionary.getOres("ingotSteel").isEmpty()) {
             ItemHandler.initSteel();
         }
+        WorldGeneratorHandler.init();
         CraftingHandler.init();
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
         PacketHandler.initPackets();
