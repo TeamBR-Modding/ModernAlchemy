@@ -70,6 +70,7 @@ public class ModernAlchemy {
         if (OreDictionary.getOres("ingotSteel").isEmpty()) {
             ItemHandler.initSteel();
         }
+
         WorldGeneratorHandler.init();
         CraftingHandler.init();
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
