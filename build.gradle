@@ -48,7 +48,7 @@ configurations {
 }
 
 dependencies {
-    compile "com.dyonovan.teambrcore:TeamBRCore:${config.minecraft_version}-${config.teambrcore_version}:dev"
+    compile "com.dyonovan.teambrcore:TeamBRCore:+:dev"
     compile "codechicken:CodeChickenCore:${config.minecraft_version}-${config.ccc_version}:dev"
     compile "codechicken:CodeChickenLib:${config.minecraft_version}-${config.CCLIB_version}:dev"
     compile "codechicken:NotEnoughItems:${config.minecraft_version}-${config.NEI_version}:dev"
