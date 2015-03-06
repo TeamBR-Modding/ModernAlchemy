@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class ComponentHeader extends ComponentBase {
     protected String title;
@@ -24,22 +25,43 @@ public class ComponentHeader extends ComponentBase {
     @Override
     public void drawComponent(int x, int y, int mouseX, int mouseY) {
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-        int drawX = xPos;
-        switch(alignment) {
-            case RIGHT :
-                drawX += 85 - fontRenderer.getStringWidth(title);
-                break;
-            case CENTER :
-                drawX += 53 - (fontRenderer.getStringWidth(title) / 2);
-                break;
-            case LEFT :
-            default :
-                drawX += 0;
-                break;
+
+        ArrayList<String> strings = new ArrayList<String>();
+        strings.add("");
+        String[] words = title.split(" ");
+        int pos = 0;
+        int width = 0;
+        for(String string : words) {
+            if(fontRenderer.getStringWidth(string) + width < 120) {
+                strings.set(pos, strings.get(pos) + " " + string);
+                width = fontRenderer.getStringWidth(strings.get(pos));
+            }
+            else {
+                strings.add(" " + string);
+                width = fontRenderer.getStringWidth(string);
+                pos++;
+            }
         }
-        int drawY = yPos;
-        fontRenderer.drawSplitString(title, x + drawX, y + drawY, 120, 4210752);
-        drawRectangle(x + xPos, y + yPos + 10, x + xPos + 105, y + yPos + 11, new Color(255, 255, 255));
+        int i = 0;
+        for(String string : strings) {
+            int drawX = xPos;
+            switch (alignment) {
+                case RIGHT:
+                    drawX += 85 - fontRenderer.getStringWidth(string);
+                    break;
+                case CENTER:
+                    drawX += 53 - (fontRenderer.getStringWidth(string) / 2);
+                    break;
+                case LEFT:
+                default:
+                    drawX += 0;
+                    break;
+            }
+            int drawY = yPos + (10 * i);
+            fontRenderer.drawSplitString(string, x + drawX, y + drawY, 120, 4210752);
+            i++;
+        }
+        drawRectangle(x + xPos, y + yPos + 10 + (10 * pos), x + xPos + 105, y + yPos + 11 + (10 * pos), new Color(255, 255, 255));
         super.drawComponent(x, y, mouseX, mouseY);
     }
 }
