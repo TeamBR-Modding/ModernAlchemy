@@ -17,9 +17,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.StatCollector;
 
 import java.io.*;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -41,8 +41,8 @@ public class ManualRegistry {
      * Creates our registry
      */
     public ManualRegistry() {
-        pages = new HashMap<String, GuiManual>();
-        visitedPages = new Stack<GuiManual>();
+        pages = new HashMap<>();
+        visitedPages = new Stack<>();
         init();
     }
     /**
@@ -157,14 +157,15 @@ public class ManualRegistry {
      * @return An array of {@link java.lang.String}s containing our info
      */
     public ArrayList<String> getFilesForPages() {
-        ArrayList<String> files = new ArrayList<String>();
+        ArrayList<String> files = new ArrayList<>();
         String path = "manualPages";
         URL url = ModernAlchemy.class.getResource("/" + path);
         String[] parts = url.getPath().replaceAll("jar:file:/", "").replaceAll("%20", " ").split(".jar");
 
         if (url.toString().substring(0,3).equalsIgnoreCase("jar")) {
             try {
-                JarFile jar = new JarFile(parts[0] + ".jar");
+                //JarFile jar = new JarFile(parts[0] + ".jar");
+                JarFile jar = new JarFile(Paths.get(url.toURI()).toString());
                 Enumeration<JarEntry> entries = jar.entries();//jarFile.entries();
                 while (entries.hasMoreElements()) {
                     JarEntry entry = entries.nextElement();
@@ -175,6 +176,8 @@ public class ManualRegistry {
                     }
                 }
             } catch (IOException e) {
+                LogHelper.severe("Could not find Manual Pages");
+            } catch (URISyntaxException e) {
                 LogHelper.severe("Could not find Manual Pages");
             }
         } else {
