@@ -17,6 +17,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.StatCollector;
 
 import java.io.*;
+import java.net.JarURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
@@ -163,9 +164,9 @@ public class ManualRegistry {
 
         if (url.toString().substring(0,3).equalsIgnoreCase("jar")) {
             try {
-                String[] parts = url.toString().replaceAll("jar:file:/", "").replaceAll("%20", " ").split("!");
-                JarFile jar = new JarFile(parts[0]);
-                Enumeration<JarEntry> entries = jar.entries();//jarFile.entries();
+                String[] urlString = url.toString().split("!");
+                JarURLConnection jarCon = (JarURLConnection)new URL(urlString[0] + "!/").openConnection();
+                Enumeration<JarEntry> entries = jarCon.getJarFile().entries();
                 while (entries.hasMoreElements()) {
                     JarEntry entry = entries.nextElement();
                     String entryName = entry.getName();
