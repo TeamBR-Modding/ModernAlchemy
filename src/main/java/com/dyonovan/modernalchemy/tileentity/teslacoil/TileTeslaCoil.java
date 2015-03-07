@@ -7,7 +7,7 @@ import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.ConfigHandler;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.handlers.PacketHandler;
-import com.dyonovan.modernalchemy.helpers.GuiHelper;
+import com.dyonovan.teambrcore.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.network.UpdateServerCoilLists;
 import com.dyonovan.modernalchemy.tileentity.BaseMachine;
 import com.dyonovan.modernalchemy.util.Location;

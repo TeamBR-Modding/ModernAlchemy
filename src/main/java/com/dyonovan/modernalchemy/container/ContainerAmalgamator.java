@@ -1,6 +1,7 @@
 package com.dyonovan.modernalchemy.container;
 
 import com.dyonovan.modernalchemy.tileentity.machines.TileAmalgamator;
+import com.dyonovan.teambrcore.container.BaseContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.SlotFurnace;
 
@@ -10,5 +11,10 @@ public class ContainerAmalgamator extends BaseContainer {
         addSlotToContainer(new SlotFurnace(inventory.player, tile, 0, 146, 34));
         bindPlayerInventory(inventory, 8, 84);
         setCanSendToTile(false);
+    }
+
+    @Override
+    public String getNEILabel() {
+        return "modernalchemy.solidifier.recipes";
     }
 }

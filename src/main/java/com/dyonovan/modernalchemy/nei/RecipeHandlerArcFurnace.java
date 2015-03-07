@@ -7,8 +7,8 @@ import com.dyonovan.modernalchemy.crafting.ArcFurnaceRecipeRegistry;
 import com.dyonovan.modernalchemy.crafting.RecipeArcFurnace;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
-import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
+import com.dyonovan.teambrcore.helpers.GuiHelper;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -20,14 +20,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class RecipeHandlerArcFurnace extends RecipeHandlerBase {
+public class RecipeHandlerArcFurnace extends RecipeHandlerBaseTesla {
 
     public static final Rectangle TANK = new Rectangle(142, 26, 16, 52);
     public static final Rectangle AIR_TANK = new Rectangle(32, 26, 16, 52);
     public static final Rectangle BANK = new Rectangle(3, 26, 16, 52);
     private static final List<String> nothing = new ArrayList<String>();
 
-    public class CachedArcFurnaceRecipe extends CachedBaseRecipe {
+    public class CachedArcFurnaceRecipe extends CachedBaseRecipeTesla {
         private PositionedStack input;
         private FluidTankElement output;
         private FluidTankElement airTank;

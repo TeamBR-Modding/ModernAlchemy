@@ -60,6 +60,6 @@ public class ClientProxy extends  CommonProxy{
     @Override
     public void init() {
         super.init();
-        ManualRegistry.instance.init();
+        //TODO: Register manual
     }
 }

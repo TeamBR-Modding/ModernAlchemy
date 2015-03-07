@@ -1,10 +1,10 @@
 package com.dyonovan.modernalchemy.manual.component;
 
-import com.dyonovan.modernalchemy.helpers.GuiHelper;
+
 import com.dyonovan.modernalchemy.manual.ManualRegistry;
+import com.dyonovan.teambrcore.helpers.GuiHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
 
 public class ComponentLink extends ComponentBase {
     protected String title;

@@ -3,7 +3,7 @@ package com.dyonovan.modernalchemy.tileentity.machines;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.handlers.ItemHandler;
-import com.dyonovan.modernalchemy.helpers.GuiHelper;
+import com.dyonovan.teambrcore.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.BaseMachine;
 import com.dyonovan.modernalchemy.tileentity.InventoryTile;

@@ -2,8 +2,8 @@ package com.dyonovan.modernalchemy.items;
 
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.handlers.ItemHandler;
-import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
+import com.dyonovan.teambrcore.helpers.GuiHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

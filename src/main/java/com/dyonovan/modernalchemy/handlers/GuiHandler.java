@@ -2,18 +2,16 @@ package com.dyonovan.modernalchemy.handlers;
 
 import com.dyonovan.modernalchemy.container.*;
 import com.dyonovan.modernalchemy.gui.*;
-import com.dyonovan.modernalchemy.manual.ItemManual;
-import com.dyonovan.modernalchemy.manual.pages.ContainerPage;
 import com.dyonovan.modernalchemy.manual.ManualRegistry;
+import com.dyonovan.modernalchemy.manual.pages.ContainerPage;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.TileArcFurnaceCore;
 import com.dyonovan.modernalchemy.tileentity.machines.TileAdvancedCrafter;
+import com.dyonovan.modernalchemy.tileentity.machines.TileAmalgamator;
 import com.dyonovan.modernalchemy.tileentity.machines.TileElectricBellows;
 import com.dyonovan.modernalchemy.tileentity.machines.TilePatternRecorder;
-import com.dyonovan.modernalchemy.tileentity.machines.TileAmalgamator;
 import com.dyonovan.modernalchemy.tileentity.replicator.TileReplicatorCPU;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
 import cpw.mods.fml.common.network.IGuiHandler;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 

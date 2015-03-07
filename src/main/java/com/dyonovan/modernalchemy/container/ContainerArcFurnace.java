@@ -1,12 +1,9 @@
 package com.dyonovan.modernalchemy.container;
 
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.TileArcFurnaceCore;
-import net.minecraft.entity.player.EntityPlayer;
+import com.dyonovan.teambrcore.container.BaseContainer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 
 public class ContainerArcFurnace extends BaseContainer {
 
@@ -21,5 +18,10 @@ public class ContainerArcFurnace extends BaseContainer {
         // Catalyst
         addSlotToContainer(new Slot(core, 1, 72, 60));
         bindPlayerInventory(playerInventory, 8, 84);
+    }
+
+    @Override
+    public String getNEILabel() {
+        return "modernalchemy.arcfurnace.recipes";
     }
 }

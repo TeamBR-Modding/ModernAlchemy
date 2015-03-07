@@ -25,10 +25,9 @@ import java.util.jar.JarFile;
 
 @SideOnly(Side.CLIENT)
 public class ManualRegistry {
-    /**
-     * Our Manual instance
-     */
+
     public static ManualRegistry instance = new ManualRegistry();
+
     /**
      * The list of {@link com.dyonovan.modernalchemy.manual.pages.GuiManual} that have been opened, the stack
      */

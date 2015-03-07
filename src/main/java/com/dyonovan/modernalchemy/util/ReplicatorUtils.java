@@ -5,6 +5,9 @@ import com.dyonovan.modernalchemy.collections.Couple;
 import com.dyonovan.modernalchemy.crafting.CraftingRecipeHelper;
 import com.dyonovan.modernalchemy.handlers.ConfigHandler;
 import com.dyonovan.modernalchemy.helpers.LogHelper;
+import com.dyonovan.teambrcore.notification.GuiColor;
+import com.dyonovan.teambrcore.notification.Notification;
+import com.dyonovan.teambrcore.notification.NotificationHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -100,6 +103,9 @@ public class ReplicatorUtils {
         if(value > -1)
             return value;
 
+        if(ConfigHandler.useDefault)
+            return ConfigHandler.defaultReplicationValue;
+
         return -1;
     }
 
@@ -124,8 +130,10 @@ public class ReplicatorUtils {
                 else return -1;
             }
 
-            if(ConfigHandler.debugMode)
+            if(ConfigHandler.debugMode) {
+                NotificationHelper.addNotification(new Notification(inputStack, GuiColor.YELLOW + "Added new Value", "Value: " + (sum / recipe.getB().getRecipeOutput().stackSize), Notification.DEFAULT_DURATION));
                 LogHelper.info("Adding value for: " + inputStack.getDisplayName() + " - " + (sum / recipe.getB().getRecipeOutput().stackSize));
+            }
             values.put(id.name + ":" + inputStack.getItemDamage(), (sum / recipe.getB().getRecipeOutput().stackSize));
             return sum / recipe.getB().getRecipeOutput().stackSize;
         }

@@ -1,12 +1,13 @@
 package com.dyonovan.modernalchemy.gui;
 
 import com.dyonovan.modernalchemy.container.ContainerAmalgamator;
-import com.dyonovan.modernalchemy.gui.widget.WidgetEnergyBank;
-import com.dyonovan.modernalchemy.gui.widget.WidgetLiquidTank;
-import com.dyonovan.modernalchemy.gui.widget.WidgetPulse;
-import com.dyonovan.modernalchemy.helpers.GuiHelper;
+import com.dyonovan.modernalchemy.gui.widgets.WidgetEnergyBank;
+import com.dyonovan.modernalchemy.gui.widgets.WidgetPulse;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.machines.TileAmalgamator;
+import com.dyonovan.teambrcore.gui.BaseGui;
+import com.dyonovan.teambrcore.gui.widget.WidgetLiquidTank;
+import com.dyonovan.teambrcore.helpers.GuiHelper;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -15,7 +16,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiAmalgamator extends BaseGui  {
+public class GuiAmalgamator extends BaseGui {
 
     private ResourceLocation background = new ResourceLocation(Constants.MODID + ":textures/gui/solidifier.png");
     private TileAmalgamator tile;

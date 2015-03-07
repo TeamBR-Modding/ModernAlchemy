@@ -1,26 +1,20 @@
 package com.dyonovan.modernalchemy.tileentity.replicator;
 
 import com.dyonovan.modernalchemy.blocks.replicator.BlockReplicatorStand;
-import com.dyonovan.modernalchemy.energy.ITeslaHandler;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.entities.EntityLaserNode;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
-import com.dyonovan.modernalchemy.handlers.ConfigHandler;
 import com.dyonovan.modernalchemy.handlers.ItemHandler;
-import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.items.ItemPattern;
 import com.dyonovan.modernalchemy.items.ItemReplicatorMedium;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.BaseMachine;
-import com.dyonovan.modernalchemy.tileentity.BaseTile;
 import com.dyonovan.modernalchemy.tileentity.InventoryTile;
-import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
 import com.dyonovan.modernalchemy.util.Location;
-import com.dyonovan.modernalchemy.util.RenderUtils;
 import com.dyonovan.modernalchemy.util.ReplicatorUtils;
 import com.dyonovan.modernalchemy.util.WorldUtils;
+import com.dyonovan.teambrcore.helpers.GuiHelper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

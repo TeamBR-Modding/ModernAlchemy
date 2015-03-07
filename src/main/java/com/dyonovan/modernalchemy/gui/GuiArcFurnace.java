@@ -1,13 +1,13 @@
 package com.dyonovan.modernalchemy.gui;
 
 import com.dyonovan.modernalchemy.container.ContainerArcFurnace;
-import com.dyonovan.modernalchemy.gui.widget.WidgetEnergyBank;
-import com.dyonovan.modernalchemy.gui.widget.WidgetLiquidTank;
-import com.dyonovan.modernalchemy.gui.widget.WidgetPulse;
-import com.dyonovan.modernalchemy.helpers.GuiHelper;
+import com.dyonovan.modernalchemy.gui.widgets.WidgetEnergyBank;
+import com.dyonovan.modernalchemy.gui.widgets.WidgetPulse;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.TileArcFurnaceCore;
-import net.minecraft.client.renderer.Tessellator;
+import com.dyonovan.teambrcore.gui.BaseGui;
+import com.dyonovan.teambrcore.gui.widget.WidgetLiquidTank;
+import com.dyonovan.teambrcore.helpers.GuiHelper;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -27,7 +27,7 @@ public class GuiArcFurnace extends BaseGui {
         widgets.add(new WidgetLiquidTank(this, core.getAirTank(),     37, 78, 52));
         widgets.add(new WidgetLiquidTank(this, core.getOutputTank(), 147, 78, 52));
         widgets.add(new WidgetEnergyBank(this, core.getEnergyBank(),   8, 78));
-        widgets.add(new      WidgetPulse(this, core,                  67, 54));
+        widgets.add(new WidgetPulse(this, core,                  67, 54));
     }
 
     @Override

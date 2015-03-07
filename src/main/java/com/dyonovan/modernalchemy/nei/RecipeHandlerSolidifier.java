@@ -6,20 +6,21 @@ import codechicken.nei.PositionedStack;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.handlers.ItemHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
+import com.dyonovan.teambrcore.nei.RecipeHandlerBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeHandlerSolidifier extends RecipeHandlerBase {
     public static final Rectangle TANK = new Rectangle(50, 23, 16, 52);
     private static final java.util.List<String> nothing = new ArrayList<String>();
 
-    public class CachedSolidifierRecipe extends CachedBaseRecipe {
+    public class CachedSolidifierRecipe extends RecipeHandlerBase.CachedBaseRecipe {
         private FluidTankElement input;
         private PositionedStack output;
 

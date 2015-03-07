@@ -5,22 +5,21 @@ import cofh.api.energy.IEnergyHandler;
 import com.dyonovan.modernalchemy.crafting.AdvancedCrafterRecipeRegistry;
 import com.dyonovan.modernalchemy.crafting.OreDictStack;
 import com.dyonovan.modernalchemy.crafting.RecipeAdvancedCrafter;
-import com.dyonovan.modernalchemy.handlers.ItemHandler;
-import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.BaseTile;
 import com.dyonovan.modernalchemy.tileentity.InventoryTile;
 import com.dyonovan.modernalchemy.util.InventoryUtils;
+import com.dyonovan.teambrcore.helpers.GuiHelper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISidedInventory {
 

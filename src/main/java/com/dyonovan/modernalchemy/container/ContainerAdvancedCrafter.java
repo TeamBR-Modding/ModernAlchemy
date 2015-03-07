@@ -1,6 +1,7 @@
 package com.dyonovan.modernalchemy.container;
 
 import com.dyonovan.modernalchemy.tileentity.machines.TileAdvancedCrafter;
+import com.dyonovan.teambrcore.container.BaseContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
@@ -30,5 +31,10 @@ public class ContainerAdvancedCrafter extends BaseContainer {
     public boolean enchantItem(EntityPlayer player, int i) {
         tile.currentMode = i;
         return false;
+    }
+
+    @Override
+    public String getNEILabel() {
+        return "modernalchemy.advancedCrafter.recipes";
     }
 }

@@ -1,12 +1,13 @@
 package com.dyonovan.modernalchemy.gui;
 
 import com.dyonovan.modernalchemy.container.ContainerElectricBellows;
-import com.dyonovan.modernalchemy.gui.widget.WidgetEnergyBank;
-import com.dyonovan.modernalchemy.gui.widget.WidgetLiquidTank;
-import com.dyonovan.modernalchemy.gui.widget.WidgetPulse;
-import com.dyonovan.modernalchemy.helpers.GuiHelper;
+import com.dyonovan.modernalchemy.gui.widgets.WidgetEnergyBank;
+import com.dyonovan.modernalchemy.gui.widgets.WidgetPulse;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.machines.TileElectricBellows;
+import com.dyonovan.teambrcore.gui.BaseGui;
+import com.dyonovan.teambrcore.gui.widget.WidgetLiquidTank;
+import com.dyonovan.teambrcore.helpers.GuiHelper;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 

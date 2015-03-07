@@ -1,12 +1,12 @@
 package com.dyonovan.modernalchemy.gui;
 
 import com.dyonovan.modernalchemy.container.ContainerPatternRecorder;
-import com.dyonovan.modernalchemy.gui.widget.WidgetEnergyBank;
-import com.dyonovan.modernalchemy.gui.widget.WidgetPulse;
-import com.dyonovan.modernalchemy.helpers.GuiHelper;
+import com.dyonovan.modernalchemy.gui.widgets.WidgetEnergyBank;
+import com.dyonovan.modernalchemy.gui.widgets.WidgetPulse;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.machines.TilePatternRecorder;
-import net.minecraft.client.renderer.Tessellator;
+import com.dyonovan.teambrcore.gui.BaseGui;
+import com.dyonovan.teambrcore.helpers.GuiHelper;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;

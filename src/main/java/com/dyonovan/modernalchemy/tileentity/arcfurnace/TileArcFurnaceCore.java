@@ -5,7 +5,7 @@ import com.dyonovan.modernalchemy.crafting.ArcFurnaceRecipeRegistry;
 import com.dyonovan.modernalchemy.energy.ITeslaHandler;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
-import com.dyonovan.modernalchemy.helpers.GuiHelper;
+import com.dyonovan.teambrcore.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.tileentity.InventoryTile;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.dummies.TileDummy;
 import com.dyonovan.modernalchemy.util.Location;

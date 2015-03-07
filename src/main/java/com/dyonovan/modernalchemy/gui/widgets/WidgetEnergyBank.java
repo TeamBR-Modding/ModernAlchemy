@@ -1,7 +1,8 @@
-package com.dyonovan.modernalchemy.gui.widget;
+package com.dyonovan.modernalchemy.gui.widgets;
 
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.lib.Constants;
+import com.dyonovan.teambrcore.gui.widget.Widget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.Tessellator;

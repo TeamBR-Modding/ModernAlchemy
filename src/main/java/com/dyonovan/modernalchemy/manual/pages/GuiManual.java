@@ -1,16 +1,15 @@
 package com.dyonovan.modernalchemy.manual.pages;
 
-import com.dyonovan.modernalchemy.gui.BaseGui;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.manual.ManualRegistry;
 import com.dyonovan.modernalchemy.manual.component.ComponentHeader;
 import com.dyonovan.modernalchemy.manual.component.ComponentSet;
 import com.dyonovan.modernalchemy.manual.component.IComponent;
+import com.dyonovan.teambrcore.gui.BaseGui;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.GuiScreenEvent;

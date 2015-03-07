@@ -8,6 +8,7 @@ import com.dyonovan.modernalchemy.crafting.OreDictStack;
 import com.dyonovan.modernalchemy.crafting.RecipeAdvancedCrafter;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.machines.TileAdvancedCrafter;
+import com.dyonovan.teambrcore.nei.RecipeHandlerBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
@@ -16,7 +17,6 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
