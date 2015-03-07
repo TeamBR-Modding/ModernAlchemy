@@ -5,9 +5,9 @@ import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.helpers.LogHelper;
 import com.dyonovan.modernalchemy.manual.component.*;
 import com.dyonovan.modernalchemy.manual.pages.GuiManual;
-import com.dyonovan.modernalchemy.manual.util.ManualPageDeserializer;
 import com.dyonovan.modernalchemy.manual.util.AbstractComponent;
 import com.dyonovan.modernalchemy.manual.util.AbstractManualPage;
+import com.dyonovan.modernalchemy.manual.util.ManualPageDeserializer;
 import com.dyonovan.modernalchemy.util.ReplicatorUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -17,6 +17,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.StatCollector;
 
 import java.io.*;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
@@ -159,7 +160,7 @@ public class ManualRegistry {
         ArrayList<String> files = new ArrayList<String>();
         String path = "manualPages";
         URL url = ModernAlchemy.class.getResource("/" + path);
-        String[] parts = url.getPath().replaceAll("jar:file:/", "").split(".jar");
+        String[] parts = url.getPath().replaceAll("jar:file:/", "").replaceAll("%20", " ").split(".jar");
 
         if (url.toString().substring(0,3).equalsIgnoreCase("jar")) {
             try {
