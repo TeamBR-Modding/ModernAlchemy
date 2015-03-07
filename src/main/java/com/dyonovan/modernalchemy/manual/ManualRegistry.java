@@ -19,7 +19,6 @@ import net.minecraft.util.StatCollector;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -156,17 +155,16 @@ public class ManualRegistry {
      * Gets all the files in the manual pages directory ("resources/manualPages")
      * @return An array of {@link java.lang.String}s containing our info
      */
+    @SuppressWarnings("ConstantConditions")
     public ArrayList<String> getFilesForPages() {
         ArrayList<String> files = new ArrayList<>();
         String path = "manualPages";
         URL url = ModernAlchemy.class.getResource("/" + path);
-        String[] parts = url.getPath().replaceAll("jar:file:/", "").replaceAll("%20", " ").split(".jar");
 
         if (url.toString().substring(0,3).equalsIgnoreCase("jar")) {
             try {
-                //JarFile jar = new JarFile(parts[0] + ".jar");
-                String temp = Paths.get(url.toURI()).toString();
-                JarFile jar = new JarFile(Paths.get(url.toURI()).toString());
+                String[] parts = url.toString().replaceAll("jar:file:/", "").replaceAll("%20", " ").split("!");
+                JarFile jar = new JarFile(parts[0]);
                 Enumeration<JarEntry> entries = jar.entries();//jarFile.entries();
                 while (entries.hasMoreElements()) {
                     JarEntry entry = entries.nextElement();
@@ -177,8 +175,6 @@ public class ManualRegistry {
                     }
                 }
             } catch (IOException e) {
-                LogHelper.severe("Could not find Manual Pages");
-            } catch (URISyntaxException e) {
                 LogHelper.severe("Could not find Manual Pages");
             }
         } else {
