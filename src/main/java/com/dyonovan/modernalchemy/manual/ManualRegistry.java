@@ -165,6 +165,7 @@ public class ManualRegistry {
         if (url.toString().substring(0,3).equalsIgnoreCase("jar")) {
             try {
                 //JarFile jar = new JarFile(parts[0] + ".jar");
+                String temp = Paths.get(url.toURI()).toString();
                 JarFile jar = new JarFile(Paths.get(url.toURI()).toString());
                 Enumeration<JarEntry> entries = jar.entries();//jarFile.entries();
                 while (entries.hasMoreElements()) {
