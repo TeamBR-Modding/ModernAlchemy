@@ -159,7 +159,7 @@ public class ManualRegistry {
         ArrayList<String> files = new ArrayList<String>();
         String path = "manualPages";
         URL url = ModernAlchemy.class.getResource("/" + path);
-        String[] parts = url.toString().replaceAll("jar:file:/", "").split(".jar");
+        String[] parts = url.getPath().replaceAll("jar:file:/", "").split(".jar");
 
         if (url.toString().substring(0,3).equalsIgnoreCase("jar")) {
             try {
