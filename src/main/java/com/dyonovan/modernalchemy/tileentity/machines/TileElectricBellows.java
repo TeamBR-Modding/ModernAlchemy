@@ -44,8 +44,10 @@ public class TileElectricBellows extends BaseMachine implements IFluidHandler {
     private void compress() {
         if (energyTank.getEnergyLevel() > 0 && canFill(tank) && !isPowered()) {
             if (!isActive) {
-                ISound eventHorizonSound = new MachineSound(Constants.MODID + ":compressor", this, 0.1F, 1);
-                Minecraft.getMinecraft().getSoundHandler().playSound(eventHorizonSound);
+                if(worldObj.isRemote) {
+                    ISound eventHorizonSound = new MachineSound(Constants.MODID + ":compressor", this, 0.1F, 1);
+                    Minecraft.getMinecraft().getSoundHandler().playSound(eventHorizonSound);
+                }
                 isActive = true;
             }
             updateSpeed();

@@ -15,12 +15,13 @@ import com.dyonovan.teambrcore.helpers.GuiHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISidedInventory {
 
@@ -246,7 +247,8 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
     }
 
     public void doFail() {
-        SoundHelper.playSound("shutdown", xCoord, yCoord, zCoord, 1.0F, 1.0F);
+        if(worldObj.isRemote)
+            SoundHelper.playSound("shutdown", xCoord, yCoord, zCoord, 1.0F, 1.0F);
         coolDown = 60;
         doReset();
     }
