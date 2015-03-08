@@ -15,6 +15,7 @@ import com.dyonovan.teambrcore.helpers.GuiHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
@@ -81,6 +82,18 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
     private boolean canSmelt() {
         if(coolDown > 0)
             return false;
+
+        /*//TODO code for furnace mode
+        if (currentMode == FURNACE) {
+            for (int i = 0; i < 4; i++) {
+                if (inventory.getStackInSlot(i) != null) {
+                    Map recipes = FurnaceRecipes.smelting().getSmeltingList();
+                    for (int j = 0; j < recipes.size(); j++) {
+
+                    }
+                }
+            }
+        }*/
 
         List<Object> itemInput = new ArrayList<>(4); //Build our current input array
         for (int i = 0; i < 4; i++) {

@@ -187,7 +187,7 @@ public class CraftingHandler {
         AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<Object>(Arrays.asList(new ItemStack(Items.coal), new ItemStack(Items.iron_ingot))),
                 new OreDictStack("ingotSteel", 1), 1000, TileAdvancedCrafter.COOK);
         AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<Object>(Arrays.asList(new ItemStack(ItemHandler.itemFaradayIngot))),
-                new ItemStack(ItemHandler.itemFaradayWire, 3), 600, TileAdvancedCrafter.EXTRUDE);
+                new ItemStack(ItemHandler.itemFaradayWire, 3), 200, TileAdvancedCrafter.EXTRUDE);
 
     }
 
@@ -197,17 +197,17 @@ public class CraftingHandler {
             GameRegistry.addSmelting(BlockHandler.blockOreCopper, new ItemStack(ItemHandler.itemCopperIngot), 0.1f);
 
         AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList(new OreDictStack("ingotCopper"))),
-                new ItemStack(ItemHandler.itemCopperWire, 3), 600, TileAdvancedCrafter.EXTRUDE);
+                new ItemStack(ItemHandler.itemCopperWire, 3), 200, TileAdvancedCrafter.EXTRUDE);
         AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList(new OreDictStack("ingotSteel"))),
-                new ItemStack(ItemHandler.itemSteelPlate, 1), 800, TileAdvancedCrafter.BEND);
+                new ItemStack(ItemHandler.itemSteelPlate, 1), 200, TileAdvancedCrafter.BEND);
         AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList(new OreDictStack("ingotSteel"), new OreDictStack("ingotSteel"), new OreDictStack("ingotSteel"), new OreDictStack("ingotSteel"))),
-                new ItemStack(ItemHandler.itemSteelGear, 1), 800, TileAdvancedCrafter.EXTRUDE);
+                new ItemStack(ItemHandler.itemSteelGear, 1), 500, TileAdvancedCrafter.EXTRUDE);
         AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList(new OreDictStack("ingotCopper"), new OreDictStack("ingotSteel"))),
                 new ItemStack(ItemHandler.itemFaradayIngot, 1), 500, TileAdvancedCrafter.COOK);
 
         if(OreDictHelper.hasOreDict("ingotTin") && OreDictHelper.hasOreDict("ingotBronze")) {
             AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList(new OreDictStack("ingotCopper"), new OreDictStack("ingotCopper"), new OreDictStack("ingotCopper"), new OreDictStack("ingotTin"))),
-                    new OreDictStack("ingotBronze", 4), 500, TileAdvancedCrafter.COOK);
+                    new OreDictStack("ingotBronze", 4), 200, TileAdvancedCrafter.COOK);
         }
 
         Map recipes = FurnaceRecipes.smelting().getSmeltingList();
