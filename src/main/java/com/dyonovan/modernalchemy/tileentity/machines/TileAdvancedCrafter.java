@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy.tileentity.machines;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
+import com.dyonovan.modernalchemy.collections.PermutableSet;
 import com.dyonovan.modernalchemy.crafting.AdvancedCrafterRecipeRegistry;
 import com.dyonovan.modernalchemy.crafting.OreDictStack;
 import com.dyonovan.modernalchemy.crafting.RecipeAdvancedCrafter;
@@ -17,9 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISidedInventory {
 
@@ -50,6 +49,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
     private int currentProcessTime;
     private boolean isActive;
     private ItemStack outputItem;
+    private List<Object> currentRecipe;
     public int currentMode;
     public int requiredProcessTime;
     private int qtyOutput;
@@ -64,6 +64,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
         currentMode = COOK;
         requiredProcessTime = 0;
         qtyOutput = 0;
+        currentRecipe = new ArrayList<>();
     }
 
     /*******************************************************************************************************************
@@ -75,66 +76,122 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
      * @return true if we are capable of smelting
      */
     private boolean canSmelt() {
-        List<Object> itemInput = new ArrayList<Object>(4); //Build our current input array
+        List<Object> itemInput = new ArrayList<>(4); //Build our current input array
         for (int i = 0; i < 4; i++) {
-            if(inventory.getStackInSlot(i) != null && OreDictionary.getOreIDs(inventory.getStackInSlot(i)).length > 0) {
-                itemInput.add(new OreDictStack(OreDictionary.getOreName(OreDictionary.getOreIDs(inventory.getStackInSlot(i))[0]), inventory.getStackInSlot(i).stackSize));
-            }else
-                itemInput.add(this.inventory.getStackInSlot(i));
+            itemInput.add(getSpecialStackInSlot(i));
         }
 
-        Collections.sort(itemInput, InventoryUtils.itemStackComparator);
+        PermutableSet<Object> set = new PermutableSet<>(itemInput);
+        List<List<Object>> listOfCombinations = new ArrayList<>();
+        for(int i = 4; i > 0; i--) {
+            for (List<Object> list : set.getPermutationsList(i)) {
+                listOfCombinations.add(list);
+            }
+        }
 
-        for (RecipeAdvancedCrafter recipe : AdvancedCrafterRecipeRegistry.instance.recipes) { //See if a recipe matches our current setup
-            if(currentMode != recipe.getRequiredMode()) //Must be the correct mode. No sense otherwise
-                continue;
+        for (List<Object> combination : listOfCombinations) {
+            for (int i = 0; i < 4; i++) {
+                if (i >= combination.size())
+                    combination.add(null);
+            }
+            Collections.sort(combination, InventoryUtils.itemStackComparator);
+            for (RecipeAdvancedCrafter recipe : AdvancedCrafterRecipeRegistry.instance.recipes) { //See if a recipe matches our current setup
+                if (currentMode != recipe.getRequiredMode()) //Must be the correct mode. No sense otherwise
+                    continue;
 
 
-            List<Object> tempInput = new ArrayList<Object>(); //Build a new list
-            for(int i = 0; i < 4; i++) {
-                if(i < recipe.getInput().size()) { //If something exists in the recipe
-                    tempInput.add(recipe.getInput().get(i));
+                List<Object> tempInput = new ArrayList<>(); //Build a new list
+                for (int i = 0; i < 4; i++) {
+                    if (i < recipe.getInput().size()) { //If something exists in the recipe
+                        tempInput.add(recipe.getInput().get(i));
+                    } else //Fill the rest with nulls
+                        tempInput.add(null);
                 }
-                else //Fill the rest with nulls
-                    tempInput.add(null);
-            }
 
-            boolean valid = true;
+                boolean valid = true;
 
-            Collections.sort(tempInput, InventoryUtils.itemStackComparator);
-            for(int i = 0; i < tempInput.size(); i++) { //Compare stacks, must be the same order
-                if(!InventoryUtils.areStacksEqual(tempInput.get(i), itemInput.get(i)))
-                    valid = false;
-            }
 
-            if(!valid) //Recipe didn't match, move on
-                continue;
+                Collections.sort(tempInput, InventoryUtils.itemStackComparator);
+                for (int i = 0; i < tempInput.size(); i++) { //Compare stacks, must be the same order
+                    if (!InventoryUtils.areStacksEqual(tempInput.get(i), combination.get(i)))
+                        valid = false;
+                }
 
-            if ((this.inventory.getStackInSlot(4) == null ||
-                    (InventoryUtils.areStacksEqual(recipe.getOutputItem(), this.inventory.getStackInSlot(4)) &&
-                            this.inventory.getStackInSlot(4).stackSize + recipe.getQtyOutput() <= this.inventory.getStackInSlot(4).getMaxStackSize()))) {
-                this.outputItem = recipe.getOutputItem();
-                this.requiredProcessTime = recipe.getProcessTime();
-                this.qtyOutput = recipe.getQtyOutput();
-                return true;
+                if (!valid) //Recipe didn't match, move on
+                    continue;
+
+                if ((this.inventory.getStackInSlot(4) == null ||
+                        (InventoryUtils.areStacksEqual(recipe.getOutputItem(), this.inventory.getStackInSlot(4)) &&
+                                this.inventory.getStackInSlot(4).stackSize + recipe.getQtyOutput() <= this.inventory.getStackInSlot(4).getMaxStackSize()))) {
+                    this.outputItem = recipe.getOutputItem();
+                    currentRecipe.clear();
+                    for(Object obj : recipe.getInput()) {
+                        if(obj instanceof ItemStack)
+                            currentRecipe.add(obj);
+                        else if(obj instanceof OreDictStack)
+                            currentRecipe.add(((OreDictStack) obj).getItemList());
+                    }
+                    this.requiredProcessTime = recipe.getProcessTime();
+                    this.qtyOutput = recipe.getQtyOutput();
+                    return true;
+                }
             }
         }
         return false;
+    }
+
+    public Object getSpecialStackInSlot(int i) {
+        if(inventory.getStackInSlot(i) != null && OreDictionary.getOreIDs(inventory.getStackInSlot(i)).length > 0) {
+            return new OreDictStack(OreDictionary.getOreName(OreDictionary.getOreIDs(inventory.getStackInSlot(i))[0]), inventory.getStackInSlot(i).stackSize);
+        }
+        else
+            return this.inventory.getStackInSlot(i);
     }
 
     /**
      * Checks if can smelt, if it can processes the resources and then outputs
      */
     private void doSmelt() {
-        if(outputItem == null) //In case we loose our output item, remake it
+        if(outputItem == null || currentRecipe == null) //In case we loose our output item, remake it
             doReset();
         if (currentProcessTime == 0 && canSmelt()) { //Begin
             currentProcessTime = 1;
             this.isActive = true;
-            for (int i = 0; i < 4; i++) {
-                if (this.inventory.getStackInSlot(i) != null)
-                    this.decrStackSize(i, 1);
+            while(currentRecipe.size() > 0) {
+                if(currentRecipe.get(0) instanceof ItemStack) {
+                    for (int i = 0; i < 4; i++) {
+                        if (InventoryUtils.areStacksEqual(currentRecipe.get(0), inventory.getStackInSlot(i))) {
+                            inventory.getStackInSlot(i).stackSize -= ((ItemStack) currentRecipe.get(0)).stackSize;
+                            currentRecipe.remove(0);
+                            if (inventory.getStackInSlot(i).stackSize <= 0)
+                                inventory.setStackInSlot(null, i);
+                            break;
+                        }
+                    }
+                }
+                else if(currentRecipe.get(0) instanceof List) {
+                    boolean doMore = true;
+                    for (int i = 0; i < this.inventory.getSizeInventory(); i++) {
+                        if (doMore) {
+                            for (ItemStack oreStack : (ArrayList<ItemStack>) currentRecipe.get(0)) {
+                                if (InventoryUtils.areStacksEqual(oreStack, inventory.getStackInSlot(i)) && oreStack.getItemDamage() == inventory.getStackInSlot(i).getItemDamage()) {
+                                    inventory.getStackInSlot(i).stackSize -= oreStack.stackSize;
+                                    currentRecipe.remove(0);
+                                    if (inventory.getStackInSlot(i).stackSize <= 0)
+                                        inventory.setStackInSlot(null, i);
+                                    doMore = false;
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                            break;
+                    }
+                }
+                else
+                    currentRecipe.remove(0);
             }
+
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
 
