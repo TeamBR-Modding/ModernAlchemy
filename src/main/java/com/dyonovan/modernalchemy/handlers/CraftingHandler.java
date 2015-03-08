@@ -52,13 +52,13 @@ public class CraftingHandler {
                 'A', "plateSteel", 'B', "ingotCopper", 'C', ItemHandler.itemMachineFrame));
 
         //Arc Furnace Output Valve
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockArcFurnaceDummyAirValve), "ABA", "CDC", "AEA",
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockArcFurnaceDummyOutputValve), "ABA", "CDC", "AEA",
                 'A', "plateSteel", 'B', "circuitAdvanced", 'C', Items.bucket, 'D', BlockHandler.blockArcFurnaceDummy,
                 'E', ItemHandler.itemActiniumDust));
 
         //Arc Furnace Item IO
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockArcFurnaceDummyItemIO), "ABA", "CDC", "AEA",
-                'A', "plateSteel", 'B', "circuitAdvanced", 'C', Items.bucket, 'D', BlockHandler.blockArcFurnaceDummy,
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockArcFurnaceDummyAirValve), "ABA", "CDC", "AEA",
+                'A', "plateSteel", 'B', "circuitAdvanced", 'C', Blocks.piston, 'D', BlockHandler.blockArcFurnaceDummy,
                 'E', ItemHandler.itemActiniumDust));
 
         //Arc Furnace Energy Rec
@@ -68,7 +68,7 @@ public class CraftingHandler {
 
         //Arc Furnace Compressed Air Valve
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockArcFurnaceDummyItemIO), "ABA", "CDC", "AEA",
-                'A', "plateSteel", 'B', "circuitAdvanced", 'C', Blocks.piston, 'D', BlockHandler.blockArcFurnaceDummy,
+                'A', "plateSteel", 'B', "circuitAdvanced", 'C', Blocks.hopper, 'D', BlockHandler.blockArcFurnaceDummy,
                 'E', ItemHandler.itemActiniumDust));
 
         //Replicator Controller
