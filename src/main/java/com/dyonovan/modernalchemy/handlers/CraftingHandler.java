@@ -52,7 +52,7 @@ public class CraftingHandler {
                 'A', "plateSteel", 'B', "ingotCopper", 'C', ItemHandler.itemMachineFrame));
 
         //Arc Furnace Output Valve
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockArcFurnaceDummyOutputValve), "ABA", "CDC", "AEA",
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockArcFurnaceDummyAirValve), "ABA", "CDC", "AEA",
                 'A', "plateSteel", 'B', "circuitAdvanced", 'C', Items.bucket, 'D', BlockHandler.blockArcFurnaceDummy,
                 'E', ItemHandler.itemActiniumDust));
 
