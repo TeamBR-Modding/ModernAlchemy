@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy.tileentity.machines;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
+import com.dyonovan.modernalchemy.audio.SoundHelper;
 import com.dyonovan.modernalchemy.collections.PermutableSet;
 import com.dyonovan.modernalchemy.crafting.AdvancedCrafterRecipeRegistry;
 import com.dyonovan.modernalchemy.crafting.OreDictStack;
@@ -54,6 +55,8 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
     public int requiredProcessTime;
     private int qtyOutput;
 
+    private int coolDown = 60;
+
 
     public TileAdvancedCrafter() {
         super();
@@ -76,6 +79,9 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
      * @return true if we are capable of smelting
      */
     private boolean canSmelt() {
+        if(coolDown > 0)
+            return false;
+
         List<Object> itemInput = new ArrayList<>(4); //Build our current input array
         for (int i = 0; i < 4; i++) {
             itemInput.add(getSpecialStackInSlot(i));
@@ -197,7 +203,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
 
         if (currentProcessTime > 0 && currentProcessTime < requiredProcessTime) { //Process
             if (this.energyRF.getEnergyStored() < RF_TICK) {
-                doReset();
+                doFail();
                 return;
             }
             this.energyRF.modifyEnergyStored(-RF_TICK);
@@ -224,6 +230,12 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
         this.isActive = false;
         qtyOutput = 0;
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
+
+    public void doFail() {
+        SoundHelper.playSound("shutdown", xCoord, yCoord, zCoord, 1.0F, 1.0F);
+        coolDown = 60;
+        doReset();
     }
 
     /**
@@ -383,6 +395,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
     public void updateEntity() {
         super.updateEntity();
         if (worldObj.isRemote) return;
+        coolDown--;
         doSmelt();
     }
 
@@ -396,6 +409,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
         isActive = tag.getBoolean("isActive");
         currentMode = tag.getInteger("CurrentMode");
         qtyOutput = tag.getInteger("Qty");
+        coolDown = tag.getInteger("CoolDown");
     }
 
     @Override
@@ -408,6 +422,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
         tag.setBoolean("isActive", isActive);
         tag.setInteger("CurrentMode", currentMode);
         tag.setInteger("Qty", qtyOutput);
+        tag.setInteger("CoolDown", coolDown);
     }
 
     /*******************************************************************************************************************
