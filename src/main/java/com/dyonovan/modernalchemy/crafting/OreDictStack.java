@@ -3,6 +3,7 @@ package com.dyonovan.modernalchemy.crafting;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OreDictStack {
@@ -58,7 +59,16 @@ public class OreDictStack {
      * @return
      */
     public List<ItemStack> getItemList() {
-        return OreDictionary.getOres(oreId);
+        List<ItemStack> output = new ArrayList<>();
+
+        for(ItemStack stack : OreDictionary.getOres(oreId)) {
+            if(stackSize == 0)
+                output.add(new ItemStack(stack.getItem(), 1, stack.getItemDamage()));
+            else
+                output.add(new ItemStack(stack.getItem(), stackSize, stack.getItemDamage()));
+        }
+
+        return output;
     }
 
     /**
