@@ -9,6 +9,7 @@ import com.dyonovan.modernalchemy.manual.util.AbstractComponent;
 import com.dyonovan.modernalchemy.manual.util.AbstractManualPage;
 import com.dyonovan.modernalchemy.manual.util.ManualPageDeserializer;
 import com.dyonovan.modernalchemy.util.ReplicatorUtils;
+import com.dyonovan.teambrcore.utils.FileUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import cpw.mods.fml.relauncher.Side;
@@ -18,6 +19,7 @@ import net.minecraft.util.StatCollector;
 
 import java.io.*;
 import java.net.JarURLConnection;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
@@ -50,7 +52,7 @@ public class ManualRegistry {
      */
     public void init() {
         pages.clear();
-        ArrayList<String> files = getFilesForPages();
+        ArrayList<String> files = FileUtils.getJarDirList(ModernAlchemy.class.getResource("/manualPages"), "manualPages/");
         for(String f : files) {
             if(buildManualFromFile(f) != null)
                 addPage(buildManualFromFile(f));
@@ -155,7 +157,7 @@ public class ManualRegistry {
     /**
      * Gets all the files in the manual pages directory ("resources/manualPages")
      * @return An array of {@link java.lang.String}s containing our info
-     */
+     *//*
     @SuppressWarnings("ConstantConditions")
     public ArrayList<String> getFilesForPages() {
         ArrayList<String> files = new ArrayList<>();
@@ -190,7 +192,7 @@ public class ManualRegistry {
 
         }
         return files;
-    }
+    }*/
 
     /**
      * Reads the Json into usable information

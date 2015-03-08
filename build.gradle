@@ -68,6 +68,7 @@ minecraft {
 
     replaceIn "Constants.java"
     replace "@VERSION@", "${config.mod_version}"
+    replace "@LIB_VERSION@", "${config.BRTeamCore_version}"
 
     runDir = "eclipse"
 }
