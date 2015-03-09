@@ -1,14 +1,15 @@
 package com.dyonovan.modernalchemy.tileentity.arcfurnace.dummies;
 
 import com.dyonovan.modernalchemy.energy.ITeslaHandler;
+import com.dyonovan.modernalchemy.energy.ITeslaProvider;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
-import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.handlers.ConfigHandler;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.TileArcFurnaceCore;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
 import com.dyonovan.modernalchemy.util.Location;
 import com.dyonovan.modernalchemy.util.RenderUtils;
 import com.dyonovan.modernalchemy.util.WorldUtils;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -16,9 +17,9 @@ import java.util.List;
 
 public class TileDummyEnergyReciever extends TileDummy implements ITeslaHandler {
 
-    public List<TileTeslaCoil> findCoils(World world) {
+    public List<ITeslaProvider> findCoils(World world) {
 
-        List<TileTeslaCoil> list = new ArrayList<TileTeslaCoil>();
+        List<ITeslaProvider> list = new ArrayList<>();
 
         int tileX = xCoord;
         int tileY = yCoord;
@@ -27,8 +28,8 @@ public class TileDummyEnergyReciever extends TileDummy implements ITeslaHandler 
         for (int x = -ConfigHandler.searchRange; x <= ConfigHandler.searchRange; x++) {
             for (int y = -ConfigHandler.searchRange; y <= ConfigHandler.searchRange; y++) {
                 for (int z = -ConfigHandler.searchRange; z <= ConfigHandler.searchRange; z++) {
-                    if (world.getTileEntity(tileX + x, tileY + y, tileZ + z) instanceof TileTeslaCoil) {
-                        if(hasClearPath(tileX, tileY, tileZ, tileX + x + 0.5, tileY + y + 0.5, tileZ + z + 0.5))
+                    if (world.getTileEntity(tileX + x, tileY + y, tileZ + z) instanceof ITeslaProvider) {
+                        if(hasClearPath(tileX + 0.5, tileY + 0.5, tileZ + 0.5, tileX + x + 0.5, tileY + y + 0.5, tileZ + z + 0.5))
                             list.add((TileTeslaCoil) world.getTileEntity(tileX + x, tileY + y, tileZ + z));
                     }
                 }
@@ -45,7 +46,7 @@ public class TileDummyEnergyReciever extends TileDummy implements ITeslaHandler 
             double checkZ = z1 + ((z2 - z1) * t);
             if(!worldObj.isAirBlock((int)Math.floor(checkX), (int)Math.floor(checkY), (int)Math.floor(checkZ)) &&
                     (worldObj.getBlock((int)Math.floor(checkX), (int)Math.floor(checkY), (int)Math.floor(checkZ)) != this.getBlockType()) &&
-                    (worldObj.getBlock((int)Math.floor(checkX), (int)Math.floor(checkY), (int)Math.floor(checkZ)) != BlockHandler.blockCoil)) {
+                    (!(worldObj.getTileEntity((int)Math.floor(checkX), (int)Math.floor(checkY), (int)Math.floor(checkZ)) instanceof ITeslaProvider))) {
                 return false;
             }
             t += 0.01F;
@@ -54,32 +55,31 @@ public class TileDummyEnergyReciever extends TileDummy implements ITeslaHandler 
     }
 
     public void chargeFromCoils() {
-        TileArcFurnaceCore core = (TileArcFurnaceCore)getCore();
-        if(core != null) {
-            int maxFill = getEnergyBank().getMaxCapacity() - getEnergyBank().getEnergyLevel();
-            List<TileTeslaCoil> coils = findCoils(worldObj);
-            int currentDrain = 0;
-            for (TileTeslaCoil coil : coils) {
-                if (coil.linkedMachines.size() == 0 || coil.linkedMachines.contains(new Location(core.xCoord, core.yCoord, core.zCoord))) {
-                    if (coil.getEnergyLevel() <= 0) continue; //fixes looking like its working when coil is empty
-                    int fill = coil.getEnergyLevel() > ConfigHandler.maxCoilTransfer ? ConfigHandler.maxCoilTransfer : coil.getEnergyLevel();
+        int maxFill = getCore().getEnergyBank().getMaxCapacity() - getCore().getEnergyBank().getEnergyLevel();
+        List<ITeslaProvider> coils = findCoils(worldObj);
+        int currentDrain = 0;
+        for(ITeslaProvider coil : coils) {
+            if(coil instanceof TileTeslaCoil) {
+                if (((TileTeslaCoil)coil).linkedMachines.contains(new Location(xCoord, yCoord, zCoord)) || ((TileTeslaCoil)coil).linkedMachines.size() == 0) {
+                    if (((TileTeslaCoil)coil).getEnergyLevel() <= 0) continue; //fixes looking like its working when coil is empty
+                    int fill = ((TileTeslaCoil)coil).getEnergyLevel() > coil.getEnergyProvided() ? coil.getEnergyProvided() : ((TileTeslaCoil)coil).getEnergyLevel();
                     if (currentDrain + fill > maxFill)
                         fill = maxFill - currentDrain;
                     currentDrain += fill;
-                    coil.drainEnergy(fill);
+                    ((TileTeslaCoil)coil).drainEnergy(fill);
 
-                    RenderUtils.sendBoltToClient(xCoord, yCoord, zCoord, coil, fill);
-                    WorldUtils.hurtEntitiesInRange(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, coil.xCoord + 0.5, coil.yCoord + 0.5, coil.zCoord + 0.5);
+                    RenderUtils.sendBoltToClient(xCoord, yCoord, zCoord, (TileEntity) coil, fill);
+                    WorldUtils.hurtEntitiesInRange(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, ((TileTeslaCoil)coil).xCoord + 0.5, ((TileTeslaCoil)coil).yCoord + 0.5, ((TileTeslaCoil)coil).zCoord + 0.5);
 
                     if (currentDrain >= maxFill) //Don't want to drain other coils we don't need to
                         break;
                 }
             }
-            while (currentDrain > 0) {
-                addEnergy(1);
-                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-                currentDrain--;
-            }
+        }
+        while(currentDrain > 0) {
+            addEnergy(1);
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            currentDrain--;
         }
     }
 
