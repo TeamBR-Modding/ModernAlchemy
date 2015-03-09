@@ -47,7 +47,6 @@ item.modernalchemy:itemMachineFrame.name=Machine Frame
 item.modernalchemy:itemPumpModule.name=Pump Module
 item.modernalchemy:itemEnergyAntenna.name=Energy Antenna
 item.modernalchemy:itemFaradayWire.name=Faraday Wire
-item.modernalchemy:itemCopperCoil.name=Copper Coil
 item.modernalchemy:itemCopperIngot.name=Copper Ingot
 
 item.modernalchemy:faraday_boots.name=Faraday Armor Boots

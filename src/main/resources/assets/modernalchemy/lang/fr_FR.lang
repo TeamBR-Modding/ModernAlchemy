@@ -45,8 +45,7 @@ item.modernalchemy:itemDenseCopperCoil.name=Bobine de cuibre dense
 item.modernalchemy:itemMachineFrame.name=Boîteir de machine
 item.modernalchemy:itemPumpModule.name=Module de pompe
 item.modernalchemy:itemEnergyAntenna.name=Antenne d'énergie
-item.modernalchemy:itemFaradayWire.name=Fil de faraday 
-item.modernalchemy:itemCopperCoil.name=Bobine de cuivre #
+item.modernalchemy:itemFaradayWire.name=Fil de faraday
 item.modernalchemy:itemCopperIngot.name=Lingot de cuivre
 
 item.modernalchemy:faraday_boots.name=Bottes renforcées de faraday
