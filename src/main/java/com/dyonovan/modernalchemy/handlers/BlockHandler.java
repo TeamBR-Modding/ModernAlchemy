@@ -8,6 +8,7 @@ import com.dyonovan.modernalchemy.blocks.machines.BlockAdvancedCrafter;
 import com.dyonovan.modernalchemy.blocks.machines.BlockAmalgamator;
 import com.dyonovan.modernalchemy.blocks.machines.BlockElectricBellows;
 import com.dyonovan.modernalchemy.blocks.machines.BlockPatternRecorder;
+import com.dyonovan.modernalchemy.blocks.misc.BlockTank;
 import com.dyonovan.modernalchemy.blocks.ore.BlockOreActinium;
 import com.dyonovan.modernalchemy.blocks.ore.BlockOreCopper;
 import com.dyonovan.modernalchemy.blocks.replicator.BlockReplicatorCPU;
@@ -25,6 +26,7 @@ import com.dyonovan.modernalchemy.tileentity.machines.TileAdvancedCrafter;
 import com.dyonovan.modernalchemy.tileentity.machines.TileAmalgamator;
 import com.dyonovan.modernalchemy.tileentity.machines.TileElectricBellows;
 import com.dyonovan.modernalchemy.tileentity.machines.TilePatternRecorder;
+import com.dyonovan.modernalchemy.tileentity.misc.TileTank;
 import com.dyonovan.modernalchemy.tileentity.replicator.TileReplicatorCPU;
 import com.dyonovan.modernalchemy.tileentity.replicator.TileReplicatorFrame;
 import com.dyonovan.modernalchemy.tileentity.replicator.TileReplicatorStand;
@@ -50,7 +52,7 @@ public class BlockHandler {
     public static Block blockArcFurnaceDummyOutputValve, blockArcFurnaceDummyEnergy, blockArcFurnaceCore, blockTeslaStand, blockCoil, blockSuperCoil;
     public static Block blockOreActinium, blockFluidActinium, blockElectricBellows, blockFluidAir, blockReplicatorStand;
     public static Block blockPatternRecorder, blockAmalgamator, blockTeslaBase, blockReplicatorFrame, blockReplicatorCPU;
-    public static Block blockAdvancedFurnace, blockOreCopper;
+    public static Block blockAdvancedFurnace, blockOreCopper, blockTank;
 
     public static List<Block> blockRegistry = new ArrayList<Block>();
 
@@ -120,6 +122,9 @@ public class BlockHandler {
 
         //BlockFurnace
         registerBlock(blockAdvancedFurnace = new BlockAdvancedCrafter(), "blockAdvancedCrafter", TileAdvancedCrafter.class);
+
+        //Tank
+        registerBlock(blockTank = new BlockTank(), "blockTank", TileTank.class);
     }
 
     public static void initCopper() {

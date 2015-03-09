@@ -19,6 +19,7 @@ tile.modernalchemy:blockReplicatorStand.name=Replicator Stand
 tile.modernalchemy:blockAdvancedCrafter.name=Advanced Crafter
 tile.modernalchemy:blockOreCopper.name=Copper Ore
 tile.modernalchemy:blockSuperTeslaCoil.name=Tesla Coil MKII
+tile.modernalchemy:blockTank.name=Fluid Tank
 
 item.modernalchemy:pattern.name=Replicator Pattern
 item.modernalchemy:bucketActinium.name=Bucket of Actinium

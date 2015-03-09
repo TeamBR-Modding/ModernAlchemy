@@ -1,28 +1,27 @@
 package com.dyonovan.modernalchemy.blocks;
 
-import cofh.api.item.IToolHammer;
 import com.dyonovan.modernalchemy.ModernAlchemy;
+import com.dyonovan.modernalchemy.blocks.misc.BlockTank;
 import com.dyonovan.modernalchemy.blocks.teslacoil.BlockTeslaBase;
 import com.dyonovan.modernalchemy.blocks.teslacoil.BlockTeslaCoil;
 import com.dyonovan.modernalchemy.blocks.teslacoil.BlockTeslaStand;
 import com.dyonovan.modernalchemy.helpers.WrenchHelper;
-import com.dyonovan.modernalchemy.manual.component.ComponentBase;
+import com.dyonovan.modernalchemy.tileentity.misc.TileTank;
 import com.dyonovan.modernalchemy.util.Location;
 import com.dyonovan.modernalchemy.util.WorldUtils;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 
-import java.util.List;
 import java.util.Random;
 
-public abstract class BlockBase extends BlockContainer{
+public abstract class BlockBase extends BlockContainer {
 
     public BlockBase(Material mat) {
         super(mat);
@@ -32,6 +31,24 @@ public abstract class BlockBase extends BlockContainer{
 
     public boolean useWrench(World world, int x, int y, int z) {
         if (!world.isRemote) {
+            if(this instanceof BlockTank) {
+                int meta = world.getBlockMetadata(x, y, z);
+                ItemStack stack = new ItemStack(this, 1, meta);
+                TileTank logic = (TileTank) world.getTileEntity(x, y, z);
+                FluidStack liquid = logic.tank.getFluid();
+                if (liquid != null)
+                {
+                    NBTTagCompound tag = new NBTTagCompound();
+                    NBTTagCompound liquidTag = new NBTTagCompound();
+                    liquid.writeToNBT(liquidTag);
+                    tag.setTag("Fluid", liquidTag);
+                    stack.setTagCompound(tag);
+                }
+
+                world.setBlockToAir(x, y, z);
+                world.markBlockForUpdate(x, y, z);
+                return true;
+            }
             if (this instanceof BlockTeslaBase || this instanceof BlockTeslaStand) {
                 Location loc = new Location(x, y + 1, z);
                 int count = 0;

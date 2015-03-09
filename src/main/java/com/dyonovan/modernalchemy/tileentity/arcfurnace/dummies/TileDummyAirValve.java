@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy.tileentity.arcfurnace.dummies;
 
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.TileArcFurnaceCore;
+import com.dyonovan.modernalchemy.tileentity.misc.TileTank;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -46,5 +47,21 @@ public class TileDummyAirValve extends TileDummy implements IFluidHandler {
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
         return new FluidTankInfo[0];
+    }
+
+    @Override
+    public void updateEntity() {
+        super.updateEntity();
+        if(getCore() != null) {
+            for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+                if (getTileInDirection(dir) != null && getTileInDirection(dir) instanceof TileTank) {
+                    TileTank tank = (TileTank) getTileInDirection(dir);
+                    if (tank.tank.getFluid() != null && ((TileArcFurnaceCore)getCore()).getAirTank().getFluidAmount() + 100 <  ((TileArcFurnaceCore)getCore()).getAirTank().getCapacity() && tank.tank.getFluid().getFluid() == BlockHandler.fluidCompressedAir) {
+                        tank.drain(dir.getOpposite(), 100, true);
+                        ((TileArcFurnaceCore)getCore()).getAirTank().fill(new FluidStack(BlockHandler.fluidCompressedAir, 100), true);
+                    }
+                }
+            }
+        }
     }
 }
