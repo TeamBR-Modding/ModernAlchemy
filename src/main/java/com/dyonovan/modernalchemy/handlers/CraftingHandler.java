@@ -133,7 +133,7 @@ public class CraftingHandler {
                 'A', ItemHandler.itemBlankPCB, 'B', "plateSteel", 'C', "wireCopper"));
 
         //Memory
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemHandler.itemMemory), "ABA", "BBB", "CCC",
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemHandler.itemMemory, 4), "ABA", "BBB", "CCC",
                 'A', "wireCopper", 'B', "plateSteel", 'C', "circuitAdvanced"));
 
         //Copper Coil
