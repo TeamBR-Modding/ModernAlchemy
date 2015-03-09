@@ -54,7 +54,7 @@ item.modernalchemy:faraday_helm.name=Casque renforcé de faraday
 item.modernalchemy:faraday_chest.name=Coffre renforcé de faraday
 
 fluid.modernalchemy:fluidCompressedAir=Air comprimé #
-fluid.modernalchemy:fluidActinium=Actinium
+fluid.modernalchemy:fluidActinium=Molten Actinium
 
 modernalchemy.nei.name=NEI de Modern Alchemy
 modernalchemy.nei.arcfurnace=Recettes du four à arc
