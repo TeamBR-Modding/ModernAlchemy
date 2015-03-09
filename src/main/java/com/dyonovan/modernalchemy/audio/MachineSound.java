@@ -2,10 +2,13 @@ package com.dyonovan.modernalchemy.audio;
 
 import com.dyonovan.modernalchemy.handlers.ConfigHandler;
 import com.dyonovan.modernalchemy.tileentity.BaseMachine;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.audio.ITickableSound;
 import net.minecraft.client.audio.PositionedSound;
 import net.minecraft.util.ResourceLocation;
 
+@SideOnly(Side.CLIENT)
 public class MachineSound extends PositionedSound implements ITickableSound {
     protected boolean donePlaying = false;
     private BaseMachine tileEntity;

@@ -1,13 +1,13 @@
 package com.dyonovan.modernalchemy.tileentity.machines;
 
-import com.dyonovan.modernalchemy.audio.MachineSound;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
+import com.dyonovan.modernalchemy.handlers.PacketHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
+import com.dyonovan.modernalchemy.network.MachineSoundPacket;
 import com.dyonovan.modernalchemy.tileentity.BaseMachine;
 import com.dyonovan.teambrcore.helpers.GuiHelper;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.ISound;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
@@ -18,7 +18,6 @@ public class TileElectricBellows extends BaseMachine implements IFluidHandler {
 
     public FluidTank tank;
     private int currentSpeed;
-    private int soundCoolDown = 0;
 
     public TileElectricBellows() {
         this.energyTank = new TeslaBank(1000);
@@ -43,11 +42,9 @@ public class TileElectricBellows extends BaseMachine implements IFluidHandler {
 
     private void compress() {
         if (energyTank.getEnergyLevel() > 0 && canFill(tank) && !isPowered()) {
+
             if (!isActive) {
-                if(worldObj.isRemote) {
-                    ISound eventHorizonSound = new MachineSound(Constants.MODID + ":compressor", this, 0.1F, 1);
-                    Minecraft.getMinecraft().getSoundHandler().playSound(eventHorizonSound);
-                }
+                PacketHandler.net.sendToAllAround(new MachineSoundPacket.MachineSoundMessage(Constants.MODID + ":compressor", xCoord, yCoord, zCoord, 0.1F, 1.0F), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 10));
                 isActive = true;
             }
             updateSpeed();
@@ -108,11 +105,6 @@ public class TileElectricBellows extends BaseMachine implements IFluidHandler {
     public void updateEntity() {
         super.updateEntity();
         if (worldObj.isRemote) {
-            /*if(isActive && soundCoolDown <= 0) {
-                SoundHelper.playSound("compressor", xCoord, yCoord, zCoord, 0.05F, 0.8F);
-                soundCoolDown = 20;
-            }
-            soundCoolDown--;*/
             return;
         }
 
