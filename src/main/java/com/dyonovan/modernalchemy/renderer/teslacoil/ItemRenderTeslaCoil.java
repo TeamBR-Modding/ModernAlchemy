@@ -1,6 +1,5 @@
 package com.dyonovan.modernalchemy.renderer.teslacoil;
 
-import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.model.teslacoil.ModelTeslaCoil;
 import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.item.ItemStack;
@@ -11,9 +10,11 @@ import org.lwjgl.opengl.GL11;
 public class ItemRenderTeslaCoil implements IItemRenderer {
 
     private ModelTeslaCoil coil;
+    private ResourceLocation image;
 
-    public ItemRenderTeslaCoil() {
+    public ItemRenderTeslaCoil(ResourceLocation texture) {
         coil = new ModelTeslaCoil();
+        image = texture;
     }
 
     @Override
@@ -58,7 +59,7 @@ public class ItemRenderTeslaCoil implements IItemRenderer {
 
     public void renderCoil(float x, float y, float z, int metaData)
     {
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(Constants.MODID + ":textures/models/teslaCoil.png"));
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(image);
 
         GL11.glPushMatrix(); //start
         GL11.glTranslatef(x, y, z); //size

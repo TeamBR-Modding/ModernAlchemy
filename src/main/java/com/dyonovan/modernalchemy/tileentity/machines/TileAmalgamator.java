@@ -64,7 +64,7 @@ public class TileAmalgamator extends BaseMachine implements IFluidHandler, ISide
             if (timeProcessed > 0 && timeProcessed < PROCESS_TIME) { //Still cooking
                 if (tank.getFluid() != null) { //Drain until there is nothing left
                     energyTank.drainEnergy(currentSpeed);
-                    tank.drain(10 * currentSpeed, true);
+                    tank.drain(5, true);
                     timeProcessed += currentSpeed;
                 }
                 else

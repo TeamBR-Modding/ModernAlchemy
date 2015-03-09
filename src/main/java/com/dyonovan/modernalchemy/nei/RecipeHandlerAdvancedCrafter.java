@@ -144,7 +144,7 @@ public class RecipeHandlerAdvancedCrafter extends RecipeHandlerBase {
                 GuiDraw.drawTexturedModalRect(17, 20, 192, 17, 16, 16);
                 GuiDraw.drawString(StatCollector.translateToLocal("modernalchemy.advancedCrafter.extruding"), 25 - (fontRenderer.getStringWidth(StatCollector.translateToLocal("modernalchemy.advancedCrafter.extruding")) / 2), 10, 0, false);
                 break;
-            case TileAdvancedCrafter.COOK :
+            case TileAdvancedCrafter.ENRICH:
                 GuiDraw.drawTexturedModalRect(17, 20, 176, 17, 16, 16);
                 GuiDraw.drawString(StatCollector.translateToLocal("modernalchemy.advancedCrafter.enriching"), 25 - (fontRenderer.getStringWidth(StatCollector.translateToLocal("modernalchemy.advancedCrafter.enriching")) / 2), 10, 0, false);
                 break;

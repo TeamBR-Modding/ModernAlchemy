@@ -29,11 +29,6 @@ public class ItemManual extends Item {
     }
 
     @Override
-    public boolean isFull3D() {
-        return true;
-    }
-
-    @Override
     public void onUpdate(ItemStack itemstack, World world, Entity entity, int par4, boolean isCurrentItem)
     {
         if(!world.isRemote && !itemstack.hasTagCompound())

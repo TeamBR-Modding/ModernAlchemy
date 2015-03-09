@@ -19,7 +19,7 @@ public class RecipeAdvancedCrafter {
      * @param itemArray  The array of input items {@link net.minecraft.item.Item}
      * @param itemOutput The output item
      * @param processTime The total amount of ticks required to process
-     * @param requiredMode COOK = 1, EXTRUDE = 2, BEND = 3
+     * @param requiredMode ENRICH = 1, EXTRUDE = 2, BEND = 3
      */
     public RecipeAdvancedCrafter(List<Object> itemArray, Object itemOutput, int processTime, int requiredMode) {
         this.itemArray = itemArray;

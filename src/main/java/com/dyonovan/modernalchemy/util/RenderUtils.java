@@ -3,7 +3,6 @@ package com.dyonovan.modernalchemy.util;
 import com.dyonovan.modernalchemy.effects.LightningBolt;
 import com.dyonovan.modernalchemy.handlers.PacketHandler;
 import com.dyonovan.modernalchemy.network.RenderLightningBoltPacket;
-import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
@@ -42,7 +41,7 @@ public class RenderUtils {
         PacketHandler.net.sendToDimension(new RenderLightningBoltPacket.BoltMessage(x, y, z, x1, y1, z1, age > 4 ? age : 4), dimID);
     }
 
-    public static void sendBoltToClient(double x, double y, double z, TileTeslaCoil coil, int age) {
+    public static void sendBoltToClient(double x, double y, double z, TileEntity coil, int age) {
         sendBoltToClient(coil.getWorldObj().provider.dimensionId, x, y, z, coil.xCoord + 0.5, coil.yCoord + 0.9, coil.zCoord + 0.5, age > 4 ? age : 4);
     }
 }

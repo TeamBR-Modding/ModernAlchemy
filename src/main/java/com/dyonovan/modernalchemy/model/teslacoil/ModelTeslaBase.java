@@ -13,10 +13,10 @@ public class ModelTeslaBase {
     }
     
     public void renderMain() {
-        modelBase.renderAllExcept("Rotor_Cylinder.019");
+        modelBase.renderAllExcept("Rotor_Rotor_Cylinder.019");
     }
 
     public void renderRotor() {
-        modelBase.renderPart("Rotor_Cylinder.019");
+        modelBase.renderPart("Rotor_Rotor_Cylinder.019");
     }
 }

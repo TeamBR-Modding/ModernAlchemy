@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy.proxy;
 
 import com.dyonovan.modernalchemy.entities.EntityLaserNode;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
+import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.manual.ManualRegistry;
 import com.dyonovan.modernalchemy.renderer.replicator.ItemRenderFrame;
 import com.dyonovan.modernalchemy.renderer.replicator.RenderFrame;
@@ -10,6 +11,7 @@ import com.dyonovan.modernalchemy.renderer.replicator.RenderReplicatorStand;
 import com.dyonovan.modernalchemy.renderer.teslacoil.*;
 import com.dyonovan.modernalchemy.tileentity.replicator.TileReplicatorFrame;
 import com.dyonovan.modernalchemy.tileentity.replicator.TileReplicatorStand;
+import com.dyonovan.modernalchemy.tileentity.teslacoil.TileSuperTeslaCoil;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaBase;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaStand;
@@ -17,6 +19,7 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 public class ClientProxy extends  CommonProxy{
@@ -30,10 +33,16 @@ public class ClientProxy extends  CommonProxy{
                 new ItemRenderTeslaStand());
 
         //TeslaCoil
-        TileEntitySpecialRenderer renderCoil = new RenderTeslaCoil();
+        TileEntitySpecialRenderer renderCoil = new RenderTeslaCoil(new ResourceLocation(Constants.MODID + ":textures/models/teslaCoil.png"));
         ClientRegistry.bindTileEntitySpecialRenderer(TileTeslaCoil.class, renderCoil);
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockHandler.blockCoil),
-                new ItemRenderTeslaCoil());
+                new ItemRenderTeslaCoil(new ResourceLocation(Constants.MODID + ":textures/models/teslaCoil.png")));
+
+        //SuperTeslaCoil
+        TileEntitySpecialRenderer renderSuperCoil = new RenderTeslaCoil(new ResourceLocation(Constants.MODID + ":textures/models/superTeslaCoil.png"));
+        ClientRegistry.bindTileEntitySpecialRenderer(TileSuperTeslaCoil.class, renderSuperCoil);
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockHandler.blockSuperCoil),
+                new ItemRenderTeslaCoil(new ResourceLocation(Constants.MODID + ":textures/models/superTeslaCoil.png")));
 
         //TeslaBase
         TileEntitySpecialRenderer renderBase = new RenderTeslaBase();

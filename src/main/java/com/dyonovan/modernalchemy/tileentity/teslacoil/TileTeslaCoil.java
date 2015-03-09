@@ -3,6 +3,7 @@ package com.dyonovan.modernalchemy.tileentity.teslacoil;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import com.dyonovan.modernalchemy.ModernAlchemy;
+import com.dyonovan.modernalchemy.energy.ITeslaProvider;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.ConfigHandler;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
@@ -22,7 +23,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
+public class TileTeslaCoil extends BaseMachine implements IEnergyHandler, ITeslaProvider {
 
     protected EnergyStorage energyRF;
     public LinkedList<Location> rangeMachines;
@@ -74,7 +75,7 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
 
     }
 
-    private boolean doConvert() {
+    protected boolean doConvert() {
         if (energyRF.getEnergyStored() > 0 && energyTank.getEnergyLevel()  < energyTank.getMaxCapacity()) {
             isActive = true;
             int actualRF = Math.min(ConfigHandler.maxCoilGenerate * ConfigHandler.rfPerTesla, energyRF.getEnergyStored());
@@ -100,6 +101,11 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler {
     /*******************************************************************************************************************
      ******************************************** Energy Functions *****************************************************
      *******************************************************************************************************************/
+
+    @Override
+    public int getEnergyProvided() {
+        return ConfigHandler.maxCoilTransfer;
+    }
 
     @Override
     public int receiveEnergy(ForgeDirection side, int maxReceive, boolean simulate) {

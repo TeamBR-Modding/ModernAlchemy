@@ -42,7 +42,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
     /**
      * Crafting Modes
      */
-    public static final int COOK = 0;
+    public static final int ENRICH = 0;
     public static final int EXTRUDE = 1;
     public static final int BEND = 2;
     public static final int FURNACE = 3;
@@ -66,7 +66,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
         inventory = new InventoryTile(5);
         this.isActive = false;
         this.currentProcessTime = 0;
-        currentMode = COOK;
+        currentMode = ENRICH;
         requiredProcessTime = 0;
         qtyOutput = 0;
         currentRecipe = new ArrayList<>();

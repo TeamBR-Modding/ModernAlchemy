@@ -3,20 +3,17 @@ package com.dyonovan.modernalchemy.blocks.teslacoil;
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.BlockBase;
 import com.dyonovan.modernalchemy.lib.Constants;
-import com.dyonovan.modernalchemy.manual.component.ComponentBase;
-import com.dyonovan.modernalchemy.manual.component.ComponentItemRender;
 import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaBase;
 import com.dyonovan.modernalchemy.util.Location;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class BlockTeslaBase extends BlockBase {
 
@@ -24,6 +21,11 @@ public class BlockTeslaBase extends BlockBase {
         super(Material.iron);
         this.setBlockName(Constants.MODID + ":blockTeslaBase");
         this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister iconregister) {
+        this.blockIcon = iconregister.registerIcon("minecraft:iron_block");
     }
 
     @Override

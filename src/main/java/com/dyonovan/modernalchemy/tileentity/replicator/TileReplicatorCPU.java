@@ -179,7 +179,11 @@ public class TileReplicatorCPU extends BaseMachine implements ISidedInventory {
      *******************************************************************************************************************/
 
     private void doReplication() {
-        if (canStartWork() || currentProcessTime > 0) {
+        if (canStartWork() || currentProcessTime > 0) { //Must have a pattern
+            if(inventory.getStackInSlot(1) == null) {
+                fail();
+                return;
+            }
             if (findLasers() && findStand() && exploreFrame() && inventory.getStackInSlot(1) != null) {
                 if (item.equals("null")) {
                     item = inventory.getStackInSlot(1).getTagCompound().getString("Item");
@@ -249,7 +253,8 @@ public class TileReplicatorCPU extends BaseMachine implements ISidedInventory {
         return inventory.getStackInSlot(0) != null && inventory.getStackInSlot(1) != null &&
                 inventory.getStackInSlot(1).getItem() instanceof ItemPattern &&
                 inventory.getStackInSlot(0).getItem() instanceof ItemReplicatorMedium &&
-                inventory.getStackInSlot(1).hasTagCompound();
+                inventory.getStackInSlot(1).hasTagCompound() &&
+                isPowered();
     }
 
     public int getProgressScaled(int scale) {

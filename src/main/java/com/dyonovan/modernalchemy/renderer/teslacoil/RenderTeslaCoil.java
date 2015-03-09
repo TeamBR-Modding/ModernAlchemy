@@ -1,6 +1,5 @@
 package com.dyonovan.modernalchemy.renderer.teslacoil;
 
-import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.model.teslacoil.ModelTeslaCoil;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -9,12 +8,13 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderTeslaCoil extends TileEntitySpecialRenderer {
 
-    public static final ResourceLocation texture = new ResourceLocation(Constants.MODID + ":textures/models/teslaCoil.png");
+    private ResourceLocation texture;
 
     private ModelTeslaCoil model;
 
-    public RenderTeslaCoil() {
+    public RenderTeslaCoil(ResourceLocation resourceLocation) {
         this.model = new ModelTeslaCoil();
+        texture = resourceLocation;
     }
 
     @Override
