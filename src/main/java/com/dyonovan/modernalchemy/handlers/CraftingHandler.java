@@ -174,10 +174,8 @@ public class CraftingHandler {
                 new ItemStack(ItemHandler.itemActiniumDust), new ItemStack(Items.book));
 
         //Tank
-        CraftingManager.getInstance().addRecipe(new ItemStack(BlockHandler.blockTank, 1),
-                "IGI",
-                "GGG",
-                "IGI", 'I', Items.iron_ingot, 'G', Blocks.glass);
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockTank), "IGI", "GGG", "IGI",
+                'I', Items.iron_ingot, 'G', "blockGlass"));
 
         //Faraday Armor
         GameRegistry.addRecipe(new ItemStack(ItemHandler.faradayHelm), "AAA", "ABA",
