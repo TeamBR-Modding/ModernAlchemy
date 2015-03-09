@@ -4,13 +4,15 @@ Create items with lighting and radioactive material. A mid to late game mod focu
 
 Team
 ====================
-Dyonovan  - Developer
+Dyonovan   - Developer
 
-pauljoda  - Developer
+pauljoda   - Developer
 
-Dominance - Artist
+Dominance  - Artist
 
-Beef      - Wiki Admin / Artist / Tester
+Beef       - Wiki Admin / Artist / Tester
+
+Mazdallier - French Translations
 
 
 
