@@ -55,7 +55,7 @@ item.modernalchemy:faraday_helm.name=Faraday Armor Helm
 item.modernalchemy:faraday_chest.name=Faraday Armor Chest
 
 fluid.modernalchemy:fluidCompressedAir=Compressed Air
-fluid.modernalchemy:fluidActinium=Actinium
+fluid.modernalchemy:fluidActinium=Molten Actinium
 
 modernalchemy.nei.name=Modern Alchemy NEI
 modernalchemy.nei.arcfurnace=Arc Furnace Recipes
