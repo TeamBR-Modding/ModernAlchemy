@@ -3,21 +3,108 @@ tile.modernalchemy:blockTeslaStand.name=Stand de bobine tesla
 tile.modernalchemy:fluidCompressedAir.name=Air comprimé
 tile.modernalchemy:fluidActinium.name=Actinium liquide
 tile.modernalchemy:blockOreActinium.name=Minerai d'actinium
-tile.modernalchemy:arcFurnaceDummy.name=Enveloppe de four d'arc
+tile.modernalchemy:blockArcFurnaceDummy.name=Enveloppe de four d'arc
 tile.modernalchemy:blockArcFurnaceCore.name=Processeur de four d'arc
-tile.modernalchemy:blockCompressor.name=Soufflet électrique
-tile.modernalchemy:blockSolidifier.name=Amalgamateur
+tile.modernalchemy:blockElectricBellows.name=Soufflet électrique
+tile.modernalchemy:blockAmalgamator.name=Amalgamateur
 tile.modernalchemy:blockPatternRecorder.name=Enregistreur de modèle
-tile.modernalchemy:arcFurnaceDummyOutputValue.name=Valve sortante de four d'arc
-tile.modernalchemy:arcFurnaceDummyItemIO.name=E/S d'élément de four d'arc
-tile.modernalchemy:arcFurnaceDummyAirValue.name=Valve d'air comprimé de four d'arc
+tile.modernalchemy:blockArcFurnaceDummyOutputValve.name=Valve sortante de four à arc
+tile.modernalchemy:blockArcFurnaceDummyItemIO.name=E/S d'élément de four  àarc
+tile.modernalchemy:blockArcFurnaceDummyEnergy.name=Récepteur d'énergie de four à arc
+tile.modernalchemy:blockArcFurnaceDummyAirValve.name=Valve d'air comprimé de four à arc
 tile.modernalchemy:blockTeslaBase.name=Bobine tesla de base
-tile.modernalchemy:blockFrame.name=Cadre de duplicateur
-tile.modernalchemy:blockFrameEnergy.name=UPC de duplicateur
+tile.modernalchemy:blockReplicatorFrame.name=Cadre de duplicateur
+tile.modernalchemy:blockReplicatorCPU.name=Contrôleur de duplicateur
+tile.modernalchemy:blockReplicatorStand.name=Stand de duplicateur
+tile.modernalchemy:blockAdvancedCrafter.name=Atelier avancé
+tile.modernalchemy:blockOreCopper.name=Minerai de cuivre
+tile.modernalchemy:blockSuperTeslaCoil.name=Bobine tesla MKII
 
 item.modernalchemy:pattern.name=Modèle du duplicateur
 item.modernalchemy:bucketActinium.name=Sceau d'actinium
-item.modernalchemy:itemCube.name=Moyen du duplicateur
+item.modernalchemy:itemReplicationMedium.name=Moyen du duplicateur
 item.modernalchemy:wrench.name=Clé
+item.modernalchemy:itemSlag.name=Dalle
+item.modernalchemy:itemActiniumDust.name=Poussière d'actinium
+item.modernalchemy:laserNodeItem.name=Laser du duplicateur
+item.modernalchemy:itemManual.name=Carnet de tesla
+item.modernalchemy:itemSteelIngot.name=Lingot d'acier
+item.modernalchemy:itemFaradayIngot.name=Lingot de faraday
+item.modernalchemy:itemGraphene.name=Plaque de graphène
+item.modernalchemy:itemCopperWire.name=Fil de cuivre
+item.modernalchemy:itemSteelPlate.name=Plaque d'acier
+item.modernalchemy:itemSteelGear.name=Engrenage d'acier
+item.modernalchemy:itemSteelTube.name=Tube d'acier
+item.modernalchemy:itemRealClock.name=Horloge temps réel
+item.modernalchemy:itemBlankPCB.name=PCB vierge
+item.modernalchemy:itemCircuit.name=Circuit avancé
+item.modernalchemy:itemCapacator.name=Condensateur
+item.modernalchemy:itemMemory.name=Module mémoire
+item.modernalchemy:itemCopperCoil.name=Bobine de cuivre
+item.modernalchemy:itemDenseCopperCoil.name=Bobine de cuibre dense
+item.modernalchemy:itemMachineFrame.name=Boîteir de machine
+item.modernalchemy:itemPumpModule.name=Module de pompe
+item.modernalchemy:itemEnergyAntenna.name=Antenne d'énergie
+item.modernalchemy:itemFaradayWire.name=Fil de faraday 
+item.modernalchemy:itemCopperCoil.name=Bobine de cuivre #
+item.modernalchemy:itemCopperIngot.name=Lingot de cuivre
+
+item.modernalchemy:faraday_boots.name=Bottes renforcées de faraday
+item.modernalchemy:faraday_leg.name=Jambières renforcées de faraday
+item.modernalchemy:faraday_helm.name=Casque renforcé de faraday
+item.modernalchemy:faraday_chest.name=Coffre renforcé de faraday
+
+fluid.modernalchemy:fluidCompressedAir=Air comprimé #
+fluid.modernalchemy:fluidActinium=Actinium
+
+modernalchemy.nei.name=NEI de Modern Alchemy
+modernalchemy.nei.arcfurnace=Recettes du four à arc
+modernalchemy.nei.advancedCrafter=Atelier avancé
+modernalchemy.nei.solidifier=Amalgamateur
+modernalchemy.advancedCrafter.enriching=Enrichissement
+modernalchemy.advancedCrafter.extruding=Extrusion
+modernalchemy.advancedCrafter.bending=Cintrage
+modernalchemy.advancedCrafter.furnace=Four
 
 itemGroup.tabmodernalchemy=Modern Alchemy
+
+pageHeaders.description=Description
+pageHeaders.moreInfo=Plus d'information
+pageHeaders.seeAlso=Voir aussi
+
+mainPage.info=Create items with lighting and radioactive material. A mid to late game mod focusing on replicating items in a fun, yet challenging way. With emphasis on realism this mod will make you think not just craft.
+mainPage.info.header=Information du mod
+mainPage.authors=Auteurs
+mainPage.authors.list=Dyonovan, pauljoda, Dominance, beef
+mainPage.categories.header=Catégories
+
+blocksPage.title=Blocs
+blocksPage.machines=Machines
+blocksPage.arcFurnace=Four à arc
+blockPage.replicator=Duplicateur
+blockPage.teslaCoil=Bobine tesla 
+
+pageTeslaCoil.description=The Tesla Coil is a monument of engineering, it will accept RF in through the bottom and convert to Tesla energy and transmit it via its head piece to nearby machines and devices.
+pageTeslaCoil.moreInfo=The Tesla Coil has a side effect called death, it will hurt and ignite you if you come in contact with a bolt of energy. To prevent accidental death or personal injury wear a pair of Faraday Armor, bolts also can kill mobs and charge creepers.
+
+pageAdvancedCrafter.description=The Advanced Crafter is the start machine you will need to begin Modern Alchemy, it will it will consume 100 RF/t and acts like a furnace and crafter of Steel Ingots, Actinium Ore to Dust and Wires.
+pageAdvancedCrafter.moreInfo=The Advanced Crafter has four modes: Enriching, Extruding, Bending, and Furnace. Toggle each mode by pressing the button to the left of the input field.
+
+pageBellows.description=The Electric Bellows is used to produce compressed air for the Arc Furnace Multiblock.
+
+pageAmalgamator.description=The Amalgamator is used to produce the Replication Medium that is used in the Replicator Multiblock for the replication process.
+
+pagePatternRecorder.description=The Pattern Recorder is used to produce the patterns that are used in the Replicator Multiblock to replicate items.
+
+pageArcFurnace.description=The Arc Furnace Processor is the center block of the Arc Furnace Multiblock. All functions of the multiblock are controlled from this block.
+
+pageArcFurnaceDummy.description=The Arc Furnace casing is the main block for creating the Arc Furnace Multiblock structure. This is also used for creating all other Arc Furnace Blocks.
+
+pageArcFurnaceDummyEnergy.description=The Arc Furnace Energy Receiver is used to power the Arc Furnace Multiblock from a Tesla Coil. It must have clear line of site to the Tesla Coil for it to receive energy.
+
+pageArcFurnaceDummyItemIO.description=The Arc Furnace Item I/O is used for moving Actinium Dust, Coal, and Charcoal into the Arc Furnace Multiblock for processing into Molten Actinium. Pipes can be attached to automate this process.
+
+pageArcFurnaceDummyAirValve.description=The Arc Furnace Air Valve is used to input Compressed Air into the Arc Furnace Multiblock.
+
+pageArcFurnaceDummyOutputValve.description=The Arc Furnace Output Valve is used for pumping Molten Actinium out of the Arc Furnace Multiblock into the Amalgamator to be made into Replication Medium.
+
