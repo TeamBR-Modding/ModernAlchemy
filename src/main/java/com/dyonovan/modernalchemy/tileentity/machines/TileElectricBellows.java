@@ -7,7 +7,6 @@ import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.network.MachineSoundPacket;
 import com.dyonovan.modernalchemy.tileentity.BaseMachine;
 import com.dyonovan.teambrcore.helpers.GuiHelper;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
@@ -44,7 +43,7 @@ public class TileElectricBellows extends BaseMachine implements IFluidHandler {
         if (energyTank.getEnergyLevel() > 0 && canFill(tank) && !isPowered()) {
 
             if (!isActive) {
-                PacketHandler.net.sendToAllAround(new MachineSoundPacket.MachineSoundMessage(Constants.MODID + ":compressor", xCoord, yCoord, zCoord, 0.1F, 1.0F), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 10));
+                PacketHandler.net.sendToDimension(new MachineSoundPacket.MachineSoundMessage(Constants.MODID + ":compressor", xCoord, yCoord, zCoord, 0.1F, 1.0F), worldObj.provider.dimensionId);
                 isActive = true;
             }
             updateSpeed();
