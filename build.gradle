@@ -58,7 +58,7 @@ dependencies {
 
 version = "${config.minecraft_version}-${config.mod_version}-B" + System.getenv("BUILD_NUMBER")
 group= "com.dyonovan.modernalchemy" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "modernalchemy"
+archivesBaseName = "ModernAlchemy"
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
