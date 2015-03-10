@@ -3,7 +3,7 @@ package com.dyonovan.modernalchemy.blocks.misc;
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.BlockBase;
 import com.dyonovan.modernalchemy.lib.Constants;
-import com.dyonovan.modernalchemy.renderer.machines.TankRenderer;
+import com.dyonovan.modernalchemy.renderer.machines.BlockTankRenderer;
 import com.dyonovan.modernalchemy.tileentity.misc.TileTank;
 import com.dyonovan.teambrcore.notification.GuiColor;
 import com.dyonovan.teambrcore.notification.Notification;
@@ -43,6 +43,11 @@ public class BlockTank extends BlockBase {
         setBlockName(Constants.MODID + ":blockTank");
     }
 
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon() {
+        return blockIcon;
+    }
+
     @Override
     public int getRenderBlockPass ()
     {
@@ -50,8 +55,7 @@ public class BlockTank extends BlockBase {
     }
 
     @Override
-    public boolean isOpaqueCube ()
-    {
+    public boolean isOpaqueCube () {
         return false;
     }
 
@@ -77,7 +81,7 @@ public class BlockTank extends BlockBase {
     @Override
     public boolean canRenderInPass (int pass)
     {
-        TankRenderer.renderPass = pass;
+        BlockTankRenderer.renderPass = pass;
         return true;
     }
 
@@ -93,7 +97,7 @@ public class BlockTank extends BlockBase {
     @Override
     public int getRenderType ()
     {
-        return TankRenderer.tankModelID;
+        return BlockTankRenderer.tankModelID;
     }
 
     @Override
@@ -105,7 +109,6 @@ public class BlockTank extends BlockBase {
     @Override
     public boolean onBlockActivated (World world, int x, int y, int z, EntityPlayer entityplayer, int par6, float par7, float par8, float par9)
     {
-        super.onBlockActivated(world, x, y, z, entityplayer, par6, par7, par8, par9);
         ItemStack current = entityplayer.inventory.getCurrentItem();
         if (current != null)
         {
@@ -171,6 +174,7 @@ public class BlockTank extends BlockBase {
                 return true;
             }
         }
+        super.onBlockActivated(world, x, y, z, entityplayer, par6, par7, par8, par9);
         return false;
     }
 

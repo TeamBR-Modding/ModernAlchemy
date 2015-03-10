@@ -6,12 +6,77 @@ import com.dyonovan.modernalchemy.network.RenderLightningBoltPacket;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import java.awt.*;
 
 public class RenderUtils {
+
+    public static void renderCube(Tessellator tes, double x1, double y1, double z1, double x2, double y2, double z2) {
+        tes.addVertex(x1, y1, z1);
+        tes.addVertex(x1, y2, z1);
+        tes.addVertex(x2, y2, z1);
+        tes.addVertex(x2, y1, z1);
+
+        tes.addVertex(x1, y1, z2);
+        tes.addVertex(x2, y1, z2);
+        tes.addVertex(x2, y2, z2);
+        tes.addVertex(x1, y2, z2);
+
+        tes.addVertex(x1, y1, z1);
+        tes.addVertex(x1, y1, z2);
+        tes.addVertex(x1, y2, z2);
+        tes.addVertex(x1, y2, z1);
+
+        tes.addVertex(x2, y1, z1);
+        tes.addVertex(x2, y2, z1);
+        tes.addVertex(x2, y2, z2);
+        tes.addVertex(x2, y1, z2);
+
+        tes.addVertex(x1, y1, z1);
+        tes.addVertex(x2, y1, z1);
+        tes.addVertex(x2, y1, z2);
+        tes.addVertex(x1, y1, z2);
+
+        tes.addVertex(x1, y2, z1);
+        tes.addVertex(x1, y2, z2);
+        tes.addVertex(x2, y2, z2);
+        tes.addVertex(x2, y2, z1);
+    }
+
+    public static void renderCubeWithUV(Tessellator tes, double x1, double y1, double z1, double x2, double y2, double z2, double u, double v, double u1, double v1) {
+        tes.addVertexWithUV(x1, y1, z1, u, v);
+        tes.addVertexWithUV(x1, y2, z1, u, v1);
+        tes.addVertexWithUV(x2, y2, z1, u1, v1);
+        tes.addVertexWithUV(x2, y1, z1, u1, v);
+
+        tes.addVertexWithUV(x1, y1, z2, u, v);
+        tes.addVertexWithUV(x2, y1, z2, u, v1);
+        tes.addVertexWithUV(x2, y2, z2, u1, v1);
+        tes.addVertexWithUV(x1, y2, z2, u1, v);
+
+        tes.addVertexWithUV(x1, y1, z1, u, v);
+        tes.addVertexWithUV(x1, y1, z2, u, v1);
+        tes.addVertexWithUV(x1, y2, z2, u1, v1);
+        tes.addVertexWithUV(x1, y2, z1, u1, v);
+
+        tes.addVertexWithUV(x2, y1, z1, u, v);
+        tes.addVertexWithUV(x2, y2, z1, u, v1);
+        tes.addVertexWithUV(x2, y2, z2, u1, v1);
+        tes.addVertexWithUV(x2, y1, z2, u1, v);
+
+        tes.addVertexWithUV(x1, y1, z1, u, v);
+        tes.addVertexWithUV(x2, y1, z1, u, v1);
+        tes.addVertexWithUV(x2, y1, z2, u1, v1);
+        tes.addVertexWithUV(x1, y1, z2, u1, v);
+
+        tes.addVertexWithUV(x1, y2, z1, u, v);
+        tes.addVertexWithUV(x1, y2, z2, u, v1);
+        tes.addVertexWithUV(x2, y2, z2, u1, v1);
+        tes.addVertexWithUV(x2, y2, z1, u1, v);
+    }
 
     @SideOnly(Side.CLIENT)
     public static void renderLightningBolt(World worldObj, double xCoord, double yCoord, double zCoord, TileEntity coil, int age) {

@@ -4,8 +4,8 @@ import com.dyonovan.modernalchemy.entities.EntityLaserNode;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.manual.ManualRegistry;
-import com.dyonovan.modernalchemy.renderer.machines.TankItemRenderer;
-import com.dyonovan.modernalchemy.renderer.machines.TankRenderer;
+import com.dyonovan.modernalchemy.renderer.machines.BlockTankRenderer;
+import com.dyonovan.modernalchemy.renderer.machines.ItemTankRenderer;
 import com.dyonovan.modernalchemy.renderer.replicator.ItemRenderFrame;
 import com.dyonovan.modernalchemy.renderer.replicator.RenderFrame;
 import com.dyonovan.modernalchemy.renderer.replicator.RenderLaserNode;
@@ -68,9 +68,9 @@ public class ClientProxy extends  CommonProxy{
                 new ItemRenderFrame(renderReplicatorStand, new TileReplicatorStand()));
 
         //Tank
-        RenderingRegistry.registerBlockHandler(new TankRenderer());
+        RenderingRegistry.registerBlockHandler(new BlockTankRenderer());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockHandler.blockTank),
-                new TankItemRenderer());
+                new ItemTankRenderer());
     }
 
     @Override

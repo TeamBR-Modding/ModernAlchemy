@@ -411,6 +411,7 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     /*******************************************************************************************************************
      ********************************************** Misc Functions *****************************************************
      *******************************************************************************************************************/
+
     @Override
     public void returnWailaHead(List<String> head) {
         head.add(GuiHelper.GuiColor.YELLOW + "Energy: " + GuiHelper.GuiColor.WHITE + energyTank.getEnergyLevel() + "/" + energyTank.getMaxCapacity() + GuiHelper.GuiColor.TURQUISE + "T");
