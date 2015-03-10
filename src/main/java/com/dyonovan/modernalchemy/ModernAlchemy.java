@@ -4,6 +4,7 @@ import com.dyonovan.modernalchemy.achievement.AchievementRegistry;
 import com.dyonovan.modernalchemy.handlers.*;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.proxy.CommonProxy;
+import com.dyonovan.modernalchemy.util.JsonUtils;
 import com.dyonovan.modernalchemy.util.ReplicatorUtils;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -47,6 +48,7 @@ public class ModernAlchemy {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event){
+        //JsonUtils.testWrite(event.getModConfigurationDirectory().getAbsolutePath() + File.separator + Constants.MODID.toLowerCase() + File.separator + "replicatorValues");
         ConfigHandler.init(new Configuration(new File(event.getModConfigurationDirectory().getAbsolutePath() + File.separator + Constants.MODID.toLowerCase() + File.separator + "general.properties")));
         BlockHandler.preInit();
         ItemHandler.preInit();

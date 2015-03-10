@@ -18,11 +18,10 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 public class ReplicatorUtils {
-    public static HashMap<String, Integer> values = new HashMap<>();
+    public static ArrayList<ReplicatorValues> values = new ArrayList<>();
 
     public static String fileDirectory;
 
@@ -53,13 +52,14 @@ public class ReplicatorUtils {
         if(files != null) {
             for(File file : files) {
                 String modid = file.getName().substring(0, file.getName().length() - 5);
-                HashMap<String, Integer> map = JsonUtils.readJson(modid);
-                if(map != null) {
+                ArrayList<ReplicatorValues> list = JsonUtils.readJson(modid);
+                if(list != null) {
                     int num = 0;
                     LogHelper.info("Adding values for: " + modid);
-                    for(Map.Entry<String, Integer> entry : map.entrySet()) {
-                        if (modid.equals("zzzDynamic") && values.containsKey(entry.getKey())) continue;
-                        values.put(entry.getKey(), entry.getValue());
+                    for(ReplicatorValues value : list) {
+                        if (modid.equals("zzzDynamic") && values.contains(
+                                new ReplicatorValues(value.itemName, value.reqTicks, value.qtyReturn)))  continue;
+                        values.add(value);
                         num++;
                     }
                     LogHelper.info("Added " + num + " values for " + modid);
@@ -80,13 +80,11 @@ public class ReplicatorUtils {
 
         //Check our generated map first
         if (values != null) {
-            if (values.containsKey(id.name + ":" + stack.getItemDamage())) {
-                return values.get(id.name + ":" + stack.getItemDamage());
-            } else if (values.containsKey(id.name))
-                return values.get(id.name);
+            ReplicatorValues value = findValue(id.name, stack.getItemDamage());
+            if (value != null) return value.reqTicks;
         }
 
-        HashMap<String, Integer> map = JsonUtils.readJson(id.modId);
+        /*HashMap<String, Integer> map = JsonUtils.readJson(id.modId);
 
         //Check from files
         if (map != null && map.size() > 0) {
@@ -96,7 +94,7 @@ public class ReplicatorUtils {
                 return map.get(id.name + ":" + stack.getItemDamage());
             } else if (map.containsKey(id.name))
                 return map.get(id.name);
-        }
+        }*/
 
         //Check crafting
         int value = getValueFromRecipe(stack, 0);
@@ -107,6 +105,14 @@ public class ReplicatorUtils {
             return ConfigHandler.defaultReplicationValue;
 
         return -1;
+    }
+
+    public static ReplicatorValues findValue(String id, int dmg) {
+        for (ReplicatorValues value : values) {
+            if (value.itemName.equals(id) || value.itemName.equals(id + ":" + dmg))
+                return value;
+        }
+        return null;
     }
 
     public static int getValueFromRecipe(ItemStack inputStack, int depth) {
@@ -134,7 +140,8 @@ public class ReplicatorUtils {
                 NotificationHelper.addNotification(new Notification(inputStack, GuiColor.YELLOW + "Added new Value", "Value: " + (sum / recipe.getB().getRecipeOutput().stackSize), Notification.DEFAULT_DURATION));
                 LogHelper.info("Adding value for: " + inputStack.getDisplayName() + " - " + (sum / recipe.getB().getRecipeOutput().stackSize));
             }
-            values.put(id.name + ":" + inputStack.getItemDamage(), (sum / recipe.getB().getRecipeOutput().stackSize));
+            values.add(new ReplicatorValues(id.name + ":" + inputStack.getItemDamage(), (sum / recipe.getB().getRecipeOutput().stackSize), 1));
+
             return sum / recipe.getB().getRecipeOutput().stackSize;
         }
         return -1;
@@ -143,10 +150,8 @@ public class ReplicatorUtils {
     public static int getShallowValue(ItemStack stack) {
         GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(stack.getItem());
         if (values != null) {
-            if (values.containsKey(id.name + ":" + stack.getItemDamage())) {
-                return values.get(id.name + ":" + stack.getItemDamage());
-            } else if (values.containsKey(id.name))
-                return values.get(id.name);
+            ReplicatorValues value = findValue(id.name, stack.getItemDamage());
+            if (value != null) return value.reqTicks;
         }
         return -1;
     }
