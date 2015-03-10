@@ -212,14 +212,5 @@ public class CraftingHandler {
             AdvancedCrafterRecipeRegistry.instance.addOreDictRecipe(new ArrayList<Object>(Arrays.asList(new OreDictStack("ingotCopper"), new OreDictStack("ingotCopper"), new OreDictStack("ingotCopper"), new OreDictStack("ingotTin"))),
                     new OreDictStack("ingotBronze", 4), 200, TileAdvancedCrafter.ENRICH);
         }
-
-        Map recipes = FurnaceRecipes.smelting().getSmeltingList();
-        for (Object o : recipes.entrySet()) {
-            Map.Entry<ItemStack, ItemStack> recipe = (Map.Entry<ItemStack, ItemStack>) o;
-            if (o != null) {
-                AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<Object>(Arrays.asList(recipe.getKey().getItemDamage() >= 32767 ? new ItemStack(recipe.getKey().getItem(), recipe.getKey().stackSize, 0) : recipe.getKey())),
-                        recipe.getValue().getItemDamage() >= 32767 ? new ItemStack(recipe.getValue().getItem(), 0) : recipe.getValue(), 100, TileAdvancedCrafter.FURNACE);
-            }
-        }
     }
 }
