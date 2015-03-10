@@ -41,7 +41,6 @@ public class GuiAmalgamator extends BaseGui {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-        super.drawGuiContainerBackgroundLayer(f, i, j);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F); //Could do some fun colors and transparency here
         this.mc.renderEngine.bindTexture(background);
         int x = (width - xSize) / 2;

@@ -23,7 +23,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISidedInventory {
 
@@ -58,7 +57,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
     public int currentMode;
     public int requiredProcessTime;
     private int qtyOutput;
-    private int furnaceSlot;
+    private List<Integer> furnaceSlot;
 
     private int coolDown = 60;
 
@@ -73,6 +72,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
         requiredProcessTime = 0;
         qtyOutput = 0;
         currentRecipe = new ArrayList<>();
+        furnaceSlot = new ArrayList<>();
     }
 
     /*******************************************************************************************************************
@@ -95,29 +95,29 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
                     //Check if there is a recipe
                     if (outputItem == null) continue;
                     //Return false if item in output is differrent then smelting result
-                    if (!inventory.getStackInSlot(4).isItemEqual(outputItem)) return false;
+                    if (inventory.getStackInSlot(4) != null && !inventory.getStackInSlot(4).isItemEqual(outputItem)) continue;
 
-
-                    int count = 0;
-                    count = Math.min(inventory.getStackInSlot(i).stackSize, 4);
+                    furnaceSlot.clear();
+                    int count = Math.min(inventory.getStackInSlot(i).stackSize, 4);
                     if (count < 4) {
-                        for (int j = i; j < 4; j++) {
+                        for (int j = i + 1; j < 4; j++) {
                             if (inventory.getStackInSlot(j) != null && inventory.getStackInSlot(j).isItemEqual(inventory.getStackInSlot(i)) && count < 4) {
                                 count = Math.min(inventory.getStackInSlot(j).stackSize + count,4);
+                                furnaceSlot.add(j);
                             }
                         }
                     }
 
                     //If nothing in output go ahead and start
-                    if (inventory.getStackInSlot(4) == null) return true;
-
-                    while (inventory.getStackInSlot(4).stackSize + count > inventory.getStackInSlot(4).getMaxStackSize()) {
-                        if (count == 0) return false;
-                        count--;
+                    if (inventory.getStackInSlot(4) != null) {
+                        while (inventory.getStackInSlot(4).stackSize + count > inventory.getStackInSlot(4).getMaxStackSize()) {
+                            if (count == 0) return false;
+                            count--;
+                        }
                     }
                     this.qtyOutput = count;
-                    this.currentProcessTime = 200;
-                    this.furnaceSlot = i;
+                    this.requiredProcessTime = 200;
+                    furnaceSlot.add(i);
                     return true;
                 }
             }
@@ -206,10 +206,21 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
             currentProcessTime = 1;
             this.isActive = true;
             if (currentMode == FURNACE) {
-                if (inventory.getStackInSlot(furnaceSlot).stackSize == qtyOutput) {
-                    inventory.setStackInSlot(null, furnaceSlot);
+                if (inventory.getStackInSlot(furnaceSlot.get(furnaceSlot.size() - 1)).stackSize == qtyOutput) {
+                    inventory.setStackInSlot(null, furnaceSlot.get(furnaceSlot.size() - 1));
+                } else if (inventory.getStackInSlot(furnaceSlot.get(furnaceSlot.size() - 1)).stackSize > qtyOutput) {
+                    inventory.getStackInSlot(furnaceSlot.get(furnaceSlot.size() - 1)).stackSize -= qtyOutput;
                 } else {
-
+                    int count = qtyOutput - inventory.getStackInSlot(furnaceSlot.get(furnaceSlot.size() - 1)).stackSize;
+                    inventory.setStackInSlot(null, furnaceSlot.get(furnaceSlot.size() - 1));
+                    for (int i = 0; i < furnaceSlot.size() - 1; i++) {
+                        if (inventory.getStackInSlot(furnaceSlot.get(i)).stackSize <= count) {
+                            count -=  inventory.getStackInSlot(furnaceSlot.get(i)).stackSize;
+                            inventory.setStackInSlot(null, furnaceSlot.get(i));
+                        } else if (inventory.getStackInSlot(furnaceSlot.get(i)).stackSize > count) {
+                            inventory.getStackInSlot(furnaceSlot.get(i)).stackSize -= count;
+                        }
+                    }
                 }
             } else {
                 while (currentRecipe.size() > 0) {
@@ -227,6 +238,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
                         boolean doMore = true;
                         for (int i = 0; i < this.inventory.getSizeInventory(); i++) {
                             if (doMore) {
+                                //noinspection unchecked
                                 for (ItemStack oreStack : (ArrayList<ItemStack>) currentRecipe.get(0)) {
                                     if (InventoryUtils.areStacksEqual(oreStack, inventory.getStackInSlot(i)) && oreStack.getItemDamage() == inventory.getStackInSlot(i).getItemDamage()) {
                                         inventory.getStackInSlot(i).stackSize -= oreStack.stackSize;
@@ -444,7 +456,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
         super.updateEntity();
         if (worldObj.isRemote) return;
         if (inventory.getStackInSlot(0) == null && inventory.getStackInSlot(1) == null &&
-                inventory.getStackInSlot(2) == null && inventory.getStackInSlot(3) == null) return;
+                inventory.getStackInSlot(2) == null && inventory.getStackInSlot(3) == null && currentProcessTime == 0) return;
         coolDown--;
         doSmelt();
     }

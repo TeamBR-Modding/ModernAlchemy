@@ -42,7 +42,7 @@ public class GuiManual extends BaseGui implements Comparable<GuiManual> {
         title = new ComponentHeader("");
         title.setPositionAndSize(15, 15, 100, 15);
         title.setAlignment(IComponent.ALIGNMENT.CENTER);
-        pages = new ArrayList<ComponentSet>();
+        pages = new ArrayList<>();
         pages.add(new ComponentSet());
         pages.get(0).add(title);
         this.xSize = 256;
@@ -54,6 +54,7 @@ public class GuiManual extends BaseGui implements Comparable<GuiManual> {
         return id;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void initGui() {
         updateScale();
@@ -77,6 +78,7 @@ public class GuiManual extends BaseGui implements Comparable<GuiManual> {
      * Add a new section to the pages
      * @param component The component to add
      */
+    @SuppressWarnings("unused")
     public void addComponent(IComponent component, int page) {
         pages.get(page).add(component);
     }
@@ -139,6 +141,7 @@ public class GuiManual extends BaseGui implements Comparable<GuiManual> {
         super.mouseClicked(x, y, button);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void actionPerformed(GuiButton button) {
         if(button.id == 0) {
@@ -181,6 +184,7 @@ public class GuiManual extends BaseGui implements Comparable<GuiManual> {
         Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
     }
 
+    @SuppressWarnings("NullableProblems")
     @Override
     public int compareTo(GuiManual o) {
         return this.id.equalsIgnoreCase(o.id) ? 0 : 1;
