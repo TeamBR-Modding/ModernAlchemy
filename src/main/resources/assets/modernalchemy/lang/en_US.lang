@@ -68,6 +68,9 @@ modernalchemy.advancedCrafter.furnace=Furnace
 
 itemGroup.tabModernAlchemy=Modern Alchemy
 
+death.attack.shock=%1$s tasted lightning
+death.attack.shock.player=%1$s was electrocuted by %2$s
+
 pageHeaders.description=Description
 pageHeaders.moreInfo=More Information
 pageHeaders.seeAlso=See Also

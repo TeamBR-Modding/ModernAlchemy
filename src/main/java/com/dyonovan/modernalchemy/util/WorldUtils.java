@@ -1,5 +1,6 @@
 package com.dyonovan.modernalchemy.util;
 
+import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.items.ItemFaradayArmor;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -11,7 +12,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -44,7 +44,7 @@ public class WorldUtils {
                         if(player.capabilities.isCreativeMode || checkArmor(player))
                             continue;
                     }
-                    entityLiving.attackEntityFrom(DamageSource.inFire, 2.0F);
+                    entityLiving.attackEntityFrom(ModernAlchemy.shock, 2.0F);
                     entityLiving.setFire(1);
                 }
             }
