@@ -73,38 +73,25 @@ public class ReplicatorUtils {
             LogHelper.warning("No Files Found for Replicator Values");
     }
 
-    public static int getValueForItem(ItemStack stack) {
+    public static ReplicatorValues getValueForItem(ItemStack stack) {
         if (stack == null)
-            return -1;
+            return null;
         GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(stack.getItem());
-
         //Check our generated map first
         if (values != null) {
             ReplicatorValues value = findValue(id.name, stack.getItemDamage());
-            if (value != null) return value.reqTicks;
+            if (value != null) return new ReplicatorValues(null, value.reqTicks, value.qtyReturn);
         }
-
-        /*HashMap<String, Integer> map = JsonUtils.readJson(id.modId);
-
-        //Check from files
-        if (map != null && map.size() > 0) {
-            values.putAll(map);
-
-            if (map.containsKey(id.name + ":" + stack.getItemDamage())) {
-                return map.get(id.name + ":" + stack.getItemDamage());
-            } else if (map.containsKey(id.name))
-                return map.get(id.name);
-        }*/
 
         //Check crafting
         int value = getValueFromRecipe(stack, 0);
         if(value > -1)
-            return value;
+            return new ReplicatorValues(null, value, 1);
 
         if(ConfigHandler.useDefault)
-            return ConfigHandler.defaultReplicationValue;
+            return new ReplicatorValues(null, ConfigHandler.defaultReplicationValue, 1);
 
-        return -1;
+        return null;
     }
 
     public static ReplicatorValues findValue(String id, int dmg) {

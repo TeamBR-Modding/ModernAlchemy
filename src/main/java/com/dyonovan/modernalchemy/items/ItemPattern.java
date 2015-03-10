@@ -66,6 +66,7 @@ public class ItemPattern extends Item {
             if(item != null)
                 list.add(GuiHelper.GuiColor.YELLOW + "Item Stored: " + GuiHelper.GuiColor.TURQUISE + item.getItemStackDisplayName(new ItemStack(item, 1)));
             list.add(GuiHelper.GuiColor.YELLOW + "Replicator Cost: " + GuiHelper.GuiColor.TURQUISE + itemstack.getTagCompound().getInteger("Value"));
+            list.add(GuiHelper.GuiColor.YELLOW + "Quantity Returned: " + GuiHelper.GuiColor.TURQUISE + itemstack.getTagCompound().getInteger("Qty"));
             list.add(GuiHelper.GuiColor.YELLOW + "Quality: " + GuiHelper.GuiColor.TURQUISE + itemstack.getTagCompound().getFloat("Quality") + "%");
         }
     }

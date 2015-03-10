@@ -11,25 +11,6 @@ import java.util.HashMap;
 
 public class JsonUtils {
 
-    /*public static void testWrite(String dir) {
-        ArrayList<ReplicatorValues> test = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            test.add(new ReplicatorValues("Test" + i + ":" + i, i, i));
-        }
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String json = gson.toJson(test);
-
-        try {
-            FileWriter fw = new FileWriter(dir + File.separator + "test" + ".json");
-            fw.write(json);
-            fw.close();
-
-        } catch (IOException e) {
-            LogHelper.severe("Opps");
-        }
-        test.clear();
-    }*/
-
     public static boolean writeJson(ArrayList<ReplicatorValues> values, String modID) {
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();

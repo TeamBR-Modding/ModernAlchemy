@@ -48,7 +48,6 @@ public class ModernAlchemy {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event){
-        //JsonUtils.testWrite(event.getModConfigurationDirectory().getAbsolutePath() + File.separator + Constants.MODID.toLowerCase() + File.separator + "replicatorValues");
         ConfigHandler.init(new Configuration(new File(event.getModConfigurationDirectory().getAbsolutePath() + File.separator + Constants.MODID.toLowerCase() + File.separator + "general.properties")));
         BlockHandler.preInit();
         ItemHandler.preInit();

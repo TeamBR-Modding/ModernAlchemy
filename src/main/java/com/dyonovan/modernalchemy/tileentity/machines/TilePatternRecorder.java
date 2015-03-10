@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy.tileentity.machines;
 
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.ItemHandler;
+import com.dyonovan.modernalchemy.util.ReplicatorValues;
 import com.dyonovan.teambrcore.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.items.ItemPattern;
 import com.dyonovan.modernalchemy.tileentity.BaseMachine;
@@ -13,7 +14,9 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TilePatternRecorder extends BaseMachine implements  IInventory {
 
@@ -93,10 +96,12 @@ public class TilePatternRecorder extends BaseMachine implements  IInventory {
 
     private ItemStack recordPattern(String item) {
         ItemStack pattern = new ItemStack(ItemHandler.itemReplicatorPattern, 1);
+        ReplicatorValues values = ReplicatorUtils.getValueForItem(ReplicatorUtils.getReturn(item));
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("Item", item);
-        tag.setInteger("Value", ReplicatorUtils.getValueForItem(ReplicatorUtils.getReturn(item)));
-        float value = Math.max((1000 / (ReplicatorUtils.getValueForItem(ReplicatorUtils.getReturn(item)) / 10)), 0.1F);
+        tag.setInteger("Value", values.reqTicks);
+        tag.setInteger("Qty", values.qtyReturn);
+        float value = Math.max((1000 / values.reqTicks / 10), 0.1F);
         if(lastQuality > 0)
             tag.setFloat("Quality", lastQuality + value <= 100 ? lastQuality + value : 100);
         else
@@ -110,8 +115,7 @@ public class TilePatternRecorder extends BaseMachine implements  IInventory {
         return inventory.getStackInSlot(INPUT_SLOT) != null && inventory.getStackInSlot(ITEM_SLOT) != null &&
                 inventory.getStackInSlot(INPUT_SLOT).getItem() instanceof ItemPattern &&
                 inventory.getStackInSlot(OUTPUT_SLOT) == null &&
-                ReplicatorUtils.getValueForItem(inventory.getStackInSlot(ITEM_SLOT)) > 0 &&
-                getEnergyLevel() >= 1;
+                ReplicatorUtils.getValueForItem(inventory.getStackInSlot(ITEM_SLOT)) != null && getEnergyLevel() >= 1;
     }
 
     public int getProgressScaled(int scale) { return this.currentProcessTime * scale / PROCESS_TIME; }
