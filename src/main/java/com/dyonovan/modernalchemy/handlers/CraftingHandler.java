@@ -10,7 +10,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.oredict.OreDictionary;
@@ -172,10 +171,6 @@ public class CraftingHandler {
         //Book
         GameRegistry.addShapelessRecipe(new ItemStack(ItemHandler.manual),
                 new ItemStack(ItemHandler.itemActiniumDust), new ItemStack(Items.book));
-
-        //Tank
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockTank), "IGI", "GGG", "IGI",
-                'I', Items.iron_ingot, 'G', "blockGlass"));
 
         //Faraday Armor
         GameRegistry.addRecipe(new ItemStack(ItemHandler.faradayHelm), "AAA", "ABA",

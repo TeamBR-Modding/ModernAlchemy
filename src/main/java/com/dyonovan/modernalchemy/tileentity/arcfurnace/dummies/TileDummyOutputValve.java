@@ -1,8 +1,6 @@
 package com.dyonovan.modernalchemy.tileentity.arcfurnace.dummies;
 
-import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.TileArcFurnaceCore;
-import com.dyonovan.modernalchemy.tileentity.misc.TileTank;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -49,19 +47,5 @@ public class TileDummyOutputValve extends TileDummy implements IFluidHandler {
     @Override
     public void updateEntity() {
         super.updateEntity();
-        if(getCore() != null) {
-            for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-                if (getTileInDirection(dir) != null && getTileInDirection(dir) instanceof TileTank) {
-                    TileTank tank = (TileTank) getTileInDirection(dir);
-                    if (((TileArcFurnaceCore)getCore()).getOutputTank().getFluid() != null && tank.tank.getFluidAmount() + 100 < tank.tank.getCapacity()) {
-                        boolean flag = tank.tank.getFluid() == null || tank.tank.getFluid().getFluid() == BlockHandler.fluidActinium;
-                        if(flag) {
-                            tank.fill(dir.getOpposite(), new FluidStack(BlockHandler.fluidActinium, 100), true);
-                            ((TileArcFurnaceCore) getCore()).getOutputTank().drain(100, true);
-                        }
-                    }
-                }
-            }
-        }
     }
 }
