@@ -157,7 +157,7 @@ public class BlockTank extends BlockBase {
                 if(!tileTank.isLocked()) {
                     if (tileTank.lockTank()) {
                         if (world.isRemote)
-                            NotificationHelper.addNotification(new Notification(new ItemStack(this), GuiColor.RED + "Tank Locked", GuiColor.TURQUISE + "Fuel: " + tileTank.getLockedFluid().getLocalizedName()));
+                            NotificationHelper.addNotification(new Notification(new ItemStack(this), GuiColor.RED + "Tank Locked", GuiColor.TURQUISE + "Fuel: " +  tileTank.getLockedFluid().getName()));// tileTank.getLockedFluid().getLocalizedName()));
                     }
                 }
                 else {

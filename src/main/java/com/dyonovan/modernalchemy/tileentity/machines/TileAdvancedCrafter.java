@@ -15,6 +15,7 @@ import com.dyonovan.teambrcore.helpers.GuiHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
@@ -22,6 +23,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISidedInventory {
 
@@ -56,6 +58,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
     public int currentMode;
     public int requiredProcessTime;
     private int qtyOutput;
+    private int furnaceSlot;
 
     private int coolDown = 60;
 
@@ -84,17 +87,41 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
         if(coolDown > 0)
             return false;
 
-        /*//TODO code for furnace mode
+
         if (currentMode == FURNACE) {
             for (int i = 0; i < 4; i++) {
                 if (inventory.getStackInSlot(i) != null) {
-                    Map recipes = FurnaceRecipes.smelting().getSmeltingList();
-                    for (int j = 0; j < recipes.size(); j++) {
+                    outputItem = FurnaceRecipes.smelting().getSmeltingResult(inventory.getStackInSlot(i));
+                    //Check if there is a recipe
+                    if (outputItem == null) continue;
+                    //Return false if item in output is differrent then smelting result
+                    if (!inventory.getStackInSlot(4).isItemEqual(outputItem)) return false;
 
+
+                    int count = 0;
+                    count = Math.min(inventory.getStackInSlot(i).stackSize, 4);
+                    if (count < 4) {
+                        for (int j = i; j < 4; j++) {
+                            if (inventory.getStackInSlot(j) != null && inventory.getStackInSlot(j).isItemEqual(inventory.getStackInSlot(i)) && count < 4) {
+                                count = Math.min(inventory.getStackInSlot(j).stackSize + count,4);
+                            }
+                        }
                     }
+
+                    //If nothing in output go ahead and start
+                    if (inventory.getStackInSlot(4) == null) return true;
+
+                    while (inventory.getStackInSlot(4).stackSize + count > inventory.getStackInSlot(4).getMaxStackSize()) {
+                        if (count == 0) return false;
+                        count--;
+                    }
+                    this.qtyOutput = count;
+                    this.currentProcessTime = 200;
+                    this.furnaceSlot = i;
+                    return true;
                 }
             }
-        }*/
+        }
 
         List<Object> itemInput = new ArrayList<>(4); //Build our current input array
         for (int i = 0; i < 4; i++) {
@@ -172,44 +199,50 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
      * Checks if can smelt, if it can processes the resources and then outputs
      */
     private void doSmelt() {
+
         if(outputItem == null || currentRecipe == null) //In case we loose our output item, remake it
             doReset();
         if (currentProcessTime == 0 && canSmelt()) { //Begin
             currentProcessTime = 1;
             this.isActive = true;
-            while(currentRecipe.size() > 0) {
-                if(currentRecipe.get(0) instanceof ItemStack) {
-                    for (int i = 0; i < 4; i++) {
-                        if (InventoryUtils.areStacksEqual(currentRecipe.get(0), inventory.getStackInSlot(i))) {
-                            inventory.getStackInSlot(i).stackSize -= ((ItemStack) currentRecipe.get(0)).stackSize;
-                            currentRecipe.remove(0);
-                            if (inventory.getStackInSlot(i).stackSize <= 0)
-                                inventory.setStackInSlot(null, i);
-                            break;
-                        }
-                    }
+            if (currentMode == FURNACE) {
+                if (inventory.getStackInSlot(furnaceSlot).stackSize == qtyOutput) {
+                    inventory.setStackInSlot(null, furnaceSlot);
+                } else {
+
                 }
-                else if(currentRecipe.get(0) instanceof List) {
-                    boolean doMore = true;
-                    for (int i = 0; i < this.inventory.getSizeInventory(); i++) {
-                        if (doMore) {
-                            for (ItemStack oreStack : (ArrayList<ItemStack>) currentRecipe.get(0)) {
-                                if (InventoryUtils.areStacksEqual(oreStack, inventory.getStackInSlot(i)) && oreStack.getItemDamage() == inventory.getStackInSlot(i).getItemDamage()) {
-                                    inventory.getStackInSlot(i).stackSize -= oreStack.stackSize;
-                                    currentRecipe.remove(0);
-                                    if (inventory.getStackInSlot(i).stackSize <= 0)
-                                        inventory.setStackInSlot(null, i);
-                                    doMore = false;
-                                    break;
-                                }
+            } else {
+                while (currentRecipe.size() > 0) {
+                    if (currentRecipe.get(0) instanceof ItemStack) {
+                        for (int i = 0; i < 4; i++) {
+                            if (InventoryUtils.areStacksEqual(currentRecipe.get(0), inventory.getStackInSlot(i))) {
+                                inventory.getStackInSlot(i).stackSize -= ((ItemStack) currentRecipe.get(0)).stackSize;
+                                currentRecipe.remove(0);
+                                if (inventory.getStackInSlot(i).stackSize <= 0)
+                                    inventory.setStackInSlot(null, i);
+                                break;
                             }
                         }
-                        else
-                            break;
-                    }
+                    } else if (currentRecipe.get(0) instanceof List) {
+                        boolean doMore = true;
+                        for (int i = 0; i < this.inventory.getSizeInventory(); i++) {
+                            if (doMore) {
+                                for (ItemStack oreStack : (ArrayList<ItemStack>) currentRecipe.get(0)) {
+                                    if (InventoryUtils.areStacksEqual(oreStack, inventory.getStackInSlot(i)) && oreStack.getItemDamage() == inventory.getStackInSlot(i).getItemDamage()) {
+                                        inventory.getStackInSlot(i).stackSize -= oreStack.stackSize;
+                                        currentRecipe.remove(0);
+                                        if (inventory.getStackInSlot(i).stackSize <= 0)
+                                            inventory.setStackInSlot(null, i);
+                                        doMore = false;
+                                        break;
+                                    }
+                                }
+                            } else
+                                break;
+                        }
+                    } else
+                        currentRecipe.remove(0);
                 }
-                else
-                    currentRecipe.remove(0);
             }
 
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -410,6 +443,8 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
     public void updateEntity() {
         super.updateEntity();
         if (worldObj.isRemote) return;
+        if (inventory.getStackInSlot(0) == null && inventory.getStackInSlot(1) == null &&
+                inventory.getStackInSlot(2) == null && inventory.getStackInSlot(3) == null) return;
         coolDown--;
         doSmelt();
     }

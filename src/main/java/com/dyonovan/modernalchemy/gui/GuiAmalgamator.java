@@ -33,6 +33,7 @@ public class GuiAmalgamator extends BaseGui {
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
+        super.drawGuiContainerForegroundLayer(par1, par2);
         final String invTitle =  "Amalgamator";
         fontRendererObj.drawString(invTitle, 98 - (fontRendererObj.getStringWidth(invTitle) / 2), 6, 4210752);
         fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 72, ySize - 96 + 2, 4210752);
@@ -40,7 +41,7 @@ public class GuiAmalgamator extends BaseGui {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-
+        super.drawGuiContainerBackgroundLayer(f, i, j);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F); //Could do some fun colors and transparency here
         this.mc.renderEngine.bindTexture(background);
         int x = (width - xSize) / 2;
