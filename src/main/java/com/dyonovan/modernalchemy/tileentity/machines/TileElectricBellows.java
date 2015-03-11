@@ -111,6 +111,8 @@ public class TileElectricBellows extends BaseMachine implements IFluidHandler {
             chargeFromCoils();
         }
         compress();
+        if(tank.getFluid() != null)
+            distributeFluids(tank);
     }
 
     @Override

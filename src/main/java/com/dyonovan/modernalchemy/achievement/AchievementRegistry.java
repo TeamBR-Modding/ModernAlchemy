@@ -1,16 +1,20 @@
 package com.dyonovan.modernalchemy.achievement;
 
+import com.dyonovan.modernalchemy.collections.AutoInit;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
-import net.minecraft.stats.Achievement;
-import net.minecraftforge.common.AchievementPage;
+import com.dyonovan.teambrcore.achievement.AchievementList;
 
-public class AchievementRegistry {
-    public static Achievement mineActinium;
+public class AchievementRegistry extends AchievementList{
+    public static String mineActinium = "mineActinium";
 
-    public static void init() {
-        mineActinium = new Achievement("achievement.mineActinium", "mineActiniumAchievement", 0, 0, BlockHandler.blockOreActinium, null).registerStat();
+    @AutoInit
+    public AchievementRegistry() {
+        super("Modern Alchemy");
+        System.out.println("HELLO THERE");
+    }
 
-        AchievementPage page = new AchievementPage("Modern Alchemy", mineActinium);
-        AchievementPage.registerAchievementPage(page);
+    @Override
+    public void initAchievements() {
+        buildAchievement("mineActinium", 0, 0, BlockHandler.blockOreActinium, null);
     }
 }

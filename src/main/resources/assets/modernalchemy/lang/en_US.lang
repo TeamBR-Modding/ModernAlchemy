@@ -71,6 +71,9 @@ itemGroup.tabModernAlchemy=Modern Alchemy
 death.attack.shock=%1$s tasted lightning
 death.attack.shock.player=%1$s was electrocuted by %2$s
 
+achievement.mineActinium=It Begins
+achievement.mineActinium.desc=Mine your first Actinium Ore
+
 pageHeaders.description=Description
 pageHeaders.moreInfo=More Information
 pageHeaders.seeAlso=See Also

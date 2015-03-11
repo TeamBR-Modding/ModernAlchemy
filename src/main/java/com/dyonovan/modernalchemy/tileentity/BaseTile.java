@@ -1,12 +1,6 @@
 package com.dyonovan.modernalchemy.tileentity;
 
-import com.dyonovan.modernalchemy.handlers.BlockHandler;
-import com.dyonovan.modernalchemy.handlers.ConfigHandler;
-import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
-import com.dyonovan.modernalchemy.util.Location;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -14,8 +8,10 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.IFluidHandler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseTile extends TileEntity {
@@ -55,6 +51,34 @@ public abstract class BaseTile extends TileEntity {
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
     {
         readFromNBT(pkt.func_148857_g());
+    }
+
+
+    /*******************************************************************************************************************
+     ********************************************* Fluid Functions *****************************************************
+     *******************************************************************************************************************/
+
+    public void distributeFluids(FluidTank tank, boolean single, ForgeDirection... directions) {
+        if(tank.getFluid() != null) {
+            for (ForgeDirection dir : directions) {
+                if (getTileInDirection(dir) != null && getTileInDirection(dir) instanceof IFluidHandler) {
+                    IFluidHandler otherTank = (IFluidHandler) getTileInDirection(dir);
+                    if (tank.getFluid() != null && otherTank.canFill(dir, tank.getFluid().getFluid())) {
+                        tank.drain(otherTank.fill(dir.getOpposite(), new FluidStack(tank.getFluid().getFluid(), 50), true), true);
+                        if (single)
+                            return;
+                    }
+                }
+            }
+        }
+    }
+
+    public void distributeFluids(FluidTank tank, boolean single) {
+        distributeFluids(tank, single, ForgeDirection.VALID_DIRECTIONS);
+    }
+
+    public void distributeFluids(FluidTank tank) {
+        distributeFluids(tank, true, ForgeDirection.VALID_DIRECTIONS);
     }
 
     public abstract void returnWailaHead(List<String> tip);

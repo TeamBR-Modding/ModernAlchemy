@@ -47,5 +47,7 @@ public class TileDummyOutputValve extends TileDummy implements IFluidHandler {
     @Override
     public void updateEntity() {
         super.updateEntity();
+        if(getCore() != null)
+            distributeFluids(((TileArcFurnaceCore)getCore()).getOutputTank(), false, ForgeDirection.VALID_DIRECTIONS);
     }
 }

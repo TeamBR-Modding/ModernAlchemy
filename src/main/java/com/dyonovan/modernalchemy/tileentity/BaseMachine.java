@@ -140,5 +140,4 @@ public class BaseMachine extends BaseTile implements ITeslaHandler {
     public TeslaBank getEnergyBank() {
         return energyTank;
     }
-
 }

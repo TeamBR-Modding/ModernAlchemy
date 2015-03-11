@@ -24,7 +24,7 @@ repositories {
         name "CB Repo"
         url "http://chickenbones.net/maven/"
     }
-    maven { // the repo from which to get NEI and stuff
+    maven { // the repo from which to get BR
         name "BR Repo"
         url "http://beyondrealitypack.com/maven2"
     }
