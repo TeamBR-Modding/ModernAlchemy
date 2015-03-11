@@ -51,7 +51,7 @@ public class ManualRegistry {
      */
     public void init() {
         pages.clear();
-        ArrayList<String> files = FileUtils.getJarDirList(ModernAlchemy.class.getResource("/"));
+        ArrayList<String> files = FileUtils.getJarDirList(ModernAlchemy.class.getResource(""));
         for(String f : files) {
             if(buildManualFromFile(f) != null)
                 addPage(buildManualFromFile(f));
