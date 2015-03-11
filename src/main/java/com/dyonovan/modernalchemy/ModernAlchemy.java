@@ -65,7 +65,7 @@ public class ModernAlchemy {
 
         ReplicatorUtils.buildDirectory(event.getModConfigurationDirectory().getAbsolutePath() + File.separator + Constants.MODID.toLowerCase() + File.separator + "replicatorValues");
 
-        Collection<Class<?>> ourClasses = ClassHelper.getClassesInJar(ModernAlchemy.class.getResource("/"));
+        Collection<Class<?>> ourClasses = ClassHelper.getClassesInJar(ModernAlchemy.class.getResource(""));
         for(Class cl : ourClasses) {
             for(Method method : cl.getMethods()) {
                 if(method.isAnnotationPresent(AutoInit.class)) {
