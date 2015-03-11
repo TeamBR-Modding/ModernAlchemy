@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy.blocks.arcfurnace;
 
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.BlockBase;
+import com.dyonovan.modernalchemy.blocks.IExpellable;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.manual.component.ComponentBase;
 import com.dyonovan.modernalchemy.manual.component.ComponentItemRender;
@@ -22,7 +23,7 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockArcFurnaceCore extends BlockBase {
+public class BlockArcFurnaceCore extends BlockBase implements IExpellable{
     @SideOnly(Side.CLIENT)
     private IIcon front;
 
@@ -68,11 +69,8 @@ public class BlockArcFurnaceCore extends BlockBase {
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, Block par5, int par6)
-    {
-        TileArcFurnaceCore core = (TileArcFurnaceCore) world.getTileEntity(x, y, z);
-        WorldUtils.expelItem(world, core.xCoord, core.yCoord, core.zCoord, core.inventory.getStackInSlot(0));
-        WorldUtils.expelItem(world, core.xCoord, core.yCoord, core.zCoord, core.inventory.getStackInSlot(1));
-        super.breakBlock(world, x, y, z, par5, par6);
+    public void expelItems(World world, int x, int y, int z) {
+        TileArcFurnaceCore tile = (TileArcFurnaceCore)world.getTileEntity(x, y, z);
+        tile.expelItems(tile.inventory);
     }
 }

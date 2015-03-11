@@ -1,6 +1,8 @@
 package com.dyonovan.modernalchemy.tileentity;
 
+import com.dyonovan.modernalchemy.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -8,6 +10,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -58,7 +61,7 @@ public abstract class BaseTile extends TileEntity {
      ********************************************* Fluid Functions *****************************************************
      *******************************************************************************************************************/
 
-    public void distributeFluids(FluidTank tank, boolean single, ForgeDirection... directions) {
+    public void exportFluids(FluidTank tank, boolean single, ForgeDirection... directions) {
         if(tank.getFluid() != null) {
             for (ForgeDirection dir : directions) {
                 if (getTileInDirection(dir) != null && getTileInDirection(dir) instanceof IFluidHandler) {
@@ -73,12 +76,41 @@ public abstract class BaseTile extends TileEntity {
         }
     }
 
-    public void distributeFluids(FluidTank tank, boolean single) {
-        distributeFluids(tank, single, ForgeDirection.VALID_DIRECTIONS);
+    public void exportFluids(FluidTank tank, boolean single) {
+        exportFluids(tank, single, ForgeDirection.VALID_DIRECTIONS);
     }
 
-    public void distributeFluids(FluidTank tank) {
-        distributeFluids(tank, true, ForgeDirection.VALID_DIRECTIONS);
+    public void exportFluids(FluidTank tank) {
+        exportFluids(tank, true, ForgeDirection.VALID_DIRECTIONS);
+    }
+
+    public void importFluids(FluidTank tank, Fluid fillFluid, boolean single, ForgeDirection... directions) {
+        for (ForgeDirection dir : directions) {
+            if (getTileInDirection(dir) != null && getTileInDirection(dir) instanceof IFluidHandler) {
+                IFluidHandler otherTank = (IFluidHandler) getTileInDirection(dir);
+                if(otherTank.canDrain(dir.getOpposite(), tank.getFluid().getFluid() == null ? null : tank.getFluid().getFluid())) {
+                    otherTank.drain(dir.getOpposite(), tank.fill(new FluidStack(fillFluid, 50), true), true);
+                    if(single)
+                        return;
+                }
+            }
+        }
+    }
+
+    public void importFluids(FluidTank tank, Fluid fillFluid, boolean single) {
+        importFluids(tank, fillFluid, single, ForgeDirection.VALID_DIRECTIONS);
+    }
+
+    public void importFluids(FluidTank tank, Fluid fillFluid) {
+        importFluids(tank, fillFluid, true, ForgeDirection.VALID_DIRECTIONS);
+    }
+
+    public void expelItems(InventoryTile inventory) {
+        for(ItemStack stack : inventory.getValues()) {
+            if(stack != null) {
+                WorldUtils.expelItem(worldObj, xCoord, yCoord, zCoord, stack);
+            }
+        }
     }
 
     public abstract void returnWailaHead(List<String> tip);

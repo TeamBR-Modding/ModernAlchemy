@@ -22,7 +22,7 @@ public class TileAmalgamator extends BaseMachine implements IFluidHandler, ISide
 
     public FluidTank tank;
     private int currentSpeed;
-    private InventoryTile inventory;
+    public InventoryTile inventory;
     public int timeProcessed;
 
     public TileAmalgamator() {
@@ -232,6 +232,7 @@ public class TileAmalgamator extends BaseMachine implements IFluidHandler, ISide
             chargeFromCoils();
         }
         doSolidify();
+        importFluids(tank, BlockHandler.fluidActinium);
         super.updateEntity();
     }
 

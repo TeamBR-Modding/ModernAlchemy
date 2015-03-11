@@ -1,11 +1,9 @@
 package com.dyonovan.modernalchemy;
 
-import com.dyonovan.modernalchemy.collections.AutoInit;
+import com.dyonovan.modernalchemy.achievement.ModAchievements;
 import com.dyonovan.modernalchemy.handlers.*;
-import com.dyonovan.modernalchemy.helpers.ClassHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.proxy.CommonProxy;
-import com.dyonovan.modernalchemy.util.JsonUtils;
 import com.dyonovan.modernalchemy.util.ReplicatorUtils;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -25,9 +23,6 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Collection;
 
 @Mod(name = Constants.MODNAME, modid = Constants.MODID, version = Constants.VERSION, dependencies = Constants.DEPENDENCIES)
 
@@ -65,20 +60,7 @@ public class ModernAlchemy {
 
         ReplicatorUtils.buildDirectory(event.getModConfigurationDirectory().getAbsolutePath() + File.separator + Constants.MODID.toLowerCase() + File.separator + "replicatorValues");
 
-        Collection<Class<?>> ourClasses = ClassHelper.getClassesInJar(ModernAlchemy.class.getResource(""));
-        for(Class cl : ourClasses) {
-            for(Method method : cl.getMethods()) {
-                if(method.isAnnotationPresent(AutoInit.class)) {
-                    try {
-                        method.invoke(cl, null);
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    } catch (InvocationTargetException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
+        ModAchievements.instance = new ModAchievements();
     }
 
     @SuppressWarnings("unused")

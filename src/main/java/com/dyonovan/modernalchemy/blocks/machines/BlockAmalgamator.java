@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy.blocks.machines;
 
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.BlockBase;
+import com.dyonovan.modernalchemy.blocks.IExpellable;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.manual.component.ComponentBase;
@@ -22,7 +23,7 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockAmalgamator extends BlockBase {
+public class BlockAmalgamator extends BlockBase implements IExpellable{
 
     @SideOnly(Side.CLIENT)
     private IIcon front;
@@ -93,5 +94,11 @@ public class BlockAmalgamator extends BlockBase {
             }
             return true;
         }
+    }
+
+    @Override
+    public void expelItems(World world, int x, int y, int z) {
+        TileAmalgamator tile = (TileAmalgamator)world.getTileEntity(x, y, z);
+        tile.expelItems(tile.inventory);
     }
 }

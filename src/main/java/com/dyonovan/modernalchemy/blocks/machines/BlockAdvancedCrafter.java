@@ -2,10 +2,12 @@ package com.dyonovan.modernalchemy.blocks.machines;
 
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.BlockBase;
+import com.dyonovan.modernalchemy.blocks.IExpellable;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.manual.component.ComponentBase;
 import com.dyonovan.modernalchemy.manual.component.ComponentItemRender;
+import com.dyonovan.modernalchemy.tileentity.BaseTile;
 import com.dyonovan.modernalchemy.tileentity.machines.TileAdvancedCrafter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -22,7 +24,7 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockAdvancedCrafter extends BlockBase {
+public class BlockAdvancedCrafter extends BlockBase implements IExpellable{
 
     @SideOnly(Side.CLIENT)
     private IIcon front;
@@ -93,5 +95,11 @@ public class BlockAdvancedCrafter extends BlockBase {
             }
             return true;
         }
+    }
+
+    @Override
+    public void expelItems(World world, int x, int y, int z) {
+        TileAdvancedCrafter tile = (TileAdvancedCrafter) world.getTileEntity(x, y, z);
+        tile.expelItems(tile.inventory);
     }
 }
