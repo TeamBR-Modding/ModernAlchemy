@@ -17,14 +17,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.StatCollector;
 
-import java.io.*;
-import java.net.JarURLConnection;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.*;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.EmptyStackException;
+import java.util.HashMap;
+import java.util.Stack;
 
 @SideOnly(Side.CLIENT)
 public class ManualRegistry {
@@ -52,7 +51,7 @@ public class ManualRegistry {
      */
     public void init() {
         pages.clear();
-        ArrayList<String> files = FileUtils.getJarDirList(ModernAlchemy.class.getResource("/manualPages"), "manualPages/");
+        ArrayList<String> files = FileUtils.getJarDirList(ModernAlchemy.class.getResource("/"));
         for(String f : files) {
             if(buildManualFromFile(f) != null)
                 addPage(buildManualFromFile(f));
