@@ -1,8 +1,11 @@
 package com.dyonovan.modernalchemy.tileentity.machines;
 
+import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
+import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.handlers.ItemHandler;
+import com.dyonovan.modernalchemy.tileentity.IInputOutput;
 import com.dyonovan.teambrcore.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.tileentity.BaseMachine;
@@ -16,7 +19,7 @@ import net.minecraftforge.fluids.*;
 
 import java.util.List;
 
-public class TileAmalgamator extends BaseMachine implements IFluidHandler, ISidedInventory {
+public class TileAmalgamator extends BaseMachine implements IFluidHandler, ISidedInventory, IInputOutput {
 
     private static final int PROCESS_TIME = 500;
 
@@ -30,6 +33,7 @@ public class TileAmalgamator extends BaseMachine implements IFluidHandler, ISide
         tank.setFluid(new FluidStack(BlockHandler.fluidActinium, 0));
         this.energyTank = new TeslaBank(1000);
         inventory = new InventoryTile(1);
+        initIOModes();
     }
 
     /*******************************************************************************************************************
@@ -233,6 +237,8 @@ public class TileAmalgamator extends BaseMachine implements IFluidHandler, ISide
         }
         doSolidify();
         importFluids(tank, BlockHandler.fluidActinium);
+        if(getStackInSlot(0) != null)
+            exportItems(this, 0, 1, false, ForgeDirection.VALID_DIRECTIONS);
         super.updateEntity();
     }
 
@@ -255,13 +261,41 @@ public class TileAmalgamator extends BaseMachine implements IFluidHandler, ISide
     }
 
     /*******************************************************************************************************************
+     *********************************************** I/O Functions *****************************************************
+     *******************************************************************************************************************/
+    @Override
+    public MODE getModeForDirection(ForgeDirection dir) {
+        return inputOutputModes.get(dir);
+    }
+
+    @Override
+    public void setMode(ForgeDirection dir, MODE mode) {
+        inputOutputModes.put(dir, mode);
+    }
+
+    @Override
+    public boolean canExport(ForgeDirection dir) {
+        return inputOutputModes.get(dir) == MODE.OUTPUT || inputOutputModes.get(dir) == MODE.BOTH;
+    }
+
+    @Override
+    public boolean canImport(ForgeDirection dir) {
+        return inputOutputModes.get(dir) == MODE.INPUT || inputOutputModes.get(dir) == MODE.BOTH;
+    }
+
+    /*******************************************************************************************************************
      ********************************************** Misc Functions *****************************************************
      *******************************************************************************************************************/
+
     @Override
     public void returnWailaHead(List<String> head) {
         head.add(GuiHelper.GuiColor.YELLOW + "Is Amalgamating: " + GuiHelper.GuiColor.WHITE + (isActive() ? "Yes" : "No"));
         head.add(GuiHelper.GuiColor.YELLOW + "Energy: " + GuiHelper.GuiColor.WHITE + energyTank.getEnergyLevel() + "/" + energyTank.getMaxCapacity() + GuiHelper.GuiColor.TURQUISE + "T");
         head.add(GuiHelper.GuiColor.YELLOW + "Actinium: " + GuiHelper.GuiColor.WHITE + tank.getFluidAmount() + "/" + tank.getCapacity() + GuiHelper.GuiColor.TURQUISE + "mb");
         head.add(GuiHelper.GuiColor.YELLOW + "Current Speed: " + GuiHelper.GuiColor.WHITE + currentSpeed);
+    }
+
+    @Override
+    public void onWrench(EntityPlayer player, int side) {
     }
 }

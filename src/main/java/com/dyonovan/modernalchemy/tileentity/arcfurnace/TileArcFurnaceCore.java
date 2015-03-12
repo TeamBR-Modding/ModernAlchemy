@@ -34,8 +34,8 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
 
     //Inventory
     public InventoryTile inventory;
-    private static final int INPUT_SLOT = 0;
-    private static final int CATALYST_SLOT = 1;
+    public static final int INPUT_SLOT = 0;
+    public static final int CATALYST_SLOT = 1;
 
     //Cook Variables
     private int currentSpeed;

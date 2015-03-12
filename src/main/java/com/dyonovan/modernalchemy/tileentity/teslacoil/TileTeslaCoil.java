@@ -149,7 +149,7 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler, ITesla
      *******************************************************************************************************************/
 
     @Override
-    public void onWrench(EntityPlayer player) {
+    public void onWrench(EntityPlayer player, int side) {
         if (worldObj.isRemote) return;
         searchMachines(player);
         player.openGui(ModernAlchemy.instance, GuiHandler.TESLA_COIL_LINKS_GUI_ID, worldObj, xCoord, yCoord, zCoord);

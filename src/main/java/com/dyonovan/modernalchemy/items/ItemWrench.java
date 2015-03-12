@@ -40,7 +40,7 @@ public class ItemWrench extends Item implements IToolWrench, IToolHammer {
         Block block = world.getBlock(x, y, z);
         if(!player.isSneaking() && world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof BaseTile) {
             BaseTile tile = (BaseTile)world.getTileEntity(x, y, z);
-            tile.onWrench(player);
+            tile.onWrench(player, side);
             player.swingItem();
             return true;
         }

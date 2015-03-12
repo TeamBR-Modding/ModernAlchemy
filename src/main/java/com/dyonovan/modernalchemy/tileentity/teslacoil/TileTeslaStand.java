@@ -16,11 +16,11 @@ public class TileTeslaStand extends BaseTile implements IEnergyHandler {
     protected EnergyStorage energy = new EnergyStorage(1000, 1000, 1000);
 
     @Override
-    public void onWrench(EntityPlayer player) {
+    public void onWrench(EntityPlayer player, int side) {
         if(getTileInDirection(ForgeDirection.UP) instanceof TileTeslaStand)
-            ((TileTeslaStand)getTileInDirection(ForgeDirection.UP)).onWrench(player);
+            ((TileTeslaStand)getTileInDirection(ForgeDirection.UP)).onWrench(player, side);
         else if(getTileInDirection(ForgeDirection.UP) instanceof TileTeslaCoil)
-            ((TileTeslaCoil)getTileInDirection(ForgeDirection.UP)).onWrench(player);
+            ((TileTeslaCoil)getTileInDirection(ForgeDirection.UP)).onWrench(player, side);
     }
 
     @Override

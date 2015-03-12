@@ -1,4 +1,4 @@
-package com.dyonovan.modernalchemy.gui;
+package com.dyonovan.modernalchemy.gui.config;
 
 import com.dyonovan.modernalchemy.container.ContainerTeslaCoilLinks;
 import com.dyonovan.modernalchemy.gui.buttons.ItemStackButton;

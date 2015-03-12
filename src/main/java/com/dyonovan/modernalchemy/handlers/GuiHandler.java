@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy.handlers;
 
 import com.dyonovan.modernalchemy.container.*;
 import com.dyonovan.modernalchemy.gui.*;
+import com.dyonovan.modernalchemy.gui.config.GuiTeslaCoilLinks;
 import com.dyonovan.modernalchemy.manual.ManualRegistry;
 import com.dyonovan.modernalchemy.manual.pages.ContainerPage;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.TileArcFurnaceCore;

@@ -1,11 +1,15 @@
 package com.dyonovan.modernalchemy.tileentity.arcfurnace.dummies;
 
 import com.dyonovan.modernalchemy.crafting.ArcFurnaceRecipeRegistry;
+import com.dyonovan.modernalchemy.handlers.BlockHandler;
+import com.dyonovan.modernalchemy.handlers.ItemHandler;
 import com.dyonovan.modernalchemy.tileentity.arcfurnace.TileArcFurnaceCore;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileDummyItemIO extends TileDummy implements ISidedInventory {
 
@@ -116,5 +120,13 @@ public class TileDummyItemIO extends TileDummy implements ISidedInventory {
             return core.isItemValidForSlot(slot, stack);
         }
         return false;
+    }
+
+    @Override
+    public void updateEntity() {
+        if(getCore() != null) {
+            importItems((TileArcFurnaceCore)getCore(), TileArcFurnaceCore.INPUT_SLOT, 1, false, ForgeDirection.VALID_DIRECTIONS, Item.getItemFromBlock(BlockHandler.blockOreActinium));
+            importItems((TileArcFurnaceCore)getCore(), TileArcFurnaceCore.CATALYST_SLOT, 1, false, ForgeDirection.VALID_DIRECTIONS, Items.coal);
+        }
     }
 }

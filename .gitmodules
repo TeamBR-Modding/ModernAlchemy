@@ -1,0 +1,3 @@
+[submodule "TeamBR-Core"]
+	path = TeamBR-Core
+	url = https://github.com/TeamBR-Modding/TeamBR-Core.git
