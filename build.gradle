@@ -24,14 +24,10 @@ repositories {
         name "CB Repo"
         url "http://chickenbones.net/maven/"
     }
-    maven { // the repo from which to get BR
-        name "BR Repo"
-        url "http://beyondrealitypack.com/maven2"
-    }
-    maven {
-        name "OpenMods"
-        url "http://xn--oxe.xn--jxe.net/artifactory/openmods"
-    }
+   //  maven { // the repo from which to get BR    //Lets try the repo way for a bit
+   //      name "BR Repo"
+   //     url "http://beyondrealitypack.com/maven2"
+   //  }
 }
 
 apply plugin: 'forge'
@@ -52,13 +48,12 @@ configurations {
 }
 
 dependencies {
-    compile "com.dyonovan.teambrcore:TeamBRCore:+:dev"
+    //compile "com.dyonovan.teambrcore:TeamBRCore:+:dev"
+    compile project(":TeamBR-Core")
     compile "codechicken:CodeChickenCore:${config.minecraft_version}-${config.ccc_version}:dev"
     compile "codechicken:CodeChickenLib:${config.minecraft_version}-${config.CCLIB_version}:dev"
     compile "codechicken:NotEnoughItems:${config.minecraft_version}-${config.NEI_version}:dev"
     compile "mcp.mobius.waila:Waila:1.5.9_dev1_1.7.10"
-    compile project(":OpenModsLib") // Load OpenModsLib from submodule
-    compile "openperipheral:OpenPeripheralCore-API:3.0:dev"
     providedCompile files("/usr/java/jdk1.7.0_51/lib/jfxrt.jar") //Required for JavaFX
 }
 
@@ -103,3 +98,5 @@ processResources
         exclude 'mcmod.info'
     }
 }
+
+

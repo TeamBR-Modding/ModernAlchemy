@@ -7,7 +7,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import sun.org.mozilla.javascript.internal.ast.Block;
 
 public class TileDummyAirValve extends TileDummy implements IFluidHandler {
 
