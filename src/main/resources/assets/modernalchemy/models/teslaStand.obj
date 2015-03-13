@@ -1,7 +1,7 @@
 # Blender v2.73 (sub 0) OBJ File: 'TeslaExtender.blend'
 # www.blender.org
 mtllib TeslaExtender.mtl
-o Circle.000_Circle.002
+o Circle
 v -0.013637 0.486683 -0.097034
 v -0.042955 0.486683 -0.088071
 v -0.068068 0.486683 -0.070487

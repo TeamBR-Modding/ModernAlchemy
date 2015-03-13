@@ -1,7 +1,7 @@
 # Blender v2.73 (sub 0) OBJ File: 'teslacoiltop.blend'
 # www.blender.org
 mtllib teslacoiltop.mtl
-o Circle.001_Circle.009
+o Circle
 v 0.060057 0.172685 -0.057997
 v 0.039196 0.172685 -0.073717
 v 0.046002 0.172685 -0.086518
