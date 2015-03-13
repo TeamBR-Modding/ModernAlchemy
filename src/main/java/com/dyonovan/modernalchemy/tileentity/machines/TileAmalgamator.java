@@ -45,7 +45,7 @@ import java.util.Set;
 public class TileAmalgamator extends SyncedTileEntity implements IInventoryProvider, IHasGui, IConfigurableGuiSlots<TileAmalgamator.AUTO_SLOTS> {
 
     public static final int TANK_CAPACITY = FluidContainerRegistry.BUCKET_VOLUME * 10;
-    private static final int PROCESS_TIME = 500;
+    public static final int PROCESS_TIME = 500;
 
     public enum Slots {
         liquid,
@@ -85,10 +85,10 @@ public class TileAmalgamator extends SyncedTileEntity implements IInventoryProvi
         timeProcessed = new SyncableInt();
         isActive = new SyncableBoolean();
         automaticSlots = SyncableFlags.create(AUTO_SLOTS.values().length);
+        energyTank = new TeslaBank(1000, 1000);
     }
 
     public TileAmalgamator() {
-        energyTank = new TeslaBank(1000, 1000);
         sided.registerSlot(Slots.output, itemOutputs, false, true);
     }
 
@@ -117,12 +117,12 @@ public class TileAmalgamator extends SyncedTileEntity implements IInventoryProvi
     private void doSolidify() {
         if (canSolidify()) { //Must have power and redstone signal
             updateSpeed();
-            if (timeProcessed.equals(0) && tank.getFluidAmount() > 0) { //Set the block to active and continue
+            if (timeProcessed.get() == 0 && tank.getFluidAmount() > 0) { //Set the block to active and continue
                 isActive.set(true);
                 timeProcessed.set(timeProcessed.get() + 1);
             }
             if (timeProcessed.get() > 0 && timeProcessed.get() < PROCESS_TIME) { //Still cooking
-                if (tank.getFluid() != null) { //Drain until there is nothing left
+                if (tank.getValue() != null) { //Drain until there is nothing left
                     energyTank.drainEnergy(currentSpeed.get());
                     tank.drain(5, true);
                     timeProcessed.set(timeProcessed.get() + currentSpeed.get());
@@ -154,6 +154,10 @@ public class TileAmalgamator extends SyncedTileEntity implements IInventoryProvi
         return timeProcessed.get() * scale / PROCESS_TIME;
     }
 
+    public IValueProvider<Integer> getProgress() {
+        return timeProcessed;
+    }
+
     @Override
     public void updateEntity() {
         if (worldObj.isRemote) return;
@@ -180,13 +184,11 @@ public class TileAmalgamator extends SyncedTileEntity implements IInventoryProvi
     @Override
     public void writeToNBT(NBTTagCompound tag){
         super.writeToNBT(tag);
-        energyTank.writeToNBT(tag);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        energyTank.readFromNBT(tag);
     }
 
     private SyncableSides selectSlotMap(AUTO_SLOTS slot) {

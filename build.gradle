@@ -24,16 +24,12 @@ repositories {
         name "CB Repo"
         url "http://chickenbones.net/maven/"
     }
-   //  maven { // the repo from which to get BR    //Lets try the repo way for a bit
-   //      name "BR Repo"
-   //     url "http://beyondrealitypack.com/maven2"
-   //  }
 }
 
 apply plugin: 'forge'
 apply plugin: 'java'
 
-ext.configFile = file "build.properties"
+ext.configFile = file "gradle.properties"
 
 configFile.withReader {
     def prop = new Properties()
@@ -48,8 +44,7 @@ configurations {
 }
 
 dependencies {
-    //compile "com.dyonovan.teambrcore:TeamBRCore:+:dev"
-    compile project(":TeamBR-Core")
+    compile project(":OpenModsLib")
     compile "codechicken:CodeChickenCore:${config.minecraft_version}-${config.ccc_version}:dev"
     compile "codechicken:CodeChickenLib:${config.minecraft_version}-${config.CCLIB_version}:dev"
     compile "codechicken:NotEnoughItems:${config.minecraft_version}-${config.NEI_version}:dev"

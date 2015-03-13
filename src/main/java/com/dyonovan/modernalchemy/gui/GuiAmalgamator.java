@@ -40,8 +40,11 @@ public class GuiAmalgamator extends GuiConfigurableSlots<TileAmalgamator, Contai
 
         final GuiComponentTankLevel tankLevel = new GuiComponentTankLevel(15, 20, 30, 50, TileAmalgamator.TANK_CAPACITY);
         addSyncUpdateListener(ValueCopyAction.create(te.getFluidProvider(), tankLevel.fluidReceiver()));
-
         root.addComponent(tankLevel);
+
+        GuiComponentProgress progress = new GuiComponentProgress(100, 37, TileAmalgamator.PROCESS_TIME);
+        addSyncUpdateListener(ValueCopyAction.create(te.getProgress(), progress.progressReceiver()));
+        root.addComponent(progress);
     }
 
     @Override

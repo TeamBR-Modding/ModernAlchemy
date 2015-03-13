@@ -34,6 +34,7 @@ public class BlockAmalgamator extends OpenBlock {
     @SideOnly(Side.CLIENT)
     public static class Icons {
         public static IIcon front;
+        public static IIcon side;
     }
 
     public BlockAmalgamator() {
@@ -53,6 +54,7 @@ public class BlockAmalgamator extends OpenBlock {
     public void registerBlockIcons(IIconRegister iconregister) {
         this.blockIcon = iconregister.registerIcon(Constants.MODID + ":amalgamator_side");
         Icons.front = iconregister.registerIcon(Constants.MODID + ":amalgamator_front");
+        Icons.side = blockIcon;
 
         setTexture(ForgeDirection.NORTH, blockIcon);
         setTexture(ForgeDirection.SOUTH, Icons.front);
@@ -63,6 +65,13 @@ public class BlockAmalgamator extends OpenBlock {
     }
 
     @Override
+    public ForgeDirection calculateSide(EntityPlayer player, ForgeDirection direction) {
+        // Mimic ComputerCraft Monitor placement behaviour, i.e. the screen is
+        // looking at the player when placing the block.
+        return super.calculateSide(player, direction).getOpposite();
+    }
+
+        @Override
     protected Object getModInstance() {
         return ModernAlchemy.instance;
     }

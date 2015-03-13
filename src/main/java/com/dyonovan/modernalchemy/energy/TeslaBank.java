@@ -1,8 +1,13 @@
 package com.dyonovan.modernalchemy.energy;
 
 import net.minecraft.nbt.NBTTagCompound;
+import openmods.sync.SyncableObjectBase;
 
-public class TeslaBank {
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
+public class TeslaBank extends SyncableObjectBase{
 
     private int currentLevel;
     private int maxCapacity;
@@ -66,6 +71,30 @@ public class TeslaBank {
     }
 
     public void readFromNBT(NBTTagCompound tag) {
+        currentLevel = tag.getInteger("currentTeslaLevel");
+        maxCapacity = tag.getInteger("maxTeslaCapacity");
+    }
+
+    @Override
+    public void readFromStream(DataInputStream stream) throws IOException {
+        currentLevel = stream.readInt();
+        maxCapacity = stream.readInt();
+    }
+
+    @Override
+    public void writeToStream(DataOutputStream stream) throws IOException {
+        stream.writeInt(currentLevel);
+        stream.writeInt(maxCapacity);
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound tag, String name) {
+        tag.setInteger("currentTeslaLevel", currentLevel);
+        tag.setInteger("maxTeslaCapacity", maxCapacity);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound tag, String name) {
         currentLevel = tag.getInteger("currentTeslaLevel");
         maxCapacity = tag.getInteger("maxTeslaCapacity");
     }
