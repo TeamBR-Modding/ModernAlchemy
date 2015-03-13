@@ -4,28 +4,29 @@ import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.teslacoil.BlockTeslaBase;
 import com.dyonovan.modernalchemy.blocks.teslacoil.BlockTeslaCoil;
 import com.dyonovan.modernalchemy.blocks.teslacoil.BlockTeslaStand;
-import com.dyonovan.modernalchemy.helpers.WrenchHelper;
 import com.dyonovan.modernalchemy.util.Location;
 import com.dyonovan.modernalchemy.util.WorldUtils;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import openmods.block.OpenBlock;
 
-import java.util.Random;
+public abstract class BlockModernAlchemy extends OpenBlock {
 
-public abstract class BlockBase extends BlockContainer {
-
-    public BlockBase(Material mat) {
+    public BlockModernAlchemy(Material mat) {
         super(mat);
         this.setHardness(2.0F);
         this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
     }
 
+    @Override
+    protected Object getModInstance() {
+        return ModernAlchemy.instance;
+    }
+
+    /* Will implement when fully converted
     public boolean useWrench(World world, int x, int y, int z) {
         if (!world.isRemote) {
             if (this instanceof BlockTeslaBase || this instanceof BlockTeslaStand) {
@@ -55,4 +56,5 @@ public abstract class BlockBase extends BlockContainer {
             }
         }
     }
+    */
 }

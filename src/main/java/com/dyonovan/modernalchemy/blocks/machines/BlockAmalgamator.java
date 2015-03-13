@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy.blocks.machines;
 
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.BlockBase;
+import com.dyonovan.modernalchemy.blocks.BlockModernAlchemy;
 import com.dyonovan.modernalchemy.blocks.IExpellable;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
@@ -29,7 +30,7 @@ import openmods.block.OpenBlock;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockAmalgamator extends OpenBlock {
+public class BlockAmalgamator extends BlockModernAlchemy {
 
     @SideOnly(Side.CLIENT)
     public static class Icons {
@@ -45,11 +46,6 @@ public class BlockAmalgamator extends OpenBlock {
         setPlacementMode(BlockPlacementMode.ENTITY_ANGLE);
     }
 
-    @Override
-    public int getRenderType() {
-        return ClientProxy.renderId;
-    }
-
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconregister) {
         this.blockIcon = iconregister.registerIcon(Constants.MODID + ":amalgamator_side");
@@ -62,10 +58,5 @@ public class BlockAmalgamator extends OpenBlock {
         setTexture(ForgeDirection.WEST, blockIcon);
         setTexture(ForgeDirection.UP, blockIcon);
         setTexture(ForgeDirection.DOWN, blockIcon);
-    }
-
-    @Override
-    protected Object getModInstance() {
-        return ModernAlchemy.instance;
     }
 }

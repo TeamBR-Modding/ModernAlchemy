@@ -1,17 +1,13 @@
 package com.dyonovan.modernalchemy.gui.components;
 
 import cofh.api.energy.EnergyStorage;
-import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.util.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
 import openmods.api.IValueReceiver;
 import openmods.gui.component.GuiComponentResizable;
 import openmods.gui.misc.BoxRenderer;
-import openmods.utils.TextureUtils;
 import openmods.utils.render.FakeIcon;
 
 public class GuiComponentRF extends GuiComponentResizable {
@@ -51,8 +47,8 @@ public class GuiComponentRF extends GuiComponentResizable {
         final float maxV = icon.getMaxV();
 
         tessellator.addVertexWithUV(posX + 3, posY + height - 3, this.zLevel, minU, maxV);
-        tessellator.addVertexWithUV(posX + 30 - 3, posY + height - 3, this.zLevel, maxU, maxV);
-        tessellator.addVertexWithUV(posX + 30 - 3, posY + (height - energyHeight), this.zLevel, maxU, minV);
+        tessellator.addVertexWithUV(posX + width - 3, posY + height - 3, this.zLevel, maxU, maxV);
+        tessellator.addVertexWithUV(posX + width - 3, posY + (height - energyHeight), this.zLevel, maxU, minV);
         tessellator.addVertexWithUV(posX + 3, posY + (height - energyHeight), this.zLevel, minU, minV);
         tessellator.draw();
     }
