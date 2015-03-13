@@ -39,18 +39,23 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
+import openmods.config.BlockInstances;
+import openmods.config.game.RegisterBlock;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockHandler {
+public class BlockHandler implements BlockInstances{
 
     public static Fluid fluidActinium, fluidCompressedAir;
     public static Block blockArcFurnaceDummy, blockArcFurnaceDummyItemIO, blockArcFurnaceDummyAirValve;
     public static Block blockArcFurnaceDummyOutputValve, blockArcFurnaceDummyEnergy, blockArcFurnaceCore, blockTeslaStand, blockCoil, blockSuperCoil;
     public static Block blockOreActinium, blockFluidActinium, blockElectricBellows, blockFluidAir, blockReplicatorStand;
-    public static Block blockPatternRecorder, blockAmalgamator, blockTeslaBase, blockReplicatorFrame, blockReplicatorCPU;
+    public static Block blockPatternRecorder, blockTeslaBase, blockReplicatorFrame, blockReplicatorCPU;
     public static Block blockAdvancedFurnace, blockOreCopper;
+
+    @RegisterBlock(name = "blockAmalgamator", tileEntity = TileAmalgamator.class)
+    public static BlockAmalgamator blockAmalgamator;
 
     public static List<Block> blockRegistry = new ArrayList<Block>();
 
@@ -74,7 +79,7 @@ public class BlockHandler {
         registerBlock(blockElectricBellows = new BlockElectricBellows(), "blockElectricBellows", TileElectricBellows.class);
 
         //blockAmalgamator
-        registerBlock(blockAmalgamator = new BlockAmalgamator(), "blockAmalgamator", TileAmalgamator.class);
+        //registerBlock(blockAmalgamator = new BlockAmalgamator(), "blockAmalgamator", TileAmalgamator.class);
 
         // Block Pattern Recorder
         registerBlock(blockPatternRecorder = new BlockPatternRecorder(), "blockPatternRecorder", TilePatternRecorder.class);

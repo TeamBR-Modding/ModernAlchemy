@@ -1,8 +1,6 @@
 package com.dyonovan.modernalchemy.items;
 
 
-import buildcraft.api.tools.IToolWrench;
-import cofh.api.block.IDismantleable;
 import cofh.api.item.IToolHammer;
 import cofh.asm.relauncher.Strippable;
 import com.dyonovan.modernalchemy.ModernAlchemy;
@@ -20,7 +18,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 @Strippable({"buildcraft.api.tools.IToolWrench"})
-public class ItemWrench extends Item implements IToolWrench, IToolHammer {
+public class ItemWrench extends Item implements IToolHammer {
 
     public ItemWrench() {
         this.setUnlocalizedName(Constants.MODID + ":wrench");
@@ -72,16 +70,6 @@ public class ItemWrench extends Item implements IToolWrench, IToolHammer {
     @Override
     public void toolUsed(ItemStack itemStack, EntityLivingBase entityLivingBase, int i, int i1, int i2) {
 
-    }
-
-    @Override
-    public boolean canWrench(EntityPlayer player, int x, int y, int z) {
-        return true;
-    }
-
-    @Override
-    public void wrenchUsed(EntityPlayer player, int x, int y, int z) {
-        player.swingItem();
     }
 
     @Override

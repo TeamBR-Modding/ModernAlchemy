@@ -21,7 +21,6 @@ public class GuiHandler implements IGuiHandler {
     public static final int TESLA_COIL_GUI_ID = 1;
     public static final int ELECTRIC_BELLOWS_GUI_ID = 2;
     public static final int PATTERN_RECORDER_GUI_ID = 3;
-    public static final int AMALGAMATOR_GUI_ID = 4;
     public static final int REPLICATOR_CPU_GUI_ID = 5;
     public static final int TESLA_COIL_LINKS_GUI_ID = 6;
     public static final int MANUAL_GUI_ID = 7;
@@ -38,8 +37,6 @@ public class GuiHandler implements IGuiHandler {
                 return new ContainerElectricBellows((TileElectricBellows) world.getTileEntity(x, y, z));
             case PATTERN_RECORDER_GUI_ID :
                 return new ContainerPatternRecorder(player.inventory, (TilePatternRecorder) world.getTileEntity(x, y, z));
-            case AMALGAMATOR_GUI_ID:
-                return new ContainerAmalgamator(player.inventory, (TileAmalgamator) world.getTileEntity(x, y, z));
             case REPLICATOR_CPU_GUI_ID:
                 return new ContainerReplicatorCpu(player.inventory, (TileReplicatorCPU) world.getTileEntity(x, y, z));
             case TESLA_COIL_LINKS_GUI_ID :
@@ -63,8 +60,6 @@ public class GuiHandler implements IGuiHandler {
                 return new GuiElectricBellows((TileElectricBellows) world.getTileEntity(x, y, z));
             case PATTERN_RECORDER_GUI_ID :
                 return new GuiPatternRecorder(player.inventory, (TilePatternRecorder) world.getTileEntity(x, y, z));
-            case AMALGAMATOR_GUI_ID:
-                return new GuiAmalgamator(player.inventory, (TileAmalgamator) world.getTileEntity(x, y, z));
             case REPLICATOR_CPU_GUI_ID:
                 return new GuiReplicatorCPU(player.inventory, (TileReplicatorCPU) world.getTileEntity(x, y, z));
             case TESLA_COIL_LINKS_GUI_ID :

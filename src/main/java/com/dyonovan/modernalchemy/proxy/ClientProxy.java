@@ -21,10 +21,21 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
+import openmods.api.IProxy;
+import openmods.proxy.IOpenModsProxy;
+import openmods.proxy.OpenClientProxy;
+import openmods.renderer.BlockRenderingHandler;
 
-public class ClientProxy extends  CommonProxy{
+public class ClientProxy extends OpenClientProxy implements IProxy {
 
-    public void registerRenderer() {
+    public static int renderId;
+
+    @Override
+    public void registerRenderInformation() {
+
+        renderId = RenderingRegistry.getNextAvailableRenderId();
+        final BlockRenderingHandler blockRenderingHandler = new BlockRenderingHandler(renderId, true);
+        RenderingRegistry.registerBlockHandler(blockRenderingHandler);
 
         //TeslaStand
         TileEntitySpecialRenderer renderStand = new RenderTeslaStand();
@@ -67,9 +78,18 @@ public class ClientProxy extends  CommonProxy{
     }
 
     @Override
+    public void preInit() {
+    }
+
+    @Override
     public void init() {
         super.init();
-        ManualRegistry.instance.init();
+        //ManualRegistry.instance.init();
         //TODO: Register manual
+    }
+
+    @Override
+    public void postInit() {
+
     }
 }

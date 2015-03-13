@@ -1,10 +1,25 @@
 package com.dyonovan.modernalchemy.proxy;
 
-public class CommonProxy {
+import openmods.api.IProxy;
+import openmods.proxy.OpenServerProxy;
 
-    public void init() {
-        registerRenderer();
+public class CommonProxy extends OpenServerProxy implements IProxy {
+
+    @Override
+    public void preInit() {
+
     }
 
-    public void registerRenderer() {}
+    public void init(){
+    }
+
+    @Override
+    public void postInit() {
+
+    }
+
+    @Override
+    public void registerRenderInformation() {
+
+    }
 }
