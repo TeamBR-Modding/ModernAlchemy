@@ -12,9 +12,11 @@ import openmods.gui.GuiConfigurableSlots;
 import openmods.gui.component.*;
 import openmods.gui.logic.ValueCopyAction;
 import openmods.utils.MiscUtils;
-import scala.actors.threadpool.Arrays;
 
 public class GuiAmalgamator extends GuiConfigurableSlots<TileAmalgamator, ContainerAmalgamator, TileAmalgamator.AUTO_SLOTS> {
+
+    GuiComponentToolTip tankTip;
+    GuiComponentToolTip energyTip;
 
     public GuiAmalgamator(ContainerAmalgamator container) {
         super(container, 176, 166, "tile.modernalchemy.blockAmalgamator.name");
@@ -26,6 +28,15 @@ public class GuiAmalgamator extends GuiConfigurableSlots<TileAmalgamator, Contai
     }
 
     @Override
+    public void preRender(float mouseX, float mouseY) {
+        super.preRender(mouseX, mouseY);
+        TileAmalgamator tileAmalgamator = getContainer().getOwner();
+
+        tankTip.setToolTip(tileAmalgamator.getFluidToolTip());
+        energyTip.setToolTip(tileAmalgamator.getEnergyToolTip());
+    }
+
+    @Override
     protected void addCustomizations(BaseComposite root) {
         TileAmalgamator te = getContainer().getOwner();
 
@@ -33,17 +44,13 @@ public class GuiAmalgamator extends GuiConfigurableSlots<TileAmalgamator, Contai
         addSyncUpdateListener(ValueCopyAction.create(te.getFluidProvider(), tankLevel.fluidReceiver()));
         root.addComponent(tankLevel);
 
-        GuiComponentToolTip tankTip = new GuiComponentToolTip(40, 20, 30, 50);
-        addSyncUpdateListener(ValueCopyAction.create(te.getFluidTooltip(), tankTip.toolTipProvider()));
-        root.addComponent(tankTip);
+        root.addComponent(tankTip = new GuiComponentToolTip(40, 20, 30, 50));
 
         GuiComponentTeslaBank energyLevel = new GuiComponentTeslaBank(15, 20, 20, 50);
         addSyncUpdateListener(ValueCopyAction.create(te.getTeslaBankProvider(), energyLevel.teslaBankReciever()));
         root.addComponent(energyLevel);
 
-        GuiComponentToolTip energyTip = new GuiComponentToolTip(15, 20, 20, 50);
-        addSyncUpdateListener(ValueCopyAction.create(te.getEnergyToolTip(), energyTip.toolTipProvider()));
-        root.addComponent(energyTip);
+        root.addComponent(energyTip = new GuiComponentToolTip(15, 20, 20, 50));
 
         GuiComponentArrowProgress progress = new GuiComponentArrowProgress(100, 37, TileAmalgamator.PROCESS_TIME);
         addSyncUpdateListener(ValueCopyAction.create(te.getProgress(), progress.progressReceiver()));

@@ -49,8 +49,8 @@ public class GuiComponentTeslaBank extends GuiComponentResizable {
         final float maxV = icon.getMaxV();
 
         tessellator.addVertexWithUV(posX + 3, posY + height - 3, this.zLevel, minU, maxV);
-        tessellator.addVertexWithUV(posX + 30 - 3, posY + height - 3, this.zLevel, maxU, maxV);
-        tessellator.addVertexWithUV(posX + 30 - 3, posY + (height - energyHeight), this.zLevel, maxU, minV);
+        tessellator.addVertexWithUV(posX + width - 3, posY + height - 3, this.zLevel, maxU, maxV);
+        tessellator.addVertexWithUV(posX + width - 3, posY + (height - energyHeight), this.zLevel, maxU, minV);
         tessellator.addVertexWithUV(posX + 3, posY + (height - energyHeight), this.zLevel, minU, minV);
         tessellator.draw();
     }

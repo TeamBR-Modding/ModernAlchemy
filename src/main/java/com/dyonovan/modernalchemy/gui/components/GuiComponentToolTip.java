@@ -43,12 +43,8 @@ public class GuiComponentToolTip extends BaseComponent {
         }
     }
 
-    public IValueReceiver<List<String>> toolTipProvider() {
-        return new IValueReceiver<List<String>>() {
-            @Override
-            public void setValue(List<String> value) {
-                toolTip = value;
-            }
-        };
+    public void setToolTip(List<String> value) {
+        toolTip.clear();
+        toolTip.addAll(value);
     }
 }

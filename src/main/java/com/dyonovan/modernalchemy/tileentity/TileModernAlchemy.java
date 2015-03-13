@@ -109,6 +109,7 @@ public abstract class TileModernAlchemy extends SyncedTileEntity {
         while(currentDrain > 0) {
             energyTank.addEnergy(1);
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            sync();
             currentDrain--;
         }
     }

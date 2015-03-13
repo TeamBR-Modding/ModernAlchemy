@@ -237,29 +237,19 @@ public class TileAmalgamator extends TileModernAlchemy implements IInventoryProv
         return tank;
     }
 
-    public IValueProvider<List<String>> getFluidTooltip() {
-        IValueProvider<List<String>> toolTip = new IValueProvider<List<String>>() {
-            @Override
-            public List<String> getValue() {
-                List<String> toolTip = new ArrayList<>();
-                toolTip.add(GuiHelper.GuiColor.WHITE + tank.getValue().getLocalizedName());
-                toolTip.add("" + GuiHelper.GuiColor.YELLOW + tank.getFluidAmount() + "/" + tank.getCapacity() + GuiHelper.GuiColor.BLUE + "mb");
-                return toolTip;
-            }
-        };
+    public List<String> getFluidToolTip() {
+        List<String> toolTip = new ArrayList<>();
+        if(tank.getValue() != null) {
+            toolTip.add(GuiHelper.GuiColor.WHITE + tank.getValue().getLocalizedName());
+            toolTip.add("" + GuiHelper.GuiColor.YELLOW + tank.getFluidAmount() + "/" + tank.getCapacity() + GuiHelper.GuiColor.BLUE + "mb");
+        }
         return toolTip;
     }
 
-    public IValueProvider<List<String>> getEnergyToolTip() {
-        IValueProvider<List<String>> toolTip = new IValueProvider<List<String>>() {
-            @Override
-            public List<String> getValue() {
-                List<String> toolTip = new ArrayList<>();
-                toolTip.add(GuiHelper.GuiColor.WHITE + "Energy Stored");
-                toolTip.add("" + GuiHelper.GuiColor.YELLOW + energyTank.getEnergyLevel() + "/" + tank.getCapacity() + GuiHelper.GuiColor.BLUE + "T");
-                return toolTip;
-            }
-        };
+    public List<String> getEnergyToolTip() {
+        List<String> toolTip = new ArrayList<>();
+        toolTip.add(GuiHelper.GuiColor.WHITE + "Energy Stored");
+        toolTip.add("" + GuiHelper.GuiColor.YELLOW + energyTank.getValue().getEnergyLevel() + "/" + energyTank.getValue().getMaxCapacity() + GuiHelper.GuiColor.BLUE + "T");
         return toolTip;
     }
 
