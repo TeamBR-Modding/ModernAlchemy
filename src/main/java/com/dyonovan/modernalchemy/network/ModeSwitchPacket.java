@@ -18,7 +18,7 @@ public class ModeSwitchPacket implements IMessageHandler<ModeSwitchPacket.Update
     public IMessage onMessage(ModeSwitchPacket.UpdateMessage message, MessageContext ctx) {
         if (ctx.side.isServer()) {
             TileAdvancedCrafter tile = (TileAdvancedCrafter) ctx.getServerHandler().playerEntity.worldObj.getTileEntity(message.x, message.y, message.z);
-            tile.currentMode = message.mode;
+            //tile.currentMode = message.mode;
             ctx.getServerHandler().playerEntity.worldObj.markBlockForUpdate(message.x, message.y, message.z);
         }
         return null;

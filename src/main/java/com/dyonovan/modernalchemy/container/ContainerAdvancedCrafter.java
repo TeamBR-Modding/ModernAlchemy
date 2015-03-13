@@ -4,37 +4,26 @@ import com.dyonovan.modernalchemy.tileentity.machines.TileAdvancedCrafter;
 import com.dyonovan.teambrcore.container.BaseContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnace;
+import openmods.container.ContainerInventoryProvider;
 
-public class ContainerAdvancedCrafter extends BaseContainer {
+public class ContainerAdvancedCrafter extends ContainerInventoryProvider<TileAdvancedCrafter> {
 
-    TileAdvancedCrafter tile;
+    public ContainerAdvancedCrafter(IInventory playerInventory, TileAdvancedCrafter owner) {
 
-    public ContainerAdvancedCrafter(InventoryPlayer inventory, TileAdvancedCrafter tileAdvancedCrafter) {
-
-        this.tile = tileAdvancedCrafter;
+        super(playerInventory, owner);
         // Input
-        addSlotToContainer(new Slot(tileAdvancedCrafter, 0, 67, 26));
-        addSlotToContainer(new Slot(tileAdvancedCrafter, 1, 85, 26));
-        addSlotToContainer(new Slot(tileAdvancedCrafter, 2, 67, 44));
-        addSlotToContainer(new Slot(tileAdvancedCrafter, 3, 85, 44));
+        addSlotToContainer(new Slot(owner.getInventory(), 0, 67, 26));
+        addSlotToContainer(new Slot(owner.getInventory(), 1, 85, 26));
+        addSlotToContainer(new Slot(owner.getInventory(), 2, 67, 44));
+        addSlotToContainer(new Slot(owner.getInventory(), 3, 85, 44));
 
         // Output
-        addSlotToContainer(new SlotFurnace(inventory.player, tileAdvancedCrafter, 4, 143, 34));
+        addSlotToContainer(new SlotFurnace(((InventoryPlayer)playerInventory).player, owner.getInventory(), 4, 146, 34));
 
         //player inv
-        bindPlayerInventory(inventory, 8, 84);
-    }
-
-    @Override
-    public boolean enchantItem(EntityPlayer player, int i) {
-        tile.currentMode = i;
-        return false;
-    }
-
-    @Override
-    public String getNEILabel() {
-        return "modernalchemy.advancedCrafter.recipes";
+        addPlayerInventorySlots(8, 84);
     }
 }

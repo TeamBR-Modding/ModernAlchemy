@@ -1,40 +1,56 @@
 package com.dyonovan.modernalchemy.gui;
 
 import com.dyonovan.modernalchemy.container.ContainerAdvancedCrafter;
-import com.dyonovan.modernalchemy.gui.buttons.MultiStateButton;
-import com.dyonovan.modernalchemy.handlers.PacketHandler;
-import com.dyonovan.modernalchemy.lib.Constants;
-import com.dyonovan.modernalchemy.network.ModeSwitchPacket;
+import com.dyonovan.modernalchemy.gui.components.GuiComponentRF;
 import com.dyonovan.modernalchemy.tileentity.machines.TileAdvancedCrafter;
-import com.dyonovan.teambrcore.gui.BaseGui;
-import com.dyonovan.teambrcore.helpers.GuiHelper;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
-import org.lwjgl.opengl.GL11;
+import com.google.common.collect.ImmutableList;
+import openmods.gui.GuiConfigurableSlots;
+import openmods.gui.component.BaseComposite;
+import openmods.gui.component.GuiComponentLabel;
+import openmods.gui.component.GuiComponentProgress;
+import openmods.gui.component.GuiComponentTab;
+import openmods.gui.logic.ValueCopyAction;
 
-import java.util.ArrayList;
-import java.util.List;
+public class GuiAdvancedCrafter extends GuiConfigurableSlots<TileAdvancedCrafter, ContainerAdvancedCrafter, TileAdvancedCrafter.AUTO_SLOTS> {
 
-public class GuiAdvancedCrafter extends BaseGui {
-
-    private TileAdvancedCrafter tile;
+    /*private TileAdvancedCrafter tile;
     private ResourceLocation background = new ResourceLocation(Constants.MODID + ":textures/gui/ma_furnace.png");
     int x, y;
-    MultiStateButton modeButton;
+    MultiStateButton modeButton;*/
 
-    public GuiAdvancedCrafter(InventoryPlayer inventoryPlayer, TileAdvancedCrafter tileEntity) {
-        super(new ContainerAdvancedCrafter(inventoryPlayer, tileEntity));
-
-        this.tile = tileEntity;
-        setArrowLocation(108, 35, 24, 16);
-
-        //widgets.add(new WidgetPulse(this, tile, 44, 52));
+    public GuiAdvancedCrafter(ContainerAdvancedCrafter container) {
+        super(container, 176, 166, "tile.modernalchemy.blockAdvancedCrafter.name");
     }
 
-    @SuppressWarnings("unchecked")
+    @Override
+    protected Iterable<TileAdvancedCrafter.AUTO_SLOTS> getSlots() {
+        return ImmutableList.of(TileAdvancedCrafter.AUTO_SLOTS.output);
+    }
+
+    @Override
+    protected void addCustomizations(BaseComposite root) {
+        TileAdvancedCrafter te = getContainer().getOwner();
+
+        GuiComponentProgress progress = new GuiComponentProgress(100, 37, te.requiredProcessTime.get());
+        addSyncUpdateListener(ValueCopyAction.create(te.getProgress(), progress.progressReceiver()));
+        root.addComponent(progress);
+
+        GuiComponentRF energyLevel = new GuiComponentRF(15, 20, 30, 50);
+        addSyncUpdateListener(ValueCopyAction.create(te.getRFEnergyStorageProvider(), energyLevel.rfBankReciever()));
+        root.addComponent(energyLevel);
+    }
+
+    @Override
+    protected GuiComponentTab createTab(TileAdvancedCrafter.AUTO_SLOTS slot) {
+        return null;
+    }
+
+    @Override
+    protected GuiComponentLabel createLabel(TileAdvancedCrafter.AUTO_SLOTS slot) {
+        return null;
+    }
+
+    /*@SuppressWarnings("unchecked")
     @Override
     public void initGui() {
         super.initGui();
@@ -128,5 +144,5 @@ public class GuiAdvancedCrafter extends BaseGui {
     {
         drawHoveringText(strings, x, y, fontRendererObj);
     }
-
+*/
 }

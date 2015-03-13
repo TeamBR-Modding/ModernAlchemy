@@ -52,10 +52,13 @@ public class BlockHandler implements BlockInstances{
     public static Block blockArcFurnaceDummyOutputValve, blockArcFurnaceDummyEnergy, blockArcFurnaceCore, blockTeslaStand, blockCoil, blockSuperCoil;
     public static Block blockOreActinium, blockFluidActinium, blockElectricBellows, blockFluidAir, blockReplicatorStand;
     public static Block blockPatternRecorder, blockTeslaBase, blockReplicatorFrame, blockReplicatorCPU;
-    public static Block blockAdvancedFurnace, blockOreCopper;
+    public static Block blockOreCopper;
 
     @RegisterBlock(name = "blockAmalgamator", tileEntity = TileAmalgamator.class)
     public static BlockAmalgamator blockAmalgamator;
+
+    @RegisterBlock(name = "blockAdvancedCrafter", tileEntity = TileAdvancedCrafter.class)
+    public static BlockAdvancedCrafter blockAdvancedCrafter;
 
     public static List<Block> blockRegistry = new ArrayList<Block>();
 
@@ -123,8 +126,6 @@ public class BlockHandler implements BlockInstances{
         //BlockCenterStand
         registerBlock(blockReplicatorStand = new BlockReplicatorStand(), "blockReplicatorStand", TileReplicatorStand.class);
 
-        //BlockFurnace
-        registerBlock(blockAdvancedFurnace = new BlockAdvancedCrafter(), "blockAdvancedCrafter", TileAdvancedCrafter.class);
     }
 
     public static void initCopper() {

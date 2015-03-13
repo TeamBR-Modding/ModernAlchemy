@@ -4,41 +4,54 @@ import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import com.dyonovan.modernalchemy.audio.SoundHelper;
 import com.dyonovan.modernalchemy.collections.PermutableSet;
+import com.dyonovan.modernalchemy.container.ContainerAdvancedCrafter;
 import com.dyonovan.modernalchemy.crafting.AdvancedCrafterRecipeRegistry;
 import com.dyonovan.modernalchemy.crafting.OreDictStack;
 import com.dyonovan.modernalchemy.crafting.RecipeAdvancedCrafter;
-import com.dyonovan.modernalchemy.lib.Constants;
-import com.dyonovan.modernalchemy.tileentity.BaseTile;
-import com.dyonovan.modernalchemy.tileentity.InventoryTile;
+import com.dyonovan.modernalchemy.energy.SyncableRF;
+import com.dyonovan.modernalchemy.gui.GuiAdvancedCrafter;
 import com.dyonovan.modernalchemy.util.InventoryUtils;
-import com.dyonovan.teambrcore.helpers.GuiHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
+import openmods.api.IHasGui;
+import openmods.api.IValueProvider;
+import openmods.api.IValueReceiver;
+import openmods.gui.misc.IConfigurableGuiSlots;
+import openmods.include.IncludeInterface;
+import openmods.inventory.GenericInventory;
+import openmods.inventory.IInventoryProvider;
+import openmods.inventory.TileEntityInventory;
+import openmods.inventory.legacy.ItemDistribution;
+import openmods.sync.*;
+import openmods.tileentity.SyncedTileEntity;
+import openmods.utils.MiscUtils;
+import openmods.utils.SidedInventoryAdapter;
+import openmods.utils.bitmap.BitMapUtils;
+import openmods.utils.bitmap.IRpcDirectionBitMap;
+import openmods.utils.bitmap.IRpcIntBitMap;
+import openmods.utils.bitmap.IWriteableBitMap;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
-public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISidedInventory {
+public class TileAdvancedCrafter extends SyncedTileEntity implements IEnergyHandler, IInventoryProvider, IHasGui, IConfigurableGuiSlots<TileAdvancedCrafter.AUTO_SLOTS> {
+
+    public enum AUTO_SLOTS {
+        output
+    }
 
     /**
      * Energy used per tick
      */
     private static final int RF_TICK = 100;
-
-    /**
-     * Inventory Slots
-     */
-    public static final int INPUT_SLOT_1 = 0;
-    public static final int INPUT_SLOT_2 = 1;
-    public static final int INPUT_SLOT_3 = 2;
-    public static final int INPUT_SLOT_4 = 3;
-    public static final int OUTPUT_SLOT = 4;
 
     /**
      * Crafting Modes
@@ -48,31 +61,50 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
     public static final int BEND = 2;
     public static final int FURNACE = 3;
 
-    private EnergyStorage energyRF;
-    public InventoryTile inventory;
-    private int currentProcessTime;
-    private boolean isActive;
-    private ItemStack outputItem;
+    protected SyncableRF energyRF;
+
+    public SyncableSides sideOut;
+    public SyncableSides sideIn;
+    private SyncableInt currentProcessTime;
+    public SyncableInt currentMode;
+    public SyncableInt requiredProcessTime;
+    private SyncableInt qtyOutput;
+    private SyncableBoolean isActive;
+    private SyncableItemStack outputItem;
+    private SyncableFlags automaticSlots;
+
+
+    private final GenericInventory inventory = registerInventoryCallback(new TileEntityInventory(this, "advancedcrafter", true, 5));
+
+    @IncludeInterface(ISidedInventory.class)
+    private final SidedInventoryAdapter sided = new SidedInventoryAdapter(inventory);
+
     private List<Object> currentRecipe;
-    public int currentMode;
-    public int requiredProcessTime;
-    private int qtyOutput;
-    private List<Integer> furnaceSlot;
+    private ArrayList<Integer> furnaceSlot;
 
     private int coolDown = 60;
 
 
     public TileAdvancedCrafter() {
-        super();
-        energyRF = new EnergyStorage(10000, 1000, 0);
-        inventory = new InventoryTile(5);
-        this.isActive = false;
-        this.currentProcessTime = 0;
-        currentMode = ENRICH;
-        requiredProcessTime = 0;
-        qtyOutput = 0;
-        currentRecipe = new ArrayList<>();
+        sided.registerSlot(0, sideOut, false, true);
+        sided.registerSlots(1, 4, sideIn, true, false);
+
         furnaceSlot = new ArrayList<>();
+        currentRecipe = new ArrayList<>();
+    }
+
+    @Override
+    protected void createSyncedFields() {
+        energyRF = new SyncableRF(new EnergyStorage(10000, 1000, 0));
+        isActive = new SyncableBoolean(false);
+        currentProcessTime = new SyncableInt(0);
+        currentMode = new SyncableInt(ENRICH);
+        requiredProcessTime = new SyncableInt(0);
+        qtyOutput = new SyncableInt(0);
+        outputItem = new SyncableItemStack();
+        sideOut = new SyncableSides();
+        sideIn = new SyncableSides();
+        automaticSlots = SyncableFlags.create(AUTO_SLOTS.values().length);
     }
 
     /*******************************************************************************************************************
@@ -88,14 +120,14 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
             return false;
 
 
-        if (currentMode == FURNACE) {
+        if (currentMode.get() == FURNACE) {
             for (int i = 0; i < 4; i++) {
                 if (inventory.getStackInSlot(i) != null) {
-                    outputItem = FurnaceRecipes.smelting().getSmeltingResult(inventory.getStackInSlot(i));
+                    outputItem.set(FurnaceRecipes.smelting().getSmeltingResult(inventory.getStackInSlot(i)));
                     //Check if there is a recipe
                     if (outputItem == null) continue;
                     //Return false if item in output is differrent then smelting result
-                    if (inventory.getStackInSlot(4) != null && !inventory.getStackInSlot(4).isItemEqual(outputItem)) continue;
+                    if (inventory.getStackInSlot(4) != null && !inventory.getStackInSlot(4).isItemEqual(outputItem.get())) continue;
 
                     furnaceSlot.clear();
                     int count = Math.min(inventory.getStackInSlot(i).stackSize, 4);
@@ -115,8 +147,8 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
                             count--;
                         }
                     }
-                    this.qtyOutput = count;
-                    this.requiredProcessTime = 200;
+                    qtyOutput.set(count);
+                    requiredProcessTime.set(200);
                     furnaceSlot.add(i);
                     return true;
                 }
@@ -143,7 +175,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
             }
             Collections.sort(combination, InventoryUtils.itemStackComparator);
             for (RecipeAdvancedCrafter recipe : AdvancedCrafterRecipeRegistry.instance.recipes) { //See if a recipe matches our current setup
-                if (currentMode != recipe.getRequiredMode()) //Must be the correct mode. No sense otherwise
+                if (currentMode.getValue() != recipe.getRequiredMode()) //Must be the correct mode. No sense otherwise
                     continue;
 
 
@@ -170,7 +202,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
                 if ((this.inventory.getStackInSlot(4) == null ||
                         (InventoryUtils.areStacksEqual(recipe.getOutputItem(), this.inventory.getStackInSlot(4)) &&
                                 this.inventory.getStackInSlot(4).stackSize + recipe.getQtyOutput() <= this.inventory.getStackInSlot(4).getMaxStackSize()))) {
-                    this.outputItem = recipe.getOutputItem();
+                    this.outputItem.set(recipe.getOutputItem());
                     currentRecipe.clear();
                     for(Object obj : recipe.getInput()) {
                         if(obj instanceof ItemStack)
@@ -178,8 +210,8 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
                         else if(obj instanceof OreDictStack)
                             currentRecipe.add(((OreDictStack) obj).getItemList());
                     }
-                    this.requiredProcessTime = recipe.getProcessTime();
-                    this.qtyOutput = recipe.getQtyOutput();
+                    this.requiredProcessTime.set(recipe.getProcessTime());
+                    this.qtyOutput.set(recipe.getQtyOutput());
                     return true;
                 }
             }
@@ -189,7 +221,8 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
 
     public Object getSpecialStackInSlot(int i) {
         if(inventory.getStackInSlot(i) != null && OreDictionary.getOreIDs(inventory.getStackInSlot(i)).length > 0) {
-            return new OreDictStack(OreDictionary.getOreName(OreDictionary.getOreIDs(inventory.getStackInSlot(i))[0]), inventory.getStackInSlot(i).stackSize);
+            return new OreDictStack(OreDictionary.getOreName(OreDictionary.getOreIDs(inventory.getStackInSlot(i))[0]),
+                    inventory.getStackInSlot(i).stackSize);
         }
         else
             return this.inventory.getStackInSlot(i);
@@ -202,21 +235,21 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
 
         if(outputItem == null || currentRecipe == null) //In case we loose our output item, remake it
             doReset();
-        if (currentProcessTime == 0 && canSmelt()) { //Begin
-            currentProcessTime = 1;
-            this.isActive = true;
-            if (currentMode == FURNACE) {
-                if (inventory.getStackInSlot(furnaceSlot.get(furnaceSlot.size() - 1)).stackSize == qtyOutput) {
-                    inventory.setStackInSlot(null, furnaceSlot.get(furnaceSlot.size() - 1));
-                } else if (inventory.getStackInSlot(furnaceSlot.get(furnaceSlot.size() - 1)).stackSize > qtyOutput) {
-                    inventory.getStackInSlot(furnaceSlot.get(furnaceSlot.size() - 1)).stackSize -= qtyOutput;
+        if (currentProcessTime.get() == 0 && canSmelt()) { //Begin
+            currentProcessTime.set(1);
+            this.isActive.set(true);
+            if (currentMode.get() == FURNACE) {
+                if (inventory.getStackInSlot(furnaceSlot.get(furnaceSlot.size() - 1)).stackSize == qtyOutput.get()) {
+                    inventory.setInventorySlotContents(furnaceSlot.get(furnaceSlot.size() - 1), null);
+                } else if (inventory.getStackInSlot(furnaceSlot.get(furnaceSlot.size() - 1)).stackSize > qtyOutput.get()) {
+                    inventory.getStackInSlot(furnaceSlot.get(furnaceSlot.size() - 1)).stackSize -= qtyOutput.get();
                 } else {
-                    int count = qtyOutput - inventory.getStackInSlot(furnaceSlot.get(furnaceSlot.size() - 1)).stackSize;
-                    inventory.setStackInSlot(null, furnaceSlot.get(furnaceSlot.size() - 1));
+                    int count = qtyOutput.get() - inventory.getStackInSlot(furnaceSlot.get(furnaceSlot.size() - 1)).stackSize;
+                    inventory.setInventorySlotContents(furnaceSlot.get(furnaceSlot.size() - 1), null);
                     for (int i = 0; i < furnaceSlot.size() - 1; i++) {
                         if (inventory.getStackInSlot(furnaceSlot.get(i)).stackSize <= count) {
                             count -=  inventory.getStackInSlot(furnaceSlot.get(i)).stackSize;
-                            inventory.setStackInSlot(null, furnaceSlot.get(i));
+                            inventory.setInventorySlotContents(furnaceSlot.get(i), null);
                         } else if (inventory.getStackInSlot(furnaceSlot.get(i)).stackSize > count) {
                             inventory.getStackInSlot(furnaceSlot.get(i)).stackSize -= count;
                         }
@@ -230,7 +263,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
                                 inventory.getStackInSlot(i).stackSize -= ((ItemStack) currentRecipe.get(0)).stackSize;
                                 currentRecipe.remove(0);
                                 if (inventory.getStackInSlot(i).stackSize <= 0)
-                                    inventory.setStackInSlot(null, i);
+                                    inventory.setInventorySlotContents(i, null);
                                 break;
                             }
                         }
@@ -244,7 +277,7 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
                                         inventory.getStackInSlot(i).stackSize -= oreStack.stackSize;
                                         currentRecipe.remove(0);
                                         if (inventory.getStackInSlot(i).stackSize <= 0)
-                                            inventory.setStackInSlot(null, i);
+                                            inventory.setInventorySlotContents(i, null);
                                         doMore = false;
                                         break;
                                     }
@@ -260,21 +293,22 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
 
-        if (currentProcessTime > 0 && currentProcessTime < requiredProcessTime) { //Process
-            if (this.energyRF.getEnergyStored() < RF_TICK) {
+        if (currentProcessTime.get() > 0 && currentProcessTime.get() < requiredProcessTime.get() ) { //Process
+            if (this.energyRF.getValue().getEnergyStored() < RF_TICK) {
                 doFail();
                 return;
             }
-            this.energyRF.modifyEnergyStored(-RF_TICK);
-            currentProcessTime += 1;
+            this.energyRF.getValue().modifyEnergyStored(-RF_TICK);
+            currentProcessTime.set(currentProcessTime.get() + 1);
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
 
-        if (currentProcessTime > 0 && currentProcessTime >= requiredProcessTime) { //Output
+        if (currentProcessTime.get() > 0 && currentProcessTime.get() >= requiredProcessTime.get()) { //Output
             if (this.inventory.getStackInSlot(4) == null) {
-                this.setInventorySlotContents(4, new ItemStack(outputItem.getItem(), this.qtyOutput, outputItem.getItemDamage()));
+                this.inventory.setInventorySlotContents(4, new ItemStack(outputItem.get().getItem(), this.qtyOutput.get(),
+                        outputItem.get().getItemDamage()));
             } else {
-                this.inventory.getStackInSlot(4).stackSize += this.qtyOutput;
+                this.inventory.getStackInSlot(4).stackSize += this.qtyOutput.get();
             }
             doReset();
         }
@@ -284,10 +318,10 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
      * Reset values (usually if something fails or process complete)
      */
     private void doReset() {
-        currentProcessTime = 0;
-        requiredProcessTime = 0;
-        this.isActive = false;
-        qtyOutput = 0;
+        currentProcessTime.set(0);
+        requiredProcessTime.set(0);
+        this.isActive.set(false);
+        qtyOutput.set(0);
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
@@ -298,12 +332,9 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
         doReset();
     }
 
-    /**
-     * Get the scaled progress (usually used to scale to gui's)
-     * @param scale Max number to scale down to
-     * @return A number ranging from 0 - scale equivalent to the current process time
-     */
-    public int getProgressScaled(int scale) { return requiredProcessTime == 0 ? 0 : this.currentProcessTime * scale / requiredProcessTime; }
+    public IValueProvider<Integer> getProgress() {
+        return currentProcessTime;
+    }
 
     /*******************************************************************************************************************
      ******************************************** Energy Functions *****************************************************
@@ -312,22 +343,22 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
     @Override
     public int receiveEnergy(ForgeDirection forgeDirection, int maxReceive, boolean simulate) {
         if (!simulate) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        return energyRF.receiveEnergy(maxReceive, simulate);
+        return energyRF.getValue().receiveEnergy(maxReceive, simulate);
     }
 
     @Override
     public int extractEnergy(ForgeDirection forgeDirection, int maxReceive, boolean simulate) {
-        return energyRF.extractEnergy(maxReceive, simulate);
+        return energyRF.getValue() .extractEnergy(maxReceive, simulate);
     }
 
     @Override
     public int getEnergyStored(ForgeDirection forgeDirection) {
-        return energyRF.getEnergyStored();
+        return energyRF.getValue().getEnergyStored();
     }
 
     @Override
     public int getMaxEnergyStored(ForgeDirection forgeDirection) {
-        return energyRF.getMaxEnergyStored();
+        return energyRF.getValue().getMaxEnergyStored();
     }
 
     @Override
@@ -339,124 +370,22 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
      ********************************************** Item Functions *****************************************************
      *******************************************************************************************************************/
 
-    @Override
-    public int[] getAccessibleSlotsFromSide(int side) {
-        /*(switch(side) {
-            case 1:
-                return new int[] {OUTPUT_SLOT};
-            case 2:
-                return new int[] {INPUT_SLOT_1};
-            case 3:
-                return new int[] {INPUT_SLOT_2};
-            case 4:
-                return new int[] {INPUT_SLOT_3};
-            case 5:
-                return new int[] {INPUT_SLOT_4};
-            default:
-                return new int[0];
-        }*/
-        return new int[] {0, 1, 2, 3, 4};
-    }
 
-    @Override
-    public boolean canInsertItem(int slot, ItemStack itemstack, int side) {
-        return slot == INPUT_SLOT_1 || slot == INPUT_SLOT_2 || slot == INPUT_SLOT_3 || slot == INPUT_SLOT_4;
-    }
-
-    @Override
-    public boolean canExtractItem(int slot, ItemStack itemstack, int side) {
-        return slot == OUTPUT_SLOT;
-    }
-
-    @Override
-    public int getSizeInventory() {
-        return inventory.getSizeInventory();
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int slot) {
-        return inventory.getStackInSlot(slot);
-    }
-
-    @Override
-    public ItemStack decrStackSize(int slot, int count) {
-        ItemStack itemstack = getStackInSlot(slot);
-
-        if(itemstack != null) {
-            if(itemstack.stackSize <= count) {
-                setInventorySlotContents(slot, null);
-            }
-            itemstack = itemstack.splitStack(count);
-        }
-        super.markDirty();
-        return itemstack;
-    }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int slot) {
-        ItemStack stack = getStackInSlot(slot);
-        if (stack != null) {
-            setInventorySlotContents(slot, null);
-        }
-        return stack;
-    }
-
-    @Override
-    public void setInventorySlotContents(int slot, ItemStack itemStack) {
-        inventory.setStackInSlot(itemStack, slot);
-        worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-    }
-
-    @Override
-    public String getInventoryName() {
-        return Constants.MODID + ":blockAdvancedFurnace";
-    }
-
-    @Override
-    public boolean hasCustomInventoryName() {
-        return false;
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 64;
-    }
-
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
-        return true;
-    }
-
-    @Override
-    public void openInventory() {
-
-    }
-
-    @Override
-    public void closeInventory() {
-
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
-        return true;
-    }
 
     /*******************************************************************************************************************
      ********************************************** Tile Functions *****************************************************
      *******************************************************************************************************************/
 
     @Override
-    public void onWrench(EntityPlayer player, int side) {
-
-    }
-
-    @Override
     public void updateEntity() {
-        super.updateEntity();
         if (worldObj.isRemote) return;
+
+        if(automaticSlots.get(AUTO_SLOTS.output)) {
+            ItemDistribution.moveItemsToOneOfSides(this, inventory, 0, 1, sideOut.getValue(), true);
+        }
+
         if (inventory.getStackInSlot(0) == null && inventory.getStackInSlot(1) == null &&
-                inventory.getStackInSlot(2) == null && inventory.getStackInSlot(3) == null && currentProcessTime == 0) return;
+                inventory.getStackInSlot(2) == null && inventory.getStackInSlot(3) == null && currentProcessTime.get() == 0) return;
         coolDown--;
         doSmelt();
     }
@@ -464,35 +393,75 @@ public class TileAdvancedCrafter extends BaseTile implements IEnergyHandler, ISi
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        energyRF.readFromNBT(tag);
-        inventory.readFromNBT(tag, this);
-        currentProcessTime = tag.getInteger("TimeProcessed");
-        requiredProcessTime = tag.getInteger("RequiredTime");
-        isActive = tag.getBoolean("isActive");
-        currentMode = tag.getInteger("CurrentMode");
-        qtyOutput = tag.getInteger("Qty");
-        coolDown = tag.getInteger("CoolDown");
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        energyRF.writeToNBT(tag);
-        inventory.writeToNBT(tag);
-        tag.setInteger("TimeProcessed", currentProcessTime);
-        tag.setInteger("RequiredTime", requiredProcessTime);
-        tag.setBoolean("isActive", isActive);
-        tag.setInteger("CurrentMode", currentMode);
-        tag.setInteger("Qty", qtyOutput);
-        tag.setInteger("CoolDown", coolDown);
     }
 
     /*******************************************************************************************************************
      ********************************************** Misc Functions *****************************************************
      *******************************************************************************************************************/
-    @Override
+    /*@Override
     public void returnWailaHead(List<String> head) {
-        head.add(GuiHelper.GuiColor.YELLOW + "Working: " + GuiHelper.GuiColor.WHITE + (isActive ? "Yes" : "No"));
+        head.add(GuiHelper.GuiColor.YELLOW + "Working: " + GuiHelper.GuiColor.WHITE + (isActive.get() ? "Yes" : "No"));
         //head.add(GuiHelper.GuiColor.YELLOW + "Energy: " + GuiHelper.GuiColor.WHITE + energyRF.getEnergyStored() + "/" +  energyRF.getMaxEnergyStored() + GuiHelper.GuiColor.TURQUISE + "RF");
+    }*/
+
+    private SyncableSides selectSlotMap(AUTO_SLOTS slot) {
+        switch (slot) {
+            case output:
+                return sideOut;
+            default:
+                throw MiscUtils.unhandledEnum(slot);
+        }
     }
+
+    public IValueProvider<EnergyStorage> getRFEnergyStorageProvider() {
+        return energyRF;
+    }
+
+    @Override
+    public IValueProvider<Set<ForgeDirection>> createAllowedDirectionsProvider(AUTO_SLOTS slot) {
+        return selectSlotMap(slot);
+    }
+
+    @Override
+    public IWriteableBitMap<ForgeDirection> createAllowedDirectionsReceiver(AUTO_SLOTS slot) {
+        SyncableSides dirs = selectSlotMap(slot);
+        return BitMapUtils.createRpcAdapter(createRpcProxy(dirs, IRpcDirectionBitMap.class));
+    }
+
+    @Override
+    public IValueProvider<Boolean> createAutoFlagProvider(AUTO_SLOTS slot) {
+        return BitMapUtils.singleBitProvider(automaticSlots, slot.ordinal());
+    }
+
+    @Override
+    public IValueReceiver<Boolean> createAutoSlotReceiver(AUTO_SLOTS slot) {
+        IRpcIntBitMap bits = createRpcProxy(automaticSlots, IRpcIntBitMap.class);
+        return BitMapUtils.singleBitReceiver(bits, slot.ordinal());
+    }
+
+    @Override
+    public Object getServerGui(EntityPlayer player) {
+        return new ContainerAdvancedCrafter(player.inventory, this);
+    }
+
+    @Override
+    public Object getClientGui(EntityPlayer player) {
+        return new GuiAdvancedCrafter(new ContainerAdvancedCrafter(player.inventory, this));
+    }
+
+    @Override
+    public boolean canOpenGui(EntityPlayer player) {
+        return true;
+    }
+
+    @Override
+    public IInventory getInventory() {
+        return this.inventory;
+    }
+
 }
