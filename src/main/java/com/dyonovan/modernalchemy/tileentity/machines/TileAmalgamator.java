@@ -1,6 +1,5 @@
 package com.dyonovan.modernalchemy.tileentity.machines;
 
-import com.dyonovan.modernalchemy.blocks.machines.BlockAmalgamator;
 import com.dyonovan.modernalchemy.container.ContainerAmalgamator;
 import com.dyonovan.modernalchemy.energy.ITeslaProvider;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
@@ -20,13 +19,14 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
-import openmods.api.*;
+import openmods.api.IHasGui;
+import openmods.api.IValueProvider;
+import openmods.api.IValueReceiver;
 import openmods.gui.misc.IConfigurableGuiSlots;
 import openmods.include.IncludeInterface;
 import openmods.inventory.GenericInventory;
@@ -38,7 +38,10 @@ import openmods.sync.*;
 import openmods.tileentity.SyncedTileEntity;
 import openmods.utils.MiscUtils;
 import openmods.utils.SidedInventoryAdapter;
-import openmods.utils.bitmap.*;
+import openmods.utils.bitmap.BitMapUtils;
+import openmods.utils.bitmap.IRpcDirectionBitMap;
+import openmods.utils.bitmap.IRpcIntBitMap;
+import openmods.utils.bitmap.IWriteableBitMap;
 
 import java.util.ArrayList;
 import java.util.List;

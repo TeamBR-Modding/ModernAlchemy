@@ -58,7 +58,7 @@ public class GuiComponentRF extends GuiComponentResizable {
 
     }
 
-    public IValueReceiver<EnergyStorage> teslaBankReciever() {
+    public IValueReceiver<EnergyStorage> rfBankReciever() {
         return new IValueReceiver<EnergyStorage>() {
             @Override
             public void setValue(EnergyStorage value) {

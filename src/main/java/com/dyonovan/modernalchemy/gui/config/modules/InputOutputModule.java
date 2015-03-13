@@ -56,7 +56,7 @@ public class InputOutputModule extends GuiScreen implements IModule {
         GL11.glRotated(-135, 0.0, 1.0, 0.0);
         GL11.glScaled(50, 50, 50);
 
-        ItemStack stack = new ItemStack(BlockHandler.blockAdvancedFurnace);
+        ItemStack stack = new ItemStack(BlockHandler.blockAdvancedCrafter);
         itemRender.renderItem(Minecraft.getMinecraft().thePlayer, stack, stack.getItemDamage(), IItemRenderer.ItemRenderType.INVENTORY);
 
         GL11.glPopMatrix();

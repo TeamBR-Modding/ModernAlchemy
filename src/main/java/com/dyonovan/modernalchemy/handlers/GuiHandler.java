@@ -24,7 +24,6 @@ public class GuiHandler implements IGuiHandler {
     public static final int REPLICATOR_CPU_GUI_ID = 5;
     public static final int TESLA_COIL_LINKS_GUI_ID = 6;
     public static final int MANUAL_GUI_ID = 7;
-    public static final int ADVANCED_FURNACE_GUI_ID = 8;
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
@@ -43,8 +42,8 @@ public class GuiHandler implements IGuiHandler {
                 return new ContainerTeslaCoilLinks((TileTeslaCoil) world.getTileEntity(x, y, z));
             case MANUAL_GUI_ID :
                 return new ContainerPage();
-            case ADVANCED_FURNACE_GUI_ID:
-                return new ContainerAdvancedCrafter(player.inventory, (TileAdvancedCrafter) world.getTileEntity(x, y, z));
+            /*case ADVANCED_FURNACE_GUI_ID:
+                return new ContainerAdvancedCrafter(player.inventory, (TileAdvancedCrafter) world.getTileEntity(x, y, z));*/
         }
         return null;
     }
@@ -66,8 +65,8 @@ public class GuiHandler implements IGuiHandler {
                 return new GuiTeslaCoilLinks((TileTeslaCoil) world.getTileEntity(x, y, z));
             case MANUAL_GUI_ID :
                 return ManualRegistry.instance.getOpenPage();
-            case ADVANCED_FURNACE_GUI_ID:
-                return new GuiAdvancedCrafter(player.inventory, (TileAdvancedCrafter) world.getTileEntity(x, y, z));
+            /*case ADVANCED_FURNACE_GUI_ID:
+                return new GuiAdvancedCrafter(player.inventory, (TileAdvancedCrafter) world.getTileEntity(x, y, z));*/
         }
         return null;
     }

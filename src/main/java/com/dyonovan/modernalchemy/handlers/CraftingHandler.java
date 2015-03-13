@@ -23,7 +23,7 @@ public class CraftingHandler {
 
     public static void preInit() {
         //Advanced Crafter
-        GameRegistry.addRecipe(new ItemStack(BlockHandler.blockAdvancedFurnace), "ABA", "CDC", "AEA",
+        GameRegistry.addRecipe(new ItemStack(BlockHandler.blockAdvancedCrafter), "ABA", "CDC", "AEA",
                 'A', Items.iron_ingot, 'B', Blocks.hopper, 'C', Blocks.piston,
                 'D', Blocks.furnace, 'E', Blocks.redstone_block);
 
