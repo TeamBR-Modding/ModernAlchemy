@@ -1,6 +1,7 @@
 package com.dyonovan.modernalchemy.gui;
 
 import com.dyonovan.modernalchemy.container.ContainerAmalgamator;
+import com.dyonovan.modernalchemy.gui.components.GuiComponentArrowProgress;
 import com.dyonovan.modernalchemy.gui.components.GuiComponentTeslaBank;
 import com.dyonovan.modernalchemy.handlers.ItemHandler;
 import com.dyonovan.modernalchemy.tileentity.machines.TileAmalgamator;
@@ -10,6 +11,7 @@ import openmods.gui.GuiConfigurableSlots;
 import openmods.gui.component.*;
 import openmods.gui.logic.ValueCopyAction;
 import openmods.utils.MiscUtils;
+import scala.actors.threadpool.Arrays;
 
 public class GuiAmalgamator extends GuiConfigurableSlots<TileAmalgamator, ContainerAmalgamator, TileAmalgamator.AUTO_SLOTS> {
 
@@ -34,7 +36,7 @@ public class GuiAmalgamator extends GuiConfigurableSlots<TileAmalgamator, Contai
         addSyncUpdateListener(ValueCopyAction.create(te.getTeslaBankProvider(), energyLevel.teslaBankReciever()));
         root.addComponent(energyLevel);
 
-        GuiComponentProgress progress = new GuiComponentProgress(100, 37, TileAmalgamator.PROCESS_TIME);
+        GuiComponentArrowProgress progress = new GuiComponentArrowProgress(100, 37, TileAmalgamator.PROCESS_TIME);
         addSyncUpdateListener(ValueCopyAction.create(te.getProgress(), progress.progressReceiver()));
         root.addComponent(progress);
     }

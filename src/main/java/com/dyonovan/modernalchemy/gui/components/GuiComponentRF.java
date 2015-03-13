@@ -2,8 +2,10 @@ package com.dyonovan.modernalchemy.gui.components;
 
 import cofh.api.energy.EnergyStorage;
 import com.dyonovan.modernalchemy.lib.Constants;
+import com.dyonovan.modernalchemy.util.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import openmods.api.IValueReceiver;
@@ -29,7 +31,8 @@ public class GuiComponentRF extends GuiComponentResizable {
         BOX_RENDERER.render(this, x + offsetX, y + offsetY, width, height, BORDER_COLOR);
 
         if(energy == null || energy.getEnergyStored() <= 0) return;
-        TextureUtils.bindTextureToClient(new ResourceLocation(Constants.MODID, "textures/gui/componentSheet.png"));
+
+        RenderUtils.bindTextureSheet();
 
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();

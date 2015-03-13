@@ -2,11 +2,11 @@ package com.dyonovan.modernalchemy.gui.components;
 
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.lib.Constants;
+import com.dyonovan.modernalchemy.util.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidStack;
 import openmods.api.IValueReceiver;
 import openmods.gui.component.GuiComponentResizable;
 import openmods.gui.misc.BoxRenderer;
@@ -30,7 +30,7 @@ public class GuiComponentTeslaBank extends GuiComponentResizable {
         BOX_RENDERER.render(this, x + offsetX, y + offsetY, width, height, BORDER_COLOR);
 
         if(energy == null || energy.getEnergyLevel() <= 0) return;
-        TextureUtils.bindTextureToClient(new ResourceLocation(Constants.MODID, "textures/gui/componentSheet.png"));
+        RenderUtils.bindTextureSheet();
 
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();

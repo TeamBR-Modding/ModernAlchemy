@@ -64,7 +64,6 @@ public class BlockAmalgamator extends OpenBlock {
         setTexture(ForgeDirection.DOWN, blockIcon);
     }
 
-
     @Override
     protected Object getModInstance() {
         return ModernAlchemy.instance;

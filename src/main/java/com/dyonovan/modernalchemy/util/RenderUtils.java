@@ -2,13 +2,16 @@ package com.dyonovan.modernalchemy.util;
 
 import com.dyonovan.modernalchemy.effects.LightningBolt;
 import com.dyonovan.modernalchemy.handlers.PacketHandler;
+import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.network.RenderLightningBoltPacket;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import openmods.utils.TextureUtils;
 
 import java.awt.*;
 
@@ -76,6 +79,10 @@ public class RenderUtils {
         tes.addVertexWithUV(x1, y2, z2, u, v1);
         tes.addVertexWithUV(x2, y2, z2, u1, v1);
         tes.addVertexWithUV(x2, y2, z1, u1, v);
+    }
+
+    public static void bindTextureSheet() {
+        TextureUtils.bindTextureToClient(new ResourceLocation(Constants.MODID, "textures/gui/componentSheet.png"));
     }
 
     @SideOnly(Side.CLIENT)
