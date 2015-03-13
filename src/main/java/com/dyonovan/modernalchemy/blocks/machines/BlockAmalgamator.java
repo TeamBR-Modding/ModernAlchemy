@@ -64,14 +64,8 @@ public class BlockAmalgamator extends OpenBlock {
         setTexture(ForgeDirection.DOWN, blockIcon);
     }
 
-    @Override
-    public ForgeDirection calculateSide(EntityPlayer player, ForgeDirection direction) {
-        // Mimic ComputerCraft Monitor placement behaviour, i.e. the screen is
-        // looking at the player when placing the block.
-        return super.calculateSide(player, direction).getOpposite();
-    }
 
-        @Override
+    @Override
     protected Object getModInstance() {
         return ModernAlchemy.instance;
     }

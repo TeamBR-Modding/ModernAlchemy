@@ -224,6 +224,10 @@ public class TileAmalgamator extends SyncedTileEntity implements IInventoryProvi
         return BitMapUtils.singleBitReceiver(bits, slot.ordinal());
     }
 
+    public IValueProvider<TeslaBank> getTeslaBankProvider() {
+        return energyTank;
+    }
+
     public IValueProvider<FluidStack> getFluidProvider() {
         return tank;
     }
