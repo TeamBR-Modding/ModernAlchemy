@@ -1,5 +1,8 @@
 package com.dyonovan.modernalchemy.gui;
 
+import codechicken.nei.VisiblityData;
+import codechicken.nei.api.INEIGuiHandler;
+import codechicken.nei.api.TaggedInventoryArea;
 import com.dyonovan.modernalchemy.container.ContainerAmalgamator;
 import com.dyonovan.modernalchemy.gui.components.GuiComponentArrowProgress;
 import com.dyonovan.modernalchemy.gui.components.GuiComponentTeslaBank;
@@ -7,13 +10,19 @@ import com.dyonovan.modernalchemy.gui.components.GuiComponentToolTip;
 import com.dyonovan.modernalchemy.handlers.ItemHandler;
 import com.dyonovan.modernalchemy.tileentity.machines.TileAmalgamator;
 import com.google.common.collect.ImmutableList;
+import cpw.mods.fml.common.Optional;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 import openmods.gui.GuiConfigurableSlots;
 import openmods.gui.component.*;
 import openmods.gui.logic.ValueCopyAction;
 import openmods.utils.MiscUtils;
 
-public class GuiAmalgamator extends GuiConfigurableSlots<TileAmalgamator, ContainerAmalgamator, TileAmalgamator.AUTO_SLOTS> {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class GuiAmalgamator extends GuiBaseConfigurableSlots<TileAmalgamator, ContainerAmalgamator, TileAmalgamator.AUTO_SLOTS> {
 
     GuiComponentToolTip tankTip;
     GuiComponentToolTip energyTip;
@@ -59,11 +68,18 @@ public class GuiAmalgamator extends GuiConfigurableSlots<TileAmalgamator, Contai
 
     @Override
     protected GuiComponentTab createTab(TileAmalgamator.AUTO_SLOTS slot) {
+        if(tabs == null)
+            tabs = new ArrayList<>();
+
         switch(slot) {
             case liquid :
-                return new GuiComponentTab(StandardPalette.lightblue.getColor(), new ItemStack(ItemHandler.itemBucketActinium), 100, 100);
+                GuiComponentTab liquidTab = new GuiComponentTab(StandardPalette.lightblue.getColor(), new ItemStack(ItemHandler.itemBucketActinium), 100, 100);
+                tabs.add(liquidTab);
+                return liquidTab;
             case output :
-                return new GuiComponentTab(StandardPalette.green.getColor(), new ItemStack(ItemHandler.itemReplicationMedium), 100, 100);
+                GuiComponentTab outputTab = new GuiComponentTab(StandardPalette.green.getColor(), new ItemStack(ItemHandler.itemReplicationMedium), 100, 100);
+                tabs.add(outputTab);
+                return outputTab;
             default :
                 throw MiscUtils.unhandledEnum(slot);
         }
