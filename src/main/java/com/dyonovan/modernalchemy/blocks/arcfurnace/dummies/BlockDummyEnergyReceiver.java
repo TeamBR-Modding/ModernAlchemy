@@ -10,25 +10,28 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockDummyEnergyReciever extends BlockDummy {
-    public BlockDummyEnergyReciever(String name) {
-        super(name);
+public class BlockDummyEnergyReceiver extends BlockDummy {
+    @SideOnly(Side.CLIENT)
+    public static class Icons {
+        public static IIcon inActive;
+        public static IIcon active;
     }
 
-    @Override
-    public TileEntity createNewTileEntity(World world, int par2) {
-        return new TileDummyEnergyReciever();
+    public BlockDummyEnergyReceiver() {
+        super();
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(IIconRegister register) {
-        this.blockIcon = register.registerIcon(Constants.MODID + ":blastFurnaceEnergy");
-        active = register.registerIcon(Constants.MODID + ":blastFurnaceEnergyActive");
+        setDefaultTexture(blockIcon = register.registerIcon(Constants.MODID + ":blastFurnaceEnergy"));
+        Icons.active = register.registerIcon(Constants.MODID + ":blastFurnaceEnergyActive");
+        Icons.inActive = blockIcon;
     }
 }

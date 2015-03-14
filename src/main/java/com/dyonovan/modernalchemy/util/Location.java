@@ -2,14 +2,19 @@ package com.dyonovan.modernalchemy.util;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+import openmods.sync.SyncableObjectBase;
 
-public class Location {
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
+public class Location extends SyncableObjectBase {
     public int x;
     public int y;
     public int z;
 
     public Location() {
-        this(0, 0, 0);
+        this(0, -10000, 0);
     }
 
     public Location(Location l1, Location l2) {
@@ -53,6 +58,14 @@ public class Location {
         }
     }
 
+    public boolean isValue() {
+        return y != -10000;
+    }
+
+    public void inValidate() {
+        y = -10000;
+    }
+
     public void writeToNBT(NBTTagCompound tag) {
         tag.setInteger("LocationX", x);
         tag.setInteger("LocationY", y);
@@ -74,5 +87,33 @@ public class Location {
     @Override
     public String toString() {
         return "X: " + x + " Y: " + y + " Z: " + z;
+    }
+
+    @Override
+    public void readFromStream(DataInputStream stream) throws IOException {
+        x = stream.readInt();
+        y = stream.readInt();
+        z = stream.readInt();
+    }
+
+    @Override
+    public void writeToStream(DataOutputStream stream) throws IOException {
+        stream.writeInt(x);
+        stream.writeInt(y);
+        stream.writeInt(z);
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound tag, String name) {
+        tag.setInteger("X-" + name, x);
+        tag.setInteger("Y-" + name, y);
+        tag.setInteger("Z-" + name, z);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound tag, String name) {
+        x = tag.getInteger("X-" + name);
+        y = tag.getInteger("Y-" + name);
+        z = tag.getInteger("Z-" + name);
     }
 }

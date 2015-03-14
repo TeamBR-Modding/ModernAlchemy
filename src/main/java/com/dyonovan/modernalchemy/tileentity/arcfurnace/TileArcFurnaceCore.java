@@ -1,9 +1,11 @@
 package com.dyonovan.modernalchemy.tileentity.arcfurnace;
 
 import com.dyonovan.modernalchemy.blocks.arcfurnace.dummies.BlockDummy;
+import com.dyonovan.modernalchemy.container.ContainerArcFurnace;
 import com.dyonovan.modernalchemy.crafting.ArcFurnaceRecipeRegistry;
 import com.dyonovan.modernalchemy.energy.ITeslaHandler;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
+import com.dyonovan.modernalchemy.gui.GuiArcFurnace;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.teambrcore.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.tileentity.InventoryTile;
@@ -13,45 +15,73 @@ import com.dyonovan.modernalchemy.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
+import openmods.api.IHasGui;
+import openmods.api.IValueProvider;
+import openmods.include.IncludeInterface;
+import openmods.inventory.GenericInventory;
+import openmods.inventory.IInventoryProvider;
+import openmods.inventory.TileEntityInventory;
+import openmods.liquids.GenericFluidHandler;
+import openmods.sync.SyncableInt;
+import openmods.sync.SyncableTank;
+import openmods.utils.SidedInventoryAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITeslaHandler, IInventory {
+public class TileArcFurnaceCore extends BaseCore implements IHasGui, IFluidHandler, ITeslaHandler, IInventoryProvider {
 
     /**
      * Duration in ticks for the Cook Process
      */
-    private static final int COOK_TIME = 500;
+    public static final int COOK_TIME = 500;
+
+    public static final int TANK_CAPACITY = FluidContainerRegistry.BUCKET_VOLUME * 10;
 
     //Tanks
-    private FluidTank outputTank;
-    private FluidTank airTank;
+    public SyncableTank outputTank;
+    public SyncableTank airTank;
+
+    //Energy
+    public TeslaBank energyTank;
 
     //Inventory
-    public InventoryTile inventory;
     public static final int INPUT_SLOT = 0;
     public static final int CATALYST_SLOT = 1;
 
     //Cook Variables
-    private int currentSpeed;
-    private int timeCooked;
-    private int fillVariable;
+    private SyncableInt currentSpeed;
+    private SyncableInt timeCooked;
+    private SyncableInt fillVariable;
+
+    //Inventory
+    private final GenericInventory inventory = registerInventoryCallback(new TileEntityInventory(this, "arcFurnaceCore", true, 2) {
+        @Override
+        public boolean isItemValidForSlot(int i, ItemStack itemstack) {
+            if(i == 0) return itemstack.getItem() != Items.coal;
+            else if(i == 1) return itemstack.getItem() == Items.coal;
+            return false;
+        }
+    });
 
     /**
      * Creates the Arc Furnace, Default fluids at 10 * BUCKET_VOLUME and energy to 1000T and an inventory of two slots
      */
-    public TileArcFurnaceCore() {
-        outputTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 10);
-        airTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 10);
-
+    @Override
+    protected void createSyncedFields() {
+        outputTank = new SyncableTank(TANK_CAPACITY, new FluidStack(BlockHandler.fluidActinium, 0));
+        airTank = new SyncableTank(TANK_CAPACITY, new FluidStack(BlockHandler.fluidCompressedAir, 0));
         energyTank = new TeslaBank(0, 1000);
 
-        inventory = new InventoryTile(2);
+        currentSpeed = new SyncableInt();
+        timeCooked = new SyncableInt();
+        fillVariable = new SyncableInt();
     }
 
     /*******************************************************************************************************************
@@ -84,7 +114,9 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
                         continue;
                     TileDummy dummy = (TileDummy)worldObj.getTileEntity(xCoord + i, yCoord + j, zCoord + k);
                     dummy.setCoreLocation(new Location(xCoord, yCoord, zCoord));
-                    worldObj.setBlockMetadataWithNotify(xCoord + i, yCoord + j, zCoord + k, 1, 2);
+                    if(!worldObj.isRemote)
+                        dummy.sync();
+                    worldObj.markBlockForUpdate(xCoord + i, yCoord + j, zCoord + k);
                 }
             }
         }
@@ -101,8 +133,10 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
                     if(tile != null) {
                         if(tile instanceof TileDummy) {
                             TileDummy dummy = (TileDummy)worldObj.getTileEntity(xCoord + i, yCoord + j, zCoord + k);
-                            worldObj.setBlockMetadataWithNotify(xCoord + i, yCoord + j, zCoord + k, 0, 2);
-                            dummy.setCoreLocation(new Location(-100, -100, -100));
+                            dummy.setCoreLocation(new Location());
+                            if(!worldObj.isRemote)
+                                dummy.sync();
+                            worldObj.markBlockForUpdate(xCoord + i, yCoord + j, zCoord + k);
                         }
                     }
                 }
@@ -114,22 +148,22 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
     }
 
     public void reset() {
-        this.airTank.setFluid(null);
-        this.outputTank.setFluid(null);
-        this.energyTank.setEnergyLevel(0);
-        for(ItemStack item : inventory.getValues()) {
-            WorldUtils.expelItem(worldObj, xCoord + 0.5, yCoord, zCoord + 0.5, item);
-        }
-        this.inventory.clear();
-        timeCooked = 0;
-        fillVariable = 0;
-        isActive = false;
+        airTank.setFluid(null);
+        outputTank.setFluid(null);
+        energyTank.setEnergyLevel(0);
+        timeCooked.set(0);
+        currentSpeed.set(0);
+        fillVariable.set(0);
+        airTank.markDirty();
+        outputTank.markDirty();
+        resetSoft();
     }
 
     public void resetSoft() {
-        timeCooked = 0;
-        fillVariable = 0;
-        isActive = false;
+        timeCooked.set(0);
+        fillVariable.set(0);
+        sync();
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     /*******************************************************************************************************************
@@ -137,34 +171,31 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
      *******************************************************************************************************************/
 
     public void doSmelting() {
-        if(canSmelt() && timeCooked == 0) {
+        if(canSmelt() && timeCooked.get() == 0) {
             //Consume Resources
-            fillVariable = ArcFurnaceRecipeRegistry.instance.getReturn(inventory.getStackInSlot(INPUT_SLOT).getItem());
+            fillVariable.set(ArcFurnaceRecipeRegistry.instance.getReturn(inventory.getStackInSlot(INPUT_SLOT).getItem()));
             inventory.getStackInSlot(INPUT_SLOT).stackSize--;
             if(inventory.getStackInSlot(INPUT_SLOT).stackSize == 0)
-                inventory.setStackInSlot(null, 0);
+                inventory.setInventorySlotContents(0, null);
             inventory.getStackInSlot(CATALYST_SLOT).stackSize--;
             if(inventory.getStackInSlot(CATALYST_SLOT).stackSize == 0)
-                inventory.setStackInSlot(null, 1);
-            timeCooked += currentSpeed;
-            isActive = true;
+                inventory.setInventorySlotContents(1, null);
+            timeCooked.set(timeCooked.get() + currentSpeed.get());
         }
-        else if(timeCooked > 0 && timeCooked < COOK_TIME && energyTank.getEnergyLevel() - currentSpeed > 0) {
-            timeCooked += currentSpeed;
-            energyTank.drainEnergy(currentSpeed);
-            airTank.drain(currentSpeed * 4, true);
-            isActive = true;
+        else if(timeCooked.get() > 0 && timeCooked.get() < COOK_TIME && energyTank.getValue().getEnergyLevel() - currentSpeed.get() > 0) {
+            timeCooked.set(timeCooked.get() + currentSpeed.get());
+            energyTank.getValue().drainEnergy(currentSpeed.get());
+            airTank.drain(currentSpeed.get() * 4, true);
         }
-        else if(timeCooked > 0 && timeCooked < COOK_TIME && energyTank.getEnergyLevel() - currentSpeed <= 0)
+        else if(timeCooked.get() > 0 && timeCooked.get() < COOK_TIME && energyTank.getValue().getEnergyLevel() - currentSpeed.get() <= 0)
             resetSoft();
-        else if(timeCooked >= COOK_TIME)
+        else if(timeCooked.get() >= COOK_TIME)
             smelt();
     }
 
     public void smelt() {
-        timeCooked = 0;
-        outputTank.fill(new FluidStack(BlockHandler.fluidActinium, fillVariable), true);
-        isActive = false;
+        timeCooked.set(0);
+        outputTank.fill(new FluidStack(BlockHandler.fluidActinium, fillVariable.get()), true);
     }
 
     public boolean canSmelt() {
@@ -173,24 +204,25 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
                     ArcFurnaceRecipeRegistry.instance.getReturn(inventory.getStackInSlot(0).getItem()) >  0 &&
                     inventory.getStackInSlot(1).getItem() == Items.coal &&
                     outputTank.getCapacity() - outputTank.getFluidAmount() >= FluidContainerRegistry.BUCKET_VOLUME &&
-                    energyTank.getEnergyLevel() > currentSpeed;
+                    energyTank.getValue().getEnergyLevel() > currentSpeed.get();
         else
             return false;
     }
 
     public void updateSpeed() {
         if(energyTank.getEnergyLevel() == 0) {
-            currentSpeed = 0;
+            currentSpeed.set(0);
             return;
         }
 
-        currentSpeed = (energyTank.getEnergyLevel() * 20) / energyTank.getMaxCapacity();
-        if(currentSpeed == 0)
-            currentSpeed = 1;
+        currentSpeed.set((energyTank.getEnergyLevel() * 20) / energyTank.getMaxCapacity());
+        if(currentSpeed.get() == 0)
+            currentSpeed.set(1);
     }
 
-    public int getCookTimeScaled(int scale) {
-        return (timeCooked * scale) / COOK_TIME;
+    @Override
+    public void onWrench(EntityPlayer player, int side) {
+
     }
 
     /*******************************************************************************************************************
@@ -198,8 +230,23 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
      *******************************************************************************************************************/
 
     @Override
-    public boolean hasClearPath(double x1, double y1, double z1, double x2, double y2, double z2) {
-        return false;
+    public void addEnergy(int maxAmount) {
+        energyTank.getValue().addEnergy(maxAmount);
+    }
+
+    @Override
+    public int drainEnergy(int maxAmount) {
+        return energyTank.getValue().drainEnergy(maxAmount);
+    }
+
+    @Override
+    public int getEnergyLevel() {
+        return energyTank.getValue().getEnergyLevel();
+    }
+
+    @Override
+    public TeslaBank getEnergyBank() {
+        return energyTank.getValue();
     }
 
     /*******************************************************************************************************************
@@ -267,89 +314,8 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
      *******************************************************************************************************************/
 
     @Override
-    public int getSizeInventory() {
-        return inventory.getSizeInventory();
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int slot) {
-        return inventory.getStackInSlot(slot);
-    }
-
-    @Override
-    public void setInventorySlotContents(int slot, ItemStack stack) {
-        inventory.setStackInSlot(stack, slot);
-        if (stack != null && stack.stackSize > getInventoryStackLimit()) {
-            stack.stackSize = getInventoryStackLimit();
-        }
-        markDirty();
-    }
-
-    @Override
-    public ItemStack decrStackSize(int slot, int amt) {
-        ItemStack stack = getStackInSlot(slot);
-        if (stack != null) {
-            if (stack.stackSize <= amt) {
-                setInventorySlotContents(slot, null);
-            } else {
-                stack = stack.splitStack(amt);
-                if (stack.stackSize == 0) {
-                    setInventorySlotContents(slot, null);
-                }
-            }
-        }
-        return stack;
-    }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int slot) {
-        ItemStack stack = getStackInSlot(slot);
-        if (stack != null) {
-            setInventorySlotContents(slot, null);
-        }
-        return stack;
-    }
-
-    @Override
-    public String getInventoryName() {
-        return null;
-    }
-
-    @Override
-    public boolean hasCustomInventoryName() {
-        return false;
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 64;
-    }
-
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
-        return true;
-    }
-
-    @Override
-    public void openInventory() {
-
-    }
-
-    @Override
-    public void closeInventory() {
-
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
-        switch(slot) {
-            case INPUT_SLOT :
-                return ArcFurnaceRecipeRegistry.instance.getReturn(itemStack.getItem()) > 0;
-            case CATALYST_SLOT :
-                return itemStack.getItem() == Items.coal;
-
-        }
-        return false;
+    public IInventory getInventory() {
+        return inventory;
     }
 
     /*******************************************************************************************************************
@@ -357,66 +323,122 @@ public class TileArcFurnaceCore extends BaseCore implements IFluidHandler, ITesl
      *******************************************************************************************************************/
 
     @Override
-    public void readFromNBT(NBTTagCompound tagCompound) {
-        super.readFromNBT(tagCompound);
+    public void updateEntity() {
+        super.updateEntity();
+        if(worldObj.isRemote) return;
+        updateSpeed();
+        if(energyTank.canAcceptEnergy() && isValid) {
+            chargeFromCoils(energyTank);
+        }
+        doSmelting();
+        if(airTank.isDirty() || outputTank.isDirty()) sync();
+    }
 
-        timeCooked = tagCompound.getInteger("TimeCooking");
-        currentSpeed = tagCompound.getInteger("CurrentSpeed");
-        inventory.readFromNBT(tagCompound, this);
+    @Override
+    public void writeToNBT(NBTTagCompound tag) {
+        tag.setBoolean("hasOutputFluid", outputTank.getFluid() != null);
+        tag.setBoolean("hasAir", airTank.getFluid() != null);
+        if(outputTank.getFluid() != null) {
+            tag.setString("outputFluid", outputTank.getFluid().getFluid().getName());
+            tag.setInteger("outputFluidAmount", outputTank.getFluid().amount);
+        }
+        if(airTank.getFluid() != null) {
+            tag.setString("air", airTank.getFluid().getFluid().getName());
+            tag.setInteger("airAmount", airTank.getFluid().amount);
+        }
+        inventory.writeToNBT(tag);
+        super.writeToNBT(tag);
+    }
 
-        if(tagCompound.getBoolean("hasOutputFluid")) {
-            outputTank.setFluid(FluidRegistry.getFluidStack(tagCompound.getString("outputFluid"), tagCompound.getInteger("outputFluidAmount")));
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        inventory.readFromNBT(tag);
+        if(tag.getBoolean("hasOutputFluid")) {
+            outputTank.setFluid(FluidRegistry.getFluidStack(tag.getString("outputFluid"), tag.getInteger("outputFluidAmount")));
         }
         else
             outputTank.setFluid(null);
 
-        if(tagCompound.getBoolean("hasAir")) {
-            airTank.setFluid(FluidRegistry.getFluidStack(tagCompound.getString("air"), tagCompound.getInteger("airAmount")));
+        if(tag.getBoolean("hasAir")) {
+            airTank.setFluid(FluidRegistry.getFluidStack(tag.getString("air"), tag.getInteger("airAmount")));
         }
         else
             airTank.setFluid(null);
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tagCompound) {
-        super.writeToNBT(tagCompound);
-
-        tagCompound.setInteger("TimeCooking", timeCooked);
-        tagCompound.setInteger("CurrentSpeed", currentSpeed);
-        inventory.writeToNBT(tagCompound);
-
-        tagCompound.setBoolean("hasOutputFluid", outputTank.getFluid() != null);
-        tagCompound.setBoolean("hasAir", airTank.getFluid() != null);
-        if(outputTank.getFluid() != null) {
-            tagCompound.setString("outputFluid", outputTank.getFluid().getFluid().getName());
-            tagCompound.setInteger("outputFluidAmount", outputTank.getFluid().amount);
-        }
-        if(airTank.getFluid() != null) {
-            tagCompound.setString("air", airTank.getFluid().getFluid().getName());
-            tagCompound.setInteger("airAmount", airTank.getFluid().amount);
-        }
+    public Object getServerGui(EntityPlayer player) {
+        return new ContainerArcFurnace(player.inventory, this);
     }
 
     @Override
-    public void updateEntity() {
-        super.updateEntity();
-        if(worldObj.isRemote) return;
-        updateSpeed();
-        if(energyTank.canAcceptEnergy() && isValid) {
-            chargeFromCoils();
-        }
-        doSmelting();
+    public Object getClientGui(EntityPlayer player) {
+        return new GuiArcFurnace(new ContainerArcFurnace(player.inventory, this));
+    }
+
+    @Override
+    public boolean canOpenGui(EntityPlayer player) {
+        return isWellFormed();
     }
 
     /*******************************************************************************************************************
      ********************************************** Misc Functions *****************************************************
      *******************************************************************************************************************/
-
+/*
     @Override
     public void returnWailaHead(List<String> head) {
         head.add(GuiHelper.GuiColor.YELLOW + "Energy: " + GuiHelper.GuiColor.WHITE + energyTank.getEnergyLevel() + "/" + energyTank.getMaxCapacity() + GuiHelper.GuiColor.TURQUISE + "T");
         head.add(GuiHelper.GuiColor.YELLOW + "Air: " + GuiHelper.GuiColor.WHITE + airTank.getFluidAmount() + "/" + airTank.getCapacity() + GuiHelper.GuiColor.TURQUISE + "mb");
         head.add(GuiHelper.GuiColor.YELLOW + "Actinium: " + GuiHelper.GuiColor.WHITE + outputTank.getFluidAmount() + "/" + outputTank.getCapacity() + GuiHelper.GuiColor.TURQUISE + "mb");
         head.add(GuiHelper.GuiColor.YELLOW + "Speed: " + GuiHelper.GuiColor.WHITE + currentSpeed);
+    }
+*/
+
+    public List<String> getAirTankToolTip() {
+        List<String> toolTip = new ArrayList<>();
+        if(airTank.getValue() != null) {
+            toolTip.add(GuiHelper.GuiColor.WHITE + airTank.getValue().getLocalizedName());
+            toolTip.add("" + GuiHelper.GuiColor.YELLOW + airTank.getFluidAmount() + "/" + airTank.getCapacity() + GuiHelper.GuiColor.BLUE + "mb");
+        }
+        else {
+            toolTip.add(GuiHelper.GuiColor.RED + "Empty");
+        }
+        return toolTip;
+    }
+
+    public List<String> getOutputTankToolTip() {
+        List<String> toolTip = new ArrayList<>();
+        if(outputTank.getValue() != null) {
+            toolTip.add(GuiHelper.GuiColor.WHITE + outputTank.getValue().getLocalizedName());
+            toolTip.add("" + GuiHelper.GuiColor.YELLOW + outputTank.getFluidAmount() + "/" + outputTank.getCapacity() + GuiHelper.GuiColor.BLUE + "mb");
+        }
+        else {
+            toolTip.add(GuiHelper.GuiColor.RED + "Empty");
+        }
+        return toolTip;
+    }
+
+    public List<String> getEnergyToolTip() {
+        List<String> toolTip = new ArrayList<>();
+        toolTip.add(GuiHelper.GuiColor.WHITE + "Energy Stored");
+        toolTip.add("" + GuiHelper.GuiColor.YELLOW + energyTank.getValue().getEnergyLevel() + "/" + energyTank.getValue().getMaxCapacity() + GuiHelper.GuiColor.BLUE + "T");
+        return toolTip;
+    }
+
+    public IValueProvider<FluidStack> getAirTankProvider() {
+        return airTank;
+    }
+
+    public IValueProvider<FluidStack> getOutputTankProvider() {
+        return outputTank;
+    }
+
+    public IValueProvider<TeslaBank> getEnergyProvider() {
+        return energyTank;
+    }
+
+    public IValueProvider<Integer> getProgress() {
+        return timeCooked;
     }
 }

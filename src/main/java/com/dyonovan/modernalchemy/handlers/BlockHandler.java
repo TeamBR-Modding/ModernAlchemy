@@ -48,8 +48,7 @@ import java.util.List;
 public class BlockHandler implements BlockInstances{
 
     public static Fluid fluidActinium, fluidCompressedAir;
-    public static Block blockArcFurnaceDummy, blockArcFurnaceDummyItemIO, blockArcFurnaceDummyAirValve;
-    public static Block blockArcFurnaceDummyOutputValve, blockArcFurnaceDummyEnergy, blockArcFurnaceCore, blockTeslaStand, blockCoil, blockSuperCoil;
+    public static Block blockTeslaStand, blockCoil, blockSuperCoil;
     public static Block blockOreActinium, blockFluidActinium, blockElectricBellows, blockFluidAir, blockReplicatorStand;
     public static Block blockPatternRecorder, blockTeslaBase, blockReplicatorFrame, blockReplicatorCPU;
     public static Block blockOreCopper;
@@ -59,6 +58,24 @@ public class BlockHandler implements BlockInstances{
 
     @RegisterBlock(name = "blockAdvancedCrafter", tileEntity = TileAdvancedCrafter.class)
     public static BlockAdvancedCrafter blockAdvancedCrafter;
+
+    @RegisterBlock(name = "blockArcFurnaceCore", tileEntity = TileArcFurnaceCore.class)
+    public static BlockArcFurnaceCore blockArcFurnaceCore;
+
+    @RegisterBlock(name =  "blockArcFurnaceDummy", tileEntity = TileDummy.class)
+    public static BlockDummy blockArcFurnaceDummy = new BlockDummy();
+
+    @RegisterBlock(name = "blockArcFurnaceDummyAirValve", tileEntity = TileDummyAirValve.class)
+    public static BlockDummyAirValve blockArcFurnaceDummyAirValve = new BlockDummyAirValve();
+
+    @RegisterBlock(name = "blockArcFurnaceDummyOutputValve", tileEntity = TileDummyOutputValve.class)
+    public static BlockDummyOutputValve blockArcFurnaceDummyOutputValve = new BlockDummyOutputValve();
+
+    @RegisterBlock(name = "blockArcFurnaceDummyItemIO", tileEntity = TileDummyItemIO.class)
+    public static BlockDummyEnergyReceiver blockArcFurnaceDummyItemIO = new BlockDummyEnergyReceiver();
+
+    @RegisterBlock(name = "blockArcFurnaceDummyEnergyReciever", tileEntity = TileDummyEnergyReciever.class)
+    public static BlockDummyEnergyReceiver blockArcFurnaceDummyEnergy = new BlockDummyEnergyReceiver();
 
     public static List<Block> blockRegistry = new ArrayList<Block>();
 
@@ -81,29 +98,9 @@ public class BlockHandler implements BlockInstances{
         //BlockElectricBellows
         registerBlock(blockElectricBellows = new BlockElectricBellows(), "blockElectricBellows", TileElectricBellows.class);
 
-        //blockAmalgamator
-        //registerBlock(blockAmalgamator = new BlockAmalgamator(), "blockAmalgamator", TileAmalgamator.class);
 
         // Block Pattern Recorder
         registerBlock(blockPatternRecorder = new BlockPatternRecorder(), "blockPatternRecorder", TilePatternRecorder.class);
-
-        //ArcFurnaceCore
-        registerBlock(blockArcFurnaceCore = new BlockArcFurnaceCore(), "blockArcFurnaceCore", TileArcFurnaceCore.class);
-
-        //ArcFurnaceDummy
-        registerBlock(blockArcFurnaceDummy = new BlockDummy("blockArcFurnaceDummy"), "blockArcFurnaceDummy", TileDummy.class);
-
-        //ArcFurnaceDummy Energy
-        registerBlock(blockArcFurnaceDummyEnergy = new BlockDummyEnergyReciever("blockArcFurnaceDummyEnergy"), "blockArcFurnaceDummyEnergy", TileDummyEnergyReciever.class);
-
-        //ArcFurnaceDummyItemIO
-        registerBlock(blockArcFurnaceDummyItemIO = new BlockItemIODummy("blockArcFurnaceDummyItemIO"), "blockArcFurnaceDummyItemIO", TileDummyItemIO.class);
-
-        //ArcFurnaceDummyAirValue
-        registerBlock(blockArcFurnaceDummyAirValve = new BlockDummyAirValve("blockArcFurnaceDummyAirValve"), "blockArcFurnaceDummyAirValve", TileDummyAirValve.class);
-
-        //ArcFurnaceDummyOutputValue
-        registerBlock(blockArcFurnaceDummyOutputValve = new BlockDummyOutputValve("blockArcFurnaceDummyOutputValve"), "blockArcFurnaceDummyOutputValve", TileDummyOutputValve.class);
 
         //Tesla Base
         registerBlock(blockTeslaBase = new BlockTeslaBase(), "blockTeslaBase", TileTeslaBase.class);

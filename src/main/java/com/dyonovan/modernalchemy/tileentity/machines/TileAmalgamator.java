@@ -90,7 +90,7 @@ public class TileAmalgamator extends TileModernAlchemy implements IInventoryProv
         timeProcessed = new SyncableInt();
         isActive = new SyncableBoolean();
         automaticSlots = SyncableFlags.create(AUTO_SLOTS.values().length);
-        energyTank = new TeslaBank(1000, 1000);
+        energyTank = new TeslaBank(0, 1000);
     }
 
     public TileAmalgamator() {
@@ -189,11 +189,13 @@ public class TileAmalgamator extends TileModernAlchemy implements IInventoryProv
     @Override
     public void writeToNBT(NBTTagCompound tag){
         super.writeToNBT(tag);
+        inventory.writeToNBT(tag);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
+        inventory.readFromNBT(tag);
     }
 
     private SyncableSides selectSlotMap(AUTO_SLOTS slot) {
@@ -242,6 +244,9 @@ public class TileAmalgamator extends TileModernAlchemy implements IInventoryProv
         if(tank.getValue() != null) {
             toolTip.add(GuiHelper.GuiColor.WHITE + tank.getValue().getLocalizedName());
             toolTip.add("" + GuiHelper.GuiColor.YELLOW + tank.getFluidAmount() + "/" + tank.getCapacity() + GuiHelper.GuiColor.BLUE + "mb");
+        }
+        else {
+            toolTip.add(GuiHelper.GuiColor.RED + "Empty");
         }
         return toolTip;
     }

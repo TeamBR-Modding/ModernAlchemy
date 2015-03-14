@@ -1,10 +1,9 @@
 package com.dyonovan.modernalchemy.tileentity.arcfurnace;
 
-import com.dyonovan.modernalchemy.tileentity.BaseMachine;
-import com.dyonovan.modernalchemy.tileentity.BaseTile;
+import com.dyonovan.modernalchemy.tileentity.TileModernAlchemy;
 import net.minecraft.nbt.NBTTagCompound;
 
-public abstract class BaseCore extends BaseMachine {
+public abstract class BaseCore extends TileModernAlchemy {
 
     protected boolean isValid = false;
     private boolean isDirty = true;
