@@ -6,6 +6,7 @@ import com.dyonovan.modernalchemy.gui.components.GuiComponentChangeIconButton;
 import com.dyonovan.modernalchemy.gui.components.GuiComponentRF;
 import com.dyonovan.modernalchemy.gui.components.GuiComponentToolTip;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
+import com.dyonovan.modernalchemy.handlers.ItemHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.rpc.ILevelChanger;
 import com.dyonovan.modernalchemy.tileentity.machines.TileAdvancedCrafter;
@@ -13,7 +14,6 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
-import openmods.gui.GuiConfigurableSlots;
 import openmods.gui.component.BaseComponent;
 import openmods.gui.component.BaseComposite;
 import openmods.gui.component.GuiComponentLabel;
@@ -23,7 +23,9 @@ import openmods.gui.logic.ValueCopyAction;
 import openmods.utils.MiscUtils;
 import openmods.utils.render.FakeIcon;
 
-public class GuiAdvancedCrafter extends GuiConfigurableSlots<TileAdvancedCrafter, ContainerAdvancedCrafter, TileAdvancedCrafter.AUTO_SLOTS> {
+import java.util.ArrayList;
+
+public class GuiAdvancedCrafter extends GuiBaseConfigurableSlots<TileAdvancedCrafter, ContainerAdvancedCrafter, TileAdvancedCrafter.AUTO_SLOTS> {
 
     GuiComponentToolTip rfTip;
     GuiComponentArrowProgress progress;
@@ -93,9 +95,14 @@ public class GuiAdvancedCrafter extends GuiConfigurableSlots<TileAdvancedCrafter
 
     @Override
     protected GuiComponentTab createTab(TileAdvancedCrafter.AUTO_SLOTS slot) {
+        if(tabs == null)
+            tabs = new ArrayList<>();
+
         switch(slot) {
             case output:
-                return new GuiComponentTab(StandardPalette.green.getColor(), new ItemStack(BlockHandler.blockAdvancedCrafter), 100, 100);
+                GuiComponentTab outputTab = new  GuiComponentTab(StandardPalette.green.getColor(), new ItemStack(BlockHandler.blockAdvancedCrafter), 100, 100);
+                tabs.add(outputTab);
+                return outputTab;
             default:
                 throw MiscUtils.unhandledEnum(slot);
         }
