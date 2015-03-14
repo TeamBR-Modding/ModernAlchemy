@@ -1,9 +1,8 @@
 package com.dyonovan.modernalchemy.proxy;
 
 import openmods.api.IProxy;
-import openmods.proxy.OpenServerProxy;
 
-public class CommonProxy extends OpenServerProxy implements IProxy {
+public class CommonProxy implements IProxy {
 
     @Override
     public void preInit() {

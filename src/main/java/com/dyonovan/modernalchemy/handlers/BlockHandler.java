@@ -50,7 +50,7 @@ public class BlockHandler implements BlockInstances{
     public static Fluid fluidActinium, fluidCompressedAir;
     public static Block blockTeslaStand, blockCoil, blockSuperCoil;
     public static Block blockOreActinium, blockFluidActinium, blockElectricBellows, blockFluidAir, blockReplicatorStand;
-    public static Block blockPatternRecorder, blockTeslaBase, blockReplicatorFrame, blockReplicatorCPU;
+    public static Block blockPatternRecorder, blockTeslaBase, blockReplicatorCPU;
     public static Block blockOreCopper;
 
     @RegisterBlock(name = "blockAmalgamator", tileEntity = TileAmalgamator.class)
@@ -76,6 +76,9 @@ public class BlockHandler implements BlockInstances{
 
     @RegisterBlock(name = "blockArcFurnaceDummyEnergy", tileEntity = TileDummyEnergyReciever.class)
     public static BlockDummyEnergyReceiver blockArcFurnaceDummyEnergy = new BlockDummyEnergyReceiver();
+
+    @RegisterBlock(name = "blockReplicatorFrame", tileEntity = TileReplicatorFrame.class)
+    public static BlockReplicatorFrame blockReplicatorFrame = new BlockReplicatorFrame();
 
     public static List<Block> blockRegistry = new ArrayList<Block>();
 
@@ -116,9 +119,6 @@ public class BlockHandler implements BlockInstances{
 
         //BlockFrameEnergy
         registerBlock(blockReplicatorCPU = new BlockReplicatorCPU(), "blockReplicatorCPU", TileReplicatorCPU.class);
-
-        //BlockFrame
-        registerBlock(blockReplicatorFrame = new BlockReplicatorFrame(), "blockReplicatorFrame", TileReplicatorFrame.class);
 
         //BlockCenterStand
         registerBlock(blockReplicatorStand = new BlockReplicatorStand(), "blockReplicatorStand", TileReplicatorStand.class);

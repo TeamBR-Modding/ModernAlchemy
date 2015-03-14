@@ -105,7 +105,7 @@ public class GuiAdvancedCrafter extends GuiConfigurableSlots<TileAdvancedCrafter
     protected GuiComponentLabel createLabel(TileAdvancedCrafter.AUTO_SLOTS slot) {
         switch(slot) {
             case output:
-                return new GuiComponentLabel(22, 82, "Item Control");
+                return new GuiComponentLabel(22, 82, "Auto Output");
             default:
                 throw MiscUtils.unhandledEnum(slot);
         }

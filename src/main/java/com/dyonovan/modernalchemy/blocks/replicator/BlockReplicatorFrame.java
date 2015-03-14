@@ -1,11 +1,7 @@
 package com.dyonovan.modernalchemy.blocks.replicator;
 
 import com.dyonovan.modernalchemy.ModernAlchemy;
-import com.dyonovan.modernalchemy.blocks.BlockBase;
-import com.dyonovan.modernalchemy.lib.Constants;
-import com.dyonovan.modernalchemy.manual.component.ComponentBase;
-import com.dyonovan.modernalchemy.manual.component.ComponentItemRender;
-import com.dyonovan.modernalchemy.tileentity.replicator.TileReplicatorFrame;
+import com.dyonovan.modernalchemy.proxy.ClientProxy;
 import com.dyonovan.modernalchemy.util.Location;
 import com.dyonovan.modernalchemy.util.WorldUtils;
 import cpw.mods.fml.relauncher.Side;
@@ -17,19 +13,17 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import openmods.block.OpenBlock;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class BlockReplicatorFrame extends BlockBase {
+public class BlockReplicatorFrame extends OpenBlock {
 
     private static final float PIPE_MIN_POS = 0.2F;
     private static final float PIPE_MAX_POS = 0.8F;
@@ -37,7 +31,12 @@ public class BlockReplicatorFrame extends BlockBase {
     public BlockReplicatorFrame() {
         super(Material.iron);
         this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
-        this.setBlockName(Constants.MODID + ":blockReplicatorFrame");
+        setRenderMode(RenderMode.TESR_ONLY);
+    }
+
+    @Override
+    public int getRenderType() {
+        return ClientProxy.renderId;
     }
 
     @Override
@@ -97,20 +96,15 @@ public class BlockReplicatorFrame extends BlockBase {
         return super.getSelectedBoundingBoxFromPool(world, x, y, z).expand(-0.85F, -0.85F, -0.85F);
     }
 
+    @Override
+    protected Object getModInstance() {
+        return ModernAlchemy.instance;
+    }
+
 
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconregister) {
         this.blockIcon = iconregister.registerIcon("minecraft:iron_block");
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World world, int i) {
-        return new TileReplicatorFrame();
-    }
-
-    @Override
-    public int getRenderType() {
-        return -1;
     }
 
     @Override

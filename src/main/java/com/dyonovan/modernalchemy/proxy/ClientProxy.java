@@ -3,7 +3,6 @@ package com.dyonovan.modernalchemy.proxy;
 import com.dyonovan.modernalchemy.entities.EntityLaserNode;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
-import com.dyonovan.modernalchemy.manual.ManualRegistry;
 import com.dyonovan.modernalchemy.renderer.replicator.ItemRenderFrame;
 import com.dyonovan.modernalchemy.renderer.replicator.RenderFrame;
 import com.dyonovan.modernalchemy.renderer.replicator.RenderLaserNode;
@@ -22,11 +21,9 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
 import openmods.api.IProxy;
-import openmods.proxy.IOpenModsProxy;
-import openmods.proxy.OpenClientProxy;
 import openmods.renderer.BlockRenderingHandler;
 
-public class ClientProxy extends OpenClientProxy implements IProxy {
+public class ClientProxy implements IProxy {
 
     public static int renderId;
 
@@ -83,7 +80,6 @@ public class ClientProxy extends OpenClientProxy implements IProxy {
 
     @Override
     public void init() {
-        super.init();
         //ManualRegistry.instance.init();
         //TODO: Register manual
     }
