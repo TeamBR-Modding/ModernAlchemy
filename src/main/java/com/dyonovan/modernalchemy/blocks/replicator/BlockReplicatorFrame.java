@@ -112,12 +112,6 @@ public class BlockReplicatorFrame extends OpenBlock {
         return false;
     }
 
-    @Override
-    public boolean renderAsNormalBlock() {
-        return false;
-    }
-
-
     public RaytraceResult doRayTrace(World world, int x, int y, int z, EntityPlayer player) {
         double reachDistance = 5;
 
