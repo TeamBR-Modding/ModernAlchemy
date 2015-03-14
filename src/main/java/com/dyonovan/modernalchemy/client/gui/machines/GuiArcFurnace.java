@@ -1,5 +1,7 @@
 package com.dyonovan.modernalchemy.client.gui.machines;
 
+import com.dyonovan.modernalchemy.ModernAlchemy;
+import com.dyonovan.modernalchemy.client.gui.INeiProvider;
 import com.dyonovan.modernalchemy.common.container.machines.ContainerArcFurnace;
 import com.dyonovan.modernalchemy.client.gui.components.GuiComponentArrowProgress;
 import com.dyonovan.modernalchemy.client.gui.components.GuiComponentTeslaBank;
@@ -10,14 +12,19 @@ import openmods.gui.component.BaseComposite;
 import openmods.gui.component.GuiComponentTankLevel;
 import openmods.gui.logic.ValueCopyAction;
 
-public class GuiArcFurnace extends SyncedGuiContainer<ContainerArcFurnace> {
+import java.awt.*;
+import java.util.Arrays;
+
+public class GuiArcFurnace extends SyncedGuiContainer<ContainerArcFurnace> implements INeiProvider {
 
     GuiComponentToolTip energyTip;
     GuiComponentToolTip airTankTip;
     GuiComponentToolTip outputTankTip;
+    protected Rectangle arrowLoc;
 
     public GuiArcFurnace(ContainerArcFurnace container) {
         super(container, 176, 166, "tile.modernalchemy.blockArcFurnaceCore.name");
+        arrowLoc = new Rectangle(106, 36, 24, 15);
     }
 
     @Override
@@ -56,5 +63,31 @@ public class GuiArcFurnace extends SyncedGuiContainer<ContainerArcFurnace> {
         main.addComponent(energyTip = new GuiComponentToolTip(8, 20, 20, 50));
 
         return main;
+    }
+
+    @Override
+    public String getNeiLabel() {
+        return "modernalchemy.arcfurnace.recipes";
+    }
+
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float par3) {
+        super.drawScreen(mouseX, mouseY, par3);
+        if(arrowLoc != null && mouseX >= guiLeft + arrowLoc.x && mouseX <= guiLeft + arrowLoc.x + arrowLoc.width &&
+                mouseY >= guiTop + arrowLoc.y && mouseY <= guiTop + arrowLoc.y + arrowLoc.height &&
+                ModernAlchemy.nei != null) {
+            drawHoveringText(Arrays.asList("Recipes"), mouseX, mouseY, fontRendererObj);
+        }
+    }
+
+    @Override
+    protected void mouseClicked(int mouseX, int mouseY, int button)
+    {
+        if(arrowLoc != null && mouseX >= guiLeft + arrowLoc.x && mouseX <= guiLeft + arrowLoc.x + arrowLoc.width &&
+                mouseY >= guiTop + arrowLoc.y && mouseY <= guiTop + arrowLoc.y + arrowLoc.height &&
+                ModernAlchemy.nei != null) {
+            ModernAlchemy.nei.onArrowClicked(this);
+        }
+        super.mouseClicked(mouseX, mouseY, button);
     }
 }

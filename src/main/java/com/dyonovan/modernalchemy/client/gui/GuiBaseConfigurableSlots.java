@@ -48,10 +48,11 @@ public abstract class GuiBaseConfigurableSlots<T extends TileEntity&ISyncMapProv
         if(arrowLoc != null && mouseX >= guiLeft + arrowLoc.x && mouseX <= guiLeft + arrowLoc.x + arrowLoc.width &&
                 mouseY >= guiTop + arrowLoc.y && mouseY <= guiTop + arrowLoc.y + arrowLoc.height &&
                 ModernAlchemy.nei != null) {
-            ModernAlchemy.nei.onArrowClicked(getContainer());
+            ModernAlchemy.nei.onArrowClicked(this);
         }
         super.mouseClicked(mouseX, mouseY, button);
     }
+
     public List<GuiComponentTab> tabs;
 
     @Override

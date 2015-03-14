@@ -1,6 +1,7 @@
 package com.dyonovan.modernalchemy.client.gui.machines;
 
 import com.dyonovan.modernalchemy.client.gui.GuiBaseConfigurableSlots;
+import com.dyonovan.modernalchemy.client.gui.INeiProvider;
 import com.dyonovan.modernalchemy.client.gui.StandardPalette;
 import com.dyonovan.modernalchemy.common.container.machines.ContainerAdvancedCrafter;
 import com.dyonovan.modernalchemy.client.gui.components.GuiComponentArrowProgress;
@@ -26,7 +27,7 @@ import openmods.utils.render.FakeIcon;
 
 import java.util.ArrayList;
 
-public class GuiAdvancedCrafter extends GuiBaseConfigurableSlots<TileAdvancedCrafter, ContainerAdvancedCrafter, TileAdvancedCrafter.AUTO_SLOTS> {
+public class GuiAdvancedCrafter extends GuiBaseConfigurableSlots<TileAdvancedCrafter, ContainerAdvancedCrafter, TileAdvancedCrafter.AUTO_SLOTS> implements INeiProvider{
 
     GuiComponentToolTip rfTip;
     GuiComponentArrowProgress progress;
@@ -34,6 +35,7 @@ public class GuiAdvancedCrafter extends GuiBaseConfigurableSlots<TileAdvancedCra
 
     public GuiAdvancedCrafter(ContainerAdvancedCrafter container) {
         super(container, 176, 166, "tile.modernalchemy.blockAdvancedCrafter.name");
+        setArrowLocation(113, 33, 24, 15);
     }
 
     @Override
@@ -117,5 +119,10 @@ public class GuiAdvancedCrafter extends GuiBaseConfigurableSlots<TileAdvancedCra
             default:
                 throw MiscUtils.unhandledEnum(slot);
         }
+    }
+
+    @Override
+    public String getNeiLabel() {
+        return "modernalchemy.advancedCrafter.recipes";
     }
 }

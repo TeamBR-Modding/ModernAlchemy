@@ -59,7 +59,7 @@ public abstract class BaseGui extends GuiContainer {
         if(mouseX >= guiLeft + arrowLoc.x && mouseX <= guiLeft + arrowLoc.x + arrowLoc.width &&
                 mouseY >= guiTop + arrowLoc.y && mouseY <= guiTop + arrowLoc.y + arrowLoc.height &&
                 ModernAlchemy.nei != null) {
-            ModernAlchemy.nei.onArrowClicked(parent);
+            ModernAlchemy.nei.onArrowClicked(this);
         }
         super.mouseClicked(mouseX, mouseY, button);
     }

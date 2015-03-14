@@ -1,6 +1,7 @@
 package com.dyonovan.modernalchemy.client.gui.machines;
 
 import com.dyonovan.modernalchemy.client.gui.GuiBaseConfigurableSlots;
+import com.dyonovan.modernalchemy.client.gui.INeiProvider;
 import com.dyonovan.modernalchemy.client.gui.StandardPalette;
 import com.dyonovan.modernalchemy.common.container.machines.ContainerAmalgamator;
 import com.dyonovan.modernalchemy.client.gui.components.GuiComponentArrowProgress;
@@ -16,13 +17,14 @@ import openmods.utils.MiscUtils;
 
 import java.util.ArrayList;
 
-public class GuiAmalgamator extends GuiBaseConfigurableSlots<TileAmalgamator, ContainerAmalgamator, TileAmalgamator.AUTO_SLOTS> {
+public class GuiAmalgamator extends GuiBaseConfigurableSlots<TileAmalgamator, ContainerAmalgamator, TileAmalgamator.AUTO_SLOTS> implements INeiProvider{
 
     GuiComponentToolTip tankTip;
     GuiComponentToolTip energyTip;
 
     public GuiAmalgamator(ContainerAmalgamator container) {
         super(container, 176, 166, "tile.modernalchemy.blockAmalgamator.name");
+        setArrowLocation(100, 37, 24, 15);
     }
 
     @Override
@@ -89,5 +91,10 @@ public class GuiAmalgamator extends GuiBaseConfigurableSlots<TileAmalgamator, Co
             default :
                 throw MiscUtils.unhandledEnum(slot);
         }
+    }
+
+    @Override
+    public String getNeiLabel() {
+        return "modernalchemy.solidifier.recipes";
     }
 }

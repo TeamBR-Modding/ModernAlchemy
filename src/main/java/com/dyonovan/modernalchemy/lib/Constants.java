@@ -1,7 +1,5 @@
 package com.dyonovan.modernalchemy.lib;
 
-import scala.sys.SystemProperties;
-
 public class Constants {
 
     public static final String MODID = "modernalchemy";
