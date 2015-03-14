@@ -5,7 +5,7 @@ import com.dyonovan.modernalchemy.gui.components.GuiComponentArrowProgress;
 import com.dyonovan.modernalchemy.gui.components.GuiComponentChangeIconButton;
 import com.dyonovan.modernalchemy.gui.components.GuiComponentRF;
 import com.dyonovan.modernalchemy.gui.components.GuiComponentToolTip;
-import com.dyonovan.modernalchemy.handlers.ItemHandler;
+import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.rpc.ILevelChanger;
 import com.dyonovan.modernalchemy.tileentity.machines.TileAdvancedCrafter;
@@ -14,7 +14,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import openmods.gui.GuiConfigurableSlots;
-import openmods.gui.component.*;
+import openmods.gui.component.BaseComponent;
+import openmods.gui.component.BaseComposite;
+import openmods.gui.component.GuiComponentLabel;
+import openmods.gui.component.GuiComponentTab;
 import openmods.gui.listener.IMouseDownListener;
 import openmods.gui.logic.ValueCopyAction;
 import openmods.utils.MiscUtils;
@@ -92,11 +95,10 @@ public class GuiAdvancedCrafter extends GuiConfigurableSlots<TileAdvancedCrafter
     protected GuiComponentTab createTab(TileAdvancedCrafter.AUTO_SLOTS slot) {
         switch(slot) {
             case output:
-                return new GuiComponentTab(StandardPalette.green.getColor(), new ItemStack(ItemHandler.itemReplicationMedium), 100, 100);
+                return new GuiComponentTab(StandardPalette.green.getColor(), new ItemStack(BlockHandler.blockAdvancedCrafter), 100, 100);
             default:
                 throw MiscUtils.unhandledEnum(slot);
         }
-
     }
 
     @Override

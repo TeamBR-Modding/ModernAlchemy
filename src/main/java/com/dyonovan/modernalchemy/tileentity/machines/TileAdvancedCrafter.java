@@ -11,6 +11,7 @@ import com.dyonovan.modernalchemy.crafting.RecipeAdvancedCrafter;
 import com.dyonovan.modernalchemy.energy.SyncableRF;
 import com.dyonovan.modernalchemy.gui.GuiAdvancedCrafter;
 import com.dyonovan.modernalchemy.rpc.ILevelChanger;
+import com.dyonovan.modernalchemy.tileentity.TileModernAlchemy;
 import com.dyonovan.modernalchemy.util.InventoryUtils;
 import com.dyonovan.teambrcore.helpers.GuiHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,7 +43,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-public class TileAdvancedCrafter extends SyncedTileEntity implements ILevelChanger, IEnergyHandler, IInventoryProvider, IHasGui, IConfigurableGuiSlots<TileAdvancedCrafter.AUTO_SLOTS> {
+public class TileAdvancedCrafter extends TileModernAlchemy implements ILevelChanger, IEnergyHandler, IInventoryProvider, IHasGui, IConfigurableGuiSlots<TileAdvancedCrafter.AUTO_SLOTS> {
 
     public enum AUTO_SLOTS {
         output
@@ -479,4 +480,8 @@ public class TileAdvancedCrafter extends SyncedTileEntity implements ILevelChang
         sync();
     }
 
+    @Override
+    public void onWrench(EntityPlayer player, int side) {
+
+    }
 }
