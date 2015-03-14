@@ -1,7 +1,7 @@
 package com.dyonovan.modernalchemy.handlers;
 
 import com.dyonovan.modernalchemy.ModernAlchemy;
-import com.dyonovan.modernalchemy.entities.EntityLaserNode;
+import com.dyonovan.modernalchemy.common.entities.EntityLaserNode;
 import com.dyonovan.modernalchemy.lib.Constants;
 import cpw.mods.fml.common.registry.EntityRegistry;
 

@@ -1,7 +1,7 @@
 package com.dyonovan.modernalchemy.network;
 
-import com.dyonovan.modernalchemy.audio.SoundHelper;
-import com.dyonovan.modernalchemy.tileentity.BaseMachine;
+import com.dyonovan.modernalchemy.client.audio.SoundHelper;
+import com.dyonovan.modernalchemy.common.tileentity.BaseMachine;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;

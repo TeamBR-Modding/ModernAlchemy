@@ -1,6 +1,6 @@
 package com.dyonovan.modernalchemy.util;
 
-import com.dyonovan.modernalchemy.container.GenericInventory;
+import com.dyonovan.modernalchemy.common.container.GenericInventory;
 import com.dyonovan.modernalchemy.crafting.OreDictStack;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
@@ -8,7 +8,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryLargeChest;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;

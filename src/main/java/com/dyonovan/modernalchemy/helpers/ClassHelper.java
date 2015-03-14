@@ -1,6 +1,6 @@
 package com.dyonovan.modernalchemy.helpers;
 
-import com.dyonovan.teambrcore.utils.FileUtils;
+import com.dyonovan.modernalchemy.util.FileUtils;
 
 import java.net.URL;
 import java.util.ArrayList;

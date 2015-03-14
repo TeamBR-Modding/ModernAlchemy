@@ -1,22 +1,27 @@
 package com.dyonovan.modernalchemy.handlers;
 
-import com.dyonovan.modernalchemy.container.*;
-import com.dyonovan.modernalchemy.gui.*;
-import com.dyonovan.modernalchemy.gui.config.GuiTeslaCoilLinks;
-import com.dyonovan.modernalchemy.manual.ManualRegistry;
-import com.dyonovan.modernalchemy.manual.pages.ContainerPage;
-import com.dyonovan.modernalchemy.tileentity.arcfurnace.TileArcFurnaceCore;
-import com.dyonovan.modernalchemy.tileentity.machines.TileAdvancedCrafter;
-import com.dyonovan.modernalchemy.tileentity.machines.TileAmalgamator;
-import com.dyonovan.modernalchemy.tileentity.machines.TileElectricBellows;
-import com.dyonovan.modernalchemy.tileentity.machines.TilePatternRecorder;
-import com.dyonovan.modernalchemy.tileentity.replicator.TileReplicatorCPU;
-import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
+import com.dyonovan.modernalchemy.client.gui.machines.GuiElectricBellows;
+import com.dyonovan.modernalchemy.client.gui.machines.GuiPatternRecorder;
+import com.dyonovan.modernalchemy.client.gui.machines.GuiReplicatorCPU;
+import com.dyonovan.modernalchemy.client.gui.machines.GuiTeslaCoil;
+import com.dyonovan.modernalchemy.common.container.*;
+import com.dyonovan.modernalchemy.client.gui.config.GuiTeslaCoilLinks;
+import com.dyonovan.modernalchemy.client.manual.ManualRegistry;
+import com.dyonovan.modernalchemy.client.manual.pages.ContainerPage;
+import com.dyonovan.modernalchemy.common.container.machines.ContainerElectricBellows;
+import com.dyonovan.modernalchemy.common.container.machines.ContainerPatternRecorder;
+import com.dyonovan.modernalchemy.common.container.machines.ContainerReplicatorCpu;
+import com.dyonovan.modernalchemy.common.tileentity.machines.TileElectricBellows;
+import com.dyonovan.modernalchemy.common.tileentity.machines.TilePatternRecorder;
+import com.dyonovan.modernalchemy.common.tileentity.replicator.TileReplicatorCPU;
+import com.dyonovan.modernalchemy.common.tileentity.teslacoil.TileTeslaCoil;
+import com.dyonovan.modernalchemy.client.notification.GuiNotificationConfig;
 import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
 public class GuiHandler implements IGuiHandler {
+    public static final int NOTIFICATION_CONFIG_ID = 0;
     public static final int TESLA_COIL_GUI_ID = 1;
     public static final int ELECTRIC_BELLOWS_GUI_ID = 2;
     public static final int PATTERN_RECORDER_GUI_ID = 3;
@@ -39,8 +44,6 @@ public class GuiHandler implements IGuiHandler {
                 return new ContainerTeslaCoilLinks((TileTeslaCoil) world.getTileEntity(x, y, z));
             case MANUAL_GUI_ID :
                 return new ContainerPage();
-            /*case ADVANCED_FURNACE_GUI_ID:
-                return new ContainerAdvancedCrafter(player.inventory, (TileAdvancedCrafter) world.getTileEntity(x, y, z));*/
         }
         return null;
     }
@@ -48,6 +51,8 @@ public class GuiHandler implements IGuiHandler {
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         switch(ID) {
+            case NOTIFICATION_CONFIG_ID :
+                return new GuiNotificationConfig();
             case TESLA_COIL_GUI_ID :
                 return new GuiTeslaCoil((TileTeslaCoil) world.getTileEntity(x, y, z));
             case ELECTRIC_BELLOWS_GUI_ID:
@@ -60,8 +65,6 @@ public class GuiHandler implements IGuiHandler {
                 return new GuiTeslaCoilLinks((TileTeslaCoil) world.getTileEntity(x, y, z));
             case MANUAL_GUI_ID :
                 return ManualRegistry.instance.getOpenPage();
-            /*case ADVANCED_FURNACE_GUI_ID:
-                return new GuiAdvancedCrafter(player.inventory, (TileAdvancedCrafter) world.getTileEntity(x, y, z));*/
         }
         return null;
     }

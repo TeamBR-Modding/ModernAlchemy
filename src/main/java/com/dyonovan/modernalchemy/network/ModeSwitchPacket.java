@@ -1,6 +1,6 @@
 package com.dyonovan.modernalchemy.network;
 
-import com.dyonovan.modernalchemy.tileentity.machines.TileAdvancedCrafter;
+import com.dyonovan.modernalchemy.common.tileentity.machines.TileAdvancedCrafter;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;

@@ -1,6 +1,6 @@
 package com.dyonovan.modernalchemy.network;
 
-import com.dyonovan.modernalchemy.tileentity.teslacoil.TileTeslaCoil;
+import com.dyonovan.modernalchemy.common.tileentity.teslacoil.TileTeslaCoil;
 import com.dyonovan.modernalchemy.util.Location;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;

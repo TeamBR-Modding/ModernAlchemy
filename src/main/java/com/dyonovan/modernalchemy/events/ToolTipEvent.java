@@ -1,11 +1,11 @@
 package com.dyonovan.modernalchemy.events;
 
-import com.dyonovan.modernalchemy.items.ItemPattern;
-import com.dyonovan.modernalchemy.manual.pages.GuiManual;
+import com.dyonovan.modernalchemy.common.items.ItemPattern;
+import com.dyonovan.modernalchemy.client.manual.pages.GuiManual;
 import com.dyonovan.modernalchemy.util.ReplicatorUtils;
 import com.dyonovan.modernalchemy.util.ReplicatorValues;
-import com.dyonovan.teambrcore.gui.BaseGui;
-import com.dyonovan.teambrcore.helpers.GuiHelper;
+import com.dyonovan.modernalchemy.client.gui.BaseGui;
+import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;

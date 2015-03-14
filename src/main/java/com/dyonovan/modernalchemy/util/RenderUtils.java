@@ -1,6 +1,6 @@
 package com.dyonovan.modernalchemy.util;
 
-import com.dyonovan.modernalchemy.effects.LightningBolt;
+import com.dyonovan.modernalchemy.client.effects.LightningBolt;
 import com.dyonovan.modernalchemy.handlers.PacketHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.network.RenderLightningBoltPacket;

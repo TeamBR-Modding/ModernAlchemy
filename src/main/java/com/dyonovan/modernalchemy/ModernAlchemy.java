@@ -1,10 +1,16 @@
 package com.dyonovan.modernalchemy;
 
-import com.dyonovan.modernalchemy.achievement.ModAchievements;
+import com.dyonovan.modernalchemy.client.achievement.AchievementRegistry;
+import com.dyonovan.modernalchemy.client.achievement.ModAchievements;
 import com.dyonovan.modernalchemy.handlers.*;
+import com.dyonovan.modernalchemy.helpers.KeyInputHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
-import com.dyonovan.modernalchemy.rpc.ILevelChanger;
+import com.dyonovan.modernalchemy.client.rpc.ILevelChanger;
 import com.dyonovan.modernalchemy.util.ReplicatorUtils;
+import com.dyonovan.modernalchemy.client.notification.NotificationHelper;
+import com.dyonovan.modernalchemy.client.notification.NotificationKeyBinding;
+import com.dyonovan.modernalchemy.client.notification.NotificationTickHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -37,8 +43,8 @@ public class ModernAlchemy {
 
     public static final DamageSource shock = new DamageSource("shock").setFireDamage().setDamageBypassesArmor();
 
-    @SidedProxy(clientSide = "com.dyonovan." + Constants.MODID + ".proxy.ClientProxy",
-            serverSide = "com.dyonovan." + Constants.MODID + ".proxy.CommonProxy")
+    @SidedProxy(clientSide = "com.dyonovan." + Constants.MODID + ".client.ClientProxy",
+            serverSide = "com.dyonovan." + Constants.MODID + ".common.CommonProxy")
 
     public static IProxy proxy;
 
@@ -54,6 +60,14 @@ public class ModernAlchemy {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event){
+
+        if(event.getSide() == Side.CLIENT) {
+            FMLCommonHandler.instance().bus().register(new NotificationTickHandler());
+            NotificationHelper.notificationConfig = new Configuration(new File(event.getModConfigurationDirectory().getAbsolutePath() + File.separator  + "TeamBR" + File.separator + "NotificationsSettings.cfg"));
+            NotificationHelper.notificationXPos = NotificationHelper.notificationConfig.getInt("notification xpos", "notifications", 1, 0, 2, "0: Left\n1: Center\n2: Right");
+            NotificationHelper.notificationConfig.save();
+        }
+        AchievementRegistry.instance = new AchievementRegistry();
 
         ConfigHandler.init(new Configuration(new File(event.getModConfigurationDirectory().getAbsolutePath() + File.separator + Constants.MODID.toLowerCase() + File.separator + "general.properties")));
         BlockHandler.preInit();
@@ -80,6 +94,12 @@ public class ModernAlchemy {
     @EventHandler
     public void init(FMLInitializationEvent event) {
 
+        if(event.getSide() == Side.CLIENT)
+        {
+            NotificationKeyBinding.init();
+        }
+        FMLCommonHandler.instance().bus().register(new KeyInputHelper());
+
         if (OreDictionary.getOres("oreCopper").isEmpty()) {
             BlockHandler.initCopper();
             ItemHandler.initCopper();
@@ -91,7 +111,7 @@ public class ModernAlchemy {
         WorldGeneratorHandler.init();
         CraftingHandler.init();
         PacketHandler.initPackets();
-        FMLInterModComms.sendMessage("Waila", "register", "com.dyonovan.modernalchemy.waila.WailaDataProvider.callbackRegister");
+        FMLInterModComms.sendMessage("Waila", "register", "com.dyonovan.modernalchemy.client.waila.WailaDataProvider.callbackRegister");
 
         proxy.init();
         proxy.registerRenderInformation();

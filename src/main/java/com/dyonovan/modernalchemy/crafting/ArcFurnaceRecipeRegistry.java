@@ -33,7 +33,7 @@ public class ArcFurnaceRecipeRegistry {
     /**
      * Get the fluid output of a given item
      * @param input The item to check {@link net.minecraft.item.Item}
-     * @return Output value in mb {@link com.dyonovan.modernalchemy.blocks.fluids.BlockFluidActinium}
+     * @return Output value in mb {@link com.dyonovan.modernalchemy.common.blocks.fluids.BlockFluidActinium}
      */
     public int getReturn(Item input) {
         for(RecipeArcFurnace recipe : recipes) {

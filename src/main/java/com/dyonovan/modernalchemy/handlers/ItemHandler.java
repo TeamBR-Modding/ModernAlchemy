@@ -1,8 +1,8 @@
 package com.dyonovan.modernalchemy.handlers;
 
-import com.dyonovan.modernalchemy.items.*;
-import com.dyonovan.modernalchemy.items.buckets.ItemBucketActinium;
-import com.dyonovan.modernalchemy.manual.ItemManual;
+import com.dyonovan.modernalchemy.common.items.*;
+import com.dyonovan.modernalchemy.common.items.buckets.ItemBucketActinium;
+import com.dyonovan.modernalchemy.client.manual.ItemManual;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;

@@ -1,7 +1,7 @@
 package com.dyonovan.modernalchemy.util;
 
 import com.dyonovan.modernalchemy.ModernAlchemy;
-import com.dyonovan.modernalchemy.items.ItemFaradayArmor;
+import com.dyonovan.modernalchemy.common.items.ItemFaradayArmor;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
