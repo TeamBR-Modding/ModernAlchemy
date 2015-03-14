@@ -1,22 +1,30 @@
 package com.dyonovan.modernalchemy.gui;
 
 import com.dyonovan.modernalchemy.container.ContainerAdvancedCrafter;
+import com.dyonovan.modernalchemy.gui.components.GuiComponentArrowProgress;
+import com.dyonovan.modernalchemy.gui.components.GuiComponentChangeIconButton;
 import com.dyonovan.modernalchemy.gui.components.GuiComponentRF;
+import com.dyonovan.modernalchemy.gui.components.GuiComponentToolTip;
+import com.dyonovan.modernalchemy.handlers.ItemHandler;
+import com.dyonovan.modernalchemy.lib.Constants;
+import com.dyonovan.modernalchemy.rpc.ILevelChanger;
 import com.dyonovan.modernalchemy.tileentity.machines.TileAdvancedCrafter;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
 import openmods.gui.GuiConfigurableSlots;
-import openmods.gui.component.BaseComposite;
-import openmods.gui.component.GuiComponentLabel;
-import openmods.gui.component.GuiComponentProgress;
-import openmods.gui.component.GuiComponentTab;
+import openmods.gui.component.*;
+import openmods.gui.listener.IMouseDownListener;
 import openmods.gui.logic.ValueCopyAction;
+import openmods.utils.MiscUtils;
+import openmods.utils.render.FakeIcon;
 
 public class GuiAdvancedCrafter extends GuiConfigurableSlots<TileAdvancedCrafter, ContainerAdvancedCrafter, TileAdvancedCrafter.AUTO_SLOTS> {
 
-    /*private TileAdvancedCrafter tile;
-    private ResourceLocation background = new ResourceLocation(Constants.MODID + ":textures/gui/ma_furnace.png");
-    int x, y;
-    MultiStateButton modeButton;*/
+    GuiComponentToolTip rfTip;
+    GuiComponentArrowProgress progress;
+    GuiComponentChangeIconButton buttonMode;
 
     public GuiAdvancedCrafter(ContainerAdvancedCrafter container) {
         super(container, 176, 166, "tile.modernalchemy.blockAdvancedCrafter.name");
@@ -28,121 +36,76 @@ public class GuiAdvancedCrafter extends GuiConfigurableSlots<TileAdvancedCrafter
     }
 
     @Override
-    protected void addCustomizations(BaseComposite root) {
+    public void preRender(float mouseX, float mouseY) {
+        super.preRender(mouseX, mouseY);
         TileAdvancedCrafter te = getContainer().getOwner();
 
-        GuiComponentProgress progress = new GuiComponentProgress(100, 37, te.requiredProcessTime.get());
-        addSyncUpdateListener(ValueCopyAction.create(te.getProgress(), progress.progressReceiver()));
-        root.addComponent(progress);
+        rfTip.setToolTip(te.getEnergyToolTip());
+        progress.setMaxProgress(te.requiredProcessTime.get());
+        progress.setProgress(te.getProgress().getValue());
 
-        GuiComponentRF energyLevel = new GuiComponentRF(15, 20, 30, 50);
-        addSyncUpdateListener(ValueCopyAction.create(te.getRFEnergyStorageProvider(), energyLevel.rfBankReciever()));
-        root.addComponent(energyLevel);
-    }
-
-    @Override
-    protected GuiComponentTab createTab(TileAdvancedCrafter.AUTO_SLOTS slot) {
-        return null;
-    }
-
-    @Override
-    protected GuiComponentLabel createLabel(TileAdvancedCrafter.AUTO_SLOTS slot) {
-        return null;
-    }
-
-    /*@SuppressWarnings("unchecked")
-    @Override
-    public void initGui() {
-        super.initGui();
-        this.buttonList.clear();
-        this.x = (width - xSize) / 2;
-        this.y = (height - ySize) / 2;
-        modeButton = new MultiStateButton(0, x + 38, y + 35, 16, 16, 4, "textures/gui/AC_states.png");
-        modeButton.setCurrentState(tile.currentMode);
-        this.buttonList.add(modeButton);
-    }
-
-    @Override
-    protected void actionPerformed(GuiButton button) {
-        switch (button.id) {
-            case 0:
-                modeButton.cycleIcon();
-                PacketHandler.net.sendToServer(new ModeSwitchPacket.UpdateMessage(
-                        modeButton.getState(), tile.xCoord, tile.yCoord, tile.zCoord));
+        switch (te.currentMode.get()) {
+            case TileAdvancedCrafter.ENRICH:
+                buttonMode.icon = FakeIcon.createSheetIcon(0, 0, 16, 16);
+                break;
+            case TileAdvancedCrafter.EXTRUDE:
+                buttonMode.icon = FakeIcon.createSheetIcon(16, 0, 32, 16);
+                break;
+            case TileAdvancedCrafter.BEND:
+                buttonMode.icon = FakeIcon.createSheetIcon(32, 0, 48, 16);
+                break;
+            case TileAdvancedCrafter.FURNACE:
+                buttonMode.icon = FakeIcon.createSheetIcon(48, 0, 64, 16);
                 break;
         }
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int par1, int par2)
-    {
-        final String invTitle =  "Advanced Crafter";
-        final String modeTitle = "Mode";
-        fontRendererObj.drawString(invTitle, (fontRendererObj.getStringWidth(invTitle) / 2), 6, 4210752);
-        fontRendererObj.drawString(modeTitle, 34, 26, 4210752);
-        fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 95, ySize - 96 + 2, 4210752);
-    }
+    protected void addCustomizations(BaseComposite root) {
+        final TileAdvancedCrafter te = getContainer().getOwner();
 
-    @Override
-    protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F); //Could do some fun colors and transparency here
-        this.mc.renderEngine.bindTexture(background);
-        drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
+        root.addComponent(progress = new GuiComponentArrowProgress(113, 33, 0));
+        root.addComponent(rfTip = new GuiComponentToolTip(15, 20, 20, 50));
 
-        //Render RF energy
-        int heightRF = tile.getEnergyStored(null) * 52 / tile.getMaxEnergyStored(null);
+        GuiComponentRF energyLevel = new GuiComponentRF(15, 20, 20, 50);
+        addSyncUpdateListener(ValueCopyAction.create(te.getRFEnergyStorageProvider(), energyLevel.rfBankReciever()));
+        root.addComponent(energyLevel);
 
-        Tessellator tessRF = Tessellator.instance;
-        tessRF.startDrawingQuads();
-        tessRF.addVertexWithUV(x + 8, y + 78, 0, 0.6875F, 0.35546875F);
-        tessRF.addVertexWithUV(x + 24, y + 78, 0, 0.75F, 0.35546875F);
-        tessRF.addVertexWithUV(x + 24, y + 78 - heightRF, 0, 0.75F, (float) (91 - heightRF) / 256); //256);
-        tessRF.addVertexWithUV(x + 8, y + 78 - heightRF, 0, 0.6875F, (float) (91 - heightRF) / 256);
-        tessRF.draw();
+        IIcon icon = FakeIcon.createSheetIcon(0, 0, 16, 16);
+        ResourceLocation resource = new ResourceLocation(Constants.MODID + ":textures/gui/AC_states.png");
 
-        //Draw Arrow
-        int arrow = tile.getProgressScaled(24);
-        drawTexturedModalRect(x + 107, y + 35, 176, 22, arrow, 17);
-
-        super.drawGuiContainerBackgroundLayer(f, i, j);
-    }
-
-    @Override
-    public void drawScreen(int mouseX, int mouseY, float par3) {
-        super.drawScreen(mouseX, mouseY, par3);
-        int x = (this.width - this.xSize) / 2;
-        int y = (this.height - this.ySize) / 2;
-        if (GuiHelper.isInBounds(mouseX, mouseY, x + 8, y + 26, x + 23, y + 77)) {
-            List<String> toolTip = new ArrayList<String>();
-            toolTip.add(GuiHelper.GuiColor.YELLOW + "Energy");
-            toolTip.add(tile.getEnergyStored(null) + "/" + tile.getMaxEnergyStored(null) + GuiHelper.GuiColor.RED + "RF");
-            renderToolTip(mouseX, mouseY, toolTip);
-        }
-        if (GuiHelper.isInBounds(mouseX, mouseY, x + 38, y + 35, x + 54, y + 93)) {
-            List<String> toolTip = new ArrayList<String>();
-            switch (modeButton.getState()) {
-                case 0 :
-                    toolTip.add("Enriching");
-                    break;
-                case 1 :
-                    toolTip.add("Extruding");
-                    break;
-                case 2 :
-                    toolTip.add("Bending");
-                    break;
-                case 3 :
-                    toolTip.add("Furnace Mode");
-                    break;
-                default:
-                    toolTip.add("Something is broken!");
+        final ILevelChanger rpc = te.createClientRpcProxy(ILevelChanger.class);
+        buttonMode = new GuiComponentChangeIconButton(40, 35, 0xFFFFFF, icon, resource);
+        buttonMode.setListener(new IMouseDownListener() {
+            @Override
+            public void componentMouseDown(BaseComponent component, int x, int y, int button) {
+                if (te.currentMode.get() == 3)
+                    rpc.changeLevel(0);
+                else
+                    rpc.changeLevel(te.currentMode.get() + 1);
             }
-            renderToolTip(mouseX, mouseY, toolTip);
-        }
+        });
+        root.addComponent(buttonMode);
     }
 
-    public void renderToolTip(int x, int y, List<String> strings)
-    {
-        drawHoveringText(strings, x, y, fontRendererObj);
+    @Override
+    protected GuiComponentTab createTab(TileAdvancedCrafter.AUTO_SLOTS slot) {
+        switch(slot) {
+            case output:
+                return new GuiComponentTab(StandardPalette.green.getColor(), new ItemStack(ItemHandler.itemReplicationMedium), 100, 100);
+            default:
+                throw MiscUtils.unhandledEnum(slot);
+        }
+
     }
-*/
+
+    @Override
+    protected GuiComponentLabel createLabel(TileAdvancedCrafter.AUTO_SLOTS slot) {
+        switch(slot) {
+            case output:
+                return new GuiComponentLabel(22, 82, "Item Control");
+            default:
+                throw MiscUtils.unhandledEnum(slot);
+        }
+    }
 }

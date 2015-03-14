@@ -3,6 +3,7 @@ package com.dyonovan.modernalchemy;
 import com.dyonovan.modernalchemy.achievement.ModAchievements;
 import com.dyonovan.modernalchemy.handlers.*;
 import com.dyonovan.modernalchemy.lib.Constants;
+import com.dyonovan.modernalchemy.rpc.ILevelChanger;
 import com.dyonovan.modernalchemy.util.ReplicatorUtils;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -23,6 +24,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import openmods.OpenMods;
 import openmods.api.IProxy;
 import openmods.config.game.ModStartupHelper;
+import openmods.network.rpc.RpcCallDispatcher;
 
 import java.io.File;
 
@@ -70,6 +72,8 @@ public class ModernAlchemy {
 
         ModAchievements.instance = new ModAchievements();
         proxy.preInit();
+
+        RpcCallDispatcher.INSTANCE.startRegistration().registerInterface(ILevelChanger.class);
     }
 
     @SuppressWarnings("unused")

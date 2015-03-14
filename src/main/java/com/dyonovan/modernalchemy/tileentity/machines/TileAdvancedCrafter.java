@@ -10,10 +10,11 @@ import com.dyonovan.modernalchemy.crafting.OreDictStack;
 import com.dyonovan.modernalchemy.crafting.RecipeAdvancedCrafter;
 import com.dyonovan.modernalchemy.energy.SyncableRF;
 import com.dyonovan.modernalchemy.gui.GuiAdvancedCrafter;
+import com.dyonovan.modernalchemy.rpc.ILevelChanger;
 import com.dyonovan.modernalchemy.util.InventoryUtils;
+import com.dyonovan.teambrcore.helpers.GuiHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,7 +24,6 @@ import openmods.api.IHasGui;
 import openmods.api.IValueProvider;
 import openmods.api.IValueReceiver;
 import openmods.gui.misc.IConfigurableGuiSlots;
-import openmods.include.IncludeInterface;
 import openmods.inventory.GenericInventory;
 import openmods.inventory.IInventoryProvider;
 import openmods.inventory.TileEntityInventory;
@@ -42,7 +42,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-public class TileAdvancedCrafter extends SyncedTileEntity implements IEnergyHandler, IInventoryProvider, IHasGui, IConfigurableGuiSlots<TileAdvancedCrafter.AUTO_SLOTS> {
+public class TileAdvancedCrafter extends SyncedTileEntity implements ILevelChanger, IEnergyHandler, IInventoryProvider, IHasGui, IConfigurableGuiSlots<TileAdvancedCrafter.AUTO_SLOTS> {
 
     public enum AUTO_SLOTS {
         output
@@ -76,9 +76,6 @@ public class TileAdvancedCrafter extends SyncedTileEntity implements IEnergyHand
 
     private final GenericInventory inventory = registerInventoryCallback(new TileEntityInventory(this, "advancedcrafter", true, 5));
 
-    @IncludeInterface(ISidedInventory.class)
-    private final SidedInventoryAdapter sided = new SidedInventoryAdapter(inventory);
-
     private List<Object> currentRecipe;
     private ArrayList<Integer> furnaceSlot;
 
@@ -86,8 +83,9 @@ public class TileAdvancedCrafter extends SyncedTileEntity implements IEnergyHand
 
 
     public TileAdvancedCrafter() {
-        sided.registerSlot(0, sideOut, false, true);
-        sided.registerSlots(1, 4, sideIn, true, false);
+        SidedInventoryAdapter sided = new SidedInventoryAdapter(inventory);
+        sided.registerSlots(0, 4, sideIn, true, false);
+        sided.registerSlot(4, sideOut, false, true);
 
         furnaceSlot = new ArrayList<>();
         currentRecipe = new ArrayList<>();
@@ -125,7 +123,7 @@ public class TileAdvancedCrafter extends SyncedTileEntity implements IEnergyHand
                 if (inventory.getStackInSlot(i) != null) {
                     outputItem.set(FurnaceRecipes.smelting().getSmeltingResult(inventory.getStackInSlot(i)));
                     //Check if there is a recipe
-                    if (outputItem == null) continue;
+                    if (outputItem.get() == null) continue;
                     //Return false if item in output is differrent then smelting result
                     if (inventory.getStackInSlot(4) != null && !inventory.getStackInSlot(4).isItemEqual(outputItem.get())) continue;
 
@@ -150,6 +148,7 @@ public class TileAdvancedCrafter extends SyncedTileEntity implements IEnergyHand
                     qtyOutput.set(count);
                     requiredProcessTime.set(200);
                     furnaceSlot.add(i);
+                    sync();
                     return true;
                 }
             }
@@ -212,6 +211,7 @@ public class TileAdvancedCrafter extends SyncedTileEntity implements IEnergyHand
                     }
                     this.requiredProcessTime.set(recipe.getProcessTime());
                     this.qtyOutput.set(recipe.getQtyOutput());
+                    sync();
                     return true;
                 }
             }
@@ -386,18 +386,20 @@ public class TileAdvancedCrafter extends SyncedTileEntity implements IEnergyHand
 
         if (inventory.getStackInSlot(0) == null && inventory.getStackInSlot(1) == null &&
                 inventory.getStackInSlot(2) == null && inventory.getStackInSlot(3) == null && currentProcessTime.get() == 0) return;
-        coolDown--;
+        if (coolDown > 0) coolDown--;
         doSmelt();
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
+        inventory.readFromNBT(tag);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
+        inventory.writeToNBT(tag);
     }
 
     /*******************************************************************************************************************
@@ -444,6 +446,13 @@ public class TileAdvancedCrafter extends SyncedTileEntity implements IEnergyHand
         return BitMapUtils.singleBitReceiver(bits, slot.ordinal());
     }
 
+    public List<String> getEnergyToolTip() {
+        List<String> toolTip = new ArrayList<>();
+        toolTip.add(GuiHelper.GuiColor.WHITE + "RF Energy");
+        toolTip.add("" + GuiHelper.GuiColor.YELLOW + energyRF.getValue().getEnergyStored() + "/" + energyRF.getValue().getMaxEnergyStored() + GuiHelper.GuiColor.RED + "RF");
+        return toolTip;
+    }
+
     @Override
     public Object getServerGui(EntityPlayer player) {
         return new ContainerAdvancedCrafter(player.inventory, this);
@@ -462,6 +471,12 @@ public class TileAdvancedCrafter extends SyncedTileEntity implements IEnergyHand
     @Override
     public IInventory getInventory() {
         return this.inventory;
+    }
+
+    @Override
+    public void changeLevel(int level) {
+        currentMode.set(level);
+        sync();
     }
 
 }
