@@ -402,7 +402,7 @@ public class TileArcFurnaceCore extends BaseCore implements IHasGui, IFluidHandl
             toolTip.add("" + GuiHelper.GuiColor.YELLOW + airTank.getFluidAmount() + "/" + airTank.getCapacity() + GuiHelper.GuiColor.BLUE + "mb");
         }
         else {
-            toolTip.add(GuiHelper.GuiColor.RED + "Empty");
+            toolTip.add(GuiHelper.GuiColor.YELLOW + "Requires Compressed Air");
         }
         return toolTip;
     }

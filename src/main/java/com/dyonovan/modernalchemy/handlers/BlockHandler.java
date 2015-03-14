@@ -72,9 +72,9 @@ public class BlockHandler implements BlockInstances{
     public static BlockDummyOutputValve blockArcFurnaceDummyOutputValve = new BlockDummyOutputValve();
 
     @RegisterBlock(name = "blockArcFurnaceDummyItemIO", tileEntity = TileDummyItemIO.class)
-    public static BlockDummyEnergyReceiver blockArcFurnaceDummyItemIO = new BlockDummyEnergyReceiver();
+    public static BlockItemIODummy blockArcFurnaceDummyItemIO = new BlockItemIODummy();
 
-    @RegisterBlock(name = "blockArcFurnaceDummyEnergyReciever", tileEntity = TileDummyEnergyReciever.class)
+    @RegisterBlock(name = "blockArcFurnaceDummyEnergy", tileEntity = TileDummyEnergyReciever.class)
     public static BlockDummyEnergyReceiver blockArcFurnaceDummyEnergy = new BlockDummyEnergyReceiver();
 
     public static List<Block> blockRegistry = new ArrayList<Block>();
