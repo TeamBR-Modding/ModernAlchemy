@@ -3,7 +3,7 @@ package com.dyonovan.modernalchemy.client.gui;
 import codechicken.nei.VisiblityData;
 import codechicken.nei.api.INEIGuiHandler;
 import codechicken.nei.api.TaggedInventoryArea;
-import com.dyonovan.teambrcore.TeamBRCore;
+import com.dyonovan.modernalchemy.ModernAlchemy;
 import cpw.mods.fml.common.Optional;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
@@ -37,7 +37,7 @@ public abstract class GuiBaseConfigurableSlots<T extends TileEntity&ISyncMapProv
         super.drawScreen(mouseX, mouseY, par3);
         if(arrowLoc != null && mouseX >= guiLeft + arrowLoc.x && mouseX <= guiLeft + arrowLoc.x + arrowLoc.width &&
                 mouseY >= guiTop + arrowLoc.y && mouseY <= guiTop + arrowLoc.y + arrowLoc.height &&
-                TeamBRCore.nei != null) {
+                ModernAlchemy.nei != null) {
             drawHoveringText(Arrays.asList("Recipes"), mouseX, mouseY, fontRendererObj);
         }
     }
@@ -47,8 +47,8 @@ public abstract class GuiBaseConfigurableSlots<T extends TileEntity&ISyncMapProv
     {
         if(arrowLoc != null && mouseX >= guiLeft + arrowLoc.x && mouseX <= guiLeft + arrowLoc.x + arrowLoc.width &&
                 mouseY >= guiTop + arrowLoc.y && mouseY <= guiTop + arrowLoc.y + arrowLoc.height &&
-                TeamBRCore.nei != null) {
-            TeamBRCore.nei.onArrowClicked(getContainer());
+                ModernAlchemy.nei != null) {
+            ModernAlchemy.nei.onArrowClicked(getContainer());
         }
         super.mouseClicked(mouseX, mouseY, button);
     }

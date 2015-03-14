@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy;
 
 import com.dyonovan.modernalchemy.client.achievement.AchievementRegistry;
 import com.dyonovan.modernalchemy.client.achievement.ModAchievements;
+import com.dyonovan.modernalchemy.client.nei.INEICallback;
 import com.dyonovan.modernalchemy.handlers.*;
 import com.dyonovan.modernalchemy.helpers.KeyInputHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
@@ -45,8 +46,9 @@ public class ModernAlchemy {
 
     @SidedProxy(clientSide = "com.dyonovan." + Constants.MODID + ".client.ClientProxy",
             serverSide = "com.dyonovan." + Constants.MODID + ".common.CommonProxy")
-
     public static IProxy proxy;
+
+    public static INEICallback nei;
 
     public static CreativeTabs tabModernAlchemy = new CreativeTabs("tabModernAlchemy") {
         @Override

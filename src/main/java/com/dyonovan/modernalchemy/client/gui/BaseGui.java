@@ -1,6 +1,6 @@
 package com.dyonovan.modernalchemy.client.gui;
 
-import com.dyonovan.teambrcore.TeamBRCore;
+import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.client.gui.widget.Widget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -48,7 +48,7 @@ public abstract class BaseGui extends GuiContainer {
         }
         if(mouseX >= guiLeft + arrowLoc.x && mouseX <= guiLeft + arrowLoc.x + arrowLoc.width &&
                 mouseY >= guiTop + arrowLoc.y && mouseY <= guiTop + arrowLoc.y + arrowLoc.height &&
-                TeamBRCore.nei != null) {
+                ModernAlchemy.nei != null) {
             renderToolTip(mouseX, mouseY, "Recipes");
         }
     }
@@ -58,8 +58,8 @@ public abstract class BaseGui extends GuiContainer {
     {
         if(mouseX >= guiLeft + arrowLoc.x && mouseX <= guiLeft + arrowLoc.x + arrowLoc.width &&
                 mouseY >= guiTop + arrowLoc.y && mouseY <= guiTop + arrowLoc.y + arrowLoc.height &&
-                TeamBRCore.nei != null) {
-            TeamBRCore.nei.onArrowClicked(parent);
+                ModernAlchemy.nei != null) {
+            ModernAlchemy.nei.onArrowClicked(parent);
         }
         super.mouseClicked(mouseX, mouseY, button);
     }

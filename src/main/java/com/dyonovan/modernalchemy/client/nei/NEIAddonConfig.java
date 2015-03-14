@@ -3,6 +3,7 @@ package com.dyonovan.modernalchemy.client.nei;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.client.nei.machines.RecipeHandlerAdvancedCrafter;
 import com.dyonovan.modernalchemy.client.nei.machines.RecipeHandlerArcFurnace;
 import com.dyonovan.modernalchemy.client.nei.machines.RecipeHandlerSolidifier;
@@ -16,6 +17,8 @@ public class NEIAddonConfig implements IConfigureNEI {
         registerHandler(new RecipeHandlerArcFurnace());
         registerHandler(new RecipeHandlerAdvancedCrafter());
         registerHandler(new RecipeHandlerSolidifier());
+
+        ModernAlchemy.nei = new NEICallback();
     }
 
     @Override

@@ -1,8 +1,7 @@
 package com.dyonovan.modernalchemy.client.notification;
 
 import com.dyonovan.modernalchemy.ModernAlchemy;
-import com.dyonovan.teambrcore.TeamBRCore;
-import com.dyonovan.teambrcore.managers.GuiManager;
+import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.config.Configuration;
@@ -19,7 +18,7 @@ public class NotificationHelper {
     public static void openConfigurationGui() {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         if(player != null)
-            player.openGui(ModernAlchemy.instance, GuiManager.NOTIFICATION_CONFIG_ID, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
+            player.openGui(ModernAlchemy.instance, GuiHandler.NOTIFICATION_CONFIG_ID, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
     }
 
     public static void set(String categoryName, String propertyName, int newValue) {
