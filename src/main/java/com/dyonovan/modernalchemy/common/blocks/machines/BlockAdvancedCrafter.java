@@ -1,6 +1,7 @@
 package com.dyonovan.modernalchemy.common.blocks.machines;
 
 import com.dyonovan.modernalchemy.ModernAlchemy;
+import com.dyonovan.modernalchemy.common.blocks.BlockModernAlchemy;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.client.ClientProxy;
 import cpw.mods.fml.relauncher.Side;
@@ -12,7 +13,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import openmods.block.BlockRotationMode;
 import openmods.block.OpenBlock;
 
-public class BlockAdvancedCrafter extends OpenBlock {
+public class BlockAdvancedCrafter extends BlockModernAlchemy {
 
     @SideOnly(Side.CLIENT)
     private static class Icons {
@@ -21,14 +22,7 @@ public class BlockAdvancedCrafter extends OpenBlock {
 
     public BlockAdvancedCrafter() {
         super(Material.iron);
-        this.setHardness(1.5F);
-        this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
         setRotationMode(BlockRotationMode.FOUR_DIRECTIONS);
-    }
-
-    @Override
-    public int getRenderType() {
-        return ClientProxy.renderId;
     }
 
     @SideOnly(Side.CLIENT)
@@ -42,10 +36,5 @@ public class BlockAdvancedCrafter extends OpenBlock {
         setTexture(ForgeDirection.WEST, Icons.side);
         setTexture(ForgeDirection.UP, Icons.side);
         setTexture(ForgeDirection.DOWN, Icons.side);
-    }
-
-    @Override
-    protected Object getModInstance() {
-        return ModernAlchemy.instance;
     }
 }

@@ -483,4 +483,9 @@ public class TileAdvancedCrafter extends TileModernAlchemy implements ILevelChan
     public void onWrench(EntityPlayer player, int side) {
 
     }
+
+    @Override
+    public boolean isActive() {
+        return currentProcessTime.get() > 0;
+    }
 }

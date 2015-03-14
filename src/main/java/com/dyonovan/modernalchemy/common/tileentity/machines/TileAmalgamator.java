@@ -146,10 +146,6 @@ public class TileAmalgamator extends TileModernAlchemy implements IInventoryProv
         return energyTank.getEnergyLevel() > 0;
     }
 
-    public int getCookTimeScaled(int scale) {
-        return timeProcessed.get() * scale / PROCESS_TIME;
-    }
-
     public IValueProvider<Integer> getProgress() {
         return timeProcessed;
     }
@@ -273,5 +269,10 @@ public class TileAmalgamator extends TileModernAlchemy implements IInventoryProv
     @Override
     public void onWrench(EntityPlayer player, int side) {
 
+    }
+
+    @Override
+    public boolean isActive() {
+        return timeProcessed.get() > 0;
     }
 }

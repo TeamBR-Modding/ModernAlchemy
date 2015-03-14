@@ -1,5 +1,6 @@
 package com.dyonovan.modernalchemy.client.audio;
 
+import com.dyonovan.modernalchemy.common.tileentity.TileModernAlchemy;
 import com.dyonovan.modernalchemy.handlers.ConfigHandler;
 import com.dyonovan.modernalchemy.common.tileentity.BaseMachine;
 import cpw.mods.fml.relauncher.Side;
@@ -11,9 +12,9 @@ import net.minecraft.util.ResourceLocation;
 @SideOnly(Side.CLIENT)
 public class MachineSound extends PositionedSound implements ITickableSound {
     protected boolean donePlaying = false;
-    private BaseMachine tileEntity;
+    private TileModernAlchemy tileEntity;
 
-    public MachineSound(ResourceLocation path, BaseMachine tileEntity, float volume, float pitch) {
+    public MachineSound(ResourceLocation path, TileModernAlchemy tileEntity, float volume, float pitch) {
         super(path);
         this.repeat = true;
         this.tileEntity = tileEntity;
@@ -25,7 +26,7 @@ public class MachineSound extends PositionedSound implements ITickableSound {
         this.field_147665_h = 0;
     }
 
-    public MachineSound(String path, BaseMachine tileEntity, float volume, float pitch) {
+    public MachineSound(String path, TileModernAlchemy tileEntity, float volume, float pitch) {
         this(new ResourceLocation(path), tileEntity, volume, pitch);
     }
 

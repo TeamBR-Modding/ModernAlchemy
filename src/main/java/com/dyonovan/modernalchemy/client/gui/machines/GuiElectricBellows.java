@@ -1,74 +1,91 @@
 package com.dyonovan.modernalchemy.client.gui.machines;
 
-import com.dyonovan.modernalchemy.client.gui.BaseGui;
+import com.dyonovan.modernalchemy.client.gui.GuiBaseConfigurableSlots;
+import com.dyonovan.modernalchemy.client.gui.StandardPalette;
+import com.dyonovan.modernalchemy.client.gui.components.GuiComponentTeslaBank;
+import com.dyonovan.modernalchemy.client.gui.components.GuiComponentToolTip;
 import com.dyonovan.modernalchemy.common.container.machines.ContainerElectricBellows;
-import com.dyonovan.modernalchemy.client.gui.widgets.WidgetEnergyBank;
-import com.dyonovan.modernalchemy.client.gui.widgets.WidgetPulse;
-import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.common.tileentity.machines.TileElectricBellows;
-import com.dyonovan.modernalchemy.client.gui.widget.WidgetLiquidTank;
-import com.dyonovan.modernalchemy.helpers.GuiHelper;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
+import com.dyonovan.modernalchemy.handlers.BlockHandler;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
+import openmods.gui.component.BaseComposite;
+import openmods.gui.component.GuiComponentLabel;
+import openmods.gui.component.GuiComponentTab;
+import openmods.gui.component.GuiComponentTankLevel;
+import openmods.gui.logic.ValueCopyAction;
+import openmods.utils.MiscUtils;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class GuiElectricBellows extends BaseGui {
+public class GuiElectricBellows extends GuiBaseConfigurableSlots<TileElectricBellows, ContainerElectricBellows, TileElectricBellows.AutoSlots> {
 
-    private ResourceLocation background = new ResourceLocation(Constants.MODID + ":textures/gui/compressor.png");
-    private TileElectricBellows tile;
+    GuiComponentToolTip tankTip;
+    GuiComponentToolTip energyTip;
 
-    public GuiElectricBellows(TileElectricBellows tile) {
-        super(new ContainerElectricBellows(tile));
-        this.tile = tile;
-        this.xSize = 108;
-        this.ySize = 86;
-
-        widgets.add(new WidgetLiquidTank(this, this.tile.tank, 81, 78, 52));
-        widgets.add(new WidgetEnergyBank(this, this.tile.getEnergyBank(), 12, 78));
-        widgets.add(new WidgetPulse(this, tile, 42, 58));
-    }
-
-    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-
-        final String title1 = "Electric";
-        final String title2 = "Bellows";
-        fontRendererObj.drawString(title1, (108 - fontRendererObj.getStringWidth(title1)) / 2, 4, 4210752);
-        fontRendererObj.drawString(title2, (108 - fontRendererObj.getStringWidth(title2)) / 2, 14, 4210752);
+    public GuiElectricBellows(ContainerElectricBellows container) {
+        super(container, 150, 120, "tile.modernalchemy.blockElectricBellows.name");
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.bindTexture(background);
-        int x = (width - xSize) / 2;
-        int y = (height - ySize) / 2;
-        drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
-
-        super.drawGuiContainerBackgroundLayer(f, i, j);
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        String machineName = StatCollector.translateToLocal(name);
+        int x = this.xSize / 2 - (fontRendererObj.getStringWidth(machineName) / 2);
+        fontRendererObj.drawString(machineName, x, 6, 4210752);
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float f) {
-        super.drawScreen(mouseX, mouseY, f);
-        int x = (this.width - this.xSize) / 2;
-        int y = (this.height - this.ySize) / 2;
+    protected Iterable<TileElectricBellows.AutoSlots> getSlots() {
+        return ImmutableList.of(TileElectricBellows.AutoSlots.fluid);
+    }
 
-        //Render RF Energy Tooltip
-        if(GuiHelper.isInBounds(mouseX, mouseY, x + 11, y + 26, x + 29, y + 77)) {
-            List<String> toolTip = new ArrayList<String>();
-            toolTip.add(GuiHelper.GuiColor.YELLOW + "Energy");
-            toolTip.add(tile.getEnergyBank().getEnergyLevel() + "/" + tile.getEnergyBank().getMaxCapacity() + GuiHelper.GuiColor.ORANGE + "T");
-            renderToolTip(mouseX, mouseY, toolTip);
+    @Override
+    public void preRender(float mouseX, float mouseY) {
+        super.preRender(mouseX, mouseY);
+        TileElectricBellows tileAmalgamator = getContainer().getOwner();
+
+        tankTip.setToolTip(tileAmalgamator.getFluidToolTip());
+        energyTip.setToolTip(tileAmalgamator.getEnergyToolTip());
+    }
+
+    @Override
+    protected void addCustomizations(BaseComposite root) {
+        TileElectricBellows tile = getContainer().getOwner();
+
+        GuiComponentTankLevel tank = new GuiComponentTankLevel(35, 20, 105, 90, TileElectricBellows.TANK_CAPACITY);
+        addSyncUpdateListener(ValueCopyAction.create(tile.getFluidProvider(), tank.fluidReceiver()));
+        root.addComponent(tank);
+
+        GuiComponentTeslaBank energy = new GuiComponentTeslaBank(10, 20, 15, 90);
+        addSyncUpdateListener(ValueCopyAction.create(tile.getTeslaBankProvider(), energy.teslaBankReciever()));
+        root.addComponent(energy);
+
+        root.addComponent(energyTip = new GuiComponentToolTip(10, 20, 15, 90));
+        root.addComponent(tankTip = new GuiComponentToolTip(35, 20, 105, 90));
+    }
+
+    @Override
+    protected GuiComponentTab createTab(TileElectricBellows.AutoSlots slot) {
+        if(tabs == null)
+            tabs = new ArrayList<>();
+        switch (slot) {
+            case fluid:
+                GuiComponentTab tab = new GuiComponentTab(StandardPalette.blue.getColor(), new ItemStack(BlockHandler.blockElectricBellows), 100, 100);
+                tabs.add(tab);
+                return tab;
+            default :
+                throw MiscUtils.unhandledEnum(slot);
         }
-        //Render Tank Tooltip
-        if(GuiHelper.isInBounds(mouseX, mouseY, x + 80, y + 26, x + 98, y + 77)) {
-            List<String> toolTip = new ArrayList<String>();
-            toolTip.add(GuiHelper.GuiColor.YELLOW + "Compressed Air");
-            toolTip.add(tile.tank.getFluidAmount() + "/" + tile.tank.getCapacity() + GuiHelper.GuiColor.ORANGE + "mb");
-            renderToolTip(mouseX, mouseY, toolTip);
+    }
+
+    @Override
+    protected GuiComponentLabel createLabel(TileElectricBellows.AutoSlots slot) {
+        switch (slot) {
+            case fluid :
+                return new GuiComponentLabel(22, 82, "Auto-Export");
+            default :
+                throw MiscUtils.unhandledEnum(slot);
         }
     }
 }

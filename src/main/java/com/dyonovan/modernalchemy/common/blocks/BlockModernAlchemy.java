@@ -17,7 +17,7 @@ public abstract class BlockModernAlchemy extends OpenBlock {
         return ModernAlchemy.instance;
     }
 
-    /* Will implement when fully converted
+    /* TODO: Will implement when fully converted
     public boolean useWrench(World world, int x, int y, int z) {
         if (!world.isRemote) {
             if (this instanceof BlockTeslaBase || this instanceof BlockTeslaStand) {

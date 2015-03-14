@@ -1,5 +1,6 @@
 package com.dyonovan.modernalchemy.client.audio;
 
+import com.dyonovan.modernalchemy.common.tileentity.TileModernAlchemy;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.common.tileentity.BaseMachine;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -19,7 +20,7 @@ public class SoundHelper {
     }
 
     @SideOnly(Side.CLIENT)
-    public static void playMachineSound(String soundName, BaseMachine machine, float volume, float pitch) {
+    public static void playMachineSound(String soundName, TileModernAlchemy machine, float volume, float pitch) {
         ISound eventHorizonSound = new MachineSound(soundName, machine, volume, pitch);
         Minecraft.getMinecraft().getSoundHandler().playSound(eventHorizonSound);
     }

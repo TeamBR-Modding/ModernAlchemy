@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy.network;
 
 import com.dyonovan.modernalchemy.client.audio.SoundHelper;
 import com.dyonovan.modernalchemy.common.tileentity.BaseMachine;
+import com.dyonovan.modernalchemy.common.tileentity.TileModernAlchemy;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
@@ -15,7 +16,7 @@ public class MachineSoundPacket implements IMessageHandler<MachineSoundPacket.Ma
     @Override
     public IMessage onMessage(MachineSoundMessage message, MessageContext ctx) {
         if(ctx.side.isClient()) {
-            SoundHelper.playMachineSound(message.name, (BaseMachine) Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z), message.volume, message.pitch);
+            SoundHelper.playMachineSound(message.name, (TileModernAlchemy) Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z), message.volume, message.pitch);
         }
         return null;
     }

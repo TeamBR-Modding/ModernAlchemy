@@ -18,6 +18,11 @@ public class TileDummy extends TileModernAlchemy implements IIconProvider, IHasG
 
     }
 
+    @Override
+    public boolean isActive() {
+        return false;
+    }
+
     /*
     @Override
     public void returnWailaHead(List<String> head) {

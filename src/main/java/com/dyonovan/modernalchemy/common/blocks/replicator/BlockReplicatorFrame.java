@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy.common.blocks.replicator;
 
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.client.ClientProxy;
+import com.dyonovan.modernalchemy.common.blocks.BlockModernAlchemy;
 import com.dyonovan.modernalchemy.util.Location;
 import com.dyonovan.modernalchemy.util.WorldUtils;
 import cpw.mods.fml.relauncher.Side;
@@ -23,20 +24,14 @@ import openmods.block.OpenBlock;
 import java.util.Arrays;
 import java.util.List;
 
-public class BlockReplicatorFrame extends OpenBlock {
+public class BlockReplicatorFrame extends BlockModernAlchemy {
 
     private static final float PIPE_MIN_POS = 0.2F;
     private static final float PIPE_MAX_POS = 0.8F;
 
     public BlockReplicatorFrame() {
         super(Material.iron);
-        this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
         setRenderMode(RenderMode.TESR_ONLY);
-    }
-
-    @Override
-    public int getRenderType() {
-        return ClientProxy.renderId;
     }
 
     @Override
@@ -221,14 +216,14 @@ public class BlockReplicatorFrame extends OpenBlock {
     }
 
     static class RaytraceResult {
-    public final MovingObjectPosition movingObjectPosition;
-    public final AxisAlignedBB boundingBox;
-    public final ForgeDirection sideHit;
+        public final MovingObjectPosition movingObjectPosition;
+        public final AxisAlignedBB boundingBox;
+        public final ForgeDirection sideHit;
 
-    RaytraceResult(MovingObjectPosition movingObjectPosition, AxisAlignedBB boundingBox, ForgeDirection side) {
-        this.movingObjectPosition = movingObjectPosition;
-        this.boundingBox = boundingBox;
-        this.sideHit = side;
+        RaytraceResult(MovingObjectPosition movingObjectPosition, AxisAlignedBB boundingBox, ForgeDirection side) {
+            this.movingObjectPosition = movingObjectPosition;
+            this.boundingBox = boundingBox;
+            this.sideHit = side;
+        }
     }
-}
 }
