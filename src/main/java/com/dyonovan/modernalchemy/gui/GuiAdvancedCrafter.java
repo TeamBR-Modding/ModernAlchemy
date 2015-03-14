@@ -52,13 +52,13 @@ public class GuiAdvancedCrafter extends GuiConfigurableSlots<TileAdvancedCrafter
                 buttonMode.icon = FakeIcon.createSheetIcon(0, 0, 16, 16);
                 break;
             case TileAdvancedCrafter.EXTRUDE:
-                buttonMode.icon = FakeIcon.createSheetIcon(16, 0, 32, 16);
+                buttonMode.icon = FakeIcon.createSheetIcon(16, 0, 16, 16);
                 break;
             case TileAdvancedCrafter.BEND:
-                buttonMode.icon = FakeIcon.createSheetIcon(32, 0, 48, 16);
+                buttonMode.icon = FakeIcon.createSheetIcon(32, 0, 16, 16);
                 break;
             case TileAdvancedCrafter.FURNACE:
-                buttonMode.icon = FakeIcon.createSheetIcon(48, 0, 64, 16);
+                buttonMode.icon = FakeIcon.createSheetIcon(48, 0, 16, 16);
                 break;
         }
     }

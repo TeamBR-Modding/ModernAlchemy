@@ -246,6 +246,7 @@ public class TileAmalgamator extends TileModernAlchemy implements IInventoryProv
             toolTip.add("" + GuiHelper.GuiColor.YELLOW + tank.getFluidAmount() + "/" + tank.getCapacity() + GuiHelper.GuiColor.BLUE + "mb");
         }
         else {
+            toolTip.add(GuiHelper.GuiColor.YELLOW + "Missing Actinium");
             toolTip.add(GuiHelper.GuiColor.RED + "Empty");
         }
         return toolTip;
