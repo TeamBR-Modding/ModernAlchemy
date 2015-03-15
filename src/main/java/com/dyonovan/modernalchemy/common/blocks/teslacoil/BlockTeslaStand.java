@@ -61,12 +61,12 @@ public class BlockTeslaStand extends BlockModernAlchemy {
         return false;
     }
 
+
     @Override
     public void breakBlock(World world, int x, int y, int z, Block par5, int par6)
     {
         Location location = new Location(x, y + 1, z);
         while(!world.isAirBlock(location.x, location.y, location.z)) {
-            //WorldUtils.breakBlock(world, location);
             world.setBlockToAir(location.x, location.y, location.z);
         }
         super.breakBlock(world, x, y, z, par5, par6);

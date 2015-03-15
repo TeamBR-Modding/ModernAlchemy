@@ -1,7 +1,17 @@
 package com.dyonovan.modernalchemy.common.blocks;
 
 import com.dyonovan.modernalchemy.ModernAlchemy;
+import com.dyonovan.modernalchemy.common.blocks.teslacoil.BlockTeslaBase;
+import com.dyonovan.modernalchemy.common.blocks.teslacoil.BlockTeslaCoil;
+import com.dyonovan.modernalchemy.common.blocks.teslacoil.BlockTeslaStand;
+import com.dyonovan.modernalchemy.helpers.WrenchHelper;
+import com.dyonovan.modernalchemy.util.Location;
+import com.dyonovan.modernalchemy.util.WorldUtils;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import openmods.block.OpenBlock;
 
 public abstract class BlockModernAlchemy extends OpenBlock {
@@ -17,7 +27,6 @@ public abstract class BlockModernAlchemy extends OpenBlock {
         return ModernAlchemy.instance;
     }
 
-    /* TODO: Will implement when fully converted
     public boolean useWrench(World world, int x, int y, int z) {
         if (!world.isRemote) {
             if (this instanceof BlockTeslaBase || this instanceof BlockTeslaStand) {
@@ -39,6 +48,15 @@ public abstract class BlockModernAlchemy extends OpenBlock {
         return true;
     }
 
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
+        if (player.isSneaking() && player.getCurrentEquippedItem() != null && WrenchHelper.isWrench(player.getCurrentEquippedItem().getItem())) {
+            useWrench(world, x, y, z);
+            return true;
+        }
+        return false;
+    }
+
     private void doBreak(World world, int x, int y, int z, int count) {
         if (count > 0) {
             for (int i = 0; i < count; i++) {
@@ -47,5 +65,4 @@ public abstract class BlockModernAlchemy extends OpenBlock {
             }
         }
     }
-    */
 }

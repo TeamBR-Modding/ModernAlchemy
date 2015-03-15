@@ -2,12 +2,16 @@ package com.dyonovan.modernalchemy.common.tileentity.teslacoil;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
+import com.dyonovan.modernalchemy.common.blocks.teslacoil.BlockTeslaBase;
 import com.dyonovan.modernalchemy.common.tileentity.TileModernAlchemy;
 import com.dyonovan.modernalchemy.energy.SyncableRF;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.common.tileentity.BaseTile;
 import com.dyonovan.modernalchemy.helpers.GuiHelper;
+import com.dyonovan.modernalchemy.util.Location;
+import com.dyonovan.modernalchemy.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;

@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy.events;
 
 import com.dyonovan.modernalchemy.client.achievement.ModAchievements;
 import com.dyonovan.modernalchemy.common.blocks.BlockBase;
+import com.dyonovan.modernalchemy.common.blocks.BlockModernAlchemy;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.handlers.ConfigHandler;
 import com.dyonovan.modernalchemy.helpers.WrenchHelper;
@@ -15,7 +16,7 @@ public class OnBreakEvent {
     @SubscribeEvent
     public void onBreakEvent(BlockEvent.BreakEvent event) {
 
-        if (event.block instanceof BlockBase && ConfigHandler.machineExplodes && !event.getPlayer().capabilities.isCreativeMode) {
+        if (event.block instanceof BlockModernAlchemy && ConfigHandler.machineExplodes && !event.getPlayer().capabilities.isCreativeMode) {
             if (event.getPlayer().getCurrentEquippedItem() != null) {
                 if (WrenchHelper.isWrench(event.getPlayer().getCurrentEquippedItem().getItem())) {
                     return;
