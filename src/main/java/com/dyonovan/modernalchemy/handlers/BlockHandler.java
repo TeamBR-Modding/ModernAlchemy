@@ -48,8 +48,9 @@ import java.util.List;
 public class BlockHandler implements BlockInstances{
 
     public static Fluid fluidActinium, fluidCompressedAir;
-    public static Block blockOreActinium, blockFluidActinium, blockFluidAir, blockReplicatorStand;
-    public static Block blockOreCopper;
+    public static Block  blockFluidActinium, blockFluidAir, blockReplicatorStand;
+
+    public static BlockOreCopper blockOreCopper;
 
     @RegisterBlock(name = "blockAmalgamator", tileEntity = TileAmalgamator.class)
     public static BlockAmalgamator blockAmalgamator;
@@ -99,7 +100,10 @@ public class BlockHandler implements BlockInstances{
     @RegisterBlock(name = "blockReplicatorCPU", tileEntity = TileReplicatorCPU.class)
     public static BlockReplicatorCPU blockReplicatorCPU = new BlockReplicatorCPU();
 
-    public static List<Block> blockRegistry = new ArrayList<>();
+    @RegisterBlock(name = "blockOreActinium")
+    public static BlockOreActinium blockOreActinium = new BlockOreActinium();
+
+    public static List<Block> blockRegistry = new ArrayList<Block>();
 
     public static void preInit() {
         //Actinium Fluid Registration
@@ -113,9 +117,6 @@ public class BlockHandler implements BlockInstances{
         FluidRegistry.registerFluid(fluidCompressedAir);
         blockFluidAir = new BlockFluidCompressedAir();
         GameRegistry.registerBlock(blockFluidAir, "blockFluidAir");
-
-        //Ore Actinium
-        registerBlock(blockOreActinium = new BlockOreActinium(), "blockOreActinium", null);
 
         //BlockCenterStand
         registerBlock(blockReplicatorStand = new BlockReplicatorStand(), "blockReplicatorStand", TileReplicatorStand.class);
