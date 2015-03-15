@@ -54,7 +54,7 @@ public abstract class BlockModernAlchemy extends OpenBlock {
             useWrench(world, x, y, z);
             return true;
         }
-        return false;
+        return super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
     }
 
     private void doBreak(World world, int x, int y, int z, int count) {
