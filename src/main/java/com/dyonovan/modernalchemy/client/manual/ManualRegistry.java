@@ -229,7 +229,7 @@ public class ManualRegistry {
         else if(component.type.equalsIgnoreCase("IMAGE"))
             goodComponent = new ComponentImage(component.resource);
         else if(component.type.equalsIgnoreCase("ITEM_RENDER"))
-            goodComponent = new ComponentItemRender(ReplicatorUtils.getReturn(component.item));
+            goodComponent = new ComponentItemRender(ReplicatorUtils.getReturn(component.item, 1));
         else if(component.type.equalsIgnoreCase("BREAK"))
             goodComponent = new ComponentLineBreak();
         else if(component.type.equalsIgnoreCase("LINK"))

@@ -72,6 +72,7 @@ public class TileReplicatorCPU extends TileModernAlchemy implements IInventoryPr
     private SyncableBoolean isActive;
     private SyncableFlags automaticSlots;
     private SyncableItemStack stackReturn;
+    private SyncableInt qtyReturn;
 
 
     protected TeslaBank energyTank;
@@ -79,6 +80,7 @@ public class TileReplicatorCPU extends TileModernAlchemy implements IInventoryPr
     private Location stand;
     private List<EntityLaserNode> listLaser;
 
+    @SuppressWarnings("FieldCanBeLocal")
     @IncludeInterface(ISidedInventory.class)
     private final SidedInventoryAdapter sided = new SidedInventoryAdapter(inventory);
 
@@ -94,6 +96,7 @@ public class TileReplicatorCPU extends TileModernAlchemy implements IInventoryPr
         isActive = new SyncableBoolean(false);
         automaticSlots = SyncableFlags.create(AUTO_SLOTS.values().length);
         stackReturn = new SyncableItemStack();
+        qtyReturn = new SyncableInt(1);
 
         energyTank = new TeslaBank(0, 1000);
         stand = new Location();
@@ -247,7 +250,10 @@ public class TileReplicatorCPU extends TileModernAlchemy implements IInventoryPr
                 if (Objects.equals(item.getValue(), "null")) {
                     item.setValue(inventory.getStackInSlot(1).getTagCompound().getString("Item"));
                     requiredProcessTime.set(inventory.getStackInSlot(1).getTagCompound().getInteger("Value"));
-                    stackReturn.set(ReplicatorUtils.getReturn(item.getValue()));
+                    qtyReturn.set(inventory.getStackInSlot(1).getTagCompound().getInteger("Qty"));
+                    stackReturn.set(ReplicatorUtils.getReturn(item.getValue(), qtyReturn.get()));
+                    if (inventory.getStackInSlot(OUTPUT) != null && inventory.getStackInSlot(OUTPUT).stackSize + qtyReturn.get() >
+                            inventory.getStackInSlot(OUTPUT).getMaxStackSize()) return;
                 }
                 if (inventory.getStackInSlot(2) != null && !(Objects.equals(item.getValue(), "null")) &&
                         stackReturn != null &&
@@ -280,7 +286,7 @@ public class TileReplicatorCPU extends TileModernAlchemy implements IInventoryPr
                     if(rand.nextInt(101) <= inventory.getStackInSlot(1).getTagCompound().getFloat("Quality")) {
                         if (inventory.getStackInSlot(2) == null) inventory.setInventorySlotContents(2, stackReturn.get());
                         else {
-                            inventory.getStackInSlot(2).stackSize += 1;
+                            inventory.getStackInSlot(2).stackSize += qtyReturn.get();
                         }
                         resetCounts();
                     }
@@ -305,8 +311,9 @@ public class TileReplicatorCPU extends TileModernAlchemy implements IInventoryPr
         currentProcessTime.set(0);
         requiredProcessTime.set(0);
         item.setValue("null");
-        stackReturn = null;
+        stackReturn.set(null);
         isActive.set(false);
+        qtyReturn.set(1);
     }
 
     private boolean canStartWork() {

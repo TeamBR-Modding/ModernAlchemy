@@ -149,7 +149,7 @@ public class TilePatternRecorder extends TileModernAlchemy implements IInventory
 
     private ItemStack recordPattern(String item) {
         ItemStack pattern = new ItemStack(ItemHandler.itemReplicatorPattern, 1);
-        ReplicatorValues values = ReplicatorUtils.getValueForItem(ReplicatorUtils.getReturn(item));
+        ReplicatorValues values = ReplicatorUtils.getValueForItem(ReplicatorUtils.getReturn(item, 1));
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("Item", item);
         tag.setInteger("Value", values.reqTicks);

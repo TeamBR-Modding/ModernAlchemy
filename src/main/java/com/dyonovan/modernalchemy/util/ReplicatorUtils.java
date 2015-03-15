@@ -143,15 +143,15 @@ public class ReplicatorUtils {
         return -1;
     }
 
-    public static ItemStack getReturn(String item) {
+    public static ItemStack getReturn(String item, int amount) {
         ItemStack stack;
         String itemReturn[] = item.split(":");
         if (GameRegistry.findItem(itemReturn[0], itemReturn[1]) != null) {
             Item objReturn = GameRegistry.findItem(itemReturn[0], itemReturn[1]);
-            stack = new ItemStack(objReturn, 1, Integer.valueOf(itemReturn[2]));
+            stack = new ItemStack(objReturn, amount, Integer.valueOf(itemReturn[2]));
         } else {
             Block objReturn = GameRegistry.findBlock(itemReturn[0], itemReturn[1]);
-            stack = new ItemStack(Item.getItemFromBlock(objReturn), 1, Integer.valueOf(itemReturn[2]));
+            stack = new ItemStack(Item.getItemFromBlock(objReturn), amount, Integer.valueOf(itemReturn[2]));
         }
         return stack;
     }
