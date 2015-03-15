@@ -88,13 +88,13 @@ public class CraftingHandler {
                 'D', "circuitAdvanced", 'E', ItemHandler.itemDenseCopperCoil));
 
         //Tesla Coil Top
-        GameRegistry.addRecipe(new ItemStack(BlockHandler.blockCoil), "ABA", "CDC", " D ",
+        GameRegistry.addRecipe(new ItemStack(BlockHandler.blockTeslaCoil), "ABA", "CDC", " D ",
                 'A', ItemHandler.itemDenseCopperCoil, 'B', Blocks.iron_bars, 'C', ItemHandler.itemCopperCoil,
                 'D', ItemHandler.itemSteelTube);
 
         //Super Tesla Coil Top
-        GameRegistry.addRecipe(new ItemStack(BlockHandler.blockSuperCoil), "AAA", "ABA", "AAA",
-                'A', BlockHandler.blockCoil, 'B',  ItemHandler.itemDenseCopperCoil);
+        GameRegistry.addRecipe(new ItemStack(BlockHandler.blockSuperTeslaCoil), "AAA", "ABA", "AAA",
+                'A', BlockHandler.blockTeslaCoil, 'B',  ItemHandler.itemDenseCopperCoil);
 
         //Tesla Coil Stand
         GameRegistry.addRecipe(new ItemStack(BlockHandler.blockTeslaStand), "ABA", "ABA", "ABA",

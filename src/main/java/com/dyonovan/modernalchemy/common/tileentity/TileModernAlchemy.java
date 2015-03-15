@@ -92,12 +92,12 @@ public abstract class TileModernAlchemy extends SyncedTileEntity {
         for(ITeslaProvider coil : coils) {
             if(coil instanceof TileTeslaCoil) {
                 if (((TileTeslaCoil)coil).linkedMachines.contains(new Location(xCoord, yCoord, zCoord)) || ((TileTeslaCoil)coil).linkedMachines.size() == 0) {
-                    if (((TileTeslaCoil)coil).getEnergyLevel() <= 0) continue; //fixes looking like its working when coil is empty
-                    int fill = ((TileTeslaCoil)coil).getEnergyLevel() > coil.getEnergyProvided() ? coil.getEnergyProvided() : ((TileTeslaCoil)coil).getEnergyLevel();
+                    if (((TileTeslaCoil)coil).energyTank.getEnergyLevel() <= 0) continue; //fixes looking like its working when coil is empty
+                    int fill = ((TileTeslaCoil)coil).energyTank.getEnergyLevel() > coil.getEnergyProvided() ? coil.getEnergyProvided() : ((TileTeslaCoil)coil).energyTank.getEnergyLevel();
                     if (currentDrain + fill > maxFill)
                         fill = maxFill - currentDrain;
                     currentDrain += fill;
-                    ((TileTeslaCoil)coil).drainEnergy(fill);
+                    ((TileTeslaCoil)coil).energyTank.drainEnergy(fill);
 
                     RenderUtils.sendBoltToClient(xCoord, yCoord, zCoord, (TileEntity) coil, fill);
                     WorldUtils.hurtEntitiesInRange(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, ((TileTeslaCoil) coil).xCoord + 0.5, ((TileTeslaCoil) coil).yCoord + 0.5, ((TileTeslaCoil) coil).zCoord + 0.5);

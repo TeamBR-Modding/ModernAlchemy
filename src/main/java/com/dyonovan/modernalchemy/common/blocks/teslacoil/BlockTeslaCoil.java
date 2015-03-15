@@ -2,6 +2,7 @@ package com.dyonovan.modernalchemy.common.blocks.teslacoil;
 
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.common.blocks.BlockBase;
+import com.dyonovan.modernalchemy.common.blocks.BlockModernAlchemy;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.common.tileentity.teslacoil.TileTeslaCoil;
@@ -17,14 +18,27 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class BlockTeslaCoil extends BlockBase {
+public class BlockTeslaCoil extends BlockModernAlchemy {
 
     public BlockTeslaCoil() {
         super(Material.iron);
-
-        this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
-        this.setBlockName(Constants.MODID + ":blockTeslaCoil");
         this.setBlockBounds(0.34375F, 0F, 0.34375F, 0.65625F, 0.9F, 0.65625F);
+        setRenderMode(RenderMode.TESR_ONLY);
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
+    @Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
+    @Override
+    public int getRenderType() {
+        return -1;
     }
 
     //We want the block to have particle effects, so we need to register a block icon even if we don't render it (try falling onto the block and you'll see)
@@ -42,49 +56,7 @@ public class BlockTeslaCoil extends BlockBase {
     }
 
     @Override
-    public boolean hasTileEntity(int metadata) {
-        return true;
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World world, int i) {
-        return new TileTeslaCoil();
-    }
-
-    @Override
-    public int getRenderType() {
-        return -1;
-    }
-
-    @Override
-    public boolean isOpaqueCube() {
-        return false;
-    }
-
-    @Override
-    public boolean renderAsNormalBlock() {
-        return false;
-    }
-
-    @Override
     public boolean canPlaceBlockAt(World world, int x, int y, int z) {
         return world.getBlock(x, y - 1, z) instanceof BlockTeslaStand;
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9)
-    {
-        super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
-
-        if (world.isRemote)
-        {
-            return true;
-        } else {
-            TileTeslaCoil tile = (TileTeslaCoil)world.getTileEntity(x, y, z);
-            if(tile != null) {
-                player.openGui(ModernAlchemy.instance, GuiHandler.TESLA_COIL_GUI_ID, world, x, y, z);
-            }
-            return true;
-        }
     }
 }

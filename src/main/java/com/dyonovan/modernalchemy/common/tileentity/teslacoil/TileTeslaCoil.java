@@ -3,7 +3,11 @@ package com.dyonovan.modernalchemy.common.tileentity.teslacoil;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import com.dyonovan.modernalchemy.ModernAlchemy;
+import com.dyonovan.modernalchemy.client.gui.machines.GuiTeslaCoil;
+import com.dyonovan.modernalchemy.common.container.ContainerTeslaCoil;
+import com.dyonovan.modernalchemy.common.tileentity.TileModernAlchemy;
 import com.dyonovan.modernalchemy.energy.ITeslaProvider;
+import com.dyonovan.modernalchemy.energy.SyncableRF;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.ConfigHandler;
 import com.dyonovan.modernalchemy.handlers.GuiHandler;
@@ -12,6 +16,7 @@ import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.network.UpdateServerCoilLists;
 import com.dyonovan.modernalchemy.common.tileentity.BaseMachine;
 import com.dyonovan.modernalchemy.util.Location;
+import com.sun.corba.se.impl.orbutil.concurrent.Sync;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,23 +24,33 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import openmods.api.IHasGui;
+import openmods.api.IValueProvider;
+import openmods.sync.SyncableBoolean;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TileTeslaCoil extends BaseMachine implements IEnergyHandler, ITeslaProvider {
+public class TileTeslaCoil extends TileModernAlchemy implements IEnergyHandler, ITeslaProvider, IHasGui {
 
-    protected EnergyStorage energyRF;
+    protected SyncableRF energyRF;
+    public TeslaBank energyTank;
+    protected SyncableBoolean isActive;
     public LinkedList<Location> rangeMachines;
     public LinkedList<Location> linkedMachines;
 
-
     public TileTeslaCoil() {
         super();
-        energyRF = new EnergyStorage(10000, 1000, 0);
+        rangeMachines = new LinkedList<>();
+        linkedMachines = new LinkedList<>();
+    }
+
+    @Override
+    protected void createSyncedFields() {
+        energyRF = new SyncableRF(new EnergyStorage(10000, 1000, 0));
         energyTank = new TeslaBank(1000);
-        rangeMachines = new LinkedList<Location>();
-        linkedMachines = new LinkedList<Location>();
+        isActive = new SyncableBoolean();
     }
 
     /*******************************************************************************************************************
@@ -76,9 +91,9 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler, ITesla
     }
 
     protected boolean doConvert() {
-        if (energyRF.getEnergyStored() > 0 && energyTank.getEnergyLevel()  < energyTank.getMaxCapacity()) {
-            isActive = true;
-            int actualRF = Math.min(ConfigHandler.maxCoilGenerate * ConfigHandler.rfPerTesla, energyRF.getEnergyStored());
+        if (energyRF.getValue().getEnergyStored() > 0 && energyTank.getEnergyLevel()  < energyTank.getMaxCapacity()) {
+            isActive.set(true);
+            int actualRF = Math.min(ConfigHandler.maxCoilGenerate * ConfigHandler.rfPerTesla, energyRF.getValue().getEnergyStored());
             int actualTesla = Math.min(ConfigHandler.maxCoilGenerate, energyTank.getMaxCapacity() - energyTank.getEnergyLevel());
 
             if (actualTesla * ConfigHandler.rfPerTesla < actualRF) {
@@ -93,7 +108,7 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler, ITesla
             }
             return true;
         }
-        isActive = false;
+        isActive.set(false);
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         return false;
     }
@@ -109,39 +124,31 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler, ITesla
 
     @Override
     public int receiveEnergy(ForgeDirection side, int maxReceive, boolean simulate) {
-        return energyRF.receiveEnergy(maxReceive, simulate);
+        return energyRF.getValue().receiveEnergy(maxReceive, simulate);
     }
 
     @Override
     public int extractEnergy(ForgeDirection forgeDirection, int maxReceive, boolean simulate) {
-        return energyRF.extractEnergy(maxReceive, simulate);
+        return energyRF.getValue().extractEnergy(maxReceive, simulate);
     }
 
     public void removeEnergy(int amount) {
-        energyRF.setEnergyStored(energyRF.getEnergyStored() - amount);
+        energyRF.getValue().setEnergyStored(energyRF.getValue().getEnergyStored() - amount);
     }
 
     @Override
     public int getEnergyStored(ForgeDirection forgeDirection) {
-        return energyRF.getEnergyStored();
-    }
-
-    public int getRFEnergyStored() {
-        return energyRF.getEnergyStored();
+        return energyRF.getValue().getEnergyStored();
     }
 
     @Override
     public int getMaxEnergyStored(ForgeDirection forgeDirection) {
-        return energyRF.getMaxEnergyStored();
-    }
-
-    public int getRFMaxEnergyStored() {
-        return energyRF.getMaxEnergyStored();
+        return energyRF.getValue().getMaxEnergyStored();
     }
 
     @Override
     public boolean canConnectEnergy(ForgeDirection side) {
-        return side == ForgeDirection.DOWN; //TODO Why BC Pipes dont update on load
+        return side == ForgeDirection.DOWN;
     }
 
     /*******************************************************************************************************************
@@ -156,9 +163,13 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler, ITesla
     }
 
     @Override
+    public boolean isActive() {
+        return isActive.get();
+    }
+
+    @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        energyRF.readFromNBT(tag);
         if (tag.hasKey("Links")) {
             NBTTagList nbtList = tag.getTagList("Links", 10);
             linkedMachines.clear();
@@ -186,7 +197,6 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler, ITesla
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        energyRF.writeToNBT(tag);
         if (linkedMachines.size() > 0) {
             NBTTagList nbtList = new NBTTagList();
             for (Location loc : linkedMachines) {
@@ -215,14 +225,55 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler, ITesla
     public void updateEntity() {
         super.updateEntity();
         if (worldObj.isRemote) return;
-        if(doConvert())
+        if(doConvert()) {
+            energyTank.markDirty();
+            energyRF.markDirty();
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            sync();
+        }
+    }
+
+    public IValueProvider<TeslaBank> getTeslaBankProvider() {
+        return energyTank;
+    }
+
+    public IValueProvider<EnergyStorage> getRFEnergyStorageProvider() {
+        return energyRF;
+    }
+
+    public List<String> getTeslaEnergyToolTip() {
+        List<String> toolTip = new ArrayList<>();
+        toolTip.add(GuiHelper.GuiColor.WHITE + "Energy Stored");
+        toolTip.add("" + GuiHelper.GuiColor.YELLOW + energyTank.getValue().getEnergyLevel() + "/" + energyTank.getValue().getMaxCapacity() + GuiHelper.GuiColor.BLUE + "T");
+        return toolTip;
+    }
+
+    public List<String> getEnergyToolTip() {
+        List<String> toolTip = new ArrayList<>();
+        toolTip.add(GuiHelper.GuiColor.WHITE + "RF Energy");
+        toolTip.add("" + GuiHelper.GuiColor.YELLOW + energyRF.getValue().getEnergyStored() + "/" + energyRF.getValue().getMaxEnergyStored() + GuiHelper.GuiColor.RED + "RF");
+        return toolTip;
+    }
+
+    @Override
+    public Object getServerGui(EntityPlayer player) {
+        return new ContainerTeslaCoil(player.inventory, this);
+    }
+
+    @Override
+    public Object getClientGui(EntityPlayer player) {
+        return new GuiTeslaCoil(new ContainerTeslaCoil(player.inventory, this));
+    }
+
+    @Override
+    public boolean canOpenGui(EntityPlayer player) {
+        return true;
     }
 
     /*******************************************************************************************************************
      ********************************************** Misc Functions *****************************************************
      *******************************************************************************************************************/
-    @Override
+   /* @Override
     public void returnWailaHead(List<String> head) {
         head.add(GuiHelper.GuiColor.YELLOW + "Tesla Energy: " + GuiHelper.GuiColor.WHITE + energyTank.getEnergyLevel() + "/" + energyTank.getMaxCapacity() + GuiHelper.GuiColor.TURQUISE + "T");
         head.add(GuiHelper.GuiColor.YELLOW + "RF Energy: " + GuiHelper.GuiColor.WHITE + energyRF.getEnergyStored() + "/" + energyRF.getMaxEnergyStored() + GuiHelper.GuiColor.TURQUISE + "RF");
@@ -232,5 +283,5 @@ public class TileTeslaCoil extends BaseMachine implements IEnergyHandler, ITesla
         else
             head.add(GuiHelper.GuiColor.YELLOW + "Link Mode: " + GuiHelper.GuiColor.GREEN + "All");
 
-    }
+    }*/
 }

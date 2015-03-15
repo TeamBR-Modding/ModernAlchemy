@@ -54,7 +54,7 @@ public class ModernAlchemy {
         @Override
         @SideOnly(Side.CLIENT)
         public Item getTabIconItem() {
-            return Item.getItemFromBlock(BlockHandler.blockCoil);
+            return Item.getItemFromBlock(BlockHandler.blockTeslaCoil);
         }
     };
 

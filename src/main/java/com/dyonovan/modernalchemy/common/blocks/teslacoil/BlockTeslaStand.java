@@ -1,9 +1,6 @@
 package com.dyonovan.modernalchemy.common.blocks.teslacoil;
 
-import com.dyonovan.modernalchemy.ModernAlchemy;
-import com.dyonovan.modernalchemy.common.blocks.BlockBase;
-import com.dyonovan.modernalchemy.lib.Constants;
-import com.dyonovan.modernalchemy.common.tileentity.teslacoil.TileTeslaStand;
+import com.dyonovan.modernalchemy.common.blocks.BlockModernAlchemy;
 import com.dyonovan.modernalchemy.util.Location;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -11,27 +8,14 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class BlockTeslaStand extends BlockBase {
+public class BlockTeslaStand extends BlockModernAlchemy {
 
     public BlockTeslaStand() {
         super(Material.iron);
-        this.setBlockName(Constants.MODID + ":blockTeslaStand");
-        this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
         this.setBlockBounds(0.34375F, 0F, 0.34375F, 0.65625F, 1F, 0.65625F);
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World world, int i) {
-        return new TileTeslaStand();
-    }
-
-    @Override
-    public boolean hasTileEntity(int metadata) {
-        return true;
     }
 
     @Override

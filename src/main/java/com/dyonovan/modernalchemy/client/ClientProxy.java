@@ -43,13 +43,13 @@ public class ClientProxy implements IProxy {
         //TeslaCoil
         TileEntitySpecialRenderer renderCoil = new RenderTeslaCoil(new ResourceLocation(Constants.MODID + ":textures/models/teslaCoil.png"));
         ClientRegistry.bindTileEntitySpecialRenderer(TileTeslaCoil.class, renderCoil);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockHandler.blockCoil),
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockHandler.blockTeslaCoil),
                 new ItemRenderTeslaCoil(new ResourceLocation(Constants.MODID + ":textures/models/teslaCoil.png")));
 
         //SuperTeslaCoil
         TileEntitySpecialRenderer renderSuperCoil = new RenderTeslaCoil(new ResourceLocation(Constants.MODID + ":textures/models/superTeslaCoil.png"));
         ClientRegistry.bindTileEntitySpecialRenderer(TileSuperTeslaCoil.class, renderSuperCoil);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockHandler.blockSuperCoil),
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockHandler.blockSuperTeslaCoil),
                 new ItemRenderTeslaCoil(new ResourceLocation(Constants.MODID + ":textures/models/superTeslaCoil.png")));
 
         //TeslaBase

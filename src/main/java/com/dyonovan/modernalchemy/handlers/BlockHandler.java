@@ -48,9 +48,8 @@ import java.util.List;
 public class BlockHandler implements BlockInstances{
 
     public static Fluid fluidActinium, fluidCompressedAir;
-    public static Block blockTeslaStand, blockCoil, blockSuperCoil;
     public static Block blockOreActinium, blockFluidActinium, blockFluidAir, blockReplicatorStand;
-    public static Block blockPatternRecorder, blockTeslaBase, blockReplicatorCPU;
+    public static Block blockPatternRecorder, blockReplicatorCPU;
     public static Block blockOreCopper;
 
     @RegisterBlock(name = "blockAmalgamator", tileEntity = TileAmalgamator.class)
@@ -83,6 +82,18 @@ public class BlockHandler implements BlockInstances{
     @RegisterBlock(name = "blockElectricBellows", tileEntity = TileElectricBellows.class)
     public static BlockElectricBellows blockElectricBellows = new BlockElectricBellows();
 
+    @RegisterBlock(name = "blockTeslaCoil", tileEntity = TileTeslaCoil.class)
+    public static BlockTeslaCoil blockTeslaCoil = new BlockTeslaCoil();
+
+    @RegisterBlock(name = "blockSuperTeslaCoil", tileEntity = TileSuperTeslaCoil.class)
+    public static BlockSuperTeslaCoil blockSuperTeslaCoil = new BlockSuperTeslaCoil();
+
+    @RegisterBlock(name = "blockTeslaStand", tileEntity = TileTeslaStand.class)
+    public static BlockTeslaStand blockTeslaStand = new BlockTeslaStand();
+
+    @RegisterBlock(name = "blockTeslaBase", tileEntity = TileTeslaBase.class)
+    public static BlockTeslaBase blockTeslaBase = new BlockTeslaBase();
+
     public static List<Block> blockRegistry = new ArrayList<Block>();
 
     public static void preInit() {
@@ -101,21 +112,9 @@ public class BlockHandler implements BlockInstances{
         //Ore Actinium
         registerBlock(blockOreActinium = new BlockOreActinium(), "blockOreActinium", null);
 
-
         // Block Pattern Recorder
         registerBlock(blockPatternRecorder = new BlockPatternRecorder(), "blockPatternRecorder", TilePatternRecorder.class);
 
-        //Tesla Base
-        registerBlock(blockTeslaBase = new BlockTeslaBase(), "blockTeslaBase", TileTeslaBase.class);
-
-        //Tesla Stand
-        registerBlock(blockTeslaStand = new BlockTeslaStand(), "blockTeslaStand", TileTeslaStand.class);
-
-        //Tesla Coil
-        registerBlock(blockCoil = new BlockTeslaCoil(), "blockTeslaCoil", TileTeslaCoil.class);
-
-        //Super Tesla Coil
-        registerBlock(blockSuperCoil = new BlockSuperTeslaCoil(), "blockSuperTeslaCoil", TileSuperTeslaCoil.class);
 
         //BlockFrameEnergy
         registerBlock(blockReplicatorCPU = new BlockReplicatorCPU(), "blockReplicatorCPU", TileReplicatorCPU.class);

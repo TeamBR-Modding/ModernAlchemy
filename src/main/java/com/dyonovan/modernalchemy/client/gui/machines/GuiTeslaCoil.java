@@ -1,100 +1,66 @@
 package com.dyonovan.modernalchemy.client.gui.machines;
 
-import com.dyonovan.modernalchemy.client.gui.BaseGui;
+import com.dyonovan.modernalchemy.client.gui.components.GuiComponentRF;
+import com.dyonovan.modernalchemy.client.gui.components.GuiComponentTeslaBank;
+import com.dyonovan.modernalchemy.client.gui.components.GuiComponentToolTip;
+import com.dyonovan.modernalchemy.client.notification.GuiColor;
 import com.dyonovan.modernalchemy.common.container.ContainerTeslaCoil;
-import com.dyonovan.modernalchemy.client.gui.widgets.WidgetEnergyBank;
-import com.dyonovan.modernalchemy.lib.Constants;
+import com.dyonovan.modernalchemy.common.tileentity.arcfurnace.TileArcFurnaceCore;
 import com.dyonovan.modernalchemy.common.tileentity.teslacoil.TileTeslaCoil;
-import com.dyonovan.modernalchemy.helpers.GuiHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.util.StatCollector;
+import openmods.gui.SyncedGuiContainer;
+import openmods.gui.component.BaseComposite;
+import openmods.gui.component.GuiComponentLabel;
+import openmods.gui.logic.ValueCopyAction;
 
-import java.util.ArrayList;
-import java.util.List;
+public class GuiTeslaCoil extends SyncedGuiContainer<ContainerTeslaCoil> {
 
-public class GuiTeslaCoil extends BaseGui {
+    GuiComponentToolTip teslaTip;
+    GuiComponentToolTip rfTip;
+    GuiComponentLabel restricted;
 
-    private ResourceLocation background = new ResourceLocation(Constants.MODID + ":textures/gui/tesla_coil.png");
-    private TileTeslaCoil tile;
-
-    public GuiTeslaCoil(TileTeslaCoil tile) {
-        super(new ContainerTeslaCoil(tile));
-        this.tile = tile;
-
-        this.xSize = 108;
-        this.ySize = 86;
-
-        widgets.add((new WidgetEnergyBank(this, tile.getEnergyBank(), 81, 78)));
-    }
-
-    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        final String title1 = "Tesla";
-        final String title2 = "Coil";
-        fontRendererObj.drawString(title1, (108 - fontRendererObj.getStringWidth(title1)) / 2, 4, 4210752);
-        fontRendererObj.drawString(title2, (108 - fontRendererObj.getStringWidth(title2)) / 2, 14, 4210752);
-
-        String strLink = "Link:";
-        int color;
-        fontRendererObj.drawString(strLink, (108 - fontRendererObj.getStringWidth(strLink)) / 2, 40, 4210752);
-        if (tile.linkedMachines.size() == 0) {
-            strLink = "Any";
-            color = 0x35D62F;
-        }
-        else {
-            strLink = "Restricted";
-            color = 0xD62F2F;
-        }
-        fontRendererObj.drawString(strLink, (108 - fontRendererObj.getStringWidth(strLink)) / 2, 50, color);
+    public GuiTeslaCoil(ContainerTeslaCoil container) {
+        super(container, 100, 100, "tile.modernalchemy.blockTeslaCoil.name");
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F); //Could do some fun colors and transparency here
-        this.mc.renderEngine.bindTexture(background);
-        int x = (width - xSize) / 2;
-        int y = (height - ySize) / 2;
-        drawTexturedModalRect(x, y, 25, 0, xSize, ySize);
-
-        //Render RF energy
-        int heightRF = tile.getRFEnergyStored() * 52 / tile.getRFMaxEnergyStored();
-
-        Tessellator tessRF = Tessellator.instance;
-        tessRF.startDrawingQuads();
-        tessRF.addVertexWithUV(x + 12, y + 78, 0, 0.625F, 0.35546875F);
-        tessRF.addVertexWithUV(x + 28, y + 78, 0, 0.6875F, 0.35546875F);
-        tessRF.addVertexWithUV(x + 28, y + 78 - heightRF, 0, 0.6875F, (float) (91 - heightRF) / 256);
-        tessRF.addVertexWithUV(x + 12, y + 78 - heightRF, 0, 0.625F, (float) (91 - heightRF) / 256);
-        tessRF.draw();
-
-        super.drawGuiContainerBackgroundLayer(f, i, j);
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        String machineName = StatCollector.translateToLocal(name);
+        int x = this.xSize / 2 - (fontRendererObj.getStringWidth(machineName) / 2);
+        fontRendererObj.drawString(machineName, x, 6, 4210752);
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float f) {
-        super.drawScreen(mouseX, mouseY, f);
-        int x = (this.width - this.xSize) / 2;
-        int y = (this.height - this.ySize) / 2;
+    public void preRender(float mouseX, float mouseY) {
+        super.preRender(mouseX, mouseY);
+        TileTeslaCoil coil = getContainer().getOwner();
 
-        //Render RF Energy Tooltip
-        if(GuiHelper.isInBounds(mouseX, mouseY, x + 11, y + 26, x + 29, y + 77)) {
-            List<String> toolTip = new ArrayList<String>();
-            toolTip.add(GuiHelper.GuiColor.YELLOW + "Energy");
-            toolTip.add(tile.getRFEnergyStored() + "/" + tile.getRFMaxEnergyStored() + GuiHelper.GuiColor.ORANGE + "RF");
-            renderToolTip(mouseX, mouseY, toolTip);
-        }
-        //Render Tesla Energy Tooltip
-        if(GuiHelper.isInBounds(mouseX, mouseY, x + 80, y + 26, x + 98, y + 77)) {
-            List<String> toolTip = new ArrayList<String>();
-            toolTip.add(GuiHelper.GuiColor.YELLOW + "Energy");
-            toolTip.add(tile.getEnergyBank().getEnergyLevel() + "/" + tile.getEnergyBank().getMaxCapacity() + GuiHelper.GuiColor.ORANGE + "T");
-            renderToolTip(mouseX, mouseY, toolTip);
-        }
+        teslaTip.setToolTip(coil.getTeslaEnergyToolTip());
+        rfTip.setToolTip(coil.getEnergyToolTip());
+
+        String newLabel = coil.linkedMachines.size() > 0 ? GuiColor.RED + "Restricted" : GuiColor.GREEN + "Any";
+        restricted.setX(50 - (fontRendererObj.getStringWidth(newLabel) / 2));
+        restricted.setMaxWidth(fontRendererObj.getStringWidth(newLabel));
+        restricted.setText(newLabel);
     }
 
-    public void renderToolTip(int x, int y, List<String> strings)
-    {
-        drawHoveringText(strings, x, y, fontRendererObj);
+    @Override
+    protected BaseComposite createRoot() {
+        TileTeslaCoil coil = getContainer().getOwner();
+        BaseComposite main = super.createRoot();
+
+        GuiComponentRF rfEnergy = new GuiComponentRF(7, 15, 15, 75);
+        addSyncUpdateListener(ValueCopyAction.create(coil.getRFEnergyStorageProvider(), rfEnergy.rfBankReciever()));
+        main.addComponent(rfEnergy);
+
+        GuiComponentTeslaBank teslaBank = new GuiComponentTeslaBank(78, 15, 15, 75);
+        addSyncUpdateListener(ValueCopyAction.create(coil.getTeslaBankProvider(), teslaBank.teslaBankReciever()));
+        main.addComponent(teslaBank);
+
+        main.addComponent(restricted = new GuiComponentLabel(50, 45, "Any"));
+        main.addComponent(rfTip = new GuiComponentToolTip(7, 15, 15, 75));
+        main.addComponent(teslaTip = new GuiComponentToolTip(78, 15, 15, 75));
+
+        return main;
     }
 }

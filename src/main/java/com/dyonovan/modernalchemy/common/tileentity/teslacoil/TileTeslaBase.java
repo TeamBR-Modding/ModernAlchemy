@@ -2,6 +2,8 @@ package com.dyonovan.modernalchemy.common.tileentity.teslacoil;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
+import com.dyonovan.modernalchemy.common.tileentity.TileModernAlchemy;
+import com.dyonovan.modernalchemy.energy.SyncableRF;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.common.tileentity.BaseTile;
 import com.dyonovan.modernalchemy.helpers.GuiHelper;
@@ -12,12 +14,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
-public class TileTeslaBase extends BaseTile implements IEnergyHandler {
+public class TileTeslaBase extends TileModernAlchemy implements IEnergyHandler {
 
-    protected EnergyStorage energyRF = new EnergyStorage(1000, 1000, 1000);
+    protected SyncableRF energyRF;
 
-    public TileTeslaBase() {
-
+    @Override
+    protected void createSyncedFields() {
+        energyRF = new SyncableRF(new EnergyStorage(1000, 1000, 1000));
     }
 
     public boolean isCoilCharging() {
@@ -26,7 +29,7 @@ public class TileTeslaBase extends BaseTile implements IEnergyHandler {
             if (worldObj.getBlock(xCoord, y, zCoord) == BlockHandler.blockTeslaStand) {
                 y++;
             } else
-                return worldObj.getBlock(xCoord, y, zCoord) == BlockHandler.blockCoil && ((TileTeslaCoil) worldObj.getTileEntity(xCoord, y, zCoord)).isActive() || worldObj.getBlock(xCoord, y, zCoord) == BlockHandler.blockSuperCoil && ((TileTeslaCoil) worldObj.getTileEntity(xCoord, y, zCoord)).isActive();
+                return worldObj.getBlock(xCoord, y, zCoord) == BlockHandler.blockTeslaCoil && ((TileTeslaCoil) worldObj.getTileEntity(xCoord, y, zCoord)).isActive() || worldObj.getBlock(xCoord, y, zCoord) == BlockHandler.blockSuperTeslaCoil && ((TileTeslaCoil) worldObj.getTileEntity(xCoord, y, zCoord)).isActive();
         }
         return false;
     }
@@ -38,40 +41,34 @@ public class TileTeslaBase extends BaseTile implements IEnergyHandler {
     }
 
     @Override
+    public boolean isActive() {
+        return isCoilCharging();
+    }
+/*
+    @Override
     public void returnWailaHead(List<String> tip) {
         tip.add(GuiHelper.GuiColor.YELLOW + "Is Converting: " + GuiHelper.GuiColor.WHITE + (isCoilCharging() ? "Yes" : "No"));
     }
-
-    @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        super.readFromNBT(tag);
-        energyRF.readFromNBT(tag);
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound tag) {
-        super.writeToNBT(tag);
-        energyRF.writeToNBT(tag);
-    }
+*/
 
     @Override
     public int receiveEnergy(ForgeDirection side, int maxReceive, boolean simulate) {
-        return energyRF.receiveEnergy(maxReceive, simulate);
+        return energyRF.getValue().receiveEnergy(maxReceive, simulate);
     }
 
     @Override
     public int extractEnergy(ForgeDirection side, int maxReceive, boolean simulate) {
-        return energyRF.extractEnergy(maxReceive, simulate);
+        return energyRF.getValue().extractEnergy(maxReceive, simulate);
     }
 
     @Override
     public int getEnergyStored(ForgeDirection forgeDirection) {
-        return energyRF.getEnergyStored();
+        return energyRF.getValue().getEnergyStored();
     }
 
     @Override
     public int getMaxEnergyStored(ForgeDirection forgeDirection) {
-        return energyRF.getMaxEnergyStored();
+        return energyRF.getValue().getMaxEnergyStored();
     }
 
     @Override
@@ -81,11 +78,11 @@ public class TileTeslaBase extends BaseTile implements IEnergyHandler {
 
     @Override
     public void updateEntity() {
-        if ((energyRF.getEnergyStored() > 0)) {
+        if ((energyRF.getValue().getEnergyStored() > 0)) {
 
             TileEntity tile = worldObj.getTileEntity(xCoord, yCoord + 1, zCoord);
             if (tile instanceof TileTeslaStand) {
-                energyRF.extractEnergy(((IEnergyHandler) tile).receiveEnergy(ForgeDirection.DOWN, energyRF.extractEnergy(energyRF.getMaxExtract(), true), false), false);
+                energyRF.getValue().extractEnergy(((IEnergyHandler) tile).receiveEnergy(ForgeDirection.DOWN, energyRF.getValue().extractEnergy(energyRF.getValue().getMaxExtract(), true), false), false);
             }
         }
     }
