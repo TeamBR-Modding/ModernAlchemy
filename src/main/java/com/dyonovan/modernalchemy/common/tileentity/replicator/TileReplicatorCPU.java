@@ -1,50 +1,110 @@
 package com.dyonovan.modernalchemy.common.tileentity.replicator;
 
+import com.dyonovan.modernalchemy.client.gui.machines.GuiReplicatorCPU;
 import com.dyonovan.modernalchemy.common.blocks.replicator.BlockReplicatorStand;
-import com.dyonovan.modernalchemy.energy.TeslaBank;
+import com.dyonovan.modernalchemy.common.container.machines.ContainerReplicatorCpu;
 import com.dyonovan.modernalchemy.common.entities.EntityLaserNode;
-import com.dyonovan.modernalchemy.handlers.BlockHandler;
-import com.dyonovan.modernalchemy.handlers.ItemHandler;
 import com.dyonovan.modernalchemy.common.items.ItemPattern;
 import com.dyonovan.modernalchemy.common.items.ItemReplicatorMedium;
-import com.dyonovan.modernalchemy.lib.Constants;
-import com.dyonovan.modernalchemy.common.tileentity.BaseMachine;
-import com.dyonovan.modernalchemy.common.tileentity.InventoryTile;
+import com.dyonovan.modernalchemy.common.tileentity.TileModernAlchemy;
+import com.dyonovan.modernalchemy.energy.TeslaBank;
+import com.dyonovan.modernalchemy.handlers.BlockHandler;
+import com.dyonovan.modernalchemy.handlers.ItemHandler;
+import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.util.Location;
 import com.dyonovan.modernalchemy.util.ReplicatorUtils;
 import com.dyonovan.modernalchemy.util.WorldUtils;
-import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
+import openmods.api.IHasGui;
+import openmods.api.IValueProvider;
+import openmods.api.IValueReceiver;
+import openmods.gui.misc.IConfigurableGuiSlots;
+import openmods.include.IncludeInterface;
+import openmods.inventory.GenericInventory;
+import openmods.inventory.IInventoryProvider;
+import openmods.inventory.TileEntityInventory;
+import openmods.inventory.legacy.ItemDistribution;
+import openmods.sync.*;
+import openmods.utils.MiscUtils;
+import openmods.utils.SidedInventoryAdapter;
+import openmods.utils.bitmap.BitMapUtils;
+import openmods.utils.bitmap.IRpcDirectionBitMap;
+import openmods.utils.bitmap.IRpcIntBitMap;
+import openmods.utils.bitmap.IWriteableBitMap;
+import scala.actors.threadpool.Arrays;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
-public class TileReplicatorCPU extends BaseMachine implements ISidedInventory {
+public class TileReplicatorCPU extends TileModernAlchemy implements IInventoryProvider, IHasGui, IConfigurableGuiSlots<TileReplicatorCPU.AUTO_SLOTS> {
 
     private static Random rand = new Random();
 
-    public InventoryTile inventory;
-    public int currentProcessTime;
-    public int requiredProcessTime;
+    public static final int MEDIUM_INPUT = 0;
+    public static final int PATTERN_INPUT = 1;
+    public static final int OUTPUT = 2;
+
+    public enum AUTO_SLOTS {
+        medium_input,
+        output
+    }
+
+    private final GenericInventory inventory = registerInventoryCallback(new TileEntityInventory(this, "replicatorcpu", true, 3) {
+       @Override
+    public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
+           if (slot == MEDIUM_INPUT) return itemstack.getItem() == ItemHandler.itemReplicationMedium;
+           return slot == PATTERN_INPUT && itemstack.getItem() instanceof ItemPattern;
+       }
+    });
+
+
+
+    public SyncableInt currentProcessTime;
+    public SyncableInt requiredProcessTime;
+    public SyncableSides patternIn;
+    public SyncableSides mediumIn;
+    public SyncableSides itemOut;
+
+    private SyncableString item;
+    private SyncableBoolean isActive;
+    private SyncableFlags automaticSlots;
+    private SyncableItemStack stackReturn;
+
+
+    protected TeslaBank energyTank;
+
     private Location stand;
-    private String item;
     private List<EntityLaserNode> listLaser;
-    private ItemStack stackReturn;
+
+    @IncludeInterface(ISidedInventory.class)
+    private final SidedInventoryAdapter sided = new SidedInventoryAdapter(inventory);
+
+    @Override
+    protected void createSyncedFields() {
+        currentProcessTime = new SyncableInt(0);
+        requiredProcessTime = new SyncableInt(0);
+        patternIn = new SyncableSides();
+        mediumIn = new SyncableSides();
+        itemOut = new SyncableSides();
+
+        item = new SyncableString("null");
+        isActive = new SyncableBoolean(false);
+        automaticSlots = SyncableFlags.create(AUTO_SLOTS.values().length);
+        stackReturn = new SyncableItemStack();
+
+        energyTank = new TeslaBank(1000);
+    }
 
 
     public TileReplicatorCPU() {
-        this.energyTank = new TeslaBank(1000);
-        this.inventory = new InventoryTile(3);
-        this.currentProcessTime = 0;
-        this.requiredProcessTime = 0;
-        this.item = "null";
-        this.isActive = false;
+        sided.registerSlot(MEDIUM_INPUT, mediumIn, true, false);
+        sided.registerSlot(PATTERN_INPUT, patternIn, false, false);
+        sided.registerSlot(OUTPUT, itemOut, false, true);
     }
 
     /*******************************************************************************************************************
@@ -113,7 +173,7 @@ public class TileReplicatorCPU extends BaseMachine implements ISidedInventory {
         if(!(getTileInDirection(ForgeDirection.UP) instanceof TileReplicatorFrame) || !(getTileInDirection(ForgeDirection.DOWN) instanceof TileReplicatorFrame))
             return false;
         if(WorldUtils.getBlockInLocation(worldObj, new Location(me.x, me.y + 2, me.z)) == BlockHandler.blockReplicatorFrame) {
-            List<Location> corners = new ArrayList<Location>();
+            List<Location> corners = new ArrayList<>();
 
             for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
                 if(dir == ForgeDirection.UP || dir == ForgeDirection.DOWN) continue;
@@ -179,36 +239,36 @@ public class TileReplicatorCPU extends BaseMachine implements ISidedInventory {
      *******************************************************************************************************************/
 
     private void doReplication() {
-        if (canStartWork() || currentProcessTime > 0) { //Must have a pattern
+        if (canStartWork() || currentProcessTime.get() > 0) { //Must have a pattern
             if(inventory.getStackInSlot(1) == null) {
                 fail();
                 return;
             }
             if (findLasers() && findStand() && exploreFrame() && inventory.getStackInSlot(1) != null) {
-                if (item.equals("null")) {
-                    item = inventory.getStackInSlot(1).getTagCompound().getString("Item");
-                    requiredProcessTime = inventory.getStackInSlot(1).getTagCompound().getInteger("Value");
-                    stackReturn = ReplicatorUtils.getReturn(item);
+                if (Objects.equals(item.getValue(), "null")) {
+                    item.setValue(inventory.getStackInSlot(1).getTagCompound().getString("Item"));
+                    requiredProcessTime.set(inventory.getStackInSlot(1).getTagCompound().getInteger("Value"));
+                    stackReturn.set(ReplicatorUtils.getReturn(item.getValue()));
                 }
-                if (inventory.getStackInSlot(2) != null && !item.equals("null") &&
+                if (inventory.getStackInSlot(2) != null && !(Objects.equals(item.getValue(), "null")) &&
                         stackReturn != null &&
-                        (inventory.getStackInSlot(2).getItem() != stackReturn.getItem() ||
+                        (inventory.getStackInSlot(2).getItem() != stackReturn.get().getItem() ||
                                 inventory.getStackInSlot(2).stackSize >= inventory.getStackInSlot(2).getMaxStackSize())) {
                     resetCounts();
                     return;
                 }
-                if (currentProcessTime <= 0 && canStartWork() && getEnergyLevel() >= 2 * listLaser.size()) {
-                    currentProcessTime = 1;
+                if (currentProcessTime.get() <= 0 && canStartWork() && energyTank.getEnergyLevel() >= 2 * listLaser.size()) {
+                    currentProcessTime.set(1);
                     copyToStand(true);
-                    decrStackSize(0, 1);
-                    isActive = true;
+                    inventory.decrStackSize(0, 1);
+                    isActive.set(true);
                 }
 
-                if (currentProcessTime != 0 && currentProcessTime < requiredProcessTime) {
-                    if (getEnergyLevel() >= 2 * listLaser.size()) {
+                if (currentProcessTime.get() != 0 && currentProcessTime.get()  < requiredProcessTime.get()) {
+                    if (energyTank.getEnergyLevel() >= 2 * listLaser.size()) {
                         energyTank.drainEnergy(2 * listLaser.size());
-                        currentProcessTime += listLaser.size();
-                        isActive = true;
+                        currentProcessTime.modify(listLaser.size());
+                        isActive.set(true);
                         for(EntityLaserNode node : listLaser)
                             node.fireLaser(stand.x + 0.5, stand.y + 1.5, stand.z + 0.5);
                     } else {
@@ -216,10 +276,10 @@ public class TileReplicatorCPU extends BaseMachine implements ISidedInventory {
                     }
                 }
 
-                if (currentProcessTime != 0 && currentProcessTime >= requiredProcessTime) {
+                if (currentProcessTime.get() != 0 && currentProcessTime.get() >= requiredProcessTime.get() ) {
                     copyToStand(false);
                     if(rand.nextInt(101) <= inventory.getStackInSlot(1).getTagCompound().getFloat("Quality")) {
-                        if (inventory.getStackInSlot(2) == null) inventory.setStackInSlot(stackReturn, 2);
+                        if (inventory.getStackInSlot(2) == null) inventory.setInventorySlotContents(2, stackReturn.get());
                         else {
                             inventory.getStackInSlot(2).stackSize += 1;
                         }
@@ -228,6 +288,7 @@ public class TileReplicatorCPU extends BaseMachine implements ISidedInventory {
                     else
                         fail();
                 }
+                sync();
             }
         } else {
             resetCounts();
@@ -242,11 +303,11 @@ public class TileReplicatorCPU extends BaseMachine implements ISidedInventory {
     }
 
     private void resetCounts() {
-        currentProcessTime = 0;
-        requiredProcessTime = 0;
-        item = "null";
+        currentProcessTime.set(0);
+        requiredProcessTime.set(0);
+        item.setValue("null");
         stackReturn = null;
-        isActive = false;
+        isActive.set(false);
     }
 
     private boolean canStartWork() {
@@ -257,102 +318,14 @@ public class TileReplicatorCPU extends BaseMachine implements ISidedInventory {
                 isPowered();
     }
 
-    public int getProgressScaled(int scale) {
-        return requiredProcessTime == 0 ? 0 : this.currentProcessTime * scale / requiredProcessTime;
+    public IValueProvider<Integer> getProgress() {
+        return currentProcessTime;
     }
 
     /*******************************************************************************************************************
      ********************************************** Item Functions *****************************************************
      *******************************************************************************************************************/
 
-    @Override
-    public int[] getAccessibleSlotsFromSide(int i) {
-        return new int[] {0, 1};
-    }
-
-    public boolean canInsertItem(int slot, ItemStack itemstack, int side) {
-        return isItemValidForSlot(slot, itemstack);
-    }
-
-    @Override
-    public boolean canExtractItem(int slot, ItemStack itemstack, int side) {
-        return !(slot == 0 || side != 0);
-    }
-
-    @Override
-    public int getSizeInventory() {
-        return inventory.getSizeInventory();
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int slot) {
-        return inventory.getStackInSlot(slot);
-    }
-
-    @Override
-    public ItemStack decrStackSize(int slot, int count) {
-        ItemStack itemstack = getStackInSlot(slot);
-
-        if(itemstack != null) {
-            if(itemstack.stackSize <= count) {
-                setInventorySlotContents(slot, null);
-            }
-            itemstack = itemstack.splitStack(count);
-        }
-        worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-        return itemstack;
-    }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int slot) {
-        ItemStack itemStack = getStackInSlot(slot);
-        setInventorySlotContents(slot, null);
-        return itemStack;
-    }
-
-    @Override
-    public void setInventorySlotContents(int slot, ItemStack itemStack) {
-        inventory.setStackInSlot(itemStack, slot);
-        worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-    }
-
-    @Override
-    public String getInventoryName() {
-        return Constants.MODID + ":blockReplicatorCPU";
-    }
-
-    @Override
-    public boolean hasCustomInventoryName() {
-        return false;
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 64;
-    }
-
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
-        return true;
-    }
-
-    @Override
-    public void openInventory() {}
-
-    @Override
-    public void closeInventory() {}
-
-    @Override
-    public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
-        switch (slot) {
-            case 0:
-                return itemStack.getItem() instanceof ItemReplicatorMedium;
-            case 1:
-                return itemStack.getItem() instanceof ItemPattern;
-            default:
-                return false;
-        }
-    }
 
     /*******************************************************************************************************************
      ********************************************** Tile Functions *****************************************************
@@ -363,33 +336,36 @@ public class TileReplicatorCPU extends BaseMachine implements ISidedInventory {
         super.updateEntity();
         if (worldObj.isRemote) return;
         if(energyTank.canAcceptEnergy()) {
-            chargeFromCoils();
+            chargeFromCoils(energyTank);
         }
         doReplication();
+
+        if(automaticSlots.get(AUTO_SLOTS.output)) {
+            ItemDistribution.moveItemsToOneOfSides(this, inventory, OUTPUT, 1, itemOut.getValue(), true);
+        }
+
+        if (automaticSlots.get(AUTO_SLOTS.medium_input)) {
+            //noinspection unchecked
+            ItemDistribution.moveItemsFromOneOfSides(this, getInventory(), 1, MEDIUM_INPUT, Arrays.asList(ForgeDirection.VALID_DIRECTIONS), true);
+        }
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        inventory.readFromNBT(tag, this);
-        currentProcessTime = tag.getInteger("TimeProcessed");
-        requiredProcessTime = tag.getInteger("RequiredTime");
-        item = tag.getString("ItemName");
+        inventory.readFromNBT(tag);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         inventory.writeToNBT(tag);
-        tag.setInteger("TimeProcessed", currentProcessTime);
-        tag.setInteger("RequiredTime", requiredProcessTime);
-        tag.setString("ItemName", item);
     }
 
     /*******************************************************************************************************************
      ********************************************** Misc Functions *****************************************************
      *******************************************************************************************************************/
-    @Override
+    /*@Override
     public void returnWailaHead(List<String> head) {
         head.add(GuiHelper.GuiColor.YELLOW + "Is Replicating : " + GuiHelper.GuiColor.WHITE + (isActive() ? "Yes" : "No"));
         if(isActive()) {
@@ -397,5 +373,79 @@ public class TileReplicatorCPU extends BaseMachine implements ISidedInventory {
             head.add(GuiHelper.GuiColor.YELLOW + "Success Rate: " + GuiHelper.GuiColor.WHITE + inventory.getStackInSlot(1).getTagCompound().getFloat("Quality") + "%");
         }
         head.add(GuiHelper.GuiColor.YELLOW + "Energy: " + GuiHelper.GuiColor.WHITE + energyTank.getEnergyLevel() + "/" + energyTank.getMaxCapacity() + GuiHelper.GuiColor.TURQUISE + "T");
+    }*/
+
+    private SyncableSides selectSlotMap(AUTO_SLOTS slot) {
+        switch (slot) {
+            case medium_input:
+                return mediumIn;
+            case output:
+                return itemOut;
+            default:
+                throw MiscUtils.unhandledEnum(slot);
+        }
+    }
+
+    @Override
+    public IValueProvider<Set<ForgeDirection>> createAllowedDirectionsProvider(AUTO_SLOTS slot) {
+        return selectSlotMap(slot);
+    }
+
+    @Override
+    public IWriteableBitMap<ForgeDirection> createAllowedDirectionsReceiver(AUTO_SLOTS slot) {
+        SyncableSides dirs = selectSlotMap(slot);
+        return BitMapUtils.createRpcAdapter(createRpcProxy(dirs, IRpcDirectionBitMap.class));
+    }
+
+    @Override
+    public IValueProvider<Boolean> createAutoFlagProvider(AUTO_SLOTS slot) {
+        return BitMapUtils.singleBitProvider(automaticSlots, slot.ordinal());
+    }
+
+    @Override
+    public IValueReceiver<Boolean> createAutoSlotReceiver(AUTO_SLOTS slot) {
+        IRpcIntBitMap bits = createRpcProxy(automaticSlots, IRpcIntBitMap.class);
+        return BitMapUtils.singleBitReceiver(bits, slot.ordinal());
+    }
+
+    public IValueProvider<TeslaBank> getTeslaBankProvider() {
+        return energyTank;
+    }
+
+    public List<String> getEnergyToolTip() {
+        List<String> toolTip = new ArrayList<>();
+        toolTip.add(GuiHelper.GuiColor.WHITE + "Energy Stored");
+        toolTip.add("" + GuiHelper.GuiColor.YELLOW + energyTank.getEnergyLevel() + "/" + energyTank.getMaxCapacity() + GuiHelper.GuiColor.BLUE + "T");
+        return toolTip;
+    }
+
+    @Override
+    public Object getServerGui(EntityPlayer player) {
+        return new ContainerReplicatorCpu(player.inventory, this);
+    }
+
+    @Override
+    public Object getClientGui(EntityPlayer player) {
+        return new GuiReplicatorCPU(new ContainerReplicatorCpu(player.inventory, this));
+    }
+
+    @Override
+    public boolean canOpenGui(EntityPlayer player) {
+        return true;
+    }
+
+    @Override
+    public IInventory getInventory() {
+        return this.inventory;
+    }
+
+    @Override
+    public void onWrench(EntityPlayer player, int side) {
+
+    }
+
+    @Override
+    public boolean isActive() {
+        return currentProcessTime.get() > 0;
     }
 }

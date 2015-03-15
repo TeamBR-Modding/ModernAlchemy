@@ -35,7 +35,7 @@ public class GuiAdvancedCrafter extends GuiBaseConfigurableSlots<TileAdvancedCra
 
     public GuiAdvancedCrafter(ContainerAdvancedCrafter container) {
         super(container, 176, 166, "tile.modernalchemy.blockAdvancedCrafter.name");
-        setArrowLocation(113, 33, 24, 15);
+        //setArrowLocation(113, 33, 24, 15);
     }
 
     @Override

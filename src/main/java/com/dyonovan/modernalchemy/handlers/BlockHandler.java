@@ -49,7 +49,6 @@ public class BlockHandler implements BlockInstances{
 
     public static Fluid fluidActinium, fluidCompressedAir;
     public static Block blockOreActinium, blockFluidActinium, blockFluidAir, blockReplicatorStand;
-    public static Block blockReplicatorCPU;
     public static Block blockOreCopper;
 
     @RegisterBlock(name = "blockAmalgamator", tileEntity = TileAmalgamator.class)
@@ -97,6 +96,9 @@ public class BlockHandler implements BlockInstances{
     @RegisterBlock(name = "blockPatternRecorder", tileEntity = TilePatternRecorder.class)
     public static BlockPatternRecorder blockPatternRecorder = new BlockPatternRecorder();
 
+    @RegisterBlock(name = "blockReplicatorCPU", tileEntity = TileReplicatorCPU.class)
+    public static BlockReplicatorCPU blockReplicatorCPU = new BlockReplicatorCPU();
+
     public static List<Block> blockRegistry = new ArrayList<Block>();
 
     public static void preInit() {
@@ -114,9 +116,6 @@ public class BlockHandler implements BlockInstances{
 
         //Ore Actinium
         registerBlock(blockOreActinium = new BlockOreActinium(), "blockOreActinium", null);
-
-        //BlockFrameEnergy
-        registerBlock(blockReplicatorCPU = new BlockReplicatorCPU(), "blockReplicatorCPU", TileReplicatorCPU.class);
 
         //BlockCenterStand
         registerBlock(blockReplicatorStand = new BlockReplicatorStand(), "blockReplicatorStand", TileReplicatorStand.class);
