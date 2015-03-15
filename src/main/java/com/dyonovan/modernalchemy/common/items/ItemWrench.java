@@ -4,6 +4,7 @@ package com.dyonovan.modernalchemy.common.items;
 import cofh.api.item.IToolHammer;
 import cofh.asm.relauncher.Strippable;
 import com.dyonovan.modernalchemy.ModernAlchemy;
+import com.dyonovan.modernalchemy.common.tileentity.TileModernAlchemy;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.common.tileentity.BaseTile;
 import cpw.mods.fml.relauncher.Side;
@@ -36,8 +37,8 @@ public class ItemWrench extends Item implements IToolHammer {
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
         if (world.isRemote) return false;
         Block block = world.getBlock(x, y, z);
-        if(!player.isSneaking() && world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof BaseTile) {
-            BaseTile tile = (BaseTile)world.getTileEntity(x, y, z);
+        if(!player.isSneaking() && world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof TileModernAlchemy) {
+            TileModernAlchemy tile = (TileModernAlchemy)world.getTileEntity(x, y, z);
             tile.onWrench(player, side);
             player.swingItem();
             return true;

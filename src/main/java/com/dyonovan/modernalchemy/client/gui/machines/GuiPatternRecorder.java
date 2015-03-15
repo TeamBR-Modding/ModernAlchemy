@@ -9,6 +9,7 @@ import com.dyonovan.modernalchemy.client.gui.components.GuiComponentToolTip;
 import com.dyonovan.modernalchemy.common.container.machines.ContainerPatternRecorder;
 import com.dyonovan.modernalchemy.common.tileentity.machines.TilePatternRecorder;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
+import com.dyonovan.modernalchemy.handlers.ItemHandler;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.item.ItemStack;
 import openmods.gui.component.BaseComposite;
@@ -19,18 +20,17 @@ import openmods.utils.MiscUtils;
 
 import java.util.ArrayList;
 
-public class GuiPatternRecorder extends GuiBaseConfigurableSlots<TilePatternRecorder, ContainerPatternRecorder, TilePatternRecorder.AUTO_SLOTS> implements INeiProvider {
+public class GuiPatternRecorder extends GuiBaseConfigurableSlots<TilePatternRecorder, ContainerPatternRecorder, TilePatternRecorder.AUTO_SLOTS> {
 
     GuiComponentToolTip energyTip;
 
     public GuiPatternRecorder(ContainerPatternRecorder container){
         super(container, 176, 166, "tile.modernalchemy.blockPatternRecorder.name");
-        setArrowLocation(100, 37, 24, 15);
     }
 
     @Override
     protected Iterable<TilePatternRecorder.AUTO_SLOTS> getSlots() {
-        return ImmutableList.of(TilePatternRecorder.AUTO_SLOTS.output);
+        return ImmutableList.of(TilePatternRecorder.AUTO_SLOTS.output, TilePatternRecorder.AUTO_SLOTS.input);
     }
 
     @Override
@@ -65,6 +65,10 @@ public class GuiPatternRecorder extends GuiBaseConfigurableSlots<TilePatternReco
                 GuiComponentTab outputTab = new GuiComponentTab(StandardPalette.green.getColor(), new ItemStack(BlockHandler.blockPatternRecorder), 100, 100);
                 tabs.add(outputTab);
                 return outputTab;
+            case input:
+                GuiComponentTab inputTab = new GuiComponentTab(StandardPalette.blue.getColor(), new ItemStack(ItemHandler.itemReplicatorPattern), 100, 100);
+                tabs.add(inputTab);
+                return inputTab;
             default :
                 throw MiscUtils.unhandledEnum(slot);
         }
@@ -75,13 +79,10 @@ public class GuiPatternRecorder extends GuiBaseConfigurableSlots<TilePatternReco
         switch (slot) {
             case output :
                 return new GuiComponentLabel(22, 82, "Auto-Export");
+            case input :
+                return new GuiComponentLabel(22, 82, "Auto-Import");
             default :
                 throw MiscUtils.unhandledEnum(slot);
         }
-    }
-
-    @Override
-    public String getNeiLabel() {
-        return "modernalchemy.patternrecorder.recipes";
     }
 }

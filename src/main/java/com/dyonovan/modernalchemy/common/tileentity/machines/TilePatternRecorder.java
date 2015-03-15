@@ -24,6 +24,7 @@ import openmods.include.IncludeInterface;
 import openmods.inventory.GenericInventory;
 import openmods.inventory.IInventoryProvider;
 import openmods.inventory.TileEntityInventory;
+import openmods.inventory.legacy.ItemDistribution;
 import openmods.sync.*;
 import openmods.utils.MiscUtils;
 import openmods.utils.SidedInventoryAdapter;
@@ -33,13 +34,15 @@ import openmods.utils.bitmap.IRpcIntBitMap;
 import openmods.utils.bitmap.IWriteableBitMap;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
 public class TilePatternRecorder extends TileModernAlchemy implements IInventoryProvider, IHasGui, IConfigurableGuiSlots<TilePatternRecorder.AUTO_SLOTS> {
 
     public enum AUTO_SLOTS {
-        output
+        output,
+        input
     }
 
     public static final int PROCESS_TIME = 500; //5 mins with 1 T/Tick
@@ -47,7 +50,14 @@ public class TilePatternRecorder extends TileModernAlchemy implements IInventory
     public static final int ITEM_SLOT = 0;
     public static final int OUTPUT_SLOT = 2;
 
-    public final GenericInventory inventory = registerInventoryCallback(new TileEntityInventory(this, "patternrecorder", true, 3));
+    public final GenericInventory inventory = registerInventoryCallback(new TileEntityInventory(this, "patternrecorder", true, 3) {
+        @Override
+        public boolean isItemValidForSlot(int i, ItemStack itemstack) {
+            if(i == INPUT_SLOT) return itemstack.getItem() instanceof ItemPattern;
+            if(i == ITEM_SLOT) return !(itemstack.getItem() instanceof ItemPattern);
+            return false;
+        }
+    });
 
     public SyncableSides sideOut;
     public SyncableSides sideIn;
@@ -157,6 +167,7 @@ public class TilePatternRecorder extends TileModernAlchemy implements IInventory
     private boolean canStartWork() {
         return inventory.getStackInSlot(INPUT_SLOT) != null && inventory.getStackInSlot(ITEM_SLOT) != null &&
                 inventory.getStackInSlot(INPUT_SLOT).getItem() instanceof ItemPattern &&
+                (inventory.getStackInSlot(INPUT_SLOT).hasTagCompound() ? inventory.getStackInSlot(INPUT_SLOT).getTagCompound().getFloat("Quality") < 100 : true) &&
                 inventory.getStackInSlot(OUTPUT_SLOT) == null &&
                 ReplicatorUtils.getValueForItem(inventory.getStackInSlot(ITEM_SLOT)) != null && energyTank.getEnergyLevel() >= 1;
     }
@@ -181,6 +192,16 @@ public class TilePatternRecorder extends TileModernAlchemy implements IInventory
         if(energyTank.canAcceptEnergy())
             chargeFromCoils(energyTank);
         doRecording();
+
+        if(automaticSlots.get(AUTO_SLOTS.output)) {
+            ItemDistribution.moveItemsToOneOfSides(this, getInventory(), OUTPUT_SLOT, 1, Arrays.asList(ForgeDirection.VALID_DIRECTIONS), true);
+        }
+
+        if(automaticSlots.get(AUTO_SLOTS.input)) {
+            ItemDistribution.moveItemsFromOneOfSides(this, getInventory(), 1, ITEM_SLOT, Arrays.asList(ForgeDirection.VALID_DIRECTIONS), true);
+            ItemDistribution.moveItemsFromOneOfSides(this, getInventory(), 1, INPUT_SLOT, Arrays.asList(ForgeDirection.VALID_DIRECTIONS), true);
+        }
+
         sync();
     }
 
@@ -211,6 +232,8 @@ public class TilePatternRecorder extends TileModernAlchemy implements IInventory
         switch (slot) {
             case output:
                 return sideOut;
+            case input :
+                return sideIn;
             default:
                 throw MiscUtils.unhandledEnum(slot);
         }
