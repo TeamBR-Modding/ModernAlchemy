@@ -62,8 +62,6 @@ public class TileReplicatorCPU extends TileModernAlchemy implements IInventoryPr
        }
     });
 
-
-
     public SyncableInt currentProcessTime;
     public SyncableInt requiredProcessTime;
     public SyncableSides patternIn;
@@ -97,7 +95,8 @@ public class TileReplicatorCPU extends TileModernAlchemy implements IInventoryPr
         automaticSlots = SyncableFlags.create(AUTO_SLOTS.values().length);
         stackReturn = new SyncableItemStack();
 
-        energyTank = new TeslaBank(1000);
+        energyTank = new TeslaBank(0, 1000);
+        stand = new Location();
     }
 
 
@@ -348,6 +347,7 @@ public class TileReplicatorCPU extends TileModernAlchemy implements IInventoryPr
             //noinspection unchecked
             ItemDistribution.moveItemsFromOneOfSides(this, getInventory(), 1, MEDIUM_INPUT, Arrays.asList(ForgeDirection.VALID_DIRECTIONS), true);
         }
+        sync();
     }
 
     @Override

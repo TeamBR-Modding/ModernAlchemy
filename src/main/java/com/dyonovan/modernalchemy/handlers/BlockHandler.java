@@ -99,7 +99,7 @@ public class BlockHandler implements BlockInstances{
     @RegisterBlock(name = "blockReplicatorCPU", tileEntity = TileReplicatorCPU.class)
     public static BlockReplicatorCPU blockReplicatorCPU = new BlockReplicatorCPU();
 
-    public static List<Block> blockRegistry = new ArrayList<Block>();
+    public static List<Block> blockRegistry = new ArrayList<>();
 
     public static void preInit() {
         //Actinium Fluid Registration
