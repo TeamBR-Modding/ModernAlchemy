@@ -22,7 +22,6 @@ import net.minecraft.world.World;
 
 public class GuiHandler implements IGuiHandler {
     public static final int NOTIFICATION_CONFIG_ID = 0;
-    public static final int PATTERN_RECORDER_GUI_ID = 3;
     public static final int REPLICATOR_CPU_GUI_ID = 5;
     public static final int TESLA_COIL_LINKS_GUI_ID = 6;
     public static final int MANUAL_GUI_ID = 7;
@@ -30,8 +29,6 @@ public class GuiHandler implements IGuiHandler {
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         switch(ID) {
-            case PATTERN_RECORDER_GUI_ID :
-                return new ContainerPatternRecorder(player.inventory, (TilePatternRecorder) world.getTileEntity(x, y, z));
             case REPLICATOR_CPU_GUI_ID:
                 return new ContainerReplicatorCpu(player.inventory, (TileReplicatorCPU) world.getTileEntity(x, y, z));
             case TESLA_COIL_LINKS_GUI_ID :
@@ -47,8 +44,6 @@ public class GuiHandler implements IGuiHandler {
         switch(ID) {
             case NOTIFICATION_CONFIG_ID :
                 return new GuiNotificationConfig();
-            case PATTERN_RECORDER_GUI_ID :
-                return new GuiPatternRecorder(player.inventory, (TilePatternRecorder) world.getTileEntity(x, y, z));
             case REPLICATOR_CPU_GUI_ID:
                 return new GuiReplicatorCPU(player.inventory, (TileReplicatorCPU) world.getTileEntity(x, y, z));
             case TESLA_COIL_LINKS_GUI_ID :

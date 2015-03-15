@@ -49,7 +49,7 @@ public class BlockHandler implements BlockInstances{
 
     public static Fluid fluidActinium, fluidCompressedAir;
     public static Block blockOreActinium, blockFluidActinium, blockFluidAir, blockReplicatorStand;
-    public static Block blockPatternRecorder, blockReplicatorCPU;
+    public static Block blockReplicatorCPU;
     public static Block blockOreCopper;
 
     @RegisterBlock(name = "blockAmalgamator", tileEntity = TileAmalgamator.class)
@@ -94,6 +94,9 @@ public class BlockHandler implements BlockInstances{
     @RegisterBlock(name = "blockTeslaBase", tileEntity = TileTeslaBase.class)
     public static BlockTeslaBase blockTeslaBase = new BlockTeslaBase();
 
+    @RegisterBlock(name = "blockPatternRecorder", tileEntity = TilePatternRecorder.class)
+    public static BlockPatternRecorder blockPatternRecorder = new BlockPatternRecorder();
+
     public static List<Block> blockRegistry = new ArrayList<Block>();
 
     public static void preInit() {
@@ -111,10 +114,6 @@ public class BlockHandler implements BlockInstances{
 
         //Ore Actinium
         registerBlock(blockOreActinium = new BlockOreActinium(), "blockOreActinium", null);
-
-        // Block Pattern Recorder
-        registerBlock(blockPatternRecorder = new BlockPatternRecorder(), "blockPatternRecorder", TilePatternRecorder.class);
-
 
         //BlockFrameEnergy
         registerBlock(blockReplicatorCPU = new BlockReplicatorCPU(), "blockReplicatorCPU", TileReplicatorCPU.class);

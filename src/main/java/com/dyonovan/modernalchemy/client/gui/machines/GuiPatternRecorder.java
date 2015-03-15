@@ -1,71 +1,87 @@
 package com.dyonovan.modernalchemy.client.gui.machines;
 
-import com.dyonovan.modernalchemy.client.gui.BaseGui;
+import com.dyonovan.modernalchemy.client.gui.GuiBaseConfigurableSlots;
+import com.dyonovan.modernalchemy.client.gui.INeiProvider;
+import com.dyonovan.modernalchemy.client.gui.StandardPalette;
+import com.dyonovan.modernalchemy.client.gui.components.GuiComponentArrowProgress;
+import com.dyonovan.modernalchemy.client.gui.components.GuiComponentTeslaBank;
+import com.dyonovan.modernalchemy.client.gui.components.GuiComponentToolTip;
 import com.dyonovan.modernalchemy.common.container.machines.ContainerPatternRecorder;
-import com.dyonovan.modernalchemy.client.gui.widgets.WidgetEnergyBank;
-import com.dyonovan.modernalchemy.client.gui.widgets.WidgetPulse;
-import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.common.tileentity.machines.TilePatternRecorder;
-import com.dyonovan.modernalchemy.helpers.GuiHelper;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
-import org.lwjgl.opengl.GL11;
+import com.dyonovan.modernalchemy.handlers.BlockHandler;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.item.ItemStack;
+import openmods.gui.component.BaseComposite;
+import openmods.gui.component.GuiComponentLabel;
+import openmods.gui.component.GuiComponentTab;
+import openmods.gui.logic.ValueCopyAction;
+import openmods.utils.MiscUtils;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class GuiPatternRecorder extends BaseGui {
+public class GuiPatternRecorder extends GuiBaseConfigurableSlots<TilePatternRecorder, ContainerPatternRecorder, TilePatternRecorder.AUTO_SLOTS> implements INeiProvider {
 
-    private TilePatternRecorder tile;
-    private ResourceLocation background = new ResourceLocation(Constants.MODID + ":textures/gui/patternrecorder.png");
+    GuiComponentToolTip energyTip;
 
-    public GuiPatternRecorder(InventoryPlayer playerInventory, TilePatternRecorder tileEntity){
-        super(new ContainerPatternRecorder(playerInventory, tileEntity));
-        tile = tileEntity;
-
-        widgets.add(new WidgetEnergyBank(this, tile.getEnergyBank(), 8, 78));
-        widgets.add(new WidgetPulse(this, tile, 77, 80));
+    public GuiPatternRecorder(ContainerPatternRecorder container){
+        super(container, 176, 166, "tile.modernalchemy.blockPatternRecorder.name");
+        setArrowLocation(100, 37, 24, 15);
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int par1, int par2)
-    {
-        final String invTitle = "Pattern Recorder";
-        fontRendererObj.drawString(invTitle, 56, 12, 4210752);
-        fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 119, ySize - 96 + 2, 4210752);
+    protected Iterable<TilePatternRecorder.AUTO_SLOTS> getSlots() {
+        return ImmutableList.of(TilePatternRecorder.AUTO_SLOTS.output);
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F); //Could do some fun colors and transparency here
-        this.mc.renderEngine.bindTexture(background);
-        int x = (width - xSize) / 2;
-        int y = (height - ySize) / 2;
-        drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
+    public void preRender(float mouseX, float mouseY) {
+        super.preRender(mouseX, mouseY);
+        TilePatternRecorder te = getContainer().getOwner();
 
-        //Draw Arrow
-        int arrow = tile.getProgressScaled(24);
-        drawTexturedModalRect(x + 107, y + 35, 176, 22, arrow, 17);
-
-        super.drawGuiContainerBackgroundLayer(f, i, j);
+        energyTip.setToolTip(te.getEnergyToolTip());
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float par3) {
-        super.drawScreen(mouseX, mouseY, par3);
-        int x = (this.width - this.xSize) / 2;
-        int y = (this.height - this.ySize) / 2;
-        if(GuiHelper.isInBounds(mouseX, mouseY, x + 8, y + 26, x + 23, y + 77)) {
-            List<String> toolTip = new ArrayList<String>();
-            toolTip.add(GuiHelper.GuiColor.YELLOW + "Energy");
-            toolTip.add(tile.getEnergyLevel() + "/" + tile.getEnergyBank().getMaxCapacity() + GuiHelper.GuiColor.ORANGE + "T");
-            renderToolTip(mouseX, mouseY, toolTip);
+    protected void addCustomizations(BaseComposite root) {
+        TilePatternRecorder te = getContainer().getOwner();
+
+        GuiComponentTeslaBank energyLevel = new GuiComponentTeslaBank(15, 20, 20, 50);
+        addSyncUpdateListener(ValueCopyAction.create(te.getTeslaBankProvider(), energyLevel.teslaBankReciever()));
+        root.addComponent(energyLevel);
+        root.addComponent(energyTip = new GuiComponentToolTip(15, 20, 20, 50));
+
+        GuiComponentArrowProgress progress = new GuiComponentArrowProgress(110, 34, TilePatternRecorder.PROCESS_TIME);
+        addSyncUpdateListener(ValueCopyAction.create(te.getProgress(), progress.progressReceiver()));
+        root.addComponent(progress);
+    }
+
+    @Override
+    protected GuiComponentTab createTab(TilePatternRecorder.AUTO_SLOTS slot) {
+        if(tabs == null)
+            tabs = new ArrayList<>();
+
+        switch (slot) {
+            case output :
+                GuiComponentTab outputTab = new GuiComponentTab(StandardPalette.green.getColor(), new ItemStack(BlockHandler.blockPatternRecorder), 100, 100);
+                tabs.add(outputTab);
+                return outputTab;
+            default :
+                throw MiscUtils.unhandledEnum(slot);
         }
     }
 
-    public void renderToolTip(int x, int y, List<String> strings)
-    {
-        drawHoveringText(strings, x, y, fontRendererObj);
+    @Override
+    protected GuiComponentLabel createLabel(TilePatternRecorder.AUTO_SLOTS slot) {
+        switch (slot) {
+            case output :
+                return new GuiComponentLabel(22, 82, "Auto-Export");
+            default :
+                throw MiscUtils.unhandledEnum(slot);
+        }
+    }
+
+    @Override
+    public String getNeiLabel() {
+        return "modernalchemy.patternrecorder.recipes";
     }
 }
