@@ -2,12 +2,14 @@ package com.dyonovan.modernalchemy.common.blocks.teslacoil;
 
 import com.dyonovan.modernalchemy.common.blocks.BlockModernAlchemy;
 import com.dyonovan.modernalchemy.util.Location;
+import com.dyonovan.modernalchemy.util.WorldUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -65,7 +67,6 @@ public class BlockTeslaBase extends BlockModernAlchemy {
     {
         Location location = new Location(x, y + 1, z);
         while(!world.isAirBlock(location.x, location.y, location.z)) {
-            //WorldUtils.breakBlock(world, location);
             world.setBlockToAir(location.x, location.y, location.z);
         }
         super.breakBlock(world, x, y, z, par5, par6);
