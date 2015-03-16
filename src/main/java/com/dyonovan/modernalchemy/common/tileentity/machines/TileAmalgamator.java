@@ -1,5 +1,6 @@
 package com.dyonovan.modernalchemy.common.tileentity.machines;
 
+import com.dyonovan.modernalchemy.client.rpc.IBooleanChanger;
 import com.dyonovan.modernalchemy.common.container.machines.ContainerAmalgamator;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.client.gui.machines.GuiAmalgamator;
@@ -38,7 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class TileAmalgamator extends TileModernAlchemy implements IInventoryProvider, IHasGui, IConfigurableGuiSlots<TileAmalgamator.AUTO_SLOTS> {
+public class TileAmalgamator extends TileModernAlchemy implements IBooleanChanger, IInventoryProvider, IHasGui, IConfigurableGuiSlots<TileAmalgamator.AUTO_SLOTS> {
 
     public static final int TANK_CAPACITY = FluidContainerRegistry.BUCKET_VOLUME * 10;
     public static final int PROCESS_TIME = 500;
@@ -62,6 +63,7 @@ public class TileAmalgamator extends TileModernAlchemy implements IInventoryProv
     private SyncableInt currentSpeed;
     private SyncableInt timeProcessed;
     private SyncableBoolean isActive;
+    private SyncableBoolean requiresRedstone;
     private SyncableFlags automaticSlots;
 
     private final GenericInventory inventory = registerInventoryCallback(new TileEntityInventory(this, "amalgamator", true, 1));
@@ -80,6 +82,7 @@ public class TileAmalgamator extends TileModernAlchemy implements IInventoryProv
         currentSpeed = new SyncableInt();
         timeProcessed = new SyncableInt();
         isActive = new SyncableBoolean();
+        requiresRedstone = new SyncableBoolean(true);
         automaticSlots = SyncableFlags.create(AUTO_SLOTS.values().length);
         energyTank = new TeslaBank(0, 1000);
     }
@@ -113,7 +116,7 @@ public class TileAmalgamator extends TileModernAlchemy implements IInventoryProv
     private void doSolidify() {
         if (canSolidify()) { //Must have power and redstone signal
             updateSpeed();
-            if (timeProcessed.get() == 0 && tank.getFluidAmount() > 0 && isPowered()) { //Set the block to active and continue
+            if (timeProcessed.get() == 0 && tank.getFluidAmount() > 0 && (!requiresRedstone.get() || isPowered())) { //Set the block to active and continue
                 isActive.set(true);
                 timeProcessed.set(timeProcessed.get() + 1);
             }
@@ -244,6 +247,16 @@ public class TileAmalgamator extends TileModernAlchemy implements IInventoryProv
         toolTip.add(GuiHelper.GuiColor.WHITE + "Energy Stored");
         toolTip.add("" + GuiHelper.GuiColor.YELLOW + energyTank.getValue().getEnergyLevel() + "/" + energyTank.getValue().getMaxCapacity() + GuiHelper.GuiColor.BLUE + "T");
         return toolTip;
+    }
+
+    public IValueProvider<Boolean> getRedstoneRequiredProvider() {
+        return requiresRedstone;
+    }
+
+    @Override
+    public void changeBoolean(boolean bool) {
+        requiresRedstone.set(bool);
+        sync();
     }
 
     @Override

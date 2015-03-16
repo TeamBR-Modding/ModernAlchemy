@@ -19,6 +19,7 @@ import openmods.gui.logic.ValueCopyAction;
 import openmods.utils.MiscUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GuiReplicatorCPU extends GuiBaseConfigurableSlots<TileReplicatorCPU, ContainerReplicatorCpu, TileReplicatorCPU.AUTO_SLOTS> {
 
@@ -59,17 +60,11 @@ public class GuiReplicatorCPU extends GuiBaseConfigurableSlots<TileReplicatorCPU
 
     @Override
     protected GuiComponentTab createTab(TileReplicatorCPU.AUTO_SLOTS slot) {
-        if (tabs == null) tabs = new ArrayList<>();
-
         switch (slot) {
             case medium_input:
-                GuiComponentTab inputTab = new GuiComponentTab(StandardPalette.green.getColor(), new ItemStack(ItemHandler.itemReplicationMedium), 100, 100);
-                tabs.add(inputTab);
-                return inputTab;
+                return new GuiComponentTab(StandardPalette.green.getColor(), new ItemStack(ItemHandler.itemReplicationMedium), 100, 100);
             case output :
-                GuiComponentTab outputTab = new GuiComponentTab(StandardPalette.green.getColor(), new ItemStack(BlockHandler.blockReplicatorCPU), 100, 100);
-                tabs.add(outputTab);
-                return outputTab;
+                return new GuiComponentTab(StandardPalette.green.getColor(), new ItemStack(BlockHandler.blockReplicatorCPU), 100, 100);
             default :
                 throw MiscUtils.unhandledEnum(slot);
 
@@ -86,5 +81,10 @@ public class GuiReplicatorCPU extends GuiBaseConfigurableSlots<TileReplicatorCPU
             default:
                 throw MiscUtils.unhandledEnum(slot);
         }
+    }
+
+    @Override
+    public List<GuiComponentTab> getExtraTabs() {
+        return new ArrayList<>();
     }
 }

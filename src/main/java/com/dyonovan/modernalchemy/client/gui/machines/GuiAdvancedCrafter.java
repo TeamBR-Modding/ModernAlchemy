@@ -9,13 +9,11 @@ import com.dyonovan.modernalchemy.client.gui.components.GuiComponentChangeIconBu
 import com.dyonovan.modernalchemy.client.gui.components.GuiComponentRF;
 import com.dyonovan.modernalchemy.client.gui.components.GuiComponentToolTip;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
-import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.client.rpc.ILevelChanger;
 import com.dyonovan.modernalchemy.common.tileentity.machines.TileAdvancedCrafter;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
 import openmods.gui.component.BaseComponent;
 import openmods.gui.component.BaseComposite;
 import openmods.gui.component.GuiComponentLabel;
@@ -26,6 +24,7 @@ import openmods.utils.MiscUtils;
 import openmods.utils.render.FakeIcon;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GuiAdvancedCrafter extends GuiBaseConfigurableSlots<TileAdvancedCrafter, ContainerAdvancedCrafter, TileAdvancedCrafter.AUTO_SLOTS> implements INeiProvider{
 
@@ -35,7 +34,7 @@ public class GuiAdvancedCrafter extends GuiBaseConfigurableSlots<TileAdvancedCra
 
     public GuiAdvancedCrafter(ContainerAdvancedCrafter container) {
         super(container, 176, 166, "tile.modernalchemy.blockAdvancedCrafter.name");
-        //setArrowLocation(113, 33, 24, 15);
+        setNEIArrowLocation(113, 33, 24, 15);
     }
 
     @Override
@@ -54,16 +53,16 @@ public class GuiAdvancedCrafter extends GuiBaseConfigurableSlots<TileAdvancedCra
 
         switch (te.currentMode.get()) {
             case TileAdvancedCrafter.ENRICH:
-                buttonMode.icon = FakeIcon.createSheetIcon(0, 0, 16, 16);
+                buttonMode.icon = FakeIcon.createSheetIcon(24, 0, 16, 16);
                 break;
             case TileAdvancedCrafter.EXTRUDE:
-                buttonMode.icon = FakeIcon.createSheetIcon(16, 0, 16, 16);
+                buttonMode.icon = FakeIcon.createSheetIcon(40, 0, 16, 16);
                 break;
             case TileAdvancedCrafter.BEND:
-                buttonMode.icon = FakeIcon.createSheetIcon(32, 0, 16, 16);
+                buttonMode.icon = FakeIcon.createSheetIcon(56, 0, 16, 16);
                 break;
             case TileAdvancedCrafter.FURNACE:
-                buttonMode.icon = FakeIcon.createSheetIcon(48, 0, 16, 16);
+                buttonMode.icon = FakeIcon.createSheetIcon(72, 0, 16, 16);
                 break;
         }
     }
@@ -79,11 +78,10 @@ public class GuiAdvancedCrafter extends GuiBaseConfigurableSlots<TileAdvancedCra
         addSyncUpdateListener(ValueCopyAction.create(te.getRFEnergyStorageProvider(), energyLevel.rfBankReciever()));
         root.addComponent(energyLevel);
 
-        IIcon icon = FakeIcon.createSheetIcon(0, 0, 16, 16);
-        ResourceLocation resource = new ResourceLocation(Constants.MODID + ":textures/gui/AC_states.png");
+        IIcon icon = FakeIcon.createSheetIcon(24, 0, 16, 16);
 
         final ILevelChanger rpc = te.createClientRpcProxy(ILevelChanger.class);
-        buttonMode = new GuiComponentChangeIconButton(40, 35, 0xFFFFFF, icon, resource);
+        buttonMode = new GuiComponentChangeIconButton(40, 35, 0xFFFFFF, icon);
         buttonMode.setListener(new IMouseDownListener() {
             @Override
             public void componentMouseDown(BaseComponent component, int x, int y, int button) {
@@ -98,14 +96,9 @@ public class GuiAdvancedCrafter extends GuiBaseConfigurableSlots<TileAdvancedCra
 
     @Override
     protected GuiComponentTab createTab(TileAdvancedCrafter.AUTO_SLOTS slot) {
-        if(tabs == null)
-            tabs = new ArrayList<>();
-
         switch(slot) {
             case output:
-                GuiComponentTab outputTab = new  GuiComponentTab(StandardPalette.green.getColor(), new ItemStack(BlockHandler.blockAdvancedCrafter), 100, 100);
-                tabs.add(outputTab);
-                return outputTab;
+                return new  GuiComponentTab(StandardPalette.green.getColor(), new ItemStack(BlockHandler.blockAdvancedCrafter), 100, 100);
             default:
                 throw MiscUtils.unhandledEnum(slot);
         }
@@ -119,6 +112,11 @@ public class GuiAdvancedCrafter extends GuiBaseConfigurableSlots<TileAdvancedCra
             default:
                 throw MiscUtils.unhandledEnum(slot);
         }
+    }
+
+    @Override
+    public List<GuiComponentTab> getExtraTabs() {
+        return new ArrayList<>();
     }
 
     @Override

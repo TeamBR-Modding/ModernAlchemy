@@ -1,7 +1,6 @@
 package com.dyonovan.modernalchemy.client.gui;
 
 import com.dyonovan.modernalchemy.ModernAlchemy;
-import com.dyonovan.modernalchemy.client.gui.widget.Widget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -14,7 +13,6 @@ import java.util.List;
 
 public abstract class BaseGui extends GuiContainer {
 
-    protected List<Widget> widgets;
     protected List<Zone> toolTips;
     protected Rectangle arrowLoc;
     protected Container parent;
@@ -23,7 +21,6 @@ public abstract class BaseGui extends GuiContainer {
     public BaseGui(Container c) {
         super(c);
         this.parent = c;
-        widgets = new ArrayList<Widget>();
         toolTips = new ArrayList<Zone>();
         arrowLoc = new Rectangle(0, 0, 0, 0);
     }
@@ -34,9 +31,6 @@ public abstract class BaseGui extends GuiContainer {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-        for(Widget widget : widgets) {
-            widget.render(guiLeft, guiTop);
-        }
     }
 
     @Override

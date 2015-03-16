@@ -19,6 +19,7 @@ import openmods.gui.logic.ValueCopyAction;
 import openmods.utils.MiscUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GuiPatternRecorder extends GuiBaseConfigurableSlots<TilePatternRecorder, ContainerPatternRecorder, TilePatternRecorder.AUTO_SLOTS> {
 
@@ -57,18 +58,11 @@ public class GuiPatternRecorder extends GuiBaseConfigurableSlots<TilePatternReco
 
     @Override
     protected GuiComponentTab createTab(TilePatternRecorder.AUTO_SLOTS slot) {
-        if(tabs == null)
-            tabs = new ArrayList<>();
-
         switch (slot) {
             case output :
-                GuiComponentTab outputTab = new GuiComponentTab(StandardPalette.green.getColor(), new ItemStack(BlockHandler.blockPatternRecorder), 100, 100);
-                tabs.add(outputTab);
-                return outputTab;
+                return new GuiComponentTab(StandardPalette.green.getColor(), new ItemStack(BlockHandler.blockPatternRecorder), 100, 100);
             case input:
-                GuiComponentTab inputTab = new GuiComponentTab(StandardPalette.blue.getColor(), new ItemStack(ItemHandler.itemReplicatorPattern), 100, 100);
-                tabs.add(inputTab);
-                return inputTab;
+                return new GuiComponentTab(StandardPalette.blue.getColor(), new ItemStack(ItemHandler.itemReplicatorPattern), 100, 100);
             default :
                 throw MiscUtils.unhandledEnum(slot);
         }
@@ -84,5 +78,10 @@ public class GuiPatternRecorder extends GuiBaseConfigurableSlots<TilePatternReco
             default :
                 throw MiscUtils.unhandledEnum(slot);
         }
+    }
+
+    @Override
+    public List<GuiComponentTab> getExtraTabs() {
+        return new ArrayList<>();
     }
 }

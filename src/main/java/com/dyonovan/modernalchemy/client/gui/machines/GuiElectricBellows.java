@@ -18,6 +18,7 @@ import openmods.gui.logic.ValueCopyAction;
 import openmods.utils.MiscUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GuiElectricBellows extends GuiBaseConfigurableSlots<TileElectricBellows, ContainerElectricBellows, TileElectricBellows.AutoSlots> {
 
@@ -67,13 +68,9 @@ public class GuiElectricBellows extends GuiBaseConfigurableSlots<TileElectricBel
 
     @Override
     protected GuiComponentTab createTab(TileElectricBellows.AutoSlots slot) {
-        if(tabs == null)
-            tabs = new ArrayList<>();
         switch (slot) {
             case fluid:
-                GuiComponentTab tab = new GuiComponentTab(StandardPalette.blue.getColor(), new ItemStack(BlockHandler.blockElectricBellows), 100, 100);
-                tabs.add(tab);
-                return tab;
+                return new GuiComponentTab(StandardPalette.blue.getColor(), new ItemStack(BlockHandler.blockElectricBellows), 100, 100);
             default :
                 throw MiscUtils.unhandledEnum(slot);
         }
@@ -87,5 +84,10 @@ public class GuiElectricBellows extends GuiBaseConfigurableSlots<TileElectricBel
             default :
                 throw MiscUtils.unhandledEnum(slot);
         }
+    }
+
+    @Override
+    public List<GuiComponentTab> getExtraTabs() {
+        return new ArrayList<>();
     }
 }

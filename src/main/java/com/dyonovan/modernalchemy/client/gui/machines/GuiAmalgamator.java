@@ -3,6 +3,9 @@ package com.dyonovan.modernalchemy.client.gui.machines;
 import com.dyonovan.modernalchemy.client.gui.GuiBaseConfigurableSlots;
 import com.dyonovan.modernalchemy.client.gui.INeiProvider;
 import com.dyonovan.modernalchemy.client.gui.StandardPalette;
+import com.dyonovan.modernalchemy.client.gui.components.GuiComponentReverseTab;
+import com.dyonovan.modernalchemy.client.rpc.IBooleanChanger;
+import com.dyonovan.modernalchemy.client.rpc.ILevelChanger;
 import com.dyonovan.modernalchemy.common.container.machines.ContainerAmalgamator;
 import com.dyonovan.modernalchemy.client.gui.components.GuiComponentArrowProgress;
 import com.dyonovan.modernalchemy.client.gui.components.GuiComponentTeslaBank;
@@ -10,12 +13,17 @@ import com.dyonovan.modernalchemy.client.gui.components.GuiComponentToolTip;
 import com.dyonovan.modernalchemy.handlers.ItemHandler;
 import com.dyonovan.modernalchemy.common.tileentity.machines.TileAmalgamator;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import openmods.gui.component.*;
+import openmods.gui.listener.IMouseDownListener;
+import openmods.gui.listener.IValueChangedListener;
 import openmods.gui.logic.ValueCopyAction;
 import openmods.utils.MiscUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GuiAmalgamator extends GuiBaseConfigurableSlots<TileAmalgamator, ContainerAmalgamator, TileAmalgamator.AUTO_SLOTS> implements INeiProvider{
 
@@ -24,7 +32,7 @@ public class GuiAmalgamator extends GuiBaseConfigurableSlots<TileAmalgamator, Co
 
     public GuiAmalgamator(ContainerAmalgamator container) {
         super(container, 176, 166, "tile.modernalchemy.blockAmalgamator.name");
-        setArrowLocation(100, 37, 24, 15);
+        setNEIArrowLocation(100, 37, 24, 15);
     }
 
     @Override
@@ -64,17 +72,12 @@ public class GuiAmalgamator extends GuiBaseConfigurableSlots<TileAmalgamator, Co
 
     @Override
     protected GuiComponentTab createTab(TileAmalgamator.AUTO_SLOTS slot) {
-        if(tabs == null)
-            tabs = new ArrayList<>();
-
         switch(slot) {
             case liquid :
                 GuiComponentTab liquidTab = new GuiComponentTab(StandardPalette.lightblue.getColor(), new ItemStack(ItemHandler.itemBucketActinium), 100, 100);
-                tabs.add(liquidTab);
                 return liquidTab;
             case output :
                 GuiComponentTab outputTab = new GuiComponentTab(StandardPalette.green.getColor(), new ItemStack(ItemHandler.itemReplicationMedium), 100, 100);
-                tabs.add(outputTab);
                 return outputTab;
             default :
                 throw MiscUtils.unhandledEnum(slot);
@@ -91,6 +94,34 @@ public class GuiAmalgamator extends GuiBaseConfigurableSlots<TileAmalgamator, Co
             default :
                 throw MiscUtils.unhandledEnum(slot);
         }
+    }
+
+    @Override
+    public List<GuiComponentTab> getExtraTabs() {
+        List<GuiComponentTab> tabs = new ArrayList<>();
+
+        GuiComponentReverseTab redstoneTab = new GuiComponentReverseTab(StandardPalette.red.getColor(), new ItemStack(Items.redstone), 100, 50, xSize);
+        redstoneTab.addComponent(new GuiComponentLabel(30, 10,"Redstone"));
+        final GuiComponentCheckbox requiredRedstone = new GuiComponentCheckbox(10, 25, false, 0xFFFFFF);
+        requiredRedstone.setValue(getContainer().getOwner().getRedstoneRequiredProvider().getValue());
+        final IBooleanChanger rpc = getContainer().getOwner().createClientRpcProxy(IBooleanChanger.class);
+        requiredRedstone.setListener(new IMouseDownListener() {
+            @Override
+            public void componentMouseDown(BaseComponent component, int x, int y, int button) {
+                if(getContainer().getOwner().getRedstoneRequiredProvider().getValue()) {
+                    rpc.changeBoolean(false);
+                }
+                else {
+                    rpc.changeBoolean(true);
+                }
+                requiredRedstone.setValue(getContainer().getOwner().getRedstoneRequiredProvider().getValue());
+            }
+        });
+        redstoneTab.addComponent(requiredRedstone);
+        redstoneTab.addComponent(new GuiComponentLabel(20, 25, "Required"));
+        tabs.add(redstoneTab);
+        
+        return tabs;
     }
 
     @Override
