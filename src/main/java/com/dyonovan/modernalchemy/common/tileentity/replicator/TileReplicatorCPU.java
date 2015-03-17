@@ -117,8 +117,8 @@ public class TileReplicatorCPU extends TileModernAlchemy implements IInventoryPr
         TileReplicatorStand tileStand = (TileReplicatorStand) worldObj.getTileEntity(stand.x, stand.y, stand.z);
         if (tileStand != null) {
             if (insert)
-                tileStand.getInventory().setInventorySlotContents(0, new ItemStack(ItemHandler.itemReplicationMedium));
-            else tileStand.getInventory().setInventorySlotContents(0, null);
+                tileStand.inventory.setStackInSlot(new ItemStack(ItemHandler.itemReplicationMedium), 0);
+            else tileStand.inventory.setStackInSlot(null, 0);
         }
     }
 
