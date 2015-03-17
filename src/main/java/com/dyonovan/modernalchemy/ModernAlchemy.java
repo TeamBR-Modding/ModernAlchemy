@@ -3,7 +3,7 @@ package com.dyonovan.modernalchemy;
 import com.dyonovan.modernalchemy.client.achievement.AchievementRegistry;
 import com.dyonovan.modernalchemy.client.achievement.ModAchievements;
 import com.dyonovan.modernalchemy.client.nei.INEICallback;
-import com.dyonovan.modernalchemy.client.rpc.IBooleanChanger;
+import com.dyonovan.modernalchemy.client.rpc.IRedstoneRequired;
 import com.dyonovan.modernalchemy.handlers.*;
 import com.dyonovan.modernalchemy.helpers.KeyInputHelper;
 import com.dyonovan.modernalchemy.lib.Constants;
@@ -91,7 +91,7 @@ public class ModernAlchemy {
         proxy.preInit();
 
         RpcCallDispatcher.INSTANCE.startRegistration().registerInterface(ILevelChanger.class);
-        RpcCallDispatcher.INSTANCE.startRegistration().registerInterface(IBooleanChanger.class);
+        RpcCallDispatcher.INSTANCE.startRegistration().registerInterface(IRedstoneRequired.class);
     }
 
     @SuppressWarnings("unused")

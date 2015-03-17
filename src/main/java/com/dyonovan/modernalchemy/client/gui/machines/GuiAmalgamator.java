@@ -4,8 +4,7 @@ import com.dyonovan.modernalchemy.client.gui.GuiBaseConfigurableSlots;
 import com.dyonovan.modernalchemy.client.gui.INeiProvider;
 import com.dyonovan.modernalchemy.client.gui.StandardPalette;
 import com.dyonovan.modernalchemy.client.gui.components.GuiComponentReverseTab;
-import com.dyonovan.modernalchemy.client.rpc.IBooleanChanger;
-import com.dyonovan.modernalchemy.client.rpc.ILevelChanger;
+import com.dyonovan.modernalchemy.client.rpc.IRedstoneRequired;
 import com.dyonovan.modernalchemy.common.container.machines.ContainerAmalgamator;
 import com.dyonovan.modernalchemy.client.gui.components.GuiComponentArrowProgress;
 import com.dyonovan.modernalchemy.client.gui.components.GuiComponentTeslaBank;
@@ -13,12 +12,10 @@ import com.dyonovan.modernalchemy.client.gui.components.GuiComponentToolTip;
 import com.dyonovan.modernalchemy.handlers.ItemHandler;
 import com.dyonovan.modernalchemy.common.tileentity.machines.TileAmalgamator;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import openmods.gui.component.*;
 import openmods.gui.listener.IMouseDownListener;
-import openmods.gui.listener.IValueChangedListener;
 import openmods.gui.logic.ValueCopyAction;
 import openmods.utils.MiscUtils;
 
@@ -104,15 +101,15 @@ public class GuiAmalgamator extends GuiBaseConfigurableSlots<TileAmalgamator, Co
         redstoneTab.addComponent(new GuiComponentLabel(30, 10,"Redstone"));
         final GuiComponentCheckbox requiredRedstone = new GuiComponentCheckbox(10, 25, false, 0xFFFFFF);
         requiredRedstone.setValue(getContainer().getOwner().getRedstoneRequiredProvider().getValue());
-        final IBooleanChanger rpc = getContainer().getOwner().createClientRpcProxy(IBooleanChanger.class);
+        final IRedstoneRequired rpc = getContainer().getOwner().createClientRpcProxy(IRedstoneRequired.class);
         requiredRedstone.setListener(new IMouseDownListener() {
             @Override
             public void componentMouseDown(BaseComponent component, int x, int y, int button) {
                 if(getContainer().getOwner().getRedstoneRequiredProvider().getValue()) {
-                    rpc.changeBoolean(false);
+                    rpc.setRequirement(false);
                 }
                 else {
-                    rpc.changeBoolean(true);
+                    rpc.setRequirement(true);
                 }
                 requiredRedstone.setValue(getContainer().getOwner().getRedstoneRequiredProvider().getValue());
             }

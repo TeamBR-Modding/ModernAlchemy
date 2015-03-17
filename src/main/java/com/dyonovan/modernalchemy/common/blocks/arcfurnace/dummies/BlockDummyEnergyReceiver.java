@@ -7,12 +7,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 
 public class BlockDummyEnergyReceiver extends BlockDummy {
-    @SideOnly(Side.CLIENT)
-    public static class Icons {
-        public static IIcon inActive;
-        public static IIcon active;
-    }
-
     public BlockDummyEnergyReceiver() {
         super();
     }
@@ -21,7 +15,5 @@ public class BlockDummyEnergyReceiver extends BlockDummy {
     @Override
     public void registerBlockIcons(IIconRegister register) {
         setDefaultTexture(blockIcon = register.registerIcon(Constants.MODID + ":blastFurnaceEnergy"));
-        Icons.active = register.registerIcon(Constants.MODID + ":blastFurnaceEnergyActive");
-        Icons.inActive = blockIcon;
     }
 }

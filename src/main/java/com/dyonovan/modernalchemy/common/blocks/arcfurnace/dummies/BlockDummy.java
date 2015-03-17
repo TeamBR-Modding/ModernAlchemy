@@ -1,5 +1,6 @@
 package com.dyonovan.modernalchemy.common.blocks.arcfurnace.dummies;
 
+import com.dyonovan.modernalchemy.client.renderer.arcfurnace.ArcFurnaceDummyRenderer;
 import com.dyonovan.modernalchemy.common.blocks.BlockModernAlchemy;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.common.tileentity.arcfurnace.BaseCore;
@@ -14,14 +15,9 @@ import net.minecraft.world.World;
 
 public class BlockDummy extends BlockModernAlchemy {
 
-    @SideOnly(Side.CLIENT)
-    public static class Icons {
-        public static IIcon inActive;
-        public static IIcon active;
-    }
-
     public BlockDummy() {
         super(Material.rock);
+        setLightOpacity(1);
     }
 
     @Override
@@ -34,11 +30,24 @@ public class BlockDummy extends BlockModernAlchemy {
         super.breakBlock(world, x, y, z, par5, par6);
     }
 
+    @Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
+    @Override
+    public int getRenderType() {
+        return ArcFurnaceDummyRenderer.dummyRenderID;
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
     @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(IIconRegister register) {
         setDefaultTexture(blockIcon = register.registerIcon(Constants.MODID + ":blastFurnace"));
-        Icons.active = register.registerIcon(Constants.MODID + ":blastFurnaceActive");
-        Icons.inActive = blockIcon;
     }
 }

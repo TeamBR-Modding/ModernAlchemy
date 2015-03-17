@@ -20,12 +20,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TileDummyItemIO extends TileDummy implements ISidedInventory, IIconProvider {
+public class TileDummyItemIO extends TileDummy implements ISidedInventory {
 
-    @Override
-    public IIcon getIcon(ForgeDirection rotatedDir) {
-        return getCore() != null ? BlockItemIODummy.Icons.active : BlockItemIODummy.Icons.inActive;
-    }
 
     @Override
     public int[] getAccessibleSlotsFromSide(int p_94128_1_) {

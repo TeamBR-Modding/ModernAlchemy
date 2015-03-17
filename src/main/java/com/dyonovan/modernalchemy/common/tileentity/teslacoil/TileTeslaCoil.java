@@ -168,60 +168,6 @@ public class TileTeslaCoil extends TileModernAlchemy implements IEnergyHandler, 
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        super.readFromNBT(tag);
-        if (tag.hasKey("Links")) {
-            NBTTagList nbtList = tag.getTagList("Links", 10);
-            linkedMachines.clear();
-            for (int i = 0; i < nbtList.tagCount(); i++) {
-                NBTTagCompound tag1 = nbtList.getCompoundTagAt(i);
-                int x = tag1.getInteger("X");
-                int y = tag1.getInteger("Y");
-                int z = tag1.getInteger("Z");
-                linkedMachines.add(new Location(x, y, z));
-            }
-        }
-        if (tag.hasKey("Found")) {
-            NBTTagList nbtList = tag.getTagList("Found", 10);
-            rangeMachines.clear();
-            for (int i = 0; i < nbtList.tagCount(); i++) {
-                NBTTagCompound tag1 = nbtList.getCompoundTagAt(i);
-                int x = tag1.getInteger("X");
-                int y = tag1.getInteger("Y");
-                int z = tag1.getInteger("Z");
-                rangeMachines.add(new Location(x, y, z));
-            }
-        }
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound tag) {
-        super.writeToNBT(tag);
-        if (linkedMachines.size() > 0) {
-            NBTTagList nbtList = new NBTTagList();
-            for (Location loc : linkedMachines) {
-                NBTTagCompound tag1 = new NBTTagCompound();
-                tag1.setInteger("X", loc.x);
-                tag1.setInteger("Y", loc.y);
-                tag1.setInteger("Z", loc.z);
-                nbtList.appendTag(tag1);
-            }
-            tag.setTag("Links", nbtList);
-        }
-        if (rangeMachines.size() > 0) {
-            NBTTagList nbtList = new NBTTagList();
-            for (Location loc : rangeMachines) {
-                NBTTagCompound tag1 = new NBTTagCompound();
-                tag1.setInteger("X", loc.x);
-                tag1.setInteger("Y", loc.y);
-                tag1.setInteger("Z", loc.z);
-                nbtList.appendTag(tag1);
-            }
-            tag.setTag("Found", nbtList);
-        }
-    }
-
-    @Override
     public void updateEntity() {
         super.updateEntity();
         if (worldObj.isRemote) return;

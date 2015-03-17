@@ -10,7 +10,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import openmods.api.IHasGui;
 import openmods.api.IIconProvider;
 
-public class TileDummy extends TileModernAlchemy implements IIconProvider, IHasGui {
+public class TileDummy extends TileModernAlchemy implements IHasGui {
     private Location coreLocation;
 
     @Override
@@ -57,11 +57,6 @@ public class TileDummy extends TileModernAlchemy implements IIconProvider, IHasG
     @Override
     protected void createSyncedFields() {
         coreLocation = new Location();
-    }
-
-    @Override
-    public IIcon getIcon(ForgeDirection rotatedDir) {
-        return getCore() != null ? BlockDummy.Icons.active : BlockDummy.Icons.inActive;
     }
 
     @Override

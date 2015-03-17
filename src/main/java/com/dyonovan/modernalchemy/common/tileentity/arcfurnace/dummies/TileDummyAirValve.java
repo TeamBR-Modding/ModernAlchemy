@@ -1,21 +1,13 @@
 package com.dyonovan.modernalchemy.common.tileentity.arcfurnace.dummies;
 
-import com.dyonovan.modernalchemy.common.blocks.arcfurnace.dummies.BlockDummyAirValve;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
-import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import openmods.api.IIconProvider;
 
-public class TileDummyAirValve extends TileDummy implements IFluidHandler, IIconProvider {
-
-    @Override
-    public IIcon getIcon(ForgeDirection rotatedDir) {
-        return getCore() != null ? BlockDummyAirValve.Icons.active : BlockDummyAirValve.Icons.inActive;
-    }
+public class TileDummyAirValve extends TileDummy implements IFluidHandler {
 
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {

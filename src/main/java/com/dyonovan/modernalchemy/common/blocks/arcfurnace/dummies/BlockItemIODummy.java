@@ -8,12 +8,6 @@ import net.minecraft.util.IIcon;
 
 public class BlockItemIODummy extends BlockDummy {
 
-    @SideOnly(Side.CLIENT)
-    public static class Icons {
-        public static IIcon inActive;
-        public static IIcon active;
-    }
-
     public BlockItemIODummy() {
         super();
     }
@@ -22,7 +16,5 @@ public class BlockItemIODummy extends BlockDummy {
     @Override
     public void registerBlockIcons(IIconRegister register) {
         setDefaultTexture(blockIcon = register.registerIcon(Constants.MODID + ":blastFurnaceItemIO"));
-        Icons.active = register.registerIcon(Constants.MODID + ":blastFurnaceItemIOActive");
-        Icons.inActive = blockIcon;
     }
 }

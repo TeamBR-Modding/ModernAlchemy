@@ -12,12 +12,7 @@ import openmods.api.IIconProvider;
 import java.util.Arrays;
 import java.util.HashSet;
 
-public class TileDummyOutputValve extends TileDummy implements IFluidHandler, IIconProvider {
-
-    @Override
-    public IIcon getIcon(ForgeDirection rotatedDir) {
-        return getCore() != null ? BlockDummyOutputValve.Icons.active : BlockDummyOutputValve.Icons.inActive;
-    }
+public class TileDummyOutputValve extends TileDummy implements IFluidHandler {
 
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {

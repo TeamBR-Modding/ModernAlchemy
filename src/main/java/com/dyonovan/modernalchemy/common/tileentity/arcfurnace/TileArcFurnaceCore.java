@@ -1,15 +1,16 @@
 package com.dyonovan.modernalchemy.common.tileentity.arcfurnace;
 
-import com.dyonovan.modernalchemy.common.blocks.arcfurnace.dummies.BlockDummy;
+import com.dyonovan.modernalchemy.common.blocks.arcfurnace.dummies.*;
 import com.dyonovan.modernalchemy.common.container.machines.ContainerArcFurnace;
+import com.dyonovan.modernalchemy.common.tileentity.arcfurnace.dummies.*;
 import com.dyonovan.modernalchemy.crafting.ArcFurnaceRecipeRegistry;
 import com.dyonovan.modernalchemy.energy.ITeslaHandler;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.client.gui.machines.GuiArcFurnace;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.helpers.GuiHelper;
-import com.dyonovan.modernalchemy.common.tileentity.arcfurnace.dummies.TileDummy;
 import com.dyonovan.modernalchemy.util.Location;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -84,17 +85,45 @@ public class TileArcFurnaceCore extends BaseCore implements IHasGui, IFluidHandl
 
     @Override
     public boolean isWellFormed() {
-        for(int i = -1; i <= 1; i++) {
-            for(int j = -1; j <= 1; j++) {
-                for(int k = -1; k <= 1; k++) {
-                    if(i == 0 && j == 0 && k == 0)
-                        continue;
-                    if(!(worldObj.getBlock(xCoord + i, yCoord + j, zCoord + k) instanceof BlockDummy))
-                        return false;
-                }
+        //Check base
+        for(int xCheck = -1; xCheck <= 1; xCheck++) {
+            for(int zCheck = -1; zCheck <= 1; zCheck++) {
+                if(!(worldObj.getBlock(xCoord + xCheck, yCoord - 1, zCoord + zCheck) instanceof BlockDummy))
+                    return false;
             }
         }
-        buildStructure();
+
+        //Check middle
+        for(int xCheck = -1; xCheck <= 1; xCheck++) {
+            for (int zCheck = -1; zCheck <= 1; zCheck++) {
+                if(xCheck == 0 && zCheck == 0)
+                    continue;
+                if(!(zCheck == 0 || xCheck == 0)) {
+                    if((worldObj.getBlock(xCoord + xCheck, yCoord, zCoord + zCheck) instanceof BlockDummy)) {
+                        if(!isBasicDummy(worldObj.getBlock(xCoord + xCheck, yCoord, zCoord + zCheck)))
+                            return false;
+                    } else
+                        return false;
+                } else if(!(worldObj.getBlock(xCoord + xCheck, yCoord, zCoord + zCheck) instanceof BlockDummy))
+                    return false;
+            }
+        }
+
+        //Check Top Layer
+        for(int xCheck = -1; xCheck <= 1; xCheck++) {
+            for (int zCheck = -1; zCheck <= 1; zCheck++) {
+                if((worldObj.getBlock(xCoord + xCheck, yCoord + 1, zCoord + zCheck) instanceof BlockDummy)) {
+                    if(!isBasicDummy(worldObj.getBlock(xCoord + xCheck, yCoord + 1, zCoord + zCheck)))
+                        return false;
+                } else
+                    return false;
+            }
+        }
+
+        //Check for energy reciever
+        if(worldObj.getBlock(xCoord, yCoord + 2, zCoord) != BlockHandler.blockArcFurnaceDummyEnergy)
+            return false;
+
         isValid = true;
         return true;
     }
@@ -114,6 +143,11 @@ public class TileArcFurnaceCore extends BaseCore implements IHasGui, IFluidHandl
                 }
             }
         }
+        TileDummy dummy = (TileDummy)worldObj.getTileEntity(xCoord, yCoord + 2, zCoord);
+        dummy.setCoreLocation(new Location(xCoord, yCoord, zCoord));
+        if(!worldObj.isRemote)
+            dummy.sync();
+        worldObj.markBlockForUpdate(xCoord, yCoord + 2, zCoord);
     }
 
     @Override
@@ -136,9 +170,24 @@ public class TileArcFurnaceCore extends BaseCore implements IHasGui, IFluidHandl
                 }
             }
         }
+        TileEntity tile = worldObj.getTileEntity(xCoord, yCoord + 2, zCoord);
+        if(tile != null) {
+            if(tile instanceof TileDummy) {
+                TileDummy dummy = (TileDummy)worldObj.getTileEntity(xCoord, yCoord + 2, zCoord);
+                dummy.setCoreLocation(new Location());
+                if(!worldObj.isRemote)
+                    dummy.sync();
+                worldObj.markBlockForUpdate(xCoord, yCoord + 2, zCoord);
+            }
+        }
         if(!worldObj.isRemote)
             reset();
         isValid = false;
+    }
+
+    public boolean isBasicDummy(Block dummy) {
+        return !(dummy instanceof BlockDummyAirValve) && !(dummy instanceof BlockDummyEnergyReceiver) &&
+                !(dummy instanceof BlockItemIODummy) && !(dummy instanceof BlockDummyOutputValve);
     }
 
     public void reset() {
@@ -325,12 +374,14 @@ public class TileArcFurnaceCore extends BaseCore implements IHasGui, IFluidHandl
     public void updateEntity() {
         super.updateEntity();
         if(worldObj.isRemote) return;
-        updateSpeed();
-        if(energyTank.canAcceptEnergy() && isValid) {
-            chargeFromCoils(energyTank);
+        if(isWellFormed()) {
+            updateSpeed();
+            if (energyTank.canAcceptEnergy() && isValid) {
+                chargeFromCoils(energyTank);
+            }
+            doSmelting();
+            if (airTank.isDirty() || outputTank.isDirty()) sync();
         }
-        doSmelting();
-        if(airTank.isDirty() || outputTank.isDirty()) sync();
     }
 
     @Override

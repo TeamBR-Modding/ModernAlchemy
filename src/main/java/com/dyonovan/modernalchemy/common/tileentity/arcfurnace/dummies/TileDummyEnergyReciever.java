@@ -1,18 +1,9 @@
 package com.dyonovan.modernalchemy.common.tileentity.arcfurnace.dummies;
 
-import com.dyonovan.modernalchemy.common.blocks.arcfurnace.dummies.BlockDummyEnergyReceiver;
 import com.dyonovan.modernalchemy.energy.ITeslaHandler;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
-import openmods.api.IIconProvider;
 
-public class TileDummyEnergyReciever extends TileDummy implements ITeslaHandler, IIconProvider {
-
-    @Override
-    public IIcon getIcon(ForgeDirection rotatedDir) {
-        return getCore() != null ? BlockDummyEnergyReceiver.Icons.active : BlockDummyEnergyReceiver.Icons.inActive;
-    }
+public class TileDummyEnergyReciever extends TileDummy implements ITeslaHandler {
 
     @Override
     public void updateEntity() {

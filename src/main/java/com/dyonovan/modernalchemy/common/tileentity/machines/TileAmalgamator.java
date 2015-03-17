@@ -1,6 +1,6 @@
 package com.dyonovan.modernalchemy.common.tileentity.machines;
 
-import com.dyonovan.modernalchemy.client.rpc.IBooleanChanger;
+import com.dyonovan.modernalchemy.client.rpc.IRedstoneRequired;
 import com.dyonovan.modernalchemy.common.container.machines.ContainerAmalgamator;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.client.gui.machines.GuiAmalgamator;
@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class TileAmalgamator extends TileModernAlchemy implements IBooleanChanger, IInventoryProvider, IHasGui, IConfigurableGuiSlots<TileAmalgamator.AUTO_SLOTS> {
+public class TileAmalgamator extends TileModernAlchemy implements IRedstoneRequired, IInventoryProvider, IHasGui, IConfigurableGuiSlots<TileAmalgamator.AUTO_SLOTS> {
 
     public static final int TANK_CAPACITY = FluidContainerRegistry.BUCKET_VOLUME * 10;
     public static final int PROCESS_TIME = 500;
@@ -254,7 +254,7 @@ public class TileAmalgamator extends TileModernAlchemy implements IBooleanChange
     }
 
     @Override
-    public void changeBoolean(boolean bool) {
+    public void setRequirement(boolean bool) {
         requiresRedstone.set(bool);
         sync();
     }

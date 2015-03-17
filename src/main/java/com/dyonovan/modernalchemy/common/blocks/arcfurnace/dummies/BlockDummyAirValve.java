@@ -7,11 +7,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 
 public class BlockDummyAirValve extends BlockDummy {
-    @SideOnly(Side.CLIENT)
-    public static class Icons {
-        public static IIcon inActive;
-        public static IIcon active;
-    }
 
     public BlockDummyAirValve() {
         super();
@@ -21,7 +16,5 @@ public class BlockDummyAirValve extends BlockDummy {
     @Override
     public void registerBlockIcons(IIconRegister register) {
         setDefaultTexture(blockIcon = register.registerIcon(Constants.MODID + ":blastFurnaceAirValve"));
-        Icons.active = register.registerIcon(Constants.MODID + ":blastFurnaceAirValveActive");
-        Icons.inActive = blockIcon;
     }
 }

@@ -6,12 +6,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 
 public class BlockArcFurnaceCore extends BlockModernAlchemy {
-    @SideOnly(Side.CLIENT)
-    private IIcon front;
-
     public BlockArcFurnaceCore() {
         super(Material.rock);
         this.setLightLevel(8F);
@@ -19,6 +17,6 @@ public class BlockArcFurnaceCore extends BlockModernAlchemy {
 
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconregister) {
-        setDefaultTexture(blockIcon = iconregister.registerIcon(Constants.MODID + ":blastFurnaceFront"));
+        setDefaultTexture(blockIcon = iconregister.registerIcon(Constants.MODID + ":blastFurnaceCore"));
     }
 }

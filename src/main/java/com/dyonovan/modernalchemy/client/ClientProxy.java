@@ -1,6 +1,8 @@
 package com.dyonovan.modernalchemy.client;
 
+import com.dyonovan.modernalchemy.client.renderer.arcfurnace.ArcFurnaceDummyRenderer;
 import com.dyonovan.modernalchemy.common.entities.EntityLaserNode;
+import com.dyonovan.modernalchemy.common.tileentity.arcfurnace.dummies.TileDummy;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.client.renderer.replicator.ItemRenderFrame;
@@ -72,6 +74,9 @@ public class ClientProxy implements IProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileReplicatorStand.class, renderReplicatorStand);
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockHandler.blockReplicatorStand),
                 new ItemRenderFrame(renderReplicatorStand, new TileReplicatorStand()));
+
+        //Arc Furnace Dummies
+        RenderingRegistry.registerBlockHandler(new ArcFurnaceDummyRenderer());
     }
 
     @Override
