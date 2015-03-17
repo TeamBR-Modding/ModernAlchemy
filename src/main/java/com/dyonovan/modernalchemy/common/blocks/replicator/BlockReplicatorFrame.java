@@ -20,10 +20,11 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import openmods.block.OpenBlock;
+import openmods.infobook.BookDocumentation;
 
 import java.util.Arrays;
 import java.util.List;
-
+@BookDocumentation
 public class BlockReplicatorFrame extends BlockModernAlchemy {
 
     private static final float PIPE_MIN_POS = 0.2F;

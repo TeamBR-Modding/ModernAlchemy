@@ -12,7 +12,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import openmods.infobook.BookDocumentation;
 
+@BookDocumentation
 public class BlockTeslaBase extends BlockModernAlchemy {
 
     public BlockTeslaBase() {

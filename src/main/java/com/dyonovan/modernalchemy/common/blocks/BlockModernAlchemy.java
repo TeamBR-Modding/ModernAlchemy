@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import openmods.block.OpenBlock;
+import openmods.infobook.BookDocumentation;
 
 public abstract class BlockModernAlchemy extends OpenBlock {
 

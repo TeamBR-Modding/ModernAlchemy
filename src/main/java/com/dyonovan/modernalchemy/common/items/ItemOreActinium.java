@@ -13,7 +13,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
+import openmods.infobook.BookDocumentation;
 
+@BookDocumentation
 public class ItemOreActinium extends Item {
 
     public ItemOreActinium() {

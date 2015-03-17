@@ -11,12 +11,15 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import openmods.infobook.BookDocumentation;
 
+@BookDocumentation
 public class ItemManual extends Item {
 
     public ItemManual() {
         super();
         this.setMaxStackSize(1);
+        this.setUnlocalizedName(Constants.MODID + ":itemManual");
         this.setCreativeTab(ModernAlchemy.tabModernAlchemy);
     }
 

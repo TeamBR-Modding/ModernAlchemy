@@ -3,7 +3,9 @@ package com.dyonovan.modernalchemy.common.items;
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.lib.Constants;
 import net.minecraft.item.Item;
+import openmods.infobook.BookDocumentation;
 
+@BookDocumentation
 public class ItemReplicatorMedium extends Item {
 
     public ItemReplicatorMedium() {

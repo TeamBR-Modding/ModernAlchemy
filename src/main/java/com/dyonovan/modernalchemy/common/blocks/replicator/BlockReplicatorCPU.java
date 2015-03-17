@@ -17,7 +17,9 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import openmods.block.BlockRotationMode;
+import openmods.infobook.BookDocumentation;
 
+@BookDocumentation
 public class BlockReplicatorCPU extends BlockModernAlchemy {
 
     @SideOnly(Side.CLIENT)

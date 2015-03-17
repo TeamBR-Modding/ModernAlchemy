@@ -10,7 +10,9 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import openmods.infobook.BookDocumentation;
 
+@BookDocumentation
 public class BlockTeslaStand extends BlockModernAlchemy {
 
     public BlockTeslaStand() {

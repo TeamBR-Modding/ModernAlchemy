@@ -2,6 +2,11 @@ modernalchemy.gui.blocks=Blocks
 modernalchemy.gui.items=Items
 modernalchemy.gui.changelogs=ChangeLog
 
+openblocks.misc.page=Page %d of %d
+
+modernalchemy.gui.features=Features
+modernalchemy.gui.bugfixes=Bug-Fixes
+
 modernalchemy.gui.welcome.title=Welcome!
 modernalchemy.gui.welcome.content=Create items with lighting and radioactive material. A mid to late game mod focusing on replicating items in a fun, yet challenging way. With emphasis on realism this mod will make you think not just craft.
 

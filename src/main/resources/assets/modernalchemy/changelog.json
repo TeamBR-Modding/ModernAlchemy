@@ -1,0 +1,27 @@
+[
+  {
+    version : "Beta-1.1",
+    sections :
+    [
+      {
+        title : "modernalchemy.gui.features",
+        lines :
+        [
+          "Switch to OpenModsLib",
+          "Super Tesla Coil (8 times a normal coil)",
+          "Arc furnace now has to be built a specific way",
+          "Tiles are configurable in the GUI",
+          "Replicator now has quantity output"
+        ]
+      },
+      {
+        title : "modernalchemy.gui.bugfixes",
+        lines :
+        [
+          "You can no longer remove a pattern mid replication",
+          "Ore stack fix for Advanced Crafter NEI"
+        ]
+      }
+    ]
+  }
+]

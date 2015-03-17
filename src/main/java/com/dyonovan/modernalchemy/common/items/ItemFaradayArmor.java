@@ -5,7 +5,9 @@ import com.dyonovan.modernalchemy.lib.Constants;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import openmods.infobook.BookDocumentation;
 
+@BookDocumentation
 public class ItemFaradayArmor extends ItemArmor {
 
     public String texture;

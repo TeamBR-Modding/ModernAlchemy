@@ -90,6 +90,7 @@ public class GuiManual extends ComponentGui {
         contentsPage.addComponent(lblChangelogs);
 
         book.addPage(PageBase.BLANK_PAGE);
+        book.addPage(new StartPage());
         book.addPage(new TitledPage("modernalchemy.gui.credits.title", "modernalchemy.gui.credits.content"));
         book.addPage(contentsPage);
 

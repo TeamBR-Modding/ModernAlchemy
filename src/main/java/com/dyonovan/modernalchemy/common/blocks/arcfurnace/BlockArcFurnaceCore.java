@@ -8,7 +8,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import openmods.infobook.BookDocumentation;
 
+@BookDocumentation
 public class BlockArcFurnaceCore extends BlockModernAlchemy {
     public BlockArcFurnaceCore() {
         super(Material.rock);

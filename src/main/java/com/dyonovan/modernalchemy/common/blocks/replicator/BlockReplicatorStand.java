@@ -9,7 +9,9 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import openmods.infobook.BookDocumentation;
 
+@BookDocumentation
 public class BlockReplicatorStand extends BlockModernAlchemy {
 
     public BlockReplicatorStand() {
