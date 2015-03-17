@@ -1,6 +1,7 @@
 package com.dyonovan.modernalchemy.client.renderer.arcfurnace;
 
 import com.dyonovan.modernalchemy.common.tileentity.arcfurnace.dummies.TileDummy;
+import com.dyonovan.modernalchemy.util.RenderUtils;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.block.Block;
@@ -59,19 +60,21 @@ public class ArcFurnaceDummyRenderer implements ISimpleBlockRenderingHandler {
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
         TileDummy tile = (TileDummy)world.getTileEntity(x, y, z);
-        if(tile.getCore() != null) {
-            float minU = block.getIcon(0, 0).getMinU();
-            float minV = block.getIcon(0, 0).getMinV();
 
-            float maxU = block.getIcon(0, 0).getMaxU();
-            float maxV = block.getIcon(0, 0).getMaxV();
+        float minU = block.getIcon(0, 0).getMinU();
+        float minV = block.getIcon(0, 0).getMinV();
+
+        float maxU = block.getIcon(0, 0).getMaxU();
+        float maxV = block.getIcon(0, 0).getMaxV();
+        Tessellator.instance.setColorOpaque_F(1.0F, 1.0F, 1.0F);
+        Tessellator.instance.setBrightness(15728880);
+        if(tile.getCore() != null) {
+
             if(tile.yCoord < tile.getCore().yCoord) { //Bottom level
-                renderer.setRenderBounds(0, 0, 0, 1, 1, 1);
-                renderer.renderStandardBlock(block, x, y, z);
+                RenderUtils.renderCubeWithUV(Tessellator.instance, x, y, z, x + 1, y + 1, z + 1, minU, minV, maxU, maxV);
             } else if(tile.yCoord == tile.getCore().yCoord) { //Middle Level
                 if(tile.xCoord == tile.getCore().xCoord || tile.zCoord == tile.getCore().zCoord) { //Center faces
-                    renderer.setRenderBounds(0, 0, 0, 1, 1, 1);
-                    renderer.renderStandardBlock(block, x, y, z);
+                    RenderUtils.renderCubeWithUV(Tessellator.instance, x, y, z, x + 1, y + 1, z + 1, minU, minV, maxU, maxV);
                 }
                 GL11.glDisable(GL11.GL_CULL_FACE);
 
@@ -127,55 +130,52 @@ public class ArcFurnaceDummyRenderer implements ISimpleBlockRenderingHandler {
                 tess.addTranslation(-x, -y, -z);
 
             } else if(tile.yCoord > tile.getCore().yCoord) { //Top
-                if(tile.zCoord == tile.getCore().zCoord && tile.xCoord == tile.getCore().xCoord) {
-                    renderer.setRenderBounds(0, 0, 0, 1, 1, 1);
-                    renderer.renderStandardBlock(block, x, y, z);
+                if (tile.zCoord == tile.getCore().zCoord && tile.xCoord == tile.getCore().xCoord && tile.yCoord == tile.getCore().yCoord + 1) {
+                    RenderUtils.renderCubeWithUV(Tessellator.instance, x, y, z, x + 1, y + 1, z + 1, minU, minV, maxU, maxV);
                     return true;
+                } else if (tile.yCoord == tile.getCore().yCoord + 2) {
+                    RenderUtils.renderCubeWithUV(Tessellator.instance, x + 0.2, y, z + 0.2, x + 0.8, y + 1, z + 0.8, minU, minV, maxU, maxV);
                 }
                 Tessellator tess = Tessellator.instance;
                 tess.addTranslation(x, y, z);
-                if(tile.xCoord == tile.getCore().xCoord) {
-                    if(tile.zCoord > tile.getCore().zCoord) {
+                if (tile.xCoord == tile.getCore().xCoord) {
+                    if (tile.zCoord > tile.getCore().zCoord) {
                         tess.addVertexWithUV(0, 0, 1, maxU, maxV);
                         tess.addVertexWithUV(0, 1, 0, minU, maxV);
                         tess.addVertexWithUV(1, 1, 0, minU, minV);
                         tess.addVertexWithUV(1, 0, 1, maxU, minV);
-                    } else if(tile.zCoord < tile.getCore().zCoord) {
+                    } else if (tile.zCoord < tile.getCore().zCoord) {
                         tess.addVertexWithUV(0, 0, 0, maxU, maxV);
                         tess.addVertexWithUV(0, 1, 1, minU, maxV);
                         tess.addVertexWithUV(1, 1, 1, minU, minV);
                         tess.addVertexWithUV(1, 0, 0, maxU, minV);
                     }
-                } else if(tile.xCoord > tile.getCore().xCoord && tile.zCoord == tile.getCore().zCoord) {
+                } else if (tile.xCoord > tile.getCore().xCoord && tile.zCoord == tile.getCore().zCoord) {
                     tess.addVertexWithUV(0, 1, 1, maxU, maxV);
                     tess.addVertexWithUV(0, 1, 0, minU, maxV);
                     tess.addVertexWithUV(1, 0, 0, minU, minV);
                     tess.addVertexWithUV(1, 0, 1, maxU, minV);
-                } else if(tile.xCoord < tile.getCore().xCoord && tile.zCoord == tile.getCore().zCoord) {
+                } else if (tile.xCoord < tile.getCore().xCoord && tile.zCoord == tile.getCore().zCoord) {
                     tess.addVertexWithUV(0, 0, 1, minU, maxV);
                     tess.addVertexWithUV(1, 1, 1, minU, minV);
                     tess.addVertexWithUV(1, 1, 0, maxU, minV);
                     tess.addVertexWithUV(0, 0, 0, maxU, maxV);
-                }
-                else {
+                } else {
                     tess.draw();
                     tess.startDrawing(GL11.GL_TRIANGLES);
-                    if(tile.xCoord < tile.getCore().xCoord && tile.zCoord < tile.getCore().zCoord) {
+                    if (tile.xCoord < tile.getCore().xCoord && tile.zCoord < tile.getCore().zCoord) {
                         tess.addVertexWithUV(1, 0, 0, minU, minV);
                         tess.addVertexWithUV(1, 1, 1, maxU, minV);
                         tess.addVertexWithUV(0, 0, 1, maxU, maxV);
-                    }
-                    else if(tile.xCoord < tile.getCore().xCoord && tile.zCoord > tile.getCore().zCoord) {
+                    } else if (tile.xCoord < tile.getCore().xCoord && tile.zCoord > tile.getCore().zCoord) {
                         tess.addVertexWithUV(0, 0, 0, minU, maxV);
                         tess.addVertexWithUV(1, 1, 0, maxU, maxV);
                         tess.addVertexWithUV(1, 0, 1, maxU, minV);
-                    }
-                    else if(tile.xCoord > tile.getCore().xCoord && tile.zCoord < tile.getCore().zCoord) {
+                    } else if (tile.xCoord > tile.getCore().xCoord && tile.zCoord < tile.getCore().zCoord) {
                         tess.addVertexWithUV(0, 0, 0, minU, maxV);
                         tess.addVertexWithUV(0, 1, 1, minU, minV);
                         tess.addVertexWithUV(1, 0, 1, maxU, minV);
-                    }
-                    else if(tile.xCoord > tile.getCore().xCoord && tile.zCoord > tile.getCore().zCoord) {
+                    } else if (tile.xCoord > tile.getCore().xCoord && tile.zCoord > tile.getCore().zCoord) {
                         tess.addVertexWithUV(0, 0, 1, minU, minV);
                         tess.addVertexWithUV(0, 1, 0, minU, maxV);
                         tess.addVertexWithUV(1, 0, 0, maxU, maxV);
@@ -183,15 +183,12 @@ public class ArcFurnaceDummyRenderer implements ISimpleBlockRenderingHandler {
                     tess.draw();
                     tess.startDrawingQuads();
                 }
+
                 tess.addTranslation(-x, -y, -z);
-            } else if(tile.yCoord == tile.getCore().yCoord + 2) {
-                renderer.setRenderBounds(0.3, 0, 0.3, 0.7, 1, 0.7);
-                renderer.renderStandardBlock(block, x, y, z);
             }
         }
         else {
-            renderer.setRenderBounds(0, 0, 0, 1, 1, 1);
-            renderer.renderStandardBlock(block, x, y, z);
+            RenderUtils.renderCubeWithUV(Tessellator.instance, x, y, z, x + 1, y + 1, z + 1, minU, minV, maxU, maxV);
         }
         return true;
     }
