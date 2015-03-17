@@ -67,7 +67,6 @@ public abstract class GuiBaseConfigurableSlots<T extends TileEntity&ISyncMapProv
             ModernAlchemy.nei.onArrowClicked(this);
         }
         super.mouseClicked(mouseX, mouseY, button);
-
     }
 
     public List<GuiComponentTab> tabList;

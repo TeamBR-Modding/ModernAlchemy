@@ -37,7 +37,6 @@ import openmods.network.rpc.RpcCallDispatcher;
 import java.io.File;
 
 @Mod(name = Constants.MODNAME, modid = Constants.MODID, version = Constants.VERSION, dependencies = Constants.DEPENDENCIES)
-
 public class ModernAlchemy {
 
     @Instance(Constants.MODID)
