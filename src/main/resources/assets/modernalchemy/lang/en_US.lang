@@ -1,4 +1,14 @@
-tile.modernalchemy.blockTeslaCoil.name=Tesla Coil
+modernalchemy.gui.blocks=Blocks
+modernalchemy.gui.items=Items
+modernalchemy.gui.changelogs=ChangeLog
+
+modernalchemy.gui.welcome.title=Welcome!
+modernalchemy.gui.welcome.content=Create items with lighting and radioactive material. A mid to late game mod focusing on replicating items in a fun, yet challenging way. With emphasis on realism this mod will make you think not just craft.
+
+modernalchemy.gui.credits.title=Credits
+modernalchemy.gui.credits.content=§LDyonovan and pauljoda§R - Developers of Modern Alchemy\n\n§LDominance§R - Artist \n\n§Lbeef§R - Wiki Admin/Artist/Tester \n\n§LMazdallier§R - French Translations
+
+
 tile.modernalchemy.blockTeslaStand.name=Tesla Coil Stand
 tile.modernalchemy.fluidCompressedAir.name=Compressed Air
 tile.modernalchemy.fluidActinium.name=Molten Actinium
@@ -74,43 +84,6 @@ death.attack.shock.player=%1$s was electrocuted by %2$s
 achievement.mineActinium=It Begins
 achievement.mineActinium.desc=Mine your first Actinium Ore
 
-pageHeaders.description=Description
-pageHeaders.moreInfo=More Information
-pageHeaders.seeAlso=See Also
-
-mainPage.info=Create items with lighting and radioactive material. A mid to late game mod focusing on replicating items in a fun, yet challenging way. With emphasis on realism this mod will make you think not just craft.
-mainPage.info.header=Mod Information
-mainPage.authors=Authors
-mainPage.authors.list=Dyonovan, pauljoda, Dominance, beef
-mainPage.categories.header=Categories
-
-blocksPage.title=Blocks
-blocksPage.machines=Machines
-blocksPage.arcFurnace=Arc Furnace
-blockPage.replicator=Replicator
-blockPage.teslaCoil=Tesla Coil
-
-pageTeslaCoil.description=The Tesla Coil is a monument of engineering, it will accept RF in through the bottom and convert to Tesla energy and transmit it via its head piece to nearby machines and devices.
-pageTeslaCoil.moreInfo=The Tesla Coil has a side effect called death, it will hurt and ignite you if you come in contact with a bolt of energy. To prevent accidental death or personal injury wear a pair of Faraday Armor, bolts also can kill mobs and charge creepers.
-
-pageAdvancedCrafter.description=The Advanced Crafter is the start machine you will need to begin Modern Alchemy, it will it will consume 100 RF/t and acts like a furnace and crafter of Steel Ingots, Actinium Ore to Dust and Wires.
-pageAdvancedCrafter.moreInfo=The Advanced Crafter has four modes: Enriching, Extruding, Bending, and Furnace. Toggle each mode by pressing the button to the left of the input field.
-
-pageBellows.description=The Electric Bellows is used to produce compressed air for the Arc Furnace Multiblock.
-
-pageAmalgamator.description=The Amalgamator is used to produce the Replication Medium that is used in the Replicator Multiblock for the replication process.
-
-pagePatternRecorder.description=The Pattern Recorder is used to produce the patterns that are used in the Replicator Multiblock to replicate items.
-
-pageArcFurnace.description=The Arc Furnace Processor is the center block of the Arc Furnace Multiblock. All functions of the multiblock are controlled from this block.
-
-pageArcFurnaceDummy.description=The Arc Furnace casing is the main block for creating the Arc Furnace Multiblock structure. This is also used for creating all other Arc Furnace Blocks.
-
-pageArcFurnaceDummyEnergy.description=The Arc Furnace Energy Receiver is used to power the Arc Furnace Multiblock from a Tesla Coil. It must have clear line of site to the Tesla Coil for it to receive energy.
-
-pageArcFurnaceDummyItemIO.description=The Arc Furnace Item I/O is used for moving Actinium Dust, Coal, and Charcoal into the Arc Furnace Multiblock for processing into Molten Actinium. Pipes can be attached to automate this process.
-
-pageArcFurnaceDummyAirValve.description=The Arc Furnace Air Valve is used to input Compressed Air into the Arc Furnace Multiblock.
-
-pageArcFurnaceDummyOutputValve.description=The Arc Furnace Output Valve is used for pumping Molten Actinium out of the Arc Furnace Multiblock into the Amalgamator to be made into Replication Medium.
+tile.modernalchemy.blockTeslaCoil.name=Tesla Coil
+tile.modernalchemy.blockTeslaCoil.description=The Tesla Coil is a monument of engineering, it will accept RF in through the bottom and convert to Tesla energy and transmit it via its head piece to nearby machines and devices in line of sight. The more Tesla Coils you have near machines will improve production speed. The Tesla Coil has a side effect called death, it will hurt and ignite you if you come in contact with a bolt of energy. To prevent accidental death or personal injury wear a pair of Faraday Armor, bolts also can kill mobs and charge creepers.
 

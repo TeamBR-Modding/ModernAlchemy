@@ -1,11 +1,10 @@
 package com.dyonovan.modernalchemy.events;
 
+import com.dyonovan.modernalchemy.client.gui.BaseGui;
 import com.dyonovan.modernalchemy.common.items.ItemPattern;
-import com.dyonovan.modernalchemy.client.manual.pages.GuiManual;
+import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.util.ReplicatorUtils;
 import com.dyonovan.modernalchemy.util.ReplicatorValues;
-import com.dyonovan.modernalchemy.client.gui.BaseGui;
-import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -13,7 +12,7 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 public class ToolTipEvent {
     @SubscribeEvent
     public void onToolTip(ItemTooltipEvent event) {
-        if(Minecraft.getMinecraft().currentScreen instanceof BaseGui && !(Minecraft.getMinecraft().currentScreen instanceof GuiManual) &&
+        if(Minecraft.getMinecraft().currentScreen instanceof BaseGui &&
                 !(event.itemStack.getItem() instanceof ItemPattern)) {
 
             ReplicatorValues values = ReplicatorUtils.getValueForItem(event.itemStack);

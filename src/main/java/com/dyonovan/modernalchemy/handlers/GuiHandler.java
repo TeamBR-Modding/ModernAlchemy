@@ -2,8 +2,6 @@ package com.dyonovan.modernalchemy.handlers;
 
 import com.dyonovan.modernalchemy.client.gui.config.GuiSuperTeslaCoilLinks;
 import com.dyonovan.modernalchemy.client.gui.config.GuiTeslaCoilLinks;
-import com.dyonovan.modernalchemy.client.manual.ManualRegistry;
-import com.dyonovan.modernalchemy.client.manual.pages.ContainerPage;
 import com.dyonovan.modernalchemy.client.notification.GuiNotificationConfig;
 import com.dyonovan.modernalchemy.common.container.ContainerSuperTeslaCoilLinks;
 import com.dyonovan.modernalchemy.common.container.ContainerTeslaCoilLinks;
@@ -17,7 +15,6 @@ public class GuiHandler implements IGuiHandler {
     public static final int NOTIFICATION_CONFIG_ID = 0;
     public static final int TESLA_COIL_LINKS_GUI_ID = 6;
     public static final int TESLA_SUPER_COIL_LINKS_GUI_ID = 5;
-    public static final int MANUAL_GUI_ID = 7;
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
@@ -26,8 +23,6 @@ public class GuiHandler implements IGuiHandler {
                 return new ContainerTeslaCoilLinks((TileTeslaCoil) world.getTileEntity(x, y, z));
             case TESLA_SUPER_COIL_LINKS_GUI_ID:
                 return new ContainerSuperTeslaCoilLinks();
-            case MANUAL_GUI_ID :
-                return new ContainerPage();
         }
         return null;
     }
@@ -41,8 +36,6 @@ public class GuiHandler implements IGuiHandler {
                 return new GuiTeslaCoilLinks((TileTeslaCoil) world.getTileEntity(x, y, z));
             case TESLA_SUPER_COIL_LINKS_GUI_ID :
                 return new GuiSuperTeslaCoilLinks((TileSuperTeslaCoil) world.getTileEntity(x, y, z));
-            case MANUAL_GUI_ID :
-                return ManualRegistry.instance.getOpenPage();
         }
         return null;
     }
