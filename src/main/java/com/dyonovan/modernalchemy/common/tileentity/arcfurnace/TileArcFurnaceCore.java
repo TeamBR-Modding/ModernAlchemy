@@ -11,6 +11,7 @@ import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.util.Location;
 import net.minecraft.block.Block;
+import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -263,6 +264,17 @@ public class TileArcFurnaceCore extends BaseCore implements IHasGui, IFluidHandl
             currentSpeed.set(1);
     }
 
+    public void checkForStorms() {
+        if(worldObj.getWorldInfo().isThundering() && worldObj.canBlockSeeTheSky(xCoord, yCoord + 3, zCoord)) {
+            if(worldObj.rand.nextInt(50000) == 42) {
+                EntityLightningBolt bolt = new EntityLightningBolt(worldObj, xCoord + 0.5, yCoord + 3, zCoord + 0.5);
+                worldObj.addWeatherEffect(bolt);
+                energyTank.setEnergyLevel(energyTank.getMaxCapacity());
+                sync();
+            }
+        }
+    }
+
     @Override
     public void onWrench(EntityPlayer player, int side) {
 
@@ -373,6 +385,7 @@ public class TileArcFurnaceCore extends BaseCore implements IHasGui, IFluidHandl
     @Override
     public void updateEntity() {
         super.updateEntity();
+
         if(worldObj.isRemote) return;
         if(isWellFormed()) {
             updateSpeed();
@@ -380,6 +393,7 @@ public class TileArcFurnaceCore extends BaseCore implements IHasGui, IFluidHandl
                 chargeFromCoils(energyTank);
             }
             doSmelting();
+            checkForStorms();
             if (airTank.isDirty() || outputTank.isDirty()) sync();
         }
     }
