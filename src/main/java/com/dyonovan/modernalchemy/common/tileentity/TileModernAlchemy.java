@@ -20,6 +20,8 @@ import java.util.List;
 public abstract class TileModernAlchemy extends SyncedTileEntity {
 
     public abstract void onWrench(EntityPlayer player, int side);
+    public abstract void returnWailaHead(List<String> tip);
+
 
     public abstract boolean isActive();
 

@@ -9,22 +9,18 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 
 import java.util.List;
 
-public class TileReplicatorStand extends BaseTile implements IInventory {
+public class TileReplicatorStand extends TileEntity implements IInventory {
 
     public InventoryTile inventory;
     public EntityItem entityItem = null;
     public TileReplicatorStand() {
         inventory = new InventoryTile(1);
     }
-    @Override
-    public void onWrench(EntityPlayer player, int side) {
-    }
-    @Override
-    public void returnWailaHead(List<String> tip) {
-    }
+
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);

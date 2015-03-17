@@ -1,6 +1,7 @@
 package com.dyonovan.modernalchemy.client.waila;
 
 import com.dyonovan.modernalchemy.common.tileentity.BaseTile;
+import com.dyonovan.modernalchemy.common.tileentity.TileModernAlchemy;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
@@ -21,8 +22,8 @@ public class WailaDataProvider implements IWailaDataProvider {
 
     @Override
     public List<String> getWailaHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-        if(accessor.getTileEntity() instanceof BaseTile) {
-            BaseTile tile = (BaseTile)accessor.getTileEntity();
+        if(accessor.getTileEntity() instanceof TileModernAlchemy) {
+            TileModernAlchemy tile = (TileModernAlchemy)accessor.getTileEntity();
             tile.returnWailaHead(currenttip);
         }
         return currenttip;

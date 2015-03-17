@@ -51,12 +51,12 @@ public class TileTeslaBase extends TileModernAlchemy implements IEnergyHandler {
     public boolean isActive() {
         return isCoilCharging();
     }
-/*
+
     @Override
     public void returnWailaHead(List<String> tip) {
         tip.add(GuiHelper.GuiColor.YELLOW + "Is Converting: " + GuiHelper.GuiColor.WHITE + (isCoilCharging() ? "Yes" : "No"));
     }
-*/
+
 
     @Override
     public int receiveEnergy(ForgeDirection side, int maxReceive, boolean simulate) {

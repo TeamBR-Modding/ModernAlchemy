@@ -86,7 +86,10 @@ public class GuiManual extends ComponentGui {
         GuiComponentLabel lblItems = new GuiComponentLabel(27, tocLine(1), "- " + StatCollector.translateToLocal("modernalchemy.gui.items"));
         contentsPage.addComponent(lblItems);
 
-        GuiComponentLabel lblChangelogs = new GuiComponentLabel(27, tocLine(2), "- " + StatCollector.translateToLocal("modernalchemy.gui.changelogs"));
+        GuiComponentLabel lblMisc = new GuiComponentLabel(27, tocLine(2), "- " + StatCollector.translateToLocal("modernalchemy.gui.misc"));
+        contentsPage.addComponent(lblMisc);
+
+        GuiComponentLabel lblChangelogs = new GuiComponentLabel(27, tocLine(3), "- " + StatCollector.translateToLocal("modernalchemy.gui.changelogs"));
         contentsPage.addComponent(lblChangelogs);
 
         book.addPage(PageBase.BLANK_PAGE);
@@ -122,6 +125,13 @@ public class GuiManual extends ComponentGui {
             builder.insertPages(book);
         }
 
+        {
+            int miscIndex = alignToEven(book);
+            setupBookmark(lblMisc, book, miscIndex);
+            book.addPage(PageBase.BLANK_PAGE);
+            book.addPage(new SectionPage("modernalchemy.gui.misc"));
+            book.addPage(new TitledPage("modernalchemy.gui.teslaPower", "modernalchemy.gui.teslaPowerInfo"));
+        }
 
         int changelogsIndex = alignToEven(book);
         book.addPage(PageBase.BLANK_PAGE);

@@ -186,13 +186,13 @@ public class TileElectricBellows extends TileModernAlchemy implements IHasGui, I
     /*******************************************************************************************************************
      ********************************************** Misc Functions *****************************************************
      *******************************************************************************************************************/
-   /* @Override
+   @Override
     public void returnWailaHead(List<String> head) {
         head.add(GuiHelper.GuiColor.YELLOW + "Is Compressing: " + GuiHelper.GuiColor.WHITE + (isActive() ? "Yes" : "No"));
         head.add(GuiHelper.GuiColor.YELLOW + "Energy: " + GuiHelper.GuiColor.WHITE + energyTank.getEnergyLevel() + "/" + energyTank.getMaxCapacity() + GuiHelper.GuiColor.TURQUISE + "T");
         head.add(GuiHelper.GuiColor.YELLOW + "Compressed Air: " + GuiHelper.GuiColor.WHITE + tank.getFluidAmount() + "/" + tank.getCapacity() + GuiHelper.GuiColor.TURQUISE + "mb");
     }
-*/
+
     @Override
     public void onWrench(EntityPlayer player, int side) {
 

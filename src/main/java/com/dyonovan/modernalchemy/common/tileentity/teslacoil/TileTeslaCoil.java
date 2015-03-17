@@ -219,15 +219,14 @@ public class TileTeslaCoil extends TileModernAlchemy implements IEnergyHandler, 
     /*******************************************************************************************************************
      ********************************************** Misc Functions *****************************************************
      *******************************************************************************************************************/
-   /* @Override
+    @Override
     public void returnWailaHead(List<String> head) {
         head.add(GuiHelper.GuiColor.YELLOW + "Tesla Energy: " + GuiHelper.GuiColor.WHITE + energyTank.getEnergyLevel() + "/" + energyTank.getMaxCapacity() + GuiHelper.GuiColor.TURQUISE + "T");
-        head.add(GuiHelper.GuiColor.YELLOW + "RF Energy: " + GuiHelper.GuiColor.WHITE + energyRF.getEnergyStored() + "/" + energyRF.getMaxEnergyStored() + GuiHelper.GuiColor.TURQUISE + "RF");
+        head.add(GuiHelper.GuiColor.YELLOW + "RF Energy: " + GuiHelper.GuiColor.WHITE + energyRF.getValue().getEnergyStored() + "/" + energyRF.getValue().getMaxEnergyStored() + GuiHelper.GuiColor.TURQUISE + "RF");
         if(linkedMachines.size() > 0) {
             head.add(GuiHelper.GuiColor.YELLOW + "Link Mode: " + GuiHelper.GuiColor.RED + "Restricted");
         }
         else
             head.add(GuiHelper.GuiColor.YELLOW + "Link Mode: " + GuiHelper.GuiColor.GREEN + "All");
-
-    }*/
+    }
 }

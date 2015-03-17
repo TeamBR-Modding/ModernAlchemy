@@ -405,11 +405,11 @@ public class TileAdvancedCrafter extends TileModernAlchemy implements ILevelChan
     /*******************************************************************************************************************
      ********************************************** Misc Functions *****************************************************
      *******************************************************************************************************************/
-    /*@Override
+    @Override
     public void returnWailaHead(List<String> head) {
         head.add(GuiHelper.GuiColor.YELLOW + "Working: " + GuiHelper.GuiColor.WHITE + (isActive.get() ? "Yes" : "No"));
-        //head.add(GuiHelper.GuiColor.YELLOW + "Energy: " + GuiHelper.GuiColor.WHITE + energyRF.getEnergyStored() + "/" +  energyRF.getMaxEnergyStored() + GuiHelper.GuiColor.TURQUISE + "RF");
-    }*/
+        head.add(GuiHelper.GuiColor.YELLOW + "Energy: " + GuiHelper.GuiColor.WHITE + energyRF.getValue().getEnergyStored() + "/" +  energyRF.getValue().getMaxEnergyStored() + GuiHelper.GuiColor.TURQUISE + "RF");
+    }
 
     private SyncableSides selectSlotMap(AUTO_SLOTS slot) {
         switch (slot) {

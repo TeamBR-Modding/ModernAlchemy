@@ -449,7 +449,7 @@ public class TileArcFurnaceCore extends BaseCore implements IHasGui, IFluidHandl
     /*******************************************************************************************************************
      ********************************************** Misc Functions *****************************************************
      *******************************************************************************************************************/
-/*
+
     @Override
     public void returnWailaHead(List<String> head) {
         head.add(GuiHelper.GuiColor.YELLOW + "Energy: " + GuiHelper.GuiColor.WHITE + energyTank.getEnergyLevel() + "/" + energyTank.getMaxCapacity() + GuiHelper.GuiColor.TURQUISE + "T");
@@ -457,7 +457,7 @@ public class TileArcFurnaceCore extends BaseCore implements IHasGui, IFluidHandl
         head.add(GuiHelper.GuiColor.YELLOW + "Actinium: " + GuiHelper.GuiColor.WHITE + outputTank.getFluidAmount() + "/" + outputTank.getCapacity() + GuiHelper.GuiColor.TURQUISE + "mb");
         head.add(GuiHelper.GuiColor.YELLOW + "Speed: " + GuiHelper.GuiColor.WHITE + currentSpeed);
     }
-*/
+
 
     public List<String> getAirTankToolTip() {
         List<String> toolTip = new ArrayList<>();

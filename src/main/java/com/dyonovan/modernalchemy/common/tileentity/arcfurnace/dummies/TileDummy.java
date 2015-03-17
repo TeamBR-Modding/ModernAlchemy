@@ -10,6 +10,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import openmods.api.IHasGui;
 import openmods.api.IIconProvider;
 
+import java.util.List;
+
 public class TileDummy extends TileModernAlchemy implements IHasGui {
     private Location coreLocation;
 
@@ -23,13 +25,12 @@ public class TileDummy extends TileModernAlchemy implements IHasGui {
         return false;
     }
 
-    /*
     @Override
     public void returnWailaHead(List<String> head) {
-      //  if(getCore() != null)
-            //getCore().returnWailaHead(head);
+        if(getCore() != null)
+            getCore().returnWailaHead(head);
     }
-*/
+
     /**
      * Used to get the current associated core
      * @return Parent core, null if not found

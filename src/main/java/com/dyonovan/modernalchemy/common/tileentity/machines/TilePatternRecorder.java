@@ -122,7 +122,7 @@ public class TilePatternRecorder extends TileModernAlchemy implements IInventory
                     currentProcessTime.modify(currentSpeed.get());
                 } else {
                     currentProcessTime.set(0);
-                    itemCopy.setValue(null);
+                    itemCopy.setValue("");
                 }
             }
             if (currentProcessTime.get() >= PROCESS_TIME) {
@@ -220,13 +220,13 @@ public class TilePatternRecorder extends TileModernAlchemy implements IInventory
     /*******************************************************************************************************************
      ********************************************** Misc Functions *****************************************************
      *******************************************************************************************************************/
-    /*@Override
+    @Override
     public void returnWailaHead(List<String> head) {
         head.add(GuiHelper.GuiColor.YELLOW + "Is Writing: " + GuiHelper.GuiColor.WHITE + (isActive() ? "Yes" : "No"));
         if(isActive())
-            head.add(GuiHelper.GuiColor.YELLOW + "Item Copying: " + GuiHelper.GuiColor.WHITE + ReplicatorUtils.getReturn(itemCopy.getValue()).getDisplayName());
+            head.add(GuiHelper.GuiColor.YELLOW + "Item Copying: " + GuiHelper.GuiColor.WHITE + ReplicatorUtils.getReturn(itemCopy.getValue(), 0).getDisplayName());
         head.add(GuiHelper.GuiColor.YELLOW + "Energy: " + GuiHelper.GuiColor.WHITE + energyTank.getEnergyLevel() + "/" + energyTank.getMaxCapacity() + GuiHelper.GuiColor.TURQUISE + "T");
-    }*/
+    }
 
     private SyncableSides selectSlotMap(AUTO_SLOTS slot) {
         switch (slot) {

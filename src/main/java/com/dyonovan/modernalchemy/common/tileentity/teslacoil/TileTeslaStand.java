@@ -31,13 +31,16 @@ public class TileTeslaStand extends TileModernAlchemy implements IEnergyHandler 
     public boolean isActive() {
         return false;
     }
-/*
+
     @Override
     public void returnWailaHead(List<String> tip) {
         int y = yCoord + 1;
         while(!worldObj.isAirBlock(xCoord, y, zCoord)) {
             if(worldObj.getBlock(xCoord, y, zCoord) == BlockHandler.blockTeslaCoil) {
-                //((TileTeslaCoil) worldObj.getTileEntity(xCoord, y, zCoord)).returnWailaHead(tip);
+                ((TileTeslaCoil) worldObj.getTileEntity(xCoord, y, zCoord)).returnWailaHead(tip);
+                return;
+            }else if(worldObj.getBlock(xCoord, y, zCoord) == BlockHandler.blockSuperTeslaCoil) {
+                ((TileSuperTeslaCoil) worldObj.getTileEntity(xCoord, y, zCoord)).returnWailaHead(tip);
                 return;
             }
             else if(worldObj.getBlock(xCoord, y, zCoord) != BlockHandler.blockTeslaStand)
@@ -45,7 +48,7 @@ public class TileTeslaStand extends TileModernAlchemy implements IEnergyHandler 
             y++;
         }
     }
-*/
+
 
     @Override
     protected void createSyncedFields() {

@@ -285,6 +285,14 @@ public class TileAmalgamator extends TileModernAlchemy implements IRedstoneRequi
     }
 
     @Override
+    public void returnWailaHead(List<String> head) {
+        head.add(GuiHelper.GuiColor.YELLOW + "Is Amalgamating: " + GuiHelper.GuiColor.WHITE + (isActive() ? "Yes" : "No"));
+        head.add(GuiHelper.GuiColor.YELLOW + "Energy: " + GuiHelper.GuiColor.WHITE + energyTank.getEnergyLevel() + "/" + energyTank.getMaxCapacity() + GuiHelper.GuiColor.TURQUISE + "T");
+        head.add(GuiHelper.GuiColor.YELLOW + "Actinium: " + GuiHelper.GuiColor.WHITE + tank.getFluidAmount() + "/" + tank.getCapacity() + GuiHelper.GuiColor.TURQUISE + "mb");
+        head.add(GuiHelper.GuiColor.YELLOW + "Current Speed: " + GuiHelper.GuiColor.WHITE + currentSpeed);
+    }
+
+    @Override
     public boolean isActive() {
         return timeProcessed.get() > 0;
     }

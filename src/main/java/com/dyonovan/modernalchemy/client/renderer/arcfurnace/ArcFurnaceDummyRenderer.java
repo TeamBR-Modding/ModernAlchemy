@@ -134,6 +134,7 @@ public class ArcFurnaceDummyRenderer implements ISimpleBlockRenderingHandler {
                     RenderUtils.renderCubeWithUV(Tessellator.instance, x, y, z, x + 1, y + 1, z + 1, minU, minV, maxU, maxV);
                     return true;
                 } else if (tile.yCoord == tile.getCore().yCoord + 2) {
+                    RenderUtils.renderCubeWithUV(Tessellator.instance, x + 0.1, 7, z + 0.1, x + 0.9, y + 0.2, z + 0.9, minU, minV, maxU, maxV);
                     RenderUtils.renderCubeWithUV(Tessellator.instance, x + 0.3, y, z + 0.3, x + 0.7, y + 1.0, z + 0.7, minU, minV, maxU, maxV);
                 }
                 Tessellator tess = Tessellator.instance;

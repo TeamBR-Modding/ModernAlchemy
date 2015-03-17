@@ -33,7 +33,7 @@ public class ItemPattern extends Item {
     public void registerIcons(IIconRegister register) {
         iconBlankPattern = register.registerIcon(Constants.MODID + ":blank_pattern");
         iconRecordedPattern = register.registerIcon(Constants.MODID + ":recorded_pattern");
-        //this.itemIcon = iconBlankPattern;
+        this.itemIcon = iconBlankPattern;
     }
 
     @Override
