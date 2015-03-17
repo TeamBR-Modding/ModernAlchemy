@@ -5,6 +5,7 @@ import cofh.api.energy.IEnergyHandler;
 import com.dyonovan.modernalchemy.ModernAlchemy;
 import com.dyonovan.modernalchemy.client.gui.machines.GuiTeslaCoil;
 import com.dyonovan.modernalchemy.common.container.ContainerTeslaCoil;
+import com.dyonovan.modernalchemy.common.tileentity.BaseMachine;
 import com.dyonovan.modernalchemy.common.tileentity.TileModernAlchemy;
 import com.dyonovan.modernalchemy.energy.ITeslaProvider;
 import com.dyonovan.modernalchemy.energy.SyncableRF;
@@ -14,9 +15,8 @@ import com.dyonovan.modernalchemy.handlers.GuiHandler;
 import com.dyonovan.modernalchemy.handlers.PacketHandler;
 import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.network.UpdateServerCoilLists;
-import com.dyonovan.modernalchemy.common.tileentity.BaseMachine;
+import com.dyonovan.modernalchemy.network.UpdateServerSuperCoilLists;
 import com.dyonovan.modernalchemy.util.Location;
-import com.sun.corba.se.impl.orbutil.concurrent.Sync;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -63,7 +63,7 @@ public class TileTeslaCoil extends TileModernAlchemy implements IEnergyHandler, 
             for (int y = -ConfigHandler.searchRange; y <= ConfigHandler.searchRange; y++) {
                 for (int z = -ConfigHandler.searchRange; z <= ConfigHandler.searchRange; z++) {
                     TileEntity te = worldObj.getTileEntity(xCoord + x, yCoord + y, zCoord + z);
-                    if (te instanceof BaseMachine && !(te instanceof TileTeslaCoil)) {
+                    if (!(te instanceof TileSuperTeslaCoil) && !(te instanceof TileTeslaCoil) && te instanceof BaseMachine) {
                         rangeMachines.add(new Location(xCoord + x, yCoord + y, zCoord + z));
                     }
                 }
@@ -78,7 +78,7 @@ public class TileTeslaCoil extends TileModernAlchemy implements IEnergyHandler, 
             }
         }
         //worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        List<EntityPlayerMP> players = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+        @SuppressWarnings("unchecked") List<EntityPlayerMP> players = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
         for (EntityPlayerMP pr : players) {
             if (pr.getDisplayName().equals(player.getDisplayName())) {
                 PacketHandler.net.sendTo(new UpdateServerCoilLists.UpdateMessage(xCoord, yCoord, zCoord,

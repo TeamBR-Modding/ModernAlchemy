@@ -1,21 +1,14 @@
 package com.dyonovan.modernalchemy.handlers;
 
-import com.dyonovan.modernalchemy.client.gui.machines.GuiElectricBellows;
-import com.dyonovan.modernalchemy.client.gui.machines.GuiPatternRecorder;
-import com.dyonovan.modernalchemy.client.gui.machines.GuiReplicatorCPU;
-import com.dyonovan.modernalchemy.client.gui.machines.GuiTeslaCoil;
-import com.dyonovan.modernalchemy.common.container.*;
+import com.dyonovan.modernalchemy.client.gui.config.GuiSuperTeslaCoilLinks;
 import com.dyonovan.modernalchemy.client.gui.config.GuiTeslaCoilLinks;
 import com.dyonovan.modernalchemy.client.manual.ManualRegistry;
 import com.dyonovan.modernalchemy.client.manual.pages.ContainerPage;
-import com.dyonovan.modernalchemy.common.container.machines.ContainerElectricBellows;
-import com.dyonovan.modernalchemy.common.container.machines.ContainerPatternRecorder;
-import com.dyonovan.modernalchemy.common.container.machines.ContainerReplicatorCpu;
-import com.dyonovan.modernalchemy.common.tileentity.machines.TileElectricBellows;
-import com.dyonovan.modernalchemy.common.tileentity.machines.TilePatternRecorder;
-import com.dyonovan.modernalchemy.common.tileentity.replicator.TileReplicatorCPU;
-import com.dyonovan.modernalchemy.common.tileentity.teslacoil.TileTeslaCoil;
 import com.dyonovan.modernalchemy.client.notification.GuiNotificationConfig;
+import com.dyonovan.modernalchemy.common.container.ContainerSuperTeslaCoilLinks;
+import com.dyonovan.modernalchemy.common.container.ContainerTeslaCoilLinks;
+import com.dyonovan.modernalchemy.common.tileentity.teslacoil.TileSuperTeslaCoil;
+import com.dyonovan.modernalchemy.common.tileentity.teslacoil.TileTeslaCoil;
 import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
@@ -23,6 +16,7 @@ import net.minecraft.world.World;
 public class GuiHandler implements IGuiHandler {
     public static final int NOTIFICATION_CONFIG_ID = 0;
     public static final int TESLA_COIL_LINKS_GUI_ID = 6;
+    public static final int TESLA_SUPER_COIL_LINKS_GUI_ID = 5;
     public static final int MANUAL_GUI_ID = 7;
 
     @Override
@@ -30,6 +24,8 @@ public class GuiHandler implements IGuiHandler {
         switch(ID) {
             case TESLA_COIL_LINKS_GUI_ID :
                 return new ContainerTeslaCoilLinks((TileTeslaCoil) world.getTileEntity(x, y, z));
+            case TESLA_SUPER_COIL_LINKS_GUI_ID:
+                return new ContainerSuperTeslaCoilLinks();
             case MANUAL_GUI_ID :
                 return new ContainerPage();
         }
@@ -43,6 +39,8 @@ public class GuiHandler implements IGuiHandler {
                 return new GuiNotificationConfig();
             case TESLA_COIL_LINKS_GUI_ID :
                 return new GuiTeslaCoilLinks((TileTeslaCoil) world.getTileEntity(x, y, z));
+            case TESLA_SUPER_COIL_LINKS_GUI_ID :
+                return new GuiSuperTeslaCoilLinks((TileSuperTeslaCoil) world.getTileEntity(x, y, z));
             case MANUAL_GUI_ID :
                 return ManualRegistry.instance.getOpenPage();
         }

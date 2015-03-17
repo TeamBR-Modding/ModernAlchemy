@@ -81,7 +81,7 @@ public class TileTeslaStand extends TileModernAlchemy implements IEnergyHandler 
     public void updateEntity() {
         if ((energy.getValue().getEnergyStored() > 0)) {
             TileEntity tile = worldObj.getTileEntity(xCoord, yCoord + 1, zCoord);
-            if (tile instanceof TileTeslaStand || tile instanceof TileTeslaCoil) {
+            if (tile instanceof TileTeslaStand || tile instanceof TileTeslaCoil || tile instanceof TileSuperTeslaCoil) {
                 energy.getValue().extractEnergy(((IEnergyHandler) tile).receiveEnergy(ForgeDirection.DOWN, energy.getValue().extractEnergy(energy.getValue().getMaxExtract(), true), false), false);
             }
         }

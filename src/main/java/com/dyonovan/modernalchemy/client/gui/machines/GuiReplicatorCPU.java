@@ -6,7 +6,6 @@ import com.dyonovan.modernalchemy.client.gui.components.GuiComponentArrowProgres
 import com.dyonovan.modernalchemy.client.gui.components.GuiComponentTeslaBank;
 import com.dyonovan.modernalchemy.client.gui.components.GuiComponentToolTip;
 import com.dyonovan.modernalchemy.common.container.machines.ContainerReplicatorCpu;
-import com.dyonovan.modernalchemy.common.tileentity.machines.TilePatternRecorder;
 import com.dyonovan.modernalchemy.common.tileentity.replicator.TileReplicatorCPU;
 import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.handlers.ItemHandler;

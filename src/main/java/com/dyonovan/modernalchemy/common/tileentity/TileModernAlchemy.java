@@ -1,5 +1,6 @@
 package com.dyonovan.modernalchemy.common.tileentity;
 
+import com.dyonovan.modernalchemy.common.tileentity.teslacoil.TileSuperTeslaCoil;
 import com.dyonovan.modernalchemy.energy.ITeslaProvider;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
 import com.dyonovan.modernalchemy.handlers.ConfigHandler;
@@ -59,9 +60,12 @@ public abstract class TileModernAlchemy extends SyncedTileEntity {
         for (int x = -ConfigHandler.searchRange; x <= ConfigHandler.searchRange; x++) {
             for (int y = -ConfigHandler.searchRange; y <= ConfigHandler.searchRange; y++) {
                 for (int z = -ConfigHandler.searchRange; z <= ConfigHandler.searchRange; z++) {
-                    if (world.getTileEntity(tileX + x, tileY + y, tileZ + z) instanceof ITeslaProvider) {
+                    if (world.getTileEntity(tileX + x, tileY + y, tileZ + z) instanceof TileTeslaCoil) {
                         if(hasClearPath(tileX + 0.5, tileY + 0.5, tileZ + 0.5, tileX + x + 0.5, tileY + y + 0.5, tileZ + z + 0.5))
                             list.add((TileTeslaCoil) world.getTileEntity(tileX + x, tileY + y, tileZ + z));
+                    } else if (world.getTileEntity(tileX + x, tileY + y, tileZ + z) instanceof TileSuperTeslaCoil) {
+                        if(hasClearPath(tileX + 0.5, tileY + 0.5, tileZ + 0.5, tileX + x + 0.5, tileY + y + 0.5, tileZ + z + 0.5))
+                            list.add((TileSuperTeslaCoil) world.getTileEntity(tileX + x, tileY + y, tileZ + z));
                     }
                 }
             }
@@ -101,6 +105,22 @@ public abstract class TileModernAlchemy extends SyncedTileEntity {
 
                     RenderUtils.sendBoltToClient(xCoord, yCoord, zCoord, (TileEntity) coil, fill);
                     WorldUtils.hurtEntitiesInRange(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, ((TileTeslaCoil) coil).xCoord + 0.5, ((TileTeslaCoil) coil).yCoord + 0.5, ((TileTeslaCoil) coil).zCoord + 0.5);
+
+                    if (currentDrain >= maxFill) //Don't want to drain other coils we don't need to
+                        break;
+                }
+            } else if (coil instanceof TileSuperTeslaCoil) {
+                if (((TileSuperTeslaCoil)coil).linkedMachines.contains(new Location(xCoord, yCoord, zCoord)) || ((TileSuperTeslaCoil)coil).linkedMachines.size() == 0) {
+                    if (((TileSuperTeslaCoil) coil).energyTank.getEnergyLevel() <= 0)
+                        continue; //fixes looking like its working when coil is empty
+                    int fill = ((TileSuperTeslaCoil) coil).energyTank.getEnergyLevel() > coil.getEnergyProvided() ? coil.getEnergyProvided() : ((TileSuperTeslaCoil) coil).energyTank.getEnergyLevel();
+                    if (currentDrain + fill > maxFill)
+                        fill = maxFill - currentDrain;
+                    currentDrain += fill;
+                    ((TileSuperTeslaCoil) coil).energyTank.drainEnergy(fill);
+
+                    RenderUtils.sendBoltToClient(xCoord, yCoord, zCoord, (TileEntity) coil, fill);
+                    WorldUtils.hurtEntitiesInRange(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, ((TileSuperTeslaCoil) coil).xCoord + 0.5, ((TileSuperTeslaCoil) coil).yCoord + 0.5, ((TileSuperTeslaCoil) coil).zCoord + 0.5);
 
                     if (currentDrain >= maxFill) //Don't want to drain other coils we don't need to
                         break;

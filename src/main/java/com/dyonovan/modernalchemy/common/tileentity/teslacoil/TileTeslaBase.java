@@ -33,7 +33,10 @@ public class TileTeslaBase extends TileModernAlchemy implements IEnergyHandler {
             if (worldObj.getBlock(xCoord, y, zCoord) == BlockHandler.blockTeslaStand) {
                 y++;
             } else
-                return worldObj.getBlock(xCoord, y, zCoord) == BlockHandler.blockTeslaCoil && ((TileTeslaCoil) worldObj.getTileEntity(xCoord, y, zCoord)).isActive() || worldObj.getBlock(xCoord, y, zCoord) == BlockHandler.blockSuperTeslaCoil && ((TileTeslaCoil) worldObj.getTileEntity(xCoord, y, zCoord)).isActive();
+                return (worldObj.getBlock(xCoord, y, zCoord) == BlockHandler.blockTeslaCoil &&
+                        ((TileTeslaCoil) worldObj.getTileEntity(xCoord, y, zCoord)).isActive())
+                        || (worldObj.getBlock(xCoord, y, zCoord) == BlockHandler.blockSuperTeslaCoil &&
+                        ((TileSuperTeslaCoil) worldObj.getTileEntity(xCoord, y, zCoord)).isActive());
         }
         return false;
     }
