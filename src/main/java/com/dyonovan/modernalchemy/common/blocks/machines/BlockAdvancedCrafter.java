@@ -15,8 +15,10 @@ import openmods.infobook.BookDocumentation;
 public class BlockAdvancedCrafter extends BlockModernAlchemy {
 
     @SideOnly(Side.CLIENT)
-    private static class Icons {
-        public static IIcon front, side;
+    public static class Icons {
+        public static IIcon side;
+        public static IIcon back;
+        public static IIcon top;
     }
 
     public BlockAdvancedCrafter() {
@@ -26,14 +28,16 @@ public class BlockAdvancedCrafter extends BlockModernAlchemy {
 
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconregister) {
-        Icons.side = iconregister.registerIcon(Constants.MODID + ":crafter_side");
-        Icons.front = iconregister.registerIcon(Constants.MODID + ":crafter_front");
+        blockIcon = iconregister.registerIcon(Constants.MODID + ":crafter_front");
+        Icons.side = iconregister.registerIcon(Constants.MODID + ":machineSide");
+        Icons.back = iconregister.registerIcon(Constants.MODID + ":machineBack");
+        Icons.top = iconregister.registerIcon(Constants.MODID + ":machineTop");
 
-        setTexture(ForgeDirection.NORTH, Icons.side);
-        setTexture(ForgeDirection.SOUTH, Icons.front);
+        setTexture(ForgeDirection.NORTH, Icons.back);
+        setTexture(ForgeDirection.SOUTH, blockIcon);
         setTexture(ForgeDirection.EAST, Icons.side);
         setTexture(ForgeDirection.WEST, Icons.side);
-        setTexture(ForgeDirection.UP, Icons.side);
-        setTexture(ForgeDirection.DOWN, Icons.side);
+        setTexture(ForgeDirection.UP, Icons.top);
+        setTexture(ForgeDirection.DOWN, Icons.top);
     }
 }

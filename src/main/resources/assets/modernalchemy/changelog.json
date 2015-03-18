@@ -11,7 +11,8 @@
           "Super Tesla Coil (8 times a normal coil)",
           "Arc furnace now has to be built a specific way",
           "Tiles are configurable in the GUI",
-          "Replicator now has quantity output"
+          "Replicator now has quantity output",
+          "Replicator is no longer a multi-block"
         ]
       },
       {

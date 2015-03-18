@@ -131,6 +131,7 @@ public class GuiManual extends ComponentGui {
             book.addPage(PageBase.BLANK_PAGE);
             book.addPage(new SectionPage("modernalchemy.gui.misc"));
             book.addPage(new TitledPage("modernalchemy.gui.teslaPower", "modernalchemy.gui.teslaPowerInfo"));
+            book.addPage(new TitledPage("modernalchemy.gui.arcFurnace", "modernalchemy.gui.arcFurnaceInfo"));
         }
 
         int changelogsIndex = alignToEven(book);

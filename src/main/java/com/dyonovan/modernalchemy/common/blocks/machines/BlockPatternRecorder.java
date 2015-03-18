@@ -14,11 +14,11 @@ import openmods.infobook.BookDocumentation;
 
 @BookDocumentation
 public class BlockPatternRecorder extends BlockModernAlchemy {
-
     @SideOnly(Side.CLIENT)
     public static class Icons {
-        public static IIcon front;
         public static IIcon side;
+        public static IIcon back;
+        public static IIcon top;
     }
 
     public BlockPatternRecorder()
@@ -30,15 +30,16 @@ public class BlockPatternRecorder extends BlockModernAlchemy {
 
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconregister) {
-        this.blockIcon = iconregister.registerIcon(Constants.MODID + ":patternrecorder_side");
-        Icons.front = iconregister.registerIcon(Constants.MODID + ":patternrecorder_front");
-        Icons.side = blockIcon;
+        this.blockIcon = iconregister.registerIcon(Constants.MODID + ":patternrecorder_front");
+        Icons.side = iconregister.registerIcon(Constants.MODID + ":machineSide");
+        Icons.back = iconregister.registerIcon(Constants.MODID + ":machineBack");
+        Icons.top = iconregister.registerIcon(Constants.MODID + ":machineTop");
 
-        setTexture(ForgeDirection.NORTH, blockIcon);
-        setTexture(ForgeDirection.SOUTH, Icons.front);
-        setTexture(ForgeDirection.EAST, blockIcon);
-        setTexture(ForgeDirection.WEST, blockIcon);
-        setTexture(ForgeDirection.UP, blockIcon);
-        setTexture(ForgeDirection.DOWN, blockIcon);
+        setTexture(ForgeDirection.NORTH, Icons.back);
+        setTexture(ForgeDirection.SOUTH, blockIcon);
+        setTexture(ForgeDirection.EAST, Icons.side);
+        setTexture(ForgeDirection.WEST, Icons.side);
+        setTexture(ForgeDirection.UP, Icons.top);
+        setTexture(ForgeDirection.DOWN, Icons.top);
     }
 }

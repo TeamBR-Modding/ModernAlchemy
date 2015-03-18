@@ -38,7 +38,7 @@ public class CraftingHandler {
 
         //Pattern Recorder
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockPatternRecorder), "ABA", "CDC", "AEA",
-                'A', "plateSteel", 'B', ItemHandler.itemEnergyAntenna, 'C', ItemHandler.laserNode,
+                'A', "plateSteel", 'B', ItemHandler.itemEnergyAntenna, 'C', Items.book,
                 'D', ItemHandler.itemMachineFrame, 'E', "circuitAdvanced"));
 
         //Arc Furnace Processor
@@ -71,22 +71,9 @@ public class CraftingHandler {
                 'E', ItemHandler.itemActiniumDust));
 
         //Replicator Controller
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockReplicatorCPU), "ABA", "CDC", "CEC",
-                'A', ItemHandler.itemSteelTube, 'B', BlockHandler.blockReplicatorFrame, 'C', ItemHandler.itemMachineFrame,
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockReplicator), "ABA", "CDC", "CEC",
+                'A', ItemHandler.itemSteelTube, 'B', Items.iron_ingot, 'C', ItemHandler.itemMachineFrame,
                 'D', "circuitAdvanced", 'E', ItemHandler.itemCapacator));
-
-        //Replicator Frame
-        GameRegistry.addRecipe(new ItemStack(BlockHandler.blockReplicatorFrame, 8), "ABA", "BCB", "ABA",
-                'A', ItemHandler.itemSteelTube, 'B', ItemHandler.itemMachineFrame, 'C', Blocks.iron_bars);
-
-        //Replicator Stand
-        GameRegistry.addRecipe(new ItemStack(BlockHandler.blockReplicatorStand), "ABA", "ACA",
-                'A', ItemHandler.itemMachineFrame, 'B', ItemHandler.itemReplicatorPattern, 'C', Blocks.anvil);
-
-        //Replicator Controller
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemHandler.laserNode), "ABA", "CDC", "AEA",
-                'A', BlockHandler.blockReplicatorFrame, 'B', ItemHandler.itemCapacator, 'C', ItemHandler.itemCopperCoil,
-                'D', "circuitAdvanced", 'E', ItemHandler.itemDenseCopperCoil));
 
         //Tesla Coil Top
         GameRegistry.addRecipe(new ItemStack(BlockHandler.blockTeslaCoil), "ABA", "CDC", " D ",

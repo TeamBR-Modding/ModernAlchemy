@@ -4,15 +4,9 @@ import com.dyonovan.modernalchemy.common.blocks.arcfurnace.BlockArcFurnaceCore;
 import com.dyonovan.modernalchemy.common.blocks.arcfurnace.dummies.*;
 import com.dyonovan.modernalchemy.common.blocks.fluids.BlockFluidActinium;
 import com.dyonovan.modernalchemy.common.blocks.fluids.BlockFluidCompressedAir;
-import com.dyonovan.modernalchemy.common.blocks.machines.BlockAdvancedCrafter;
-import com.dyonovan.modernalchemy.common.blocks.machines.BlockAmalgamator;
-import com.dyonovan.modernalchemy.common.blocks.machines.BlockElectricBellows;
-import com.dyonovan.modernalchemy.common.blocks.machines.BlockPatternRecorder;
+import com.dyonovan.modernalchemy.common.blocks.machines.*;
 import com.dyonovan.modernalchemy.common.blocks.ore.BlockOreActinium;
 import com.dyonovan.modernalchemy.common.blocks.ore.BlockOreCopper;
-import com.dyonovan.modernalchemy.common.blocks.replicator.BlockReplicatorCPU;
-import com.dyonovan.modernalchemy.common.blocks.replicator.BlockReplicatorFrame;
-import com.dyonovan.modernalchemy.common.blocks.replicator.BlockReplicatorStand;
 import com.dyonovan.modernalchemy.common.blocks.teslacoil.BlockSuperTeslaCoil;
 import com.dyonovan.modernalchemy.common.blocks.teslacoil.BlockTeslaBase;
 import com.dyonovan.modernalchemy.common.blocks.teslacoil.BlockTeslaCoil;
@@ -21,13 +15,7 @@ import com.dyonovan.modernalchemy.common.fluids.FluidActinium;
 import com.dyonovan.modernalchemy.common.fluids.FluidCompressedAir;
 import com.dyonovan.modernalchemy.common.tileentity.arcfurnace.TileArcFurnaceCore;
 import com.dyonovan.modernalchemy.common.tileentity.arcfurnace.dummies.*;
-import com.dyonovan.modernalchemy.common.tileentity.machines.TileAdvancedCrafter;
-import com.dyonovan.modernalchemy.common.tileentity.machines.TileAmalgamator;
-import com.dyonovan.modernalchemy.common.tileentity.machines.TileElectricBellows;
-import com.dyonovan.modernalchemy.common.tileentity.machines.TilePatternRecorder;
-import com.dyonovan.modernalchemy.common.tileentity.replicator.TileReplicatorCPU;
-import com.dyonovan.modernalchemy.common.tileentity.replicator.TileReplicatorFrame;
-import com.dyonovan.modernalchemy.common.tileentity.replicator.TileReplicatorStand;
+import com.dyonovan.modernalchemy.common.tileentity.machines.*;
 import com.dyonovan.modernalchemy.common.tileentity.teslacoil.TileSuperTeslaCoil;
 import com.dyonovan.modernalchemy.common.tileentity.teslacoil.TileTeslaBase;
 import com.dyonovan.modernalchemy.common.tileentity.teslacoil.TileTeslaCoil;
@@ -76,8 +64,6 @@ public class BlockHandler implements BlockInstances {
     @RegisterBlock(name = "blockArcFurnaceDummyEnergy", tileEntity = TileDummyEnergyReciever.class)
     public static BlockDummyEnergyReceiver blockArcFurnaceDummyEnergy = new BlockDummyEnergyReceiver();
 
-    @RegisterBlock(name = "blockReplicatorFrame", tileEntity = TileReplicatorFrame.class)
-    public static BlockReplicatorFrame blockReplicatorFrame = new BlockReplicatorFrame();
 
     @RegisterBlock(name = "blockElectricBellows", tileEntity = TileElectricBellows.class)
     public static BlockElectricBellows blockElectricBellows = new BlockElectricBellows();
@@ -97,14 +83,11 @@ public class BlockHandler implements BlockInstances {
     @RegisterBlock(name = "blockPatternRecorder", tileEntity = TilePatternRecorder.class)
     public static BlockPatternRecorder blockPatternRecorder = new BlockPatternRecorder();
 
-    @RegisterBlock(name = "blockReplicatorCPU", tileEntity = TileReplicatorCPU.class)
-    public static BlockReplicatorCPU blockReplicatorCPU = new BlockReplicatorCPU();
+    @RegisterBlock(name = "blockReplicator", tileEntity = TileReplicator.class)
+    public static BlockReplicator blockReplicator = new BlockReplicator();
 
     @RegisterBlock(name = "blockOreActinium")
     public static BlockOreActinium blockOreActinium = new BlockOreActinium();
-
-    @RegisterBlock(name = "blockReplicatorStand", tileEntity = TileReplicatorStand.class)
-    public static BlockReplicatorStand blockReplicatorStand = new BlockReplicatorStand();
 
     public static List<Block> blockRegistry = new ArrayList<Block>();
 

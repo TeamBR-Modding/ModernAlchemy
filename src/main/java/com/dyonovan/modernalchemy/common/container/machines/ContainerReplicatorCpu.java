@@ -1,15 +1,15 @@
 package com.dyonovan.modernalchemy.common.container.machines;
 
-import com.dyonovan.modernalchemy.common.tileentity.replicator.TileReplicatorCPU;
+import com.dyonovan.modernalchemy.common.tileentity.machines.TileReplicator;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnace;
 import openmods.container.ContainerInventoryProvider;
 
-public class ContainerReplicatorCpu extends ContainerInventoryProvider<TileReplicatorCPU> {
+public class ContainerReplicatorCpu extends ContainerInventoryProvider<TileReplicator> {
 
-    public ContainerReplicatorCpu(IInventory playerInventory, TileReplicatorCPU owner) {
+    public ContainerReplicatorCpu(IInventory playerInventory, TileReplicator owner) {
 
         super(playerInventory, owner);
 

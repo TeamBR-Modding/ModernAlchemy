@@ -1,14 +1,13 @@
-package com.dyonovan.modernalchemy.common.tileentity.replicator;
+package com.dyonovan.modernalchemy.common.tileentity.machines;
 
-import com.dyonovan.modernalchemy.client.gui.machines.GuiReplicatorCPU;
-import com.dyonovan.modernalchemy.common.blocks.replicator.BlockReplicatorStand;
+import com.dyonovan.modernalchemy.client.audio.SoundHelper;
+import com.dyonovan.modernalchemy.client.gui.machines.GuiReplicator;
+import com.dyonovan.modernalchemy.client.rpc.IRedstoneRequired;
 import com.dyonovan.modernalchemy.common.container.machines.ContainerReplicatorCpu;
-import com.dyonovan.modernalchemy.common.entities.EntityLaserNode;
 import com.dyonovan.modernalchemy.common.items.ItemPattern;
 import com.dyonovan.modernalchemy.common.items.ItemReplicatorMedium;
 import com.dyonovan.modernalchemy.common.tileentity.TileModernAlchemy;
 import com.dyonovan.modernalchemy.energy.TeslaBank;
-import com.dyonovan.modernalchemy.handlers.BlockHandler;
 import com.dyonovan.modernalchemy.handlers.ItemHandler;
 import com.dyonovan.modernalchemy.helpers.GuiHelper;
 import com.dyonovan.modernalchemy.util.Location;
@@ -19,7 +18,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 import openmods.api.IHasGui;
 import openmods.api.IValueProvider;
@@ -41,7 +39,7 @@ import scala.actors.threadpool.Arrays;
 
 import java.util.*;
 
-public class TileReplicatorCPU extends TileModernAlchemy implements IInventoryProvider, IHasGui, IConfigurableGuiSlots<TileReplicatorCPU.AUTO_SLOTS> {
+public class TileReplicator extends TileModernAlchemy implements IRedstoneRequired, IInventoryProvider, IHasGui, IConfigurableGuiSlots<TileReplicator.AUTO_SLOTS> {
 
     private static Random rand = new Random();
 
@@ -73,12 +71,11 @@ public class TileReplicatorCPU extends TileModernAlchemy implements IInventoryPr
     private SyncableFlags automaticSlots;
     private SyncableItemStack stackReturn;
     private SyncableInt qtyReturn;
-
+    private SyncableBoolean requiresRedstone;
 
     protected TeslaBank energyTank;
 
     private Location stand;
-    private List<EntityLaserNode> listLaser;
 
     @SuppressWarnings("FieldCanBeLocal")
     @IncludeInterface(ISidedInventory.class)
@@ -97,143 +94,17 @@ public class TileReplicatorCPU extends TileModernAlchemy implements IInventoryPr
         automaticSlots = SyncableFlags.create(AUTO_SLOTS.values().length);
         stackReturn = new SyncableItemStack();
         qtyReturn = new SyncableInt(1);
+        requiresRedstone = new SyncableBoolean(true);
 
         energyTank = new TeslaBank(0, 1000);
         stand = new Location();
     }
 
 
-    public TileReplicatorCPU() {
+    public TileReplicator() {
         sided.registerSlot(MEDIUM_INPUT, mediumIn, true, false);
         sided.registerSlot(PATTERN_INPUT, patternIn, false, false);
         sided.registerSlot(OUTPUT, itemOut, false, true);
-    }
-
-    /*******************************************************************************************************************
-     **************************************** MultiBlock Functions *****************************************************
-     *******************************************************************************************************************/
-
-    private void copyToStand(Boolean insert) {
-        TileReplicatorStand tileStand = (TileReplicatorStand) worldObj.getTileEntity(stand.x, stand.y, stand.z);
-        if (tileStand != null) {
-            if (insert)
-                tileStand.inventory.setStackInSlot(new ItemStack(ItemHandler.itemReplicationMedium), 0);
-            else tileStand.inventory.setStackInSlot(null, 0);
-        }
-    }
-
-    private boolean findStand() {
-        stand = null;
-        for (int i = 0; i < 4; i++) {
-            if (stand != null) break;
-            switch (i) {
-                case 0:
-                    if (worldObj.getBlock(xCoord + 2, yCoord - 1, zCoord + 2) instanceof BlockReplicatorStand)
-                        stand = new Location(xCoord + 2, yCoord - 1, zCoord + 2);
-                case 1:
-                    if (worldObj.getBlock(xCoord + 2, yCoord - 1, zCoord - 2) instanceof BlockReplicatorStand)
-                        stand = new Location(xCoord + 2, yCoord - 1, zCoord - 2);
-                case 2:
-                    if (worldObj.getBlock(xCoord - 2, yCoord - 1, zCoord + 2) instanceof BlockReplicatorStand)
-                        stand = new Location(xCoord - 2, yCoord - 1, zCoord + 2);
-                case 3:
-                    if (worldObj.getBlock(xCoord - 2, yCoord - 1, zCoord - 2) instanceof BlockReplicatorStand)
-                        stand = new Location(xCoord - 2, yCoord - 1, zCoord - 2);
-            }
-        }
-        return (stand != null);
-    }
-
-    @SuppressWarnings("unchecked")
-    private boolean findLasers() {
-        listLaser = null;
-        AxisAlignedBB bounds = null;
-
-        for (int i = 0; i < 4; i++) {
-            if (listLaser != null && listLaser.size() > 0) break;
-            switch (i) {
-                case 0:
-                    bounds = AxisAlignedBB.getBoundingBox(xCoord, yCoord + 2, zCoord, xCoord + 4, yCoord + 4, zCoord + 4);
-                    break;
-                case 1:
-                    bounds = AxisAlignedBB.getBoundingBox(xCoord, yCoord + 2, zCoord - 4, xCoord + 4, yCoord + 4, zCoord);
-                    break;
-                case 2:
-                    bounds = AxisAlignedBB.getBoundingBox(xCoord - 4, yCoord + 2, zCoord - 4, xCoord, yCoord + 4, zCoord);
-                    break;
-                case 3:
-                    bounds = AxisAlignedBB.getBoundingBox(xCoord - 4, yCoord + 2, zCoord, xCoord, yCoord + 4, zCoord + 4);
-                    break;
-            }
-            listLaser = worldObj.getEntitiesWithinAABB(EntityLaserNode.class, bounds);
-        }
-        return listLaser.size() > 0;
-    }
-
-    public boolean exploreFrame() {
-        Location me = new Location(xCoord, yCoord, zCoord);
-        if(!(getTileInDirection(ForgeDirection.UP) instanceof TileReplicatorFrame) || !(getTileInDirection(ForgeDirection.DOWN) instanceof TileReplicatorFrame))
-            return false;
-        if(WorldUtils.getBlockInLocation(worldObj, new Location(me.x, me.y + 2, me.z)) == BlockHandler.blockReplicatorFrame) {
-            List<Location> corners = new ArrayList<>();
-
-            for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-                if(dir == ForgeDirection.UP || dir == ForgeDirection.DOWN) continue;
-                if(worldObj.getBlock(me.x + (dir.offsetX * 4), me.y + 2, me.z + (dir.offsetZ * 4)) == BlockHandler.blockReplicatorFrame)
-                    corners.add(new Location(me.x + (dir.offsetX * 4), me.y + 2, me.z + (dir.offsetZ * 4)));
-                if(corners.size() == 2)
-                    break;
-            }
-            if(corners.size() != 2) //Must have enough corners
-                return false;
-            else {
-                Location farSide;
-                if(worldObj.getBlock(corners.get(0).x + 4, corners.get(0).y, corners.get(0).z) == BlockHandler.blockReplicatorFrame)
-                    farSide = (new Location(corners.get(0).x + 4, corners.get(0).y, corners.get(0).z));
-                else if(worldObj.getBlock(corners.get(0).x - 4, corners.get(0).y, corners.get(0).z) == BlockHandler.blockReplicatorFrame)
-                    farSide = (new Location(corners.get(0).x - 4, corners.get(0).y, corners.get(0).z));
-                else if(worldObj.getBlock(corners.get(0).x, corners.get(0).y, corners.get(0).z + 4) == BlockHandler.blockReplicatorFrame)
-                    farSide = (new Location(corners.get(0).x, corners.get(0).y, corners.get(0).z + 4));
-                else if(worldObj.getBlock(corners.get(0).x, corners.get(0).y, corners.get(0).z - 4) == BlockHandler.blockReplicatorFrame)
-                    farSide = (new Location(corners.get(0).x, corners.get(0).y, corners.get(0).z - 4));
-                else
-                    return false;
-                corners.add(farSide);
-                for(int i = 3; i > 0; i--) {
-                    for(Location loc : corners) { //Check Stands
-                        if (worldObj.getBlock(loc.x, loc.y - i, loc.z) != BlockHandler.blockReplicatorFrame &&
-                                worldObj.getBlock(loc.x, loc.y - i, loc.z) != BlockHandler.blockReplicatorCPU) {
-                            return false;
-                        }
-                    }
-                }
-
-                int offsetX = 0;
-                int offsetZ = 0;
-
-                if(me.x < farSide.x) //Need to travel up
-                    offsetX++;
-                else
-                    offsetX--;
-
-                if(me.z < farSide.z)
-                    offsetZ++;
-                else
-                    offsetZ--;
-
-                for(int i = 1; i <= 4; i++) {
-                    if(worldObj.getBlock(me.x + (offsetX * i), me.y + 2, me.z) != BlockHandler.blockReplicatorFrame ||
-                            worldObj.getBlock(me.x, me.y + 2, me.z + (offsetZ * i)) != BlockHandler.blockReplicatorFrame)
-                        return false;
-
-                    if(worldObj.getBlock(farSide.x + (-offsetX * i), me.y + 2, farSide.z) != BlockHandler.blockReplicatorFrame ||
-                            worldObj.getBlock(farSide.x, me.y + 2, farSide.z + (-offsetZ * i)) != BlockHandler.blockReplicatorFrame)
-                        return false;
-                }
-                return true; //YOU MADE IT!
-            }
-        }
-        return false;
     }
 
     /*******************************************************************************************************************
@@ -246,7 +117,7 @@ public class TileReplicatorCPU extends TileModernAlchemy implements IInventoryPr
                 fail();
                 return;
             }
-            if (findLasers() && findStand() && exploreFrame() && inventory.getStackInSlot(1) != null) {
+            if (inventory.getStackInSlot(1) != null) {
                 if (Objects.equals(item.getValue(), "null")) {
                     item.setValue(inventory.getStackInSlot(1).getTagCompound().getString("Item"));
                     requiredProcessTime.set(inventory.getStackInSlot(1).getTagCompound().getInteger("Value"));
@@ -262,27 +133,23 @@ public class TileReplicatorCPU extends TileModernAlchemy implements IInventoryPr
                     resetCounts();
                     return;
                 }
-                if (currentProcessTime.get() <= 0 && canStartWork() && energyTank.getEnergyLevel() >= 2 * listLaser.size()) {
+                if (currentProcessTime.get() <= 0 && canStartWork()) {
                     currentProcessTime.set(1);
-                    copyToStand(true);
                     inventory.decrStackSize(0, 1);
                     isActive.set(true);
                 }
 
                 if (currentProcessTime.get() != 0 && currentProcessTime.get()  < requiredProcessTime.get()) {
-                    if (energyTank.getEnergyLevel() >= 2 * listLaser.size()) {
-                        energyTank.drainEnergy(2 * listLaser.size());
-                        currentProcessTime.modify(listLaser.size());
+                    if (energyTank.getEnergyLevel() >= 2) {
+                        energyTank.drainEnergy(10);
+                        currentProcessTime.modify(1);
                         isActive.set(true);
-                        for(EntityLaserNode node : listLaser)
-                            node.fireLaser(stand.x + 0.5, stand.y + 1.5, stand.z + 0.5);
                     } else {
                         fail();
                     }
                 }
 
                 if (currentProcessTime.get() != 0 && currentProcessTime.get() >= requiredProcessTime.get() ) {
-                    copyToStand(false);
                     if(rand.nextInt(101) <= inventory.getStackInSlot(1).getTagCompound().getFloat("Quality")) {
                         if (inventory.getStackInSlot(2) == null) inventory.setInventorySlotContents(2, stackReturn.get());
                         else {
@@ -297,8 +164,6 @@ public class TileReplicatorCPU extends TileModernAlchemy implements IInventoryPr
             }
         } else {
             resetCounts();
-            if (stand == null) findStand();
-            if (stand != null) copyToStand(false);
         }
     }
 
@@ -321,7 +186,7 @@ public class TileReplicatorCPU extends TileModernAlchemy implements IInventoryPr
                 inventory.getStackInSlot(1).getItem() instanceof ItemPattern &&
                 inventory.getStackInSlot(0).getItem() instanceof ItemReplicatorMedium &&
                 inventory.getStackInSlot(1).hasTagCompound() &&
-                isPowered();
+                (requiresRedstone.get() ? isPowered() : true);
     }
 
     public IValueProvider<Integer> getProgress() {
@@ -382,6 +247,16 @@ public class TileReplicatorCPU extends TileModernAlchemy implements IInventoryPr
         head.add(GuiHelper.GuiColor.YELLOW + "Energy: " + GuiHelper.GuiColor.WHITE + energyTank.getEnergyLevel() + "/" + energyTank.getMaxCapacity() + GuiHelper.GuiColor.TURQUISE + "T");
     }
 
+    public IValueProvider<Boolean> getRedstoneRequiredProvider() {
+        return requiresRedstone;
+    }
+
+    @Override
+    public void setRequirement(boolean bool) {
+        requiresRedstone.set(bool);
+        sync();
+    }
+
     private SyncableSides selectSlotMap(AUTO_SLOTS slot) {
         switch (slot) {
             case medium_input:
@@ -433,7 +308,7 @@ public class TileReplicatorCPU extends TileModernAlchemy implements IInventoryPr
 
     @Override
     public Object getClientGui(EntityPlayer player) {
-        return new GuiReplicatorCPU(new ContainerReplicatorCpu(player.inventory, this));
+        return new GuiReplicator(new ContainerReplicatorCpu(player.inventory, this));
     }
 
     @Override

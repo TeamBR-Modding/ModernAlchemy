@@ -26,9 +26,6 @@ public class ItemHandler implements ItemInstances {
     public static Item itemFaradayWire, itemSteelIngot, itemCopperIngot, itemSteelPlate, itemCapacator;
     public static Item itemCopperCoil, itemDenseCopperCoil, itemSteelTube, itemTransformer;
 
-    @RegisterItem(name = "laserNode")
-    public static ItemLaserNode laserNode = new ItemLaserNode();
-
     @RegisterItem(name = "manual")
     public static ItemManual manual = new ItemManual();
 

@@ -1,21 +1,13 @@
 package com.dyonovan.modernalchemy.client;
 
 import com.dyonovan.modernalchemy.client.renderer.arcfurnace.ArcFurnaceDummyRenderer;
-import com.dyonovan.modernalchemy.common.entities.EntityLaserNode;
-import com.dyonovan.modernalchemy.common.tileentity.arcfurnace.dummies.TileDummy;
-import com.dyonovan.modernalchemy.handlers.BlockHandler;
-import com.dyonovan.modernalchemy.lib.Constants;
-import com.dyonovan.modernalchemy.client.renderer.replicator.ItemRenderFrame;
-import com.dyonovan.modernalchemy.client.renderer.replicator.RenderFrame;
-import com.dyonovan.modernalchemy.client.renderer.replicator.RenderLaserNode;
-import com.dyonovan.modernalchemy.client.renderer.replicator.RenderReplicatorStand;
 import com.dyonovan.modernalchemy.client.renderer.teslacoil.*;
-import com.dyonovan.modernalchemy.common.tileentity.replicator.TileReplicatorFrame;
-import com.dyonovan.modernalchemy.common.tileentity.replicator.TileReplicatorStand;
 import com.dyonovan.modernalchemy.common.tileentity.teslacoil.TileSuperTeslaCoil;
 import com.dyonovan.modernalchemy.common.tileentity.teslacoil.TileTeslaBase;
 import com.dyonovan.modernalchemy.common.tileentity.teslacoil.TileTeslaCoil;
 import com.dyonovan.modernalchemy.common.tileentity.teslacoil.TileTeslaStand;
+import com.dyonovan.modernalchemy.handlers.BlockHandler;
+import com.dyonovan.modernalchemy.lib.Constants;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -59,21 +51,6 @@ public class ClientProxy implements IProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileTeslaBase.class, renderBase);
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockHandler.blockTeslaBase),
                 new ItemRenderTeslaBase());
-
-        //Frame
-        TileEntitySpecialRenderer renderFrame = new RenderFrame();
-        ClientRegistry.bindTileEntitySpecialRenderer(TileReplicatorFrame.class, renderFrame);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockHandler.blockReplicatorFrame),
-                new ItemRenderFrame(renderFrame, new TileReplicatorFrame()));
-
-        //Laser Node
-        RenderingRegistry.registerEntityRenderingHandler(EntityLaserNode.class, new RenderLaserNode());
-
-        //Stand
-        TileEntitySpecialRenderer renderReplicatorStand = new RenderReplicatorStand();
-        ClientRegistry.bindTileEntitySpecialRenderer(TileReplicatorStand.class, renderReplicatorStand);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(BlockHandler.blockReplicatorStand),
-                new ItemRenderFrame(renderReplicatorStand, new TileReplicatorStand()));
 
         //Arc Furnace Dummies
         RenderingRegistry.registerBlockHandler(new ArcFurnaceDummyRenderer());

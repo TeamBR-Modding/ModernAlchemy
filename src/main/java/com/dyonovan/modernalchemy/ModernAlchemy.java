@@ -79,7 +79,6 @@ public class ModernAlchemy {
         startupHelper.registerItemsHolder(ItemHandler.class);
 
         startupHelper.preInit(event.getSuggestedConfigurationFile());
-        EntityHandler.init();
         EventManager.init();
 
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, OpenMods.proxy.wrapHandler(new GuiHandler()));
