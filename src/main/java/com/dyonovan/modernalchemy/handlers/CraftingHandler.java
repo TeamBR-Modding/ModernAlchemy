@@ -18,8 +18,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class CraftingHandler {
+    @SuppressWarnings("unchecked")
+    public static void init() {
 
-    public static void preInit() {
         //Advanced Crafter
         GameRegistry.addRecipe(new ItemStack(BlockHandler.blockAdvancedCrafter), "ABA", "CDC", "AEA",
                 'A', Items.iron_ingot, 'B', Blocks.hopper, 'C', Blocks.piston,
@@ -190,10 +191,7 @@ public class CraftingHandler {
                 new OreDictStack("ingotSteel", 1), 1000, TileAdvancedCrafter.ENRICH);
         AdvancedCrafterRecipeRegistry.instance.addRecipe(new ArrayList<Object>(Arrays.asList(new ItemStack(ItemHandler.itemFaradayIngot))),
                 new ItemStack(ItemHandler.itemFaradayWire, 3), 200, TileAdvancedCrafter.EXTRUDE);
-    }
 
-    @SuppressWarnings("unchecked")
-    public static void init() {
         if (OreDictionary.getOres("oreCopper").isEmpty())
             GameRegistry.addSmelting(BlockHandler.blockOreCopper, new ItemStack(ItemHandler.itemCopperIngot), 0.1f);
 

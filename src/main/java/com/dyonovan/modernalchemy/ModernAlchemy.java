@@ -73,10 +73,12 @@ public class ModernAlchemy {
 
         ConfigHandler.init(new Configuration(new File(event.getModConfigurationDirectory().getAbsolutePath() + File.separator + Constants.MODID.toLowerCase() + File.separator + "general.properties")));
         BlockHandler.preInit();
-        startupHelper.registerBlocksHolder(BlockHandler.class);
-        startupHelper.preInit(event.getSuggestedConfigurationFile());
         ItemHandler.preInit();
-        CraftingHandler.preInit();
+
+        startupHelper.registerBlocksHolder(BlockHandler.class);
+        startupHelper.registerItemsHolder(ItemHandler.class);
+
+        startupHelper.preInit(event.getSuggestedConfigurationFile());
         EntityHandler.init();
         EventManager.init();
 
@@ -96,6 +98,8 @@ public class ModernAlchemy {
     @SuppressWarnings("unused")
     @EventHandler
     public void init(FMLInitializationEvent event) {
+
+        CraftingHandler.init();
 
         if(event.getSide() == Side.CLIENT)
         {

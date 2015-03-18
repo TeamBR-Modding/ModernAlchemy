@@ -1,8 +1,10 @@
 package com.dyonovan.modernalchemy.client.renderer.teslacoil;
 
+import com.dyonovan.modernalchemy.client.gui.GuiManual;
 import com.dyonovan.modernalchemy.lib.Constants;
 import com.dyonovan.modernalchemy.client.model.teslacoil.ModelTeslaStand;
 import cpw.mods.fml.client.FMLClientHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
@@ -35,10 +37,13 @@ public class ItemRenderTeslaStand implements IItemRenderer {
             break;
         }
         case EQUIPPED: {
-            GL11.glScalef(2.0F, 2.0F, 2.0F);
-            GL11.glRotatef(-45, 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(45, 0.0F, 0.0F, 1.0F);
-            renderCoil(0.2F, 0.2F, 0.5F, item.getItemDamage());
+            if(Minecraft.getMinecraft().currentScreen == null || !(Minecraft.getMinecraft().currentScreen instanceof GuiManual)) {
+                GL11.glScalef(2.0F, 2.0F, 2.0F);
+                GL11.glRotatef(-45, 1.0F, 0.0F, 0.0F);
+                GL11.glRotatef(45, 0.0F, 0.0F, 1.0F);
+                renderCoil(0.2F, 0.2F, 0.5F, item.getItemDamage());
+            } else
+                renderCoil(0.0F, 0.5F, 0.0F, item.getItemDamage());
             break;
         }
         case EQUIPPED_FIRST_PERSON: {

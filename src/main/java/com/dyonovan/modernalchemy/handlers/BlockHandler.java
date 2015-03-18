@@ -45,7 +45,7 @@ import openmods.config.game.RegisterBlock;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockHandler implements BlockInstances{
+public class BlockHandler implements BlockInstances {
 
     public static Fluid fluidActinium, fluidCompressedAir;
     public static Block  blockFluidActinium, blockFluidAir;
