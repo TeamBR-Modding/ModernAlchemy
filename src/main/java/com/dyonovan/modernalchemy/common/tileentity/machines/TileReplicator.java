@@ -75,8 +75,6 @@ public class TileReplicator extends TileModernAlchemy implements IRedstoneRequir
 
     protected TeslaBank energyTank;
 
-    private Location stand;
-
     @SuppressWarnings("FieldCanBeLocal")
     @IncludeInterface(ISidedInventory.class)
     private final SidedInventoryAdapter sided = new SidedInventoryAdapter(inventory);
@@ -97,7 +95,6 @@ public class TileReplicator extends TileModernAlchemy implements IRedstoneRequir
         requiresRedstone = new SyncableBoolean(true);
 
         energyTank = new TeslaBank(0, 1000);
-        stand = new Location();
     }
 
 
@@ -140,7 +137,7 @@ public class TileReplicator extends TileModernAlchemy implements IRedstoneRequir
                 }
 
                 if (currentProcessTime.get() != 0 && currentProcessTime.get()  < requiredProcessTime.get()) {
-                    if (energyTank.getEnergyLevel() >= 2) {
+                    if (energyTank.getEnergyLevel() >= 10) {
                         energyTank.drainEnergy(10);
                         currentProcessTime.modify(1);
                         isActive.set(true);
@@ -169,7 +166,7 @@ public class TileReplicator extends TileModernAlchemy implements IRedstoneRequir
 
     private void fail() {
         resetCounts();
-        WorldUtils.expelItem(worldObj, stand.x, stand.y + 1, stand.z, new ItemStack(ItemHandler.itemSlag));
+        WorldUtils.expelItem(worldObj, xCoord, yCoord + 1, zCoord, new ItemStack(ItemHandler.itemSlag));
     }
 
     private void resetCounts() {
