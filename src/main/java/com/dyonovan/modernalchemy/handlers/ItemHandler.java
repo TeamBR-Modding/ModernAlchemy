@@ -73,7 +73,7 @@ public class ItemHandler implements ItemInstances {
         registerItem(itemPumpModule = new ItemCrafting("itemPumpModule", 64), "itemPumpModule", null);
         registerItem(itemEnergyAntenna = new ItemCrafting("itemEnergyAntenna", 64), "itemEnergyAntenna", null);
         registerItem(itemFaradayWire = new ItemCrafting("itemFaradayWire", 64), "itemFaradayWire", null);
-        //registerItem(itemTransformer = new ItemCrafting("itemTransformer", 16), "itemTransformer", null);
+        registerItem(itemTransformer = new ItemCrafting("itemTransformer", 16), "itemTransformer", null);
     }
 
     public static void initCopper() {

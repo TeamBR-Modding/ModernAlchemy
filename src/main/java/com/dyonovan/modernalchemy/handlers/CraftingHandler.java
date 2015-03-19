@@ -82,7 +82,7 @@ public class CraftingHandler {
 
         //Super Tesla Coil Top
         GameRegistry.addRecipe(new ItemStack(BlockHandler.blockSuperTeslaCoil), "AAA", "ABA", "AAA",
-                'A', BlockHandler.blockTeslaCoil, 'B',  ItemHandler.itemDenseCopperCoil);
+                'A', BlockHandler.blockTeslaCoil, 'B',  ItemHandler.itemTransformer);
 
         //Tesla Coil Stand
         GameRegistry.addRecipe(new ItemStack(BlockHandler.blockTeslaStand), "ABA", "ABA", "ABA",
