@@ -66,7 +66,7 @@ public class TileAmalgamator extends TileModernAlchemy implements IRedstoneRequi
     private SyncableBoolean requiresRedstone;
     private SyncableFlags automaticSlots;
 
-    private final GenericInventory inventory = registerInventoryCallback(new TileEntityInventory(this, "amalgamator", true, 1));
+    private final GenericInventory inventory = registerInventoryCallback(new TileEntityInventory(this, "amalgamator", true, 2));
 
     @IncludeInterface(ISidedInventory.class)
     private final SidedInventoryAdapter sided = new SidedInventoryAdapter(inventory);
